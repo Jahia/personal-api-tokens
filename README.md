@@ -23,20 +23,14 @@
     Project name can either be the full length project name (if there is one) or just the repo name. For example: Digital Experience Manager.
 -->
 
-Sandbox
+Personal API Tokens
 ======================
 
 <!--
     A one-liner about the project, like a subtitle. For example: Jahia Digital Experience Manager Core
 -->
-<p align="center">A sandbox project to try out configuration settings for Jahia repositories</p>
+<p align="center">A module to create, manage and use personal tokens when interacting with Jahia API</p>
 
-<!--
-    A short technical description (not more than one paragraph) about the project, eventually with tech/tools/framework used.
--->
-<p align="center">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque rhoncus semper erat, in scelerisque augue imperdiet at. Vestibulum hendrerit leo id neque posuere ultricies nec at diam. Curabitur euismod congue mauris ut aliquet. Curabitur vestibulum nisl eget quam porttitor, sed volutpat arcu fringilla. Mauris at ante gravida, feugiat nisi vel.</p>
-
-![screenshot](./img/sandbox.jpg)
 
 <!--
     Open Source badges, see https://shields.io/
