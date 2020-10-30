@@ -1,0 +1,22 @@
+version: '3.3'
+services:
+  jahia:
+    image: "jahia/${JAHIA_VERSION}"
+    container_name: jahia
+    ports:
+      - "8080:8080"
+    extra_hosts:
+      - jahia:127.0.0.1
+  # Cypress container
+  cypress:
+    build: .
+    container_name: e2e-tests
+    depends_on:
+      - jahia
+    environment:
+      # pass base url to test pointing at the web application
+      - CYPRESS_baseUrl=http://jahia:8080
+    volumes: 
+      - type: bind
+        source: ./results
+        target: /tmp/results
