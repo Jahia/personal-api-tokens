@@ -1,0 +1,13 @@
+{
+  "label": {
+    "settings": {
+      "title": "Personal API Tokens setting"
+    },
+    "action": {
+      "title": "Personal API Tokens - How to extend the ui ?"
+    },
+    "appsAccordion": {
+      "title": "Personal API Tokens"
+    }
+  }
+}
