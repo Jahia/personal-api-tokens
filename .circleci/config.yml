@@ -322,14 +322,14 @@ jobs:
             docker push << pipeline.parameters.TESTS_IMAGE >>:$IMAGE_TAG
             echo "Pushed tag"
 
-  sonar-pr:
+  sonar:
     parameters:
-      circleci-branch:
-        type: string
-        default: CIRCLE_BRANCH
       circleci-pr:
         type: string
         default: CIRCLE_PULL_REQUEST
+      is_pull_request:
+        type: boolean
+        default: fals        
     <<: *workdir
     docker: # run the steps with Docker
       - image: circleci/openjdk:11-jdk-stretch
@@ -348,43 +348,30 @@ jobs:
             - sonar-dependencies-{{ checksum "pom.xml" }}
             # Fallback if no exact match found
             - sonar-dependencies-
-      - run:
-          name: Analyze pull request with sonar
-          command: |
-            pwd
-            mvn -s .circleci/.circleci.settings.xml clean install sonar:sonar  -Dsonar.projectKey=personal-api-tokens -Dsonar.pullrequest.branch=${<< parameters.circleci-branch >>} \
-            -Dsonar.pullrequest.key=${<< parameters.circleci-pr >>##*/} \
-            -Dsonar.pullrequest.base=master
-      - save_cache:
-          paths:
-            - ~/.m2
-          key: sonar-dependencies-{{ checksum "pom.xml" }}
-
-  sonar:
-    parameters:
-      circleci-branch:
-        type: string
-        default: CIRCLE_BRANCH
-    <<: *workdir
-    docker: # run the steps with Docker
-      - image: circleci/openjdk:11-jdk-stretch
-    resource_class: large
-    steps:
-      - *attach-workspace
-      - restore_cache:
-          keys:
-            - sonar-dependencies-{{ checksum "pom.xml" }}
-            # Fallback if no exact match found
-            - sonar-dependencies-
-      - run:
-          name: Sonar Analysis
-          command: |
-            if [[ "${<< parameters.circleci-branch >>}" == "master" ]];
-            then
-              mvn -s .circleci/.circleci.settings.xml sonar:sonar -Dsonar.projectKey=personal-api-tokens
-            else
-              mvn -s .circleci/.circleci.settings.xml sonar:sonar -Dsonar.branch.name=${<< parameters.circleci-branch >>}
-            fi
+      - when:
+          condition: <<parameters.is_pull_request>>
+          steps:
+            - run:
+                name: Analyze pull request with sonar
+                command: |
+                  mvn -s .circleci/.circleci.settings.xml sonar:sonar \
+                  -Dsonar.projectKey=personal-api-tokens \
+                  -Dsonar.pullrequest.branch=$CIRCLE_BRANCH \
+                  -Dsonar.pullrequest.key=${<< parameters.circleci-pr >>##*/} \
+                  -Dsonar.pullrequest.base=<< pipeline.parameters.target_branch >> \
+                  -Dsonar.pullrequest.github.repository=<< pipeline.parameters.github_repository >>
+      - unless:
+          condition: <<parameters.is_pull_request>>
+          steps:
+            - run:
+                name: Sonar analysis
+                command: |
+                  if [[ "${CIRCLE_BRANCH}" == "master" ]];
+                  then
+                    mvn -s .circleci/.circleci.settings.xml sonar:sonar -Dsonar.projectKey=personal-api-tokens
+                  else
+                    mvn -s .circleci/.circleci.settings.xml sonar:sonar -Dsonar.branch.name=$CIRCLE_BRANCH
+                  fi              
       - save_cache:
           paths:
             - ~/.m2
@@ -407,10 +394,11 @@ workflows:
           context: QA_ENVIRONMENT
           requires:
             - initialize
-      - sonar-pr:
+      - sonar:
           context: QA_ENVIRONMENT
           requires:
             - build
+          is_pull_request: true
           filters:
             branches:
               ignore:
@@ -419,6 +407,7 @@ workflows:
           context: QA_ENVIRONMENT
           requires:
             - build
+          is_pull_request: false
           filters:
             branches:
               only:
@@ -430,7 +419,7 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - master                
       # Verifies that the new code works with the latest released version of Jahia
       - integration_tests:
           name: 'Int. Tests - Jahia Latest - Built modules'
