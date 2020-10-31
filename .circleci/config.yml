@@ -16,6 +16,9 @@ parameters:
     default: 'tests/'
   TESTS_IMAGE:
     type: string
+    default: 'jahia/personal-api-tokens'
+  SONARQUBE_PROJECT:
+    type: string
     default: 'jahia/personal-api-tokens'    
 
 references:
@@ -355,11 +358,11 @@ jobs:
                 name: Analyze pull request with sonar
                 command: |
                   mvn -s .circleci/.circleci.settings.xml sonar:sonar \
-                  -Dsonar.projectKey=personal-api-tokens \
+                  -Dsonar.projectKey=<< pipeline.parameters.SONARQUBE_PROJECT >> \
                   -Dsonar.pullrequest.branch=$CIRCLE_BRANCH \
                   -Dsonar.pullrequest.key=${<< parameters.circleci-pr >>##*/} \
-                  -Dsonar.pullrequest.base=<< pipeline.parameters.target_branch >> \
-                  -Dsonar.pullrequest.github.repository=<< pipeline.parameters.github_repository >>
+                  -Dsonar.pullrequest.base=master \
+                  -Dsonar.pullrequest.github.repository=$CIRCLE_REPOSITORY_URL
       - unless:
           condition: <<parameters.is_pull_request>>
           steps:
@@ -368,7 +371,7 @@ jobs:
                 command: |
                   if [[ "${CIRCLE_BRANCH}" == "master" ]];
                   then
-                    mvn -s .circleci/.circleci.settings.xml sonar:sonar -Dsonar.projectKey=personal-api-tokens
+                    mvn -s .circleci/.circleci.settings.xml sonar:sonar -Dsonar.projectKey=<< pipeline.parameters.SONARQUBE_PROJECT >>
                   else
                     mvn -s .circleci/.circleci.settings.xml sonar:sonar -Dsonar.branch.name=$CIRCLE_BRANCH
                   fi              
