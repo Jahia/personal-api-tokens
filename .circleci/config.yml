@@ -397,28 +397,28 @@ workflows:
           context: QA_ENVIRONMENT
           requires:
             - initialize
-      - sonar:
-          context: QA_ENVIRONMENT
-          requires:
-            - build
-          is_pull_request: true
-          filters:
-            branches:
-              ignore:
-                - master
-      - sonar:
-          context: QA_ENVIRONMENT
-          requires:
-            - build
-          is_pull_request: false
-          filters:
-            branches:
-              only:
-                - master
+      # - sonar:
+      #     context: QA_ENVIRONMENT
+      #     requires:
+      #       - build
+      #     is_pull_request: true
+      #     filters:
+      #       branches:
+      #         ignore:
+      #           - master
+      # - sonar:
+      #     context: QA_ENVIRONMENT
+      #     requires:
+      #       - build
+      #     is_pull_request: false
+      #     filters:
+      #       branches:
+      #         only:
+      #           - master
       - publish:
           context: QA_ENVIRONMENT
           requires:
-            - sonar
+            - build
           filters:
             branches:
               only:
