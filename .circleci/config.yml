@@ -125,11 +125,11 @@ jobs:
           command: |
             mkdir /tmp/artifacts/
             mkdir /tmp/artifacts/build-dependencies/
-            cp /home/circleci/source/api/target/*.jar /tmp/artifacts/
-            cp /home/circleci/source/api/target/*SNAPSHOT.jar /home/circleci/source/api/target/personal-api-tokens-SNAPSHOT.jar
+            cp /home/circleci/source/target/*.jar /tmp/artifacts/
+            cp /home/circleci/source/target/*SNAPSHOT.jar /home/circleci/source/target/personal-api-tokens-SNAPSHOT.jar
             mkdir /home/circleci/source/build-dependencies/
-            cp /home/circleci/source/api/target/dependency/graphql-dxm-provider* /home/circleci/source/build-dependencies/
-            cp /home/circleci/source/api/target/dependency/graphql-dxm-provider* /home/circleci/source/build-dependencies/graphql-dxm-provider-BUILDDEP.jar
+            cp /home/circleci/source/target/dependency/graphql-dxm-provider* /home/circleci/source/build-dependencies/
+            cp /home/circleci/source/target/dependency/graphql-dxm-provider* /home/circleci/source/build-dependencies/graphql-dxm-provider-BUILDDEP.jar
             cp -r /home/circleci/source/build-dependencies/* /tmp/artifacts/build-dependencies/
       - store_artifacts:
           path: /tmp/artifacts/
@@ -204,7 +204,7 @@ jobs:
               sudo mkdir /tmp/artifacts/tests_reports
               sudo mkdir /tmp/artifacts/build-dependencies
               sudo cp -r /home/circleci/source/build-dependencies/* /tmp/artifacts/build-dependencies/
-              sudo cp -r /home/circleci/source/api/target/* /tmp/artifacts/
+              sudo cp -r /home/circleci/source/target/* /tmp/artifacts/
             fi
       - run:
           name: Docker login
