@@ -329,7 +329,7 @@ jobs:
         default: CIRCLE_PULL_REQUEST
       is_pull_request:
         type: boolean
-        default: fals        
+        default: false 
     <<: *workdir
     docker: # run the steps with Docker
       - image: circleci/openjdk:11-jdk-stretch
