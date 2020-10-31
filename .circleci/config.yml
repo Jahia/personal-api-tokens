@@ -119,6 +119,9 @@ jobs:
           paths:
             - ~/.m2
           key: v1-dependencies-{{ checksum "pom.xml" }}
+      # Environment provisioning is sometimes dependent upon dependencies build during mvn clean install
+      # This step copies those dependencies and make them available for further actions, 
+      # such as being used to provision a running Jahia with a set of freshly built artifacts
       - run: mvn -s .circleci/.circleci.settings.xml dependency:copy-dependencies
       - run:
           name: Prepare artifacts
@@ -126,7 +129,9 @@ jobs:
             mkdir /tmp/artifacts/
             cp /home/circleci/source/target/*.jar /tmp/artifacts/
             cp /home/circleci/source/target/*SNAPSHOT.jar /home/circleci/source/target/personal-api-tokens-SNAPSHOT.jar
-            cp -r /home/circleci/source/build-dependencies /tmp/artifacts/
+            if [[ -e /home/circleci/source/build-dependencies ]]; then
+              cp -r /home/circleci/source/build-dependencies /tmp/artifacts/
+            fi            
       - store_artifacts:
           path: /tmp/artifacts/
       - *persist-workspace
@@ -199,7 +204,9 @@ jobs:
               sudo mkdir /tmp/artifacts
               sudo mkdir /tmp/artifacts/tests_reports
               sudo mkdir /tmp/artifacts/build-dependencies
-              sudo cp -r /home/circleci/source/build-dependencies/* /tmp/artifacts/build-dependencies/
+              if [[ -e /home/circleci/source/build-dependencies ]]; then
+                sudo cp -r /home/circleci/source/build-dependencies/* /tmp/artifacts/build-dependencies/
+              fi               
               sudo cp -r /home/circleci/source/target/* /tmp/artifacts/
             fi
       - run:
@@ -210,6 +217,8 @@ jobs:
             echo "$DOCKER_REGISTRY_PASSWORD" | docker login -u "$DOCKER_REGISTRY_USERNAME" --password-stdin
       - run:
           name: Spin-up dockerized jahia
+          # At that point we're only sprinning up Jahia and its runtime dependencies, 
+          # We are not starting the tests yet since we first want to build the test container (or run from a previously built container) 
           command: |
             set -e
             cd << pipeline.parameters.TESTS_PATH >>
@@ -230,7 +239,7 @@ jobs:
             JEST_JUNIT_OUTPUT_DIR: /tmp/reports/junit/js-test-results.xml
             KARAF_CONSOLE_PORT: 8101
       - run:
-          # We want to build the test image from scratch with any code change (since that code change could be in the tests)
+          # We want to build the test image from scratch with any code change (since that code change could be in the tests themselves)
           name: Build << pipeline.parameters.TESTS_IMAGE >> image
           command: |
             if [ << parameters.BUILD_TESTSIMAGE >> == true ]; then
