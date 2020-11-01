@@ -159,7 +159,7 @@ jobs:
     <<: *workdir
     machine: true
     # Available types: medium, large, xlarge, 2xlarge https://circleci.com/docs/2.0/configuration-reference/#machine-executor-linux
-    resource_class: large
+    resource_class: xlarge
     parameters:
       TESTRAIL_MILESTONE:
         type: string
@@ -197,17 +197,17 @@ jobs:
             - v1-dependencies-
       - run:
           name: Prepare artifcats
-          # This command copy the various build artifacts into the /tmp/ folder to be later 
+          # This command copy the various build artifacts into the /tests/ folder to be later 
           # used by jahia-cli to provision Jahia for testing
           command: |
             if [ << parameters.SKIP_ARTIFACTS >> == false ]; then
-              sudo mkdir /tmp/artifacts
-              sudo mkdir /tmp/artifacts/tests_reports
-              sudo mkdir /tmp/artifacts/build-dependencies
+              mkdir << pipeline.parameters.TESTS_PATH >>artifacts
+              mkdir << pipeline.parameters.TESTS_PATH >>artifacts/reports
+              mkdir << pipeline.parameters.TESTS_PATH >>build-dependencies
               if [[ -e /home/circleci/source/build-dependencies ]]; then
-                sudo cp -r /home/circleci/source/build-dependencies/* /tmp/artifacts/build-dependencies/
+                sudo cp -r /home/circleci/source/build-dependencies/* << pipeline.parameters.TESTS_PATH >>build-dependencies/
               fi               
-              sudo cp -r /home/circleci/source/target/* /tmp/artifacts/
+              sudo cp -r /home/circleci/source/target/* << pipeline.parameters.TESTS_PATH >>artifacts/
             fi
       - run:
           name: Docker login
@@ -259,7 +259,7 @@ jobs:
             set -e
             cd << pipeline.parameters.TESTS_PATH >>
             docker-compose -f docker-compose-ci.yml up e2e-tests
-            docker cp e2e-tests:/tmp/reports /tmp/artifacts/tests_reports
+            docker cp e2e-tests:/tmp/reports << pipeline.parameters.TESTS_PATH >>artifacts/tests_reports
           no_output_timeout: 2h
           environment:
             MANIFEST: << parameters.MANIFEST >>
@@ -271,26 +271,24 @@ jobs:
             TEST_URL: http://jahia:8080/modules/graphql
             JAHIA_USERNAME: root
             JAHIA_PASSWORD: root
-            TOOLS_USER: << parameters.TOOLS_USER >>
-            TOOLS_PWD: << parameters.TOOLS_PWD >>
-            JEST_JUNIT_OUTPUT_DIR: /tmp/reports/junit/js-test-results.xml
-            KARAF_CONSOLE_PORT: 8101
+            # JEST_JUNIT_OUTPUT_DIR: /tmp/reports/junit/js-test-results.xml
+            # KARAF_CONSOLE_PORT: 8101
       - run:
           name: Export jahia logs
           command: |
             set -e
             cd << pipeline.parameters.TESTS_PATH >>
-            docker logs jahia > /tmp/artifacts/tests_reports/jahia.log
+            docker logs jahia > << pipeline.parameters.TESTS_PATH >>artifacts/reports/jahia.log
       - run:
           name: Analyze Test results
           # This looks at the report and fail the job if one of the test has failed
           command: |
-            if [ $(cat /tmp/artifacts/tests_reports/*.json | jq ' select(.stats.failures > 0) | length' | wc -l) -gt 0 ]; then
+            if [ $(cat << pipeline.parameters.TESTS_PATH >>artifacts/reports/*.json | jq ' select(.stats.failures > 0) | length' | wc -l) -gt 0 ]; then
               echo "More than one failure found, sending exit signal"
               exit 1
             fi
       - store_test_results:
-          path: /tmp/artifacts/tests_reports
+          path: << pipeline.parameters.TESTS_PATH >>artifacts/reports
       - unless:
           condition: << parameters.SKIP_TESTRAIL >>
           steps:
@@ -304,7 +302,7 @@ jobs:
                     nvm install v12
                     nvm alias default v12
                     npm install -g jahia-testrail-reporter
-                    jahia-testrail-reporter /tmp/artifacts/tests_reports $TESTRAIL_USERNAME $TESTRAIL_PASSWORD -n="Peronal API Tokens" -m=<< parameters.TESTRAIL_MILESTONE >> -d="This test was executed on circleci, $CIRCLE_BUILD_URL"
+                    jahia-testrail-reporter << pipeline.parameters.TESTS_PATH >>artifacts/reports $TESTRAIL_USERNAME $TESTRAIL_PASSWORD -n="Peronal API Tokens" -m=<< parameters.TESTRAIL_MILESTONE >> -d="This test was executed on circleci, $CIRCLE_BUILD_URL"
       - *persist-workspace
 
   # We also want the test image to be versioned and published to Docker Hub whenever a new tag is created 
