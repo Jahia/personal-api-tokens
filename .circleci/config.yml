@@ -258,8 +258,8 @@ jobs:
           command: |
             set -e
             cd << pipeline.parameters.TESTS_PATH >>
-            docker-compose -f docker-compose-ci.yml up e2e-tests
-            docker cp e2e-tests:/tmp/reports << pipeline.parameters.TESTS_PATH >>artifacts/tests_reports
+            docker-compose -f docker-compose-ci.yml up cypress
+            docker cp e2e-tests:/tmp/results << pipeline.parameters.TESTS_PATH >>artifacts/reports
           no_output_timeout: 2h
           environment:
             MANIFEST: << parameters.MANIFEST >>
@@ -279,7 +279,7 @@ jobs:
             set -e
             cd << pipeline.parameters.TESTS_PATH >>
             docker logs jahia > << pipeline.parameters.TESTS_PATH >>artifacts/reports/jahia.log
-            docker logs e2e-tests > << pipeline.parameters.TESTS_PATH >>artifacts/reports/e2e-tests.log
+            docker logs e2e-tests > << pipeline.parameters.TESTS_PATH >>artifacts/reports/cypress.log
       - run:
           name: Analyze Test results
           # This looks at the report and fail the job if one of the test has failed
