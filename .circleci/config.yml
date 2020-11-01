@@ -17,6 +17,12 @@ parameters:
   TESTS_IMAGE:
     type: string
     default: 'jahia/personal-api-tokens'
+  MODULE_ID:
+    type: string
+    default: 'personal-api-tokens'    
+  TESTRAIL_PROJECTNAME:
+    type: string
+    default: 'Personal API Tokens'    
   SONARQUBE_PROJECT:
     type: string
     default: 'jahia/personal-api-tokens'    
@@ -128,7 +134,7 @@ jobs:
           command: |
             mkdir /tmp/artifacts/
             cp /home/circleci/source/target/*.jar /tmp/artifacts/
-            cp /home/circleci/source/target/*SNAPSHOT.jar /home/circleci/source/target/personal-api-tokens-SNAPSHOT.jar
+            cp /home/circleci/source/target/*SNAPSHOT.jar /home/circleci/source/target/<< pipeline.parameters.MODULE_ID >>-SNAPSHOT.jar
             if [[ -e /home/circleci/source/build-dependencies ]]; then
               cp -r /home/circleci/source/build-dependencies /tmp/artifacts/
             fi            
@@ -305,7 +311,8 @@ jobs:
                     nvm install v12
                     nvm alias default v12
                     npm install -g jahia-testrail-reporter
-                    jahia-testrail-reporter << pipeline.parameters.TESTS_PATH >>artifacts/reports $TESTRAIL_USERNAME $TESTRAIL_PASSWORD -n="Peronal API Tokens" -m=<< parameters.TESTRAIL_MILESTONE >> -d="This test was executed on circleci, $CIRCLE_BUILD_URL"
+                    jahia-testrail-reporter testrail << pipeline.parameters.TESTS_PATH >>artifacts/reports $TESTRAIL_USERNAME $TESTRAIL_PASSWORD -t json -n="<< pipeline.parameters.TESTRAIL_PROJECTNAME >>" -m=<< parameters.TESTRAIL_MILESTONE >> -d="This test was executed on circleci, $CIRCLE_BUILD_URL"
+                    # jahia-testrail-reporter testrail << pipeline.parameters.TESTS_PATH >>artifacts/reports JAHIA_WEBHOOK $ZENCREPES_WEBHOOK_SECRET -t json -n="<< pipeline.parameters.MODULE_ID >>"
       - *persist-workspace
 
   # We also want the test image to be versioned and published to Docker Hub whenever a new tag is created 
