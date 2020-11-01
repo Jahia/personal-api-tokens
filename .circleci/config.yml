@@ -159,7 +159,7 @@ jobs:
     <<: *workdir
     machine: true
     # Available types: medium, large, xlarge, 2xlarge https://circleci.com/docs/2.0/configuration-reference/#machine-executor-linux
-    resource_class: xlarge
+    resource_class: large
     parameters:
       TESTRAIL_MILESTONE:
         type: string
@@ -213,8 +213,8 @@ jobs:
           name: Docker login
           # This is needed to fetch private docker images (such as Jahia snapshot)
           command: |
-            echo "$DOCKER_REGISTRY_USERNAME"
-            echo "$DOCKER_REGISTRY_PASSWORD" | docker login -u "$DOCKER_REGISTRY_USERNAME" --password-stdin
+            echo "$DOCKERHUB_LOGIN"
+            echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_LOGIN" --password-stdin
       - run:
           name: Spin-up dockerized jahia
           # At that point we're only sprinning up Jahia and its runtime dependencies, 
@@ -325,7 +325,7 @@ jobs:
             fi
             echo "Image tag is: $IMAGE_TAG"
             docker tag << pipeline.parameters.TESTS_IMAGE >>:latest << pipeline.parameters.TESTS_IMAGE >>:$IMAGE_TAG
-            docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
+            docker login -u $DOCKERHUB_LOGIN -p $DOCKERHUB_PASSWORD
             echo "Tagged the image"
             docker push << pipeline.parameters.TESTS_IMAGE >>:$IMAGE_TAG
             echo "Pushed tag"
