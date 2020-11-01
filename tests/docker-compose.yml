@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   jahia:
-    image: "jahia/${JAHIA_VERSION}"
+    image: "jahia/${JAHIA_IMAGE}"
     container_name: jahia
     ports:
       - "8080:8080"
