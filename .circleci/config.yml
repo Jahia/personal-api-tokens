@@ -159,7 +159,7 @@ jobs:
     <<: *workdir
     machine: true
     # Available types: medium, large, xlarge, 2xlarge https://circleci.com/docs/2.0/configuration-reference/#machine-executor-linux
-    resource_class: xlarge
+    resource_class: large
     parameters:
       TESTRAIL_MILESTONE:
         type: string
