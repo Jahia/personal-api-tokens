@@ -15,3 +15,9 @@ target
 
 # Jahia DX Studio
 repository.xml.generated
+
+# Files used by the testing framework
+/tests/.env
+/tests/artifacts
+/tests/build-dependencies
+/tests/node_modules

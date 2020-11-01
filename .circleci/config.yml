@@ -279,6 +279,7 @@ jobs:
             set -e
             cd << pipeline.parameters.TESTS_PATH >>
             docker logs jahia > << pipeline.parameters.TESTS_PATH >>artifacts/reports/jahia.log
+            docker logs e2e-tests > << pipeline.parameters.TESTS_PATH >>artifacts/reports/e2e-tests.log
       - run:
           name: Analyze Test results
           # This looks at the report and fail the job if one of the test has failed
@@ -289,6 +290,8 @@ jobs:
             fi
       - store_test_results:
           path: << pipeline.parameters.TESTS_PATH >>artifacts/reports
+      - store_artifacts:
+          path: << pipeline.parameters.TESTS_PATH >>artifacts/reports       
       - unless:
           condition: << parameters.SKIP_TESTRAIL >>
           steps:
