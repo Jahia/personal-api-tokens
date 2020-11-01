@@ -218,11 +218,16 @@ jobs:
       - run:
           name: Spin-up dockerized jahia
           # At that point we're only sprinning up Jahia and its runtime dependencies, 
-          # We are not starting the tests yet since we first want to build the test container (or run from a previously built container) 
+          # We are not starting the tests yet since we first want to build the test container (or run from a previously built container) \
+          # Checking the presence of the .env file is there because it's needed by the tests, but to not break ci/cd if variables
+          #   are added to the compose file but not to the environment variables in circleci config.yml
           command: |
             set -e
             cd << pipeline.parameters.TESTS_PATH >>
-            docker-compose up -d jahia
+            if [ [[ -e .env ]] == false ]; then
+              mv .env.sample .env
+            fi            
+            docker-compose -f docker-compose-ci.yml up -d jahia
           no_output_timeout: 2h
           environment:
             MANIFEST: << parameters.MANIFEST >>
@@ -234,10 +239,8 @@ jobs:
             TEST_URL: http://jahia:8080/modules/graphql
             JAHIA_USERNAME: root
             JAHIA_PASSWORD: root
-            TOOLS_USER: << parameters.TOOLS_USER >>
-            TOOLS_PWD: << parameters.TOOLS_PWD >>
-            JEST_JUNIT_OUTPUT_DIR: /tmp/reports/junit/js-test-results.xml
-            KARAF_CONSOLE_PORT: 8101
+            # JEST_JUNIT_OUTPUT_DIR: /tmp/reports/junit/js-test-results.xml
+            # KARAF_CONSOLE_PORT: 8101
       - run:
           # We want to build the test image from scratch with any code change (since that code change could be in the tests themselves)
           name: Build << pipeline.parameters.TESTS_IMAGE >> image
@@ -255,7 +258,7 @@ jobs:
           command: |
             set -e
             cd << pipeline.parameters.TESTS_PATH >>
-            docker-compose up e2e-tests
+            docker-compose -f docker-compose-ci.yml up e2e-tests
             docker cp e2e-tests:/tmp/reports /tmp/artifacts/tests_reports
           no_output_timeout: 2h
           environment:
