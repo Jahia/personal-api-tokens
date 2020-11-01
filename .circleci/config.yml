@@ -224,7 +224,7 @@ jobs:
           command: |
             set -e
             cd << pipeline.parameters.TESTS_PATH >>
-            if [ [[ -e .env ]] == false ]; then
+            if [[ ! -e .env ]]; then
               mv .env.sample .env
             fi            
             docker-compose -f docker-compose-ci.yml up -d jahia
