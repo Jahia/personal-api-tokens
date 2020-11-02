@@ -266,7 +266,7 @@ jobs:
             cd << pipeline.parameters.TESTS_PATH >>
             docker-compose -f docker-compose-ci.yml up cypress
             ls << pipeline.parameters.TESTS_PATH >>
-            docker cp e2e-tests:/tmp/results << pipeline.parameters.TESTS_PATH >>artifacts/reports
+            docker cp e2e-tests:/tmp/results ./<< pipeline.parameters.TESTS_PATH >>artifacts/reports
           no_output_timeout: 2h
           environment:
             MANIFEST: << parameters.MANIFEST >>
