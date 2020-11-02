@@ -1,10 +1,10 @@
-import { BasePage } from "./base.page"
+import { BasePage } from './base.page'
 
-class UsersPage extends BasePage{
+class UsersPage extends BasePage {
     elements = {
         newUser: "[onclick*='addUser']",
         bulkCreateUsers: "[onclick*='bulkAddUser']",
-        removeSelectedUsers: "[onclick*='bulkDeleteUser']"
+        removeSelectedUsers: "[onclick*='bulkDeleteUser']",
     }
 
     goTo() {
@@ -20,7 +20,7 @@ class UsersPage extends BasePage{
     }
 
     editUser(username: string) {
-        this.getByText("a", username).click()
+        this.getByText('a', username).click()
     }
 }
 
