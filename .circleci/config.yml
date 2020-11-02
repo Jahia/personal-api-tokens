@@ -237,7 +237,7 @@ jobs:
             if [[ ! -e .env ]]; then
               mv .env.example .env
             fi            
-            docker-compose -f docker-compose-ci.yml up -d jahia
+            docker-compose -f docker-compose.yml up -d jahia
           no_output_timeout: 2h
           environment:
             MANIFEST: << parameters.MANIFEST >>
@@ -266,7 +266,7 @@ jobs:
           command: |
             set -e
             cd << pipeline.parameters.TESTS_PATH >>
-            docker-compose -f docker-compose-ci.yml up cypress
+            docker-compose -f docker-compose.yml up cypress
             docker cp e2e-tests:/tmp/results ./artifacts/reports
           no_output_timeout: 2h
           environment:
@@ -316,7 +316,7 @@ jobs:
                     nvm alias default v12
                     npm install -g jahia-testrail-reporter
                     jahia-testrail-reporter testrail << pipeline.parameters.TESTS_PATH >>artifacts/reports $TESTRAIL_USERNAME $TESTRAIL_PASSWORD -t json -n="<< pipeline.parameters.TESTRAIL_PROJECTNAME >>" -m=<< parameters.TESTRAIL_MILESTONE >> -d="This test was executed on circleci, $CIRCLE_BUILD_URL"
-                    # jahia-testrail-reporter testrail << pipeline.parameters.TESTS_PATH >>artifacts/reports JAHIA_WEBHOOK $ZENCREPES_WEBHOOK_SECRET -t json -n="<< pipeline.parameters.MODULE_ID >>"
+                    # jahia-testrail-reporter zencrepes << pipeline.parameters.TESTS_PATH >>artifacts/reports JAHIA_WEBHOOK $ZENCREPES_WEBHOOK_SECRET -t json -n="<< pipeline.parameters.MODULE_ID >>"
       - *persist-workspace
 
   # We also want the test image to be versioned and published to Docker Hub whenever a new tag is created 
