@@ -265,6 +265,7 @@ jobs:
             set -e
             cd << pipeline.parameters.TESTS_PATH >>
             docker-compose -f docker-compose-ci.yml up cypress
+            ls << pipeline.parameters.TESTS_PATH >>
             docker cp e2e-tests:/tmp/results << pipeline.parameters.TESTS_PATH >>artifacts/reports
           no_output_timeout: 2h
           environment:
@@ -281,13 +282,16 @@ jobs:
             # KARAF_CONSOLE_PORT: 8101
       - run:
           name: Export jahia logs
+          when: always
           command: |
             set -e
             cd << pipeline.parameters.TESTS_PATH >>
             docker logs jahia > << pipeline.parameters.TESTS_PATH >>artifacts/reports/jahia.log
             docker logs e2e-tests > << pipeline.parameters.TESTS_PATH >>artifacts/reports/cypress.log
+      # This is not needed since cypress is going to terminat on failure with exit code 1
       - run:
           name: Analyze Test results
+          when: always
           # This looks at the report and fail the job if one of the test has failed
           command: |
             if [ $(cat << pipeline.parameters.TESTS_PATH >>artifacts/reports/*.json | jq ' select(.stats.failures > 0) | length' | wc -l) -gt 0 ]; then
