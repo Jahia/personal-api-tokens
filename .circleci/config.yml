@@ -235,7 +235,7 @@ jobs:
             set -e
             cd << pipeline.parameters.TESTS_PATH >>
             if [[ ! -e .env ]]; then
-              mv .env.sample .env
+              mv .env.example .env
             fi            
             docker-compose -f docker-compose-ci.yml up -d jahia
           no_output_timeout: 2h

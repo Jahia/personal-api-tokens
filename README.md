@@ -112,7 +112,7 @@ You might be interested in running the latest snapshot of Jahia, with the latest
 
 ```bash
 cd tests
-mv .env.sample .env
+mv .env.example .env
 # Edit the environment variables based on desired test configuration
 docker-compose up
 ```
