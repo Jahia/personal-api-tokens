@@ -33,6 +33,7 @@ parameters:
 references:
   persist-workspace: &persist-workspace
     persist_to_workspace:
+      root: ~/
       paths:
         - .
 
@@ -175,9 +176,10 @@ jobs:
       TOOLS_PWD:
         type: string
         default: password
+      # Why this is not a boolean, see: https://discuss.circleci.com/t/run-job-within-workflow-conditionally/34125/2        
       SKIP_TESTRAIL:
-        type: boolean
-        default: false
+        type: string 
+        default: "" 
       SKIP_ARTIFACTS:
         type: boolean
         default: true
@@ -290,9 +292,9 @@ jobs:
       - store_test_results:
           path: << pipeline.parameters.TESTS_PATH >>artifacts/reports
       - store_artifacts:
-          path: << pipeline.parameters.TESTS_PATH >>artifacts/reports       
+          path: << pipeline.parameters.TESTS_PATH >>artifacts/reports
       - unless:
-          condition: << parameters.SKIP_TESTRAIL >> == false
+          condition: << parameters.SKIP_TESTRAIL >>
           steps:
               - run:
                   name: Publish results to testrail
@@ -446,7 +448,7 @@ workflows:
           TOOLS_PWD: root
           MANIFEST: warmup-manifest-build.yml
           TESTRAIL_MILESTONE: Jahia-Latest
-          SKIP_TESTRAIL: true
+          SKIP_TESTRAIL: "true"
           SKIP_ARTIFACTS: false
           BUILD_TESTSIMAGE: true
       - docker-publish:
