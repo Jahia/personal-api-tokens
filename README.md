@@ -45,7 +45,7 @@ Personal API Tokens
 - [Links](#links)
 
 <!--
-    Not all sections are relevant for all projects. It's up to the team to decide what sections makes most sense. Objective of the readme is to serve as a technical introduction to faciliate onboarding for technical ppl (developers).
+    Not all sections are relevant for all projects. It's up to the team to decide what sections makes most sense. Objective of the readme is to serve as a technical introduction to facilitate onboarding for technical ppl (developers).
     License and contributions are detailed in their own files, no need to add too many details in the Readme.
     If the project has technical documentation stored in another location (such as a website), effort should be made not to duplicate content (since it will become outdated at some point). In that case, keep the readme instructions very brief (such as a set of CLI commands).
 -->
@@ -65,6 +65,74 @@ Personal API Tokens
 <!-- 
     Instructions to build
 -->
+
+
+## E2E tests
+
+End-to-End tests are located in the test folder, you can take the following approaches to execute the test suite:
+
+### Towards an existing Jahia
+
+You can run the test suite towards an existing and pre-configured Jahia instance by running the following:
+
+```bash 
+cd tests/
+yarn
+CYPRESS_baseUrl=http://localhost:8080 yarn e2e:ci
+```
+
+`CYPRESS_baseUrl` is the URL you would use to access Jahia.
+
+This method is useful in development to quickly see if some of the tests are passing.
+
+### Using Docker
+
+You can use Docker and docker-compose to simply run the entire test suite.
+
+#### Environment Variables
+
+The following environment variables are available for executing the tests using docker.
+
+| Variable | Description |
+| --- | --- |
+| MANIFEST | Manifest file detailing how the environment should be provisioned from a fresh Jahia image. The TESTS_IMAGE ship by default with a set of manifest covering various use cases (built module, snapshot module from nexus, built module from the store, ...) |
+| TESTS_IMAGE | Test image to run (for example: jahia/personal-api-tokens:1.0.0), Test images are releases alongside module releases and contain the release artifacts. It is useful if you want to test a particular module version with a specific Jahia version|
+| JAHIA_IMAGE | Docker image of Jahia to be started (for example: jahia/jahia-dev:8.0.1.0)|
+| JAHIA_HOST | Host running the Jahia server (usually localhost)|
+| JAHIA_PORT | Port for the Jahia server (usually 8080)|
+| JAHIA_CONTEXT | If the context is to be used|
+| JAHIA_USERNAME | Username to log into Jahia|
+| JAHIA_PASSWORD | Password to log into Jahia|
+| NEXUS_USERNAME | Username to connect to Nexus (if you were to fetch a snapshot module)|
+| NEXUS_PASSWORD | Password to connect to Nexus (if you were to fetch a snapshot module)|
+
+#### Re-run an existing suite (not building images)
+
+You might be interested in running the latest snapshot of Jahia, with the latest snapshot of the module (or any combination).
+
+```bash
+cd tests
+mv .env.example .env
+# Edit the environment variables based on desired test configuration
+docker-compose up
+```
+
+From that point Jahia and the test container will start, the test container will wait for Jahia to become live, install the desired module, and run the tests
+
+#### Build a new tests image 
+
+If you modified the codebase (tests or module) you might want to build a new test image (it could be just a local test image).
+
+```bash
+mvn clean install # If you first want to build the module, the docker build step will add the corresponding artifacts to the docker image
+cd tests
+bash env.build.sh
+```
+
+Note that by default the new image name is `jahia/personal-api-tokens:latest` so it will take over any `latest` that you might already have locally.
+If necessary, you could either change that in `env.build.sh` to your desired name or simply give your image a new tag `docker tag jahia/personal-api-tokens:latest jahia/personal-api-tokens:MY_NEW_TAG`
+
+Once built, the image can be used with docker-compose (see previous section).
 
 ## Installation
 <!-- 
