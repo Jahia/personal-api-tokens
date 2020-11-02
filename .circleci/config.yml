@@ -31,9 +31,12 @@ parameters:
     default: 'jahia/personal-api-tokens'    
 
 references:
+  workdir: &workdir
+    working_directory: ~/source
+
   persist-workspace: &persist-workspace
     persist_to_workspace:
-      root: ~/
+      root: ~/source
       paths:
         - .
 
@@ -45,6 +48,7 @@ jobs:
   # Checkout and Initializes the testing framework
   # This job is there to prepare the repo for the next steps
   initialize:
+    <<: *workdir
     docker:
       - image: cimg/node:14.15
     steps:
@@ -68,6 +72,7 @@ jobs:
   # Ideally this should lint both the module codebase and the test codebase, we want to fail on warning (it is up the the 
   # team to either fix the warning, ignore the warning, or modify the ruleset so that this warnning doesn't happen again)
   lint:
+    <<: *workdir
     docker:
       - image: cimg/node:14.15
     steps:
@@ -89,6 +94,7 @@ jobs:
   # Security checks on the project are used to validate that we don't use any problematic javascript libraries
   # It is using audit-ci by IBM (https://github.com/IBM/audit-ci)
   security:
+    <<: *workdir
     docker:
       - image: cimg/node:14.15
     steps:
@@ -111,6 +117,7 @@ jobs:
   # We're saving the artifacts that are then used later on to execute the tests 
   # The artifacts are also stored and made available through circleci UI if further investigations are necessary 
   build:
+    <<: *workdir
     docker: 
       - image: circleci/openjdk:8-jdk-stretch
     steps:
@@ -143,6 +150,7 @@ jobs:
   # This job publish the artifact to nexus by calling the deploy command
   # It is only executed when merging into master (after successful PR execution)
   publish:
+    <<: *workdir
     docker: 
       - image: circleci/openjdk:8-jdk-stretch
     steps:
@@ -159,6 +167,7 @@ jobs:
   # Node that we might want to migrate it to Docker executor down the road
   # It is aimed at being called by matrix jobs (in the workflow section)
   integration_tests:
+    <<: *workdir
     machine: true
     # Available types: medium, large, xlarge, 2xlarge https://circleci.com/docs/2.0/configuration-reference/#machine-executor-linux
     resource_class: xlarge
@@ -315,6 +324,7 @@ jobs:
   # We also want the test image to be versioned and published to Docker Hub whenever a new tag is created 
   # This would allow us to re-use a test image whenever we want to test with an earlier version of the module
   docker-publish:
+    <<: *workdir
     docker:
       - image: circleci/openjdk:8-jdk-stretch-browsers
     steps:
