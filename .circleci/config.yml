@@ -3,7 +3,10 @@ version: 2.1
 orbs:
   docker: circleci/docker@0.5.20
 
-# Parameters are available to all elements of config.yml, use them like this `pipeline.parameters.PARAMETER`
+# Parameters are available across the entire config file and can be used with this syntax: << pipeline.parameters.THE_PARAMETER >>
+# Avoid using project-specific variables in the jobs or steps.
+# Instead, declare those as pipeline parameters (At the top of the config file).
+# This eases portability of the config file across different modules
 parameters:
   AUDITCI_LEVEL:
     type: string
@@ -28,12 +31,8 @@ parameters:
     default: 'jahia/personal-api-tokens'    
 
 references:
-  workdir: &workdir
-    working_directory: ~/source
-
   persist-workspace: &persist-workspace
     persist_to_workspace:
-      root: ~/source
       paths:
         - .
 
@@ -45,9 +44,8 @@ jobs:
   # Checkout and Initializes the testing framework
   # This job is there to prepare the repo for the next steps
   initialize:
-    <<: *workdir
     docker:
-      - image: circleci/node:latest
+      - image: cimg/node:14.15
     steps:
       - checkout
       - restore_cache:
@@ -70,8 +68,7 @@ jobs:
   # team to either fix the warning, ignore the warning, or modify the ruleset so that this warnning doesn't happen again)
   lint:
     docker:
-      - image: circleci/node:latest
-    working_directory: ~/source/integrationTests
+      - image: cimg/node:14.15
     steps:
       - *attach-workspace
       - run:
@@ -89,9 +86,8 @@ jobs:
   # Security checks on the project are used to validate that we don't use any problematic javascript libraries
   # It is using audit-ci by IBM (https://github.com/IBM/audit-ci)
   security:
-    <<: *workdir
     docker:
-      - image: circleci/node:latest
+      - image: cimg/node:14.15
     steps:
       - *attach-workspace
       - run:
@@ -112,7 +108,6 @@ jobs:
   # We're saving the artifacts that are then used later on to execute the tests 
   # The artifacts are also stored and made available through circleci UI if further investigations are necessary 
   build:
-    <<: *workdir
     docker: 
       - image: circleci/openjdk:8-jdk-stretch
     steps:
@@ -145,7 +140,6 @@ jobs:
   # This job publish the artifact to nexus by calling the deploy command
   # It is only executed when merging into master (after successful PR execution)
   publish:
-    <<: *workdir
     docker: 
       - image: circleci/openjdk:8-jdk-stretch
     steps:
@@ -162,7 +156,6 @@ jobs:
   # Node that we might want to migrate it to Docker executor down the road
   # It is aimed at being called by matrix jobs (in the workflow section)
   integration_tests:
-    <<: *workdir
     machine: true
     # Available types: medium, large, xlarge, 2xlarge https://circleci.com/docs/2.0/configuration-reference/#machine-executor-linux
     resource_class: xlarge
@@ -183,8 +176,8 @@ jobs:
         type: string
         default: password
       SKIP_TESTRAIL:
-        type: string
-        default: ""
+        type: boolean
+        default: false
       SKIP_ARTIFACTS:
         type: boolean
         default: true
@@ -245,8 +238,6 @@ jobs:
             TEST_URL: http://jahia:8080/modules/graphql
             JAHIA_USERNAME: root
             JAHIA_PASSWORD: root
-            # JEST_JUNIT_OUTPUT_DIR: /tmp/reports/junit/js-test-results.xml
-            # KARAF_CONSOLE_PORT: 8101
       - run:
           # We want to build the test image from scratch with any code change (since that code change could be in the tests themselves)
           name: Build << pipeline.parameters.TESTS_IMAGE >> image
@@ -277,8 +268,6 @@ jobs:
             TEST_URL: http://jahia:8080/modules/graphql
             JAHIA_USERNAME: root
             JAHIA_PASSWORD: root
-            # JEST_JUNIT_OUTPUT_DIR: /tmp/reports/junit/js-test-results.xml
-            # KARAF_CONSOLE_PORT: 8101
       - run:
           name: Export jahia logs
           when: always
@@ -293,7 +282,8 @@ jobs:
           when: always
           # This looks at the report and fail the job if one of the test has failed
           command: |
-            if [ $(cat << pipeline.parameters.TESTS_PATH >>artifacts/reports/*.json | jq ' select(.stats.failures > 0) | length' | wc -l) -gt 0 ]; then
+            cd << pipeline.parameters.TESTS_PATH >>
+            if [ $(cat ./artifacts/reports/results/*.json | jq ' select(.stats.failures > 0) | length' | wc -l) -gt 0 ]; then
               echo "More than one failure found, sending exit signal"
               exit 1
             fi
@@ -302,7 +292,7 @@ jobs:
       - store_artifacts:
           path: << pipeline.parameters.TESTS_PATH >>artifacts/reports       
       - unless:
-          condition: << parameters.SKIP_TESTRAIL >>
+          condition: << parameters.SKIP_TESTRAIL >> == false
           steps:
               - run:
                   name: Publish results to testrail
@@ -456,7 +446,7 @@ workflows:
           TOOLS_PWD: root
           MANIFEST: warmup-manifest-build.yml
           TESTRAIL_MILESTONE: Jahia-Latest
-          SKIP_TESTRAIL: "true"
+          SKIP_TESTRAIL: true
           SKIP_ARTIFACTS: false
           BUILD_TESTSIMAGE: true
       - docker-publish:
