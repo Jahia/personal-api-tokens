@@ -221,7 +221,7 @@ jobs:
                 sudo cp -r /home/circleci/source/build-dependencies/* << pipeline.parameters.TESTS_PATH >>build-dependencies/
               fi               
               sudo cp -r /home/circleci/source/target/* << pipeline.parameters.TESTS_PATH >>artifacts/
-            fi
+            fi          
       - run:
           name: Docker login
           # This is needed to fetch private docker images (such as Jahia snapshot)
@@ -266,9 +266,12 @@ jobs:
           # Running the tests, note that the reports are copied at the end of execution
           # We don't need (nor want) this actual step to fail
           # Failure is determined by counting the number of failed tests in the output report
+          # Note: the timeout env vars are added to address this: https://github.com/docker/compose/issues/3927
           command: |
             set -e
             cd << pipeline.parameters.TESTS_PATH >>
+            export DOCKER_CLIENT_TIMEOUT=120
+            export COMPOSE_HTTP_TIMEOUT=120            
             docker-compose -f docker-compose.yml up cypress
             docker cp e2e-tests:/tmp/results ./artifacts/reports
           no_output_timeout: 2h
