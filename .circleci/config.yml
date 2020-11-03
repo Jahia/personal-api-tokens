@@ -59,6 +59,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
+            yarn
             cd << pipeline.parameters.TESTS_PATH >>
             yarn
       - save_cache:
