@@ -9,7 +9,7 @@
 
 |  |  | 
 | --- | --- |
-| Module | ![ID](https://img.shields.io/badge/ID-augmented--search--ui-blue) [![Store](https://img.shields.io/badge/Jahia%20Store-Yes-brightgreen)](https://store.jahia.com/contents/modules-repository/org/jahia/modules/augmented-search-ui.html) |
+| Module | ![ID](https://img.shields.io/badge/ID--personal--api--tokens-blue) [![Store](https://img.shields.io/badge/Jahia%20Store-Yes-brightgreen)](https://store.jahia.com/contents/modules-repository/org/jahia/modules/augmented-search-ui.html) |
 | Tests | [![Case Management](https://img.shields.io/badge/Case%20Management-Testrail-blue)](https://jahia.testrail.net/index.php?/projects/overview/20) |
 | CI / CD | [![CircleCI](https://circleci.com/gh/Jahia/augmented-search-ui/tree/master.svg?style=shield)](https://app.circleci.com/pipelines/github/Jahia/augmented-search) ![Unit Tests](https://img.shields.io/badge/Unit%20Tests-No-red) ![Integration Tests](https://img.shields.io/badge/Integration%20Tests-No-red) ![Build Snapshot](https://img.shields.io/badge/Build%20Snapshot-Yes-brightgreen) ![Build Release](https://img.shields.io/badge/Build%20Release-No-red) |
 | Artifacts | [![Snapshot](https://img.shields.io/badge/Snapshot-Nexus-blue)](https://devtools.jahia.com/nexus/content/repositories/jahia-enterprise-snapshots/org/jahia/modules/augmented-search-ui/) [![Release](https://img.shields.io/badge/Release-Nexus-blue)](https://devtools.jahia.com/nexus/content/repositories/jahia-enterprise-releases/org/jahia/modules/augmented-search-ui/) |
