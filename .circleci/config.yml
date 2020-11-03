@@ -369,9 +369,9 @@ jobs:
           command: |
             if [[ ! -z "$CIRCLE_PULL_REQUEST" ]]; then
               # echo "Git custom command to fix circle-ci checkout for sonar analysis"
-              # git fetch --all
-              # git branch -D main
-              # git rev-parse origin/ma              
+              git fetch --all
+              git branch -D main
+              git rev-parse origin/main
               echo "Executing a PR based analysis"
               mvn -s .circleci/.circleci.settings.xml sonar:sonar \
                   -Dsonar.projectKey=<< pipeline.parameters.MODULE_ID >> \
