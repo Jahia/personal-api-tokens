@@ -26,7 +26,7 @@ parameters:
   TESTRAIL_PROJECTNAME:
     type: string
     default: 'Personal API Tokens'    
-  SONARQUBE_PROJECT:
+  GITHUB_SLUG:
     type: string
     default: 'jahia/personal-api-tokens'    
   PRIMARY_RELEASE_BRANCH:
@@ -375,13 +375,13 @@ jobs:
           command: |
             if [[ -z "$CIRCLE_BRANCH" ]]; then
               mvn -s .circleci/.circleci.settings.xml sonar:sonar \
-                -Dsonar.projectKey=<< pipeline.parameters.SONARQUBE_PROJECT >> \
+                -Dsonar.projectKey=<< pipeline.parameters.MODULE_ID >> \
                 -Dsonar.pullrequest.branch=$CIRCLE_BRANCH \
                 -Dsonar.pullrequest.key=${CIRCLE_PULL_REQUEST##*/} \
                 -Dsonar.pullrequest.base=<< pipeline.parameters.PRIMARY_RELEASE_BRANCH >> \
-                -Dsonar.pullrequest.github.repository=$CIRCLE_REPOSITORY_URL
+                -Dsonar.pullrequest.github.repository=<< pipeline.parameters.GITHUB_SLUG >>
             elif [[ "${CIRCLE_BRANCH}" == << pipeline.parameters.PRIMARY_RELEASE_BRANCH >> ]]; then
-              mvn -s .circleci/.circleci.settings.xml sonar:sonar -Dsonar.projectKey=<< pipeline.parameters.SONARQUBE_PROJECT >>
+              mvn -s .circleci/.circleci.settings.xml sonar:sonar -Dsonar.projectKey=<< pipeline.parameters.MODULE_ID >>
             else
               mvn -s .circleci/.circleci.settings.xml sonar:sonar -Dsonar.branch.name=$CIRCLE_BRANCH
             fi               
