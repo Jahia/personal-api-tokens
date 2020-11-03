@@ -12,6 +12,10 @@
 target
 
 .DS_Store
+/node_modules
+/node
+
+junit.xml
 
 # Jahia DX Studio
 repository.xml.generated

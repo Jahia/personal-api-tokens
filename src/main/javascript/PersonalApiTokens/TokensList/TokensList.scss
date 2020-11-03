@@ -1,0 +1,21 @@
+.tokensList {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    min-height: 80vh;
+
+    background-color: #fdfdfd;
+    box-shadow: 0 4px 8px rgba(19, 28, 33, 0.2);
+}
+
+.personalTokens {
+    align-self: flex-start;
+    margin: 3% 0 0 2%;
+}
+
+.noTokens {
+    align-self: center;
+    margin-left: 23%;
+
+    color: #7a7f88;
+}
