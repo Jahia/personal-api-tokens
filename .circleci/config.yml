@@ -373,6 +373,7 @@ jobs:
       - run:
           name: Sonar Release branch analysis
           command: |
+            echo "CIRCLE_PULL_REQUEST: $CIRCLE_PULL_REQUEST"
             if [[ -z "$CIRCLE_PULL_REQUEST" ]]; then
               echo "Executing a PR based analysis"
               mvn -s .circleci/.circleci.settings.xml sonar:sonar \
