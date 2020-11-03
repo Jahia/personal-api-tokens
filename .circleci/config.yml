@@ -357,12 +357,6 @@ jobs:
     steps:
       - *attach-workspace
       - checkout
-      - run:
-          name: Git custom command to fix circle-ci checkout for sonar analysis
-          command: |
-            git fetch --all
-            git branch -D main
-            git rev-parse origin/main
       - restore_cache:
           keys:
             - sonar-dependencies-{{ checksum "pom.xml" }}
@@ -374,6 +368,10 @@ jobs:
           name: Sonar Release branch analysis
           command: |
             if [[ ! -z "$CIRCLE_PULL_REQUEST" ]]; then
+              echo "Git custom command to fix circle-ci checkout for sonar analysis"
+              git fetch --all
+              git branch -D main
+              git rev-parse origin/ma              
               echo "Executing a PR based analysis"
               mvn -s .circleci/.circleci.settings.xml sonar:sonar \
                   -Dsonar.projectKey=<< pipeline.parameters.MODULE_ID >> \
