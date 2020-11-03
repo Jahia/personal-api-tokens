@@ -373,22 +373,21 @@ jobs:
       - run:
           name: Sonar Release branch analysis
           command: |
-            echo "CIRCLE_PULL_REQUEST: $CIRCLE_PULL_REQUEST"
-            if [[ -z "$CIRCLE_PULL_REQUEST" ]]; then
-              echo "Executing a PR based analysis"
-              mvn -s .circleci/.circleci.settings.xml sonar:sonar \
+          if [[ ! -z "$CIRCLE_PULL_REQUEST" ]]; then
+            echo "Executing a PR based analysis"
+            mvn -s .circleci/.circleci.settings.xml sonar:sonar \
                 -Dsonar.projectKey=<< pipeline.parameters.MODULE_ID >> \
                 -Dsonar.pullrequest.branch=$CIRCLE_BRANCH \
                 -Dsonar.pullrequest.key=${CIRCLE_PULL_REQUEST##*/} \
                 -Dsonar.pullrequest.base=<< pipeline.parameters.PRIMARY_RELEASE_BRANCH >> \
                 -Dsonar.pullrequest.github.repository=<< pipeline.parameters.GITHUB_SLUG >>
-            elif [[ "${CIRCLE_BRANCH}" == << pipeline.parameters.PRIMARY_RELEASE_BRANCH >> ]]; then
-              echo "Executing an analysis on the main branch"
-              mvn -s .circleci/.circleci.settings.xml sonar:sonar -Dsonar.projectKey=<< pipeline.parameters.MODULE_ID >>
-            else
-              echo "Executing an analysis on branch: $CIRCLE_BRANCH"
-              mvn -s .circleci/.circleci.settings.xml sonar:sonar -Dsonar.branch.name=$CIRCLE_BRANCH
-            fi               
+          elif [[ "${CIRCLE_BRANCH}" == << pipeline.parameters.PRIMARY_RELEASE_BRANCH >> ]]; then
+            echo "Executing an analysis on the main branch"
+            mvn -s .circleci/.circleci.settings.xml sonar:sonar -Dsonar.projectKey=<< pipeline.parameters.MODULE_ID >>
+          else
+            echo "Executing an analysis on branch: $CIRCLE_BRANCH"
+            mvn -s .circleci/.circleci.settings.xml sonar:sonar -Dsonar.branch.name=$CIRCLE_BRANCH
+          fi               
       - save_cache:
           paths:
             - ~/.m2
