@@ -26,9 +26,12 @@ parameters:
   TESTRAIL_PROJECTNAME:
     type: string
     default: 'Personal API Tokens'    
-  SONARQUBE_PROJECT:
+  GITHUB_SLUG:
     type: string
     default: 'jahia/personal-api-tokens'    
+  PRIMARY_RELEASE_BRANCH:
+    type: string
+    default: 'main' # main or master ? set the branch for the main release   
 
 references:
   workdir: &workdir
@@ -218,7 +221,7 @@ jobs:
                 sudo cp -r /home/circleci/source/build-dependencies/* << pipeline.parameters.TESTS_PATH >>build-dependencies/
               fi               
               sudo cp -r /home/circleci/source/target/* << pipeline.parameters.TESTS_PATH >>artifacts/
-            fi
+            fi          
       - run:
           name: Docker login
           # This is needed to fetch private docker images (such as Jahia snapshot)
@@ -263,9 +266,12 @@ jobs:
           # Running the tests, note that the reports are copied at the end of execution
           # We don't need (nor want) this actual step to fail
           # Failure is determined by counting the number of failed tests in the output report
+          # Note: the timeout env vars are added to address this: https://github.com/docker/compose/issues/3927
           command: |
             set -e
             cd << pipeline.parameters.TESTS_PATH >>
+            export DOCKER_CLIENT_TIMEOUT=120
+            export COMPOSE_HTTP_TIMEOUT=120            
             docker-compose -f docker-compose.yml up cypress
             docker cp e2e-tests:/tmp/results ./artifacts/reports
           no_output_timeout: 2h
@@ -334,7 +340,7 @@ jobs:
           command: |
             cd << pipeline.parameters.TESTS_PATH >>
             docker load -i tests_image.tar
-            if [ "$CIRCLE_BRANCH" = "master" ]; then
+            if [ "$CIRCLE_BRANCH" = "<< pipeline.parameters.PRIMARY_RELEASE_BRANCH >>" ]; then
                 IMAGE_TAG=latest
             else
                 IMAGE_TAG=${CIRCLE_TAG/''}
@@ -346,65 +352,52 @@ jobs:
             docker push << pipeline.parameters.TESTS_IMAGE >>:$IMAGE_TAG
             echo "Pushed tag"
 
-  # sonar:
-  #   parameters:
-  #     circleci-pr:
-  #       type: string
-  #       default: CIRCLE_PULL_REQUEST
-  #     is_pull_request:
-  #       type: boolean
-  #       default: false 
-  #   <<: *workdir
-  #   docker: # run the steps with Docker
-  #     - image: circleci/openjdk:11-jdk-stretch
-  #   resource_class: large
-  #   steps:
-  #     - *attach-workspace
-  #     - checkout
-  #     - run:
-  #         name: Git custom command to fix circle-ci checkout for sonar analysis
-  #         command: |
-  #           git fetch --all
-  #           git branch -D master
-  #           git rev-parse origin/master
-  #     - restore_cache:
-  #         keys:
-  #           - sonar-dependencies-{{ checksum "pom.xml" }}
-  #           # Fallback if no exact match found
-  #           - sonar-dependencies-
-  #     - when:
-  #         condition: CIRCLE_BRANCH !== 'master'
-  #         steps:
-  #           - run:
-  #               name: Analyze pull request with sonar
-  #               command: |
-  #                 mvn -s .circleci/.circleci.settings.xml sonar:sonar \
-  #                 -Dsonar.projectKey=<< pipeline.parameters.SONARQUBE_PROJECT >> \
-  #                 -Dsonar.pullrequest.branch=$CIRCLE_BRANCH \
-  #                 -Dsonar.pullrequest.key=${<< parameters.circleci-pr >>##*/} \
-  #                 -Dsonar.pullrequest.base=master \
-  #                 -Dsonar.pullrequest.github.repository=$CIRCLE_REPOSITORY_URL
-  #     - unless:
-  #         condition: CIRCLE_BRANCH === 'master'
-  #         steps:
-  #           - run:
-  #               name: Sonar analysis
-  #               command: |
-  #                 if [[ "${CIRCLE_BRANCH}" == "master" ]];
-  #                 then
-  #                   mvn -s .circleci/.circleci.settings.xml sonar:sonar -Dsonar.projectKey=<< pipeline.parameters.SONARQUBE_PROJECT >>
-  #                 else
-  #                   mvn -s .circleci/.circleci.settings.xml sonar:sonar -Dsonar.branch.name=$CIRCLE_BRANCH
-  #                 fi              
-  #     - save_cache:
-  #         paths:
-  #           - ~/.m2
-  #         key: sonar-dependencies-{{ checksum "pom.xml" }}
+  sonar:
+    <<: *workdir
+    docker: # run the steps with Docker
+      - image: circleci/openjdk:11-jdk-stretch
+    resource_class: medium
+    steps:
+      - *attach-workspace
+      - checkout
+      - restore_cache:
+          keys:
+            - sonar-dependencies-{{ checksum "pom.xml" }}
+            # Fallback if no exact match found
+            - sonar-dependencies-
+      # We're executing different actions depending fi the job was triggered by a PR or if it was triggered on branch
+      # If the branch was not triggered by a PR, the CIRCLE_PULL_REQUEST variable will be empty
+      - run:
+          name: Sonar Release branch analysis
+          command: |
+            if [[ ! -z "$CIRCLE_PULL_REQUEST" ]]; then
+              # echo "Git custom command to fix circle-ci checkout for sonar analysis"
+              git fetch --all
+              git branch -D main
+              git rev-parse origin/main
+              echo "Executing a PR based analysis"
+              mvn -s .circleci/.circleci.settings.xml sonar:sonar \
+                  -Dsonar.projectKey=<< pipeline.parameters.MODULE_ID >> \
+                  -Dsonar.pullrequest.branch=$CIRCLE_BRANCH \
+                  -Dsonar.pullrequest.key=${CIRCLE_PULL_REQUEST##*/} \
+                  -Dsonar.pullrequest.base=<< pipeline.parameters.PRIMARY_RELEASE_BRANCH >> \
+                  -Dsonar.pullrequest.github.repository=<< pipeline.parameters.GITHUB_SLUG >>
+            elif [[ "$CIRCLE_BRANCH" == << pipeline.parameters.PRIMARY_RELEASE_BRANCH >> ]]; then
+              echo "Executing an analysis on the main branch"
+              mvn -s .circleci/.circleci.settings.xml sonar:sonar -Dsonar.projectKey=<< pipeline.parameters.MODULE_ID >>
+            else
+              echo "Executing an analysis on branch: $CIRCLE_BRANCH"
+              mvn -s .circleci/.circleci.settings.xml sonar:sonar -Dsonar.branch.name=$CIRCLE_BRANCH
+            fi               
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: sonar-dependencies-{{ checksum "pom.xml" }}
 
 workflows:
   version: 2
   # On code change is executed each time new code is pushed to a branch
-  # Current project configuration in circleci only builds on PR + master, so effectively this is only being executed
+  # Current project configuration in circleci only builds on PR + main, so effectively this is only being executed
   on-code-change:
     jobs:
       - initialize
@@ -418,24 +411,10 @@ workflows:
           context: QA_ENVIRONMENT
           requires:
             - initialize
-      # - sonar:
-      #     context: QA_ENVIRONMENT
-      #     requires:
-      #       - build
-      #     is_pull_request: true
-      #     filters:
-      #       branches:
-      #         ignore:
-      #           - master
-      # - sonar:
-      #     context: QA_ENVIRONMENT
-      #     requires:
-      #       - build
-      #     is_pull_request: false
-      #     filters:
-      #       branches:
-      #         only:
-      #           - master
+      - sonar:
+          context: QA_ENVIRONMENT
+          requires:
+            - build
       - publish:
           context: QA_ENVIRONMENT
           requires:
@@ -443,7 +422,7 @@ workflows:
           filters:
             branches:
               only:
-                - master                
+                - << pipeline.parameters.PRIMARY_RELEASE_BRANCH >>                
       # Verifies that the new code works with the latest released version of Jahia
       - integration_tests:
           name: 'Int. Tests - Jahia Latest - Built modules'
@@ -470,7 +449,7 @@ workflows:
               only: /.*/
             branches:
               only:
-                - master
+                - << pipeline.parameters.PRIMARY_RELEASE_BRANCH >>
 
   # The objective of nightly runs is to ensure the codebase still passes tests:
   # - With the latest releases version of Jahia
@@ -482,7 +461,7 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - << pipeline.parameters.PRIMARY_RELEASE_BRANCH >>
     jobs:
       - initialize
       - integration_tests:
@@ -510,7 +489,7 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - << pipeline.parameters.PRIMARY_RELEASE_BRANCH >>
     jobs:
       - initialize
       # - integration_tests:
