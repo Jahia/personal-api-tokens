@@ -20,7 +20,7 @@ echo " == Using MANIFEST: ${MANIFEST}"
 echo " == Using JAHIA_URL= ${JAHIA_URL}"
 
 echo " == Waiting for Jahia to startup"
-jahia-cli alive --jahiaAdminUrl=${JAHIA_URL}
+./node_modules/jahia-cli/bin/run alive --jahiaAdminUrl=${JAHIA_URL}
 ELAPSED_TIME=$(($SECONDS - $START_TIME))
 echo " == Jahia became alive in ${ELAPSED_TIME} seconds"
 
@@ -32,7 +32,7 @@ sed -i -e "s/NEXUS_PASSWORD/${NEXUS_PASSWORD}/g" /tmp/run-artifacts/${MANIFEST}
 
 echo " == Warming up the environement =="
 
-jahia-cli manifest:run --manifest=/tmp/run-artifacts/${MANIFEST} --jahiaAdminUrl=${JAHIA_URL}
+./node_modules/jahia-cli/bin/run manifest:run --manifest=/tmp/run-artifacts/${MANIFEST} --jahiaAdminUrl=${JAHIA_URL}
 
 echo " == Environment warmup complete =="
 
