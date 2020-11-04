@@ -14,12 +14,12 @@
     </profiles>
     <servers>
         <server>
-            <id>jahia-enterprise</id>
+            <id>jahia-public</id>
             <username>${env.NEXUS_USERNAME}</username>
             <password>${env.NEXUS_PASSWORD}</password>
-        </server>
+        </server>   
         <server>
-            <id>jahia-enterprise-snapshots</id>
+            <id>jahia-snapshots</id>
             <username>${env.NEXUS_USERNAME}</username>
             <password>${env.NEXUS_PASSWORD}</password>
         </server>
