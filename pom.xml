@@ -71,7 +71,6 @@
         <jahia-depends>default,userDashboard</jahia-depends>
         <jahia-module-type>system</jahia-module-type>
         <jahia-deploy-on-site>system</jahia-deploy-on-site>
-        <require-capability>osgi.extender;filter:="(osgi.extender=org.jahia.bundles.blueprint.extender.config)"</require-capability>
         <jahia-module-signature>MCwCFCZ0gWkXge/SzSYb19Ts7cl7T6JIAhRzkmdVnYeMQvR8cV/sx3g3uV2Ifg==</jahia-module-signature>
         <yarn.arguments>build:production</yarn.arguments>
     </properties>
@@ -90,18 +89,6 @@
             <artifactId>app-shell</artifactId>
             <version>2.1.0</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.gemini.blueprint</groupId>
-            <artifactId>gemini-blueprint-core</artifactId>
-            <version>${gemini.blueprint.version}</version>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.osgi</groupId>
-                    <artifactId>org.osgi.core</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
     </dependencies>
 

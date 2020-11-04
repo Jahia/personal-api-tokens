@@ -1,4 +1,4 @@
-import React, {Suspense} from 'react';
+import React from 'react';
 import {useTranslation} from 'react-i18next';
 import {Add, Button, GlobalStyle, Typography} from '@jahia/moonstone';
 import TokensList from '../TokensList/TokensList';
@@ -7,7 +7,7 @@ import styles from './MyApiTokens.scss';
 const MyApiTokens = () => {
     const {t} = useTranslation('personal-api-tokens');
     return (
-        <Suspense fallback="loading ...">
+        <>
             <GlobalStyle/>
             <div className={styles.root}>
                 <div className={styles.headerRoot}>
@@ -30,7 +30,7 @@ const MyApiTokens = () => {
                     <TokensList/>
                 </div>
             </div>
-        </Suspense>
+        </>
     );
 };
 

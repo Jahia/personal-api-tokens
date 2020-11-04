@@ -37,10 +37,7 @@
     "lint:fix": "eslint --ext js,jsx,json --fix . && stylelint --fix './src/**/*.scss'"
   },
   "main": "index.js",
-  "license": "MIT",
-  "dx-extends": {
-    "@jahia/jahia-ui-root": "0.0.1"
-  },
+  "license": "Apache-2.0",
   "jahia": {
     "apps": {
       "jahia": "javascript/apps/jahia.bundle.js"
