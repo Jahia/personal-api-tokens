@@ -1,4 +1,4 @@
-// load type definitions that come with Cypress module
+// Load type definitions that come with Cypress module
 /// <reference types="cypress" />
 
 // eslint-disable-next-line @typescript-eslint/no-namespace

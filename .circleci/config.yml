@@ -11,9 +11,6 @@ parameters:
   AUDITCI_LEVEL:
     type: string
     default: 'moderate'
-  MODULE_PATH:
-    type: string
-    default: 'api/'    
   TESTS_PATH:
     type: string
     default: 'tests/'
@@ -62,6 +59,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
+            yarn
             cd << pipeline.parameters.TESTS_PATH >>
             yarn
       - save_cache:
@@ -85,11 +83,10 @@ jobs:
           command: |
             cd << pipeline.parameters.TESTS_PATH >>
             yarn run lint --max-warnings 1
-      # - run:
-      #     name: Yarn lint module
-      #     command: |
-      #       cd << pipeline.parameters.MODULE_PATH >>
-      #       yarn run lint --max-warnings 1     
+      - run:
+          name: Yarn lint module
+          command: |
+            yarn run lint --max-warnings 1
             
   # Run security checks
   # Security checks on the project are used to validate that we don't use any problematic javascript libraries
@@ -108,11 +105,10 @@ jobs:
           command: |
             cd << pipeline.parameters.TESTS_PATH >>
             audit-ci --<< pipeline.parameters.AUDITCI_LEVEL >>
-      # - run:
-      #     name: Run Audit-ci on module
-      #     command: |
-      #       cd << pipeline.parameters.MODULE_PATH >>
-      #       audit-ci --<< pipeline.parameters.AUDITCI_LEVEL >>            
+      - run:
+          name: Run Audit-ci on module
+          command: |
+            audit-ci --<< pipeline.parameters.AUDITCI_LEVEL >>
 
   # Build the module and save it locally
   # We're saving the artifacts that are then used later on to execute the tests 

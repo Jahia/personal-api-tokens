@@ -1,13 +1,6 @@
 {
-  "label": {
-    "settings": {
-      "title": "Personal API Tokens setting"
-    },
-    "action": {
-      "title": "Personal API Tokens - How to extend the ui ?"
-    },
-    "appsAccordion": {
-      "title": "Personal API Tokens"
-    }
-  }
+  "title": "My API tokens",
+  "create": "Create Token",
+  "noTokens": "You don't have any personal access tokens yet",
+  "personalTokens": "Personal API Tokens"
 }
