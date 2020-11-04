@@ -20,18 +20,19 @@ import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import org.apache.jackrabbit.util.ISO8601;
-import org.jahia.modules.apitokens.core.TokensService;
+import org.jahia.modules.apitokens.TokenDetails;
+import org.jahia.modules.apitokens.TokenService;
 import org.jahia.modules.graphql.provider.dxm.osgi.annotations.GraphQLOsgiService;
 
 import javax.inject.Inject;
-import java.util.Date;
+import java.util.Calendar;
 
 @GraphQLName("PersonalApiTokensMutation")
 public class GqlPersonalApiTokensMutation {
 
     @Inject
     @GraphQLOsgiService
-    private TokensService tokensService;
+    private TokenService tokensService;
 
     @GraphQLName("TokenState")
     public enum TokenState {
@@ -45,8 +46,14 @@ public class GqlPersonalApiTokensMutation {
                               @GraphQLName("expireAt") @GraphQLDescription("Expiration date of the token") String expireAt,
                               @GraphQLName("state") @GraphQLDescription("State to give the newly created token") TokenState state
     ) {
-        Date expiration = expireAt != null ? ISO8601.parse(expireAt).getTime() : null;
-        return tokensService.createToken(userId, name, expiration, state != TokenState.DISABLED);
+        Calendar expiration = expireAt != null ? ISO8601.parse(expireAt) : null;
+        TokenDetails tokenDetails = new TokenDetails(userId, name);
+        tokenDetails.setExpirationDate(expiration);
+        tokenDetails.setActive(state != TokenState.DISABLED);
+
+        return tokensService.createToken(tokenDetails);
     }
+
+
 
 }

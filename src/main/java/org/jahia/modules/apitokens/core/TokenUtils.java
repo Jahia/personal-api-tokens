@@ -16,6 +16,8 @@
 package org.jahia.modules.apitokens.core;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.codec.digest.MessageDigestAlgorithms;
 import org.apache.commons.id.uuid.UUID;
 import org.apache.commons.id.uuid.VersionFourGenerator;
 
@@ -62,7 +64,7 @@ public class TokenUtils {
      * @return
      */
     public String getKey(String token) {
-        return getPart(token, 0, 16);
+        return new UUID(getPart(token, 0, 16)).toString();
     }
 
     /**
@@ -72,7 +74,20 @@ public class TokenUtils {
      * @return
      */
     public String getSecret(String token) {
-        return getPart(token, 16, 16);
+        return new UUID(getPart(token, 16, 16)).toString();
+    }
+
+    /**
+     * Get digested secret from token
+     *
+     * @param token
+     * @return
+     */
+    public String getDigestedSecret(String token) {
+        byte[] part = getPart(token, 16, 16);
+        byte[] digested = DigestUtils.getDigest(MessageDigestAlgorithms.SHA_256).digest(part);
+
+        return base64.encodeAsString(digested);
     }
 
     /**
@@ -95,13 +110,13 @@ public class TokenUtils {
         return uuidPattern.matcher(secret).matches();
     }
 
-    private String getPart(String token, int offset, int length) {
+    private byte[] getPart(String token, int offset, int length) {
         byte[] b = base64.decode(token);
-        byte[] part = new byte[16];
+        byte[] part = new byte[length];
 
         System.arraycopy(b, offset, part, 0, length);
 
-        return new UUID(part).toString();
+        return part;
     }
 
 }
