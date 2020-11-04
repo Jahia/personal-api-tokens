@@ -209,7 +209,7 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
       - run:
-          name: Prepare artifcats
+          name: Prepare artifacts
             # This command copy the various build artifacts into the /tests/ folder to be later
             # used by jahia-cli to provision Jahia for testing
           command: |
