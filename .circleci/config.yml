@@ -209,19 +209,21 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
       - run:
-          name: Prepare artifcats
-          # This command copy the various build artifacts into the /tests/ folder to be later 
-          # used by jahia-cli to provision Jahia for testing
+          name: Prepare artifacts
+            # This command copy the various build artifacts into the /tests/ folder to be later
+            # used by jahia-cli to provision Jahia for testing
           command: |
-            if [ << parameters.SKIP_ARTIFACTS >> == false ]; then
-              mkdir << pipeline.parameters.TESTS_PATH >>artifacts
+            if [ ! -d << pipeline.parameters.TESTS_PATH >>artifacts ]; then
+              mkdir -p << pipeline.parameters.TESTS_PATH >>artifacts
               mkdir << pipeline.parameters.TESTS_PATH >>artifacts/reports
               mkdir << pipeline.parameters.TESTS_PATH >>build-dependencies
+            fi          
+            if [ << parameters.SKIP_ARTIFACTS >> == false ]; then
               if [[ -e /home/circleci/source/build-dependencies ]]; then
                 sudo cp -r /home/circleci/source/build-dependencies/* << pipeline.parameters.TESTS_PATH >>build-dependencies/
               fi               
               sudo cp -r /home/circleci/source/target/* << pipeline.parameters.TESTS_PATH >>artifacts/
-            fi          
+            fi         
       - run:
           name: Docker login
           # This is needed to fetch private docker images (such as Jahia snapshot)
