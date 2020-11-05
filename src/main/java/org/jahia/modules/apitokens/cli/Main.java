@@ -26,10 +26,10 @@ public class Main {
         TokenUtils utils = TokenUtils.getInstance();
         if (args.length == 0) {
             String token = utils.generateToken();
-            System.out.println("Token: " + token);
-            System.out.println("Key: " + utils.getKey(token));
+            System.out.println("{\"token\": \"" + token +"\", \"key\": \"" + utils.getKey(token) + "\"}");
         } else if (args.length == 2 && args[0].equals("--get-key")) {
-            System.out.println("Key: " + utils.getKey(args[1]));
+            String token = args[1];
+            System.out.println("{\"token\": \"" + token +"\", \"key\": \"" + utils.getKey(token) + "\"}");
         }
     }
 
