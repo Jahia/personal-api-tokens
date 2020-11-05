@@ -81,6 +81,12 @@ After building the project, you can generate a new random token by calling :
 java -jar target/personal-api-tokens-1.0.0-SNAPSHOT-cli.jar
 ```
 
+You can also get the token key of an existing token by typing : 
+
+```
+java -jar target/personal-api-tokens-1.0.0-SNAPSHOT-cli.jar --get-key hHSppWmiQgmZ6KrUDR/w8VbEbsi/m08OlMiviLhIUfM=
+```
+
 ## E2E tests
 
 End-to-End tests are located in the test folder, you can take the following approaches to execute the test suite:
