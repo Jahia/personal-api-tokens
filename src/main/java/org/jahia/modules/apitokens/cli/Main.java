@@ -21,7 +21,10 @@ import org.jahia.modules.apitokens.core.TokenUtils;
  * Command line to generate a new random token
  */
 public class Main {
-  
+
+    // Ignoring java:S106 as this rule seem to apply to system logging 
+    // Here we are building a CLI, which does need terminal output
+    @SuppressWarnings("java:S106")    
     public static final void main(String[] args) {
         TokenUtils utils = TokenUtils.getInstance();
         if (args.length == 0) {
