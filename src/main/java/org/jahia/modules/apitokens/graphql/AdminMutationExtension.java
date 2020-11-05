@@ -19,7 +19,7 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLTypeExtension;
-import org.jahia.modules.graphql.provider.dxm.node.GqlAdminMutation;
+import org.jahia.modules.graphql.provider.dxm.admin.GqlAdminMutation;
 
 /**
  * Admin mutation extension

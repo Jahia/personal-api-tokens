@@ -19,7 +19,7 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLTypeExtension;
-import org.jahia.modules.graphql.provider.dxm.node.GqlAdminQuery;
+import org.jahia.modules.graphql.provider.dxm.admin.GqlAdminQuery;
 
 /**
  * Admin query extensions
