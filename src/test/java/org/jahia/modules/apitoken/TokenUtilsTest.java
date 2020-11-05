@@ -10,7 +10,7 @@ public class TokenUtilsTest {
     public void testToken() {
         TokenUtils tokenUtils = TokenUtils.getInstance();
         String token = tokenUtils.generateToken();
-        assertTrue(tokenUtils.checkKeyFormat(tokenUtils.getKey(token)));
-        assertTrue(tokenUtils.getSecret(token).length == 16);
+        assertTrue("Invalid key format", tokenUtils.checkKeyFormat(tokenUtils.getKey(token)));
+        assertEquals("Invalid secret", 16, tokenUtils.getSecret(token).length);
     }
 }
