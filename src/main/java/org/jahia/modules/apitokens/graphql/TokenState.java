@@ -15,19 +15,9 @@
  */
 package org.jahia.modules.apitokens.graphql;
 
-import graphql.annotations.annotationTypes.GraphQLDescription;
-import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.annotations.annotationTypes.GraphQLTypeExtension;
-import org.jahia.modules.graphql.provider.dxm.node.GqlAdminMutation;
 
-@GraphQLTypeExtension(GqlAdminMutation.class)
-public class AdminMutationExtension {
-
-    @GraphQLField
-    @GraphQLName("personalApiTokens")
-    @GraphQLDescription("Personal API tokens mutations")
-    public static GqlPersonalApiTokensMutation personalApiTokens() {
-        return new GqlPersonalApiTokensMutation();
-    }
+@GraphQLName("TokenState")
+public enum TokenState {
+    ACTIVE, DISABLED
 }

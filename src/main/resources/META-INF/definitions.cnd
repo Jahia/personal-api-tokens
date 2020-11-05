@@ -5,8 +5,9 @@
 [patnt:tokens]
  + * (patnt:token)
 
-[patnt:token] > jnt:content
+[patnt:token] > jnt:content, mix:created, mix:lastModified
  - key (string)
  - digest (string) indexed=no
  - active (boolean) = true
  - expirationDate (date)
+ - lastUsageDate (date)

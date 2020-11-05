@@ -15,6 +15,7 @@
  */
 package org.jahia.modules.apitokens.core;
 
+import org.jahia.api.Constants;
 import org.jahia.api.content.JCRTemplate;
 import org.jahia.api.usermanager.JahiaUserManagerService;
 import org.jahia.modules.apitokens.TokenDetails;
@@ -46,6 +47,7 @@ public class TokensServiceImpl implements TokenService {
     public static final String DIGEST = "digest";
     public static final String ACTIVE = "active";
     public static final String EXPIRATION_DATE = "expirationDate";
+    public static final String LAST_USAGE_DATE = "lastUsageDate";
 
     private JCRTemplate jcrTemplate;
     private JahiaUserManagerService userManagerService;
@@ -115,6 +117,12 @@ public class TokensServiceImpl implements TokenService {
         tokenDetails.setActive(node.getProperty(ACTIVE).getBoolean());
         if (node.hasProperty(EXPIRATION_DATE)) {
             tokenDetails.setExpirationDate(node.getProperty(EXPIRATION_DATE).getDate());
+        }
+
+        tokenDetails.setCreationDate(node.getProperty(Constants.JCR_CREATED).getDate());
+        tokenDetails.setModificationDate(node.getProperty(Constants.JCR_LASTMODIFIED).getDate());
+        if (node.hasProperty(LAST_USAGE_DATE)) {
+            tokenDetails.setExpirationDate(node.getProperty(LAST_USAGE_DATE).getDate());
         }
 
         return tokenDetails;

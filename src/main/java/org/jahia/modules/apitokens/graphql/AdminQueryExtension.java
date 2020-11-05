@@ -19,15 +19,15 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLTypeExtension;
-import org.jahia.modules.graphql.provider.dxm.node.GqlAdminMutation;
+import org.jahia.modules.graphql.provider.dxm.node.GqlAdminQuery;
 
-@GraphQLTypeExtension(GqlAdminMutation.class)
-public class AdminMutationExtension {
+@GraphQLTypeExtension(GqlAdminQuery.class)
+public class AdminQueryExtension {
 
     @GraphQLField
     @GraphQLName("personalApiTokens")
-    @GraphQLDescription("Personal API tokens mutations")
-    public static GqlPersonalApiTokensMutation personalApiTokens() {
-        return new GqlPersonalApiTokensMutation();
+    @GraphQLDescription("Personal API tokens queries")
+    public static GqlPersonalApiTokensQuery personalApiTokens() {
+        return new GqlPersonalApiTokensQuery();
     }
 }

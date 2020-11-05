@@ -25,6 +25,9 @@ public class TokenDetails {
     private String name;
 
     private Calendar expirationDate;
+    private Calendar creationDate;
+    private Calendar modificationDate;
+    private Calendar lastUsageDate;
 
     private boolean isActive = true;
 
@@ -63,6 +66,30 @@ public class TokenDetails {
 
     public void setExpirationDate(Calendar expirationDate) {
         this.expirationDate = expirationDate;
+    }
+
+    public Calendar getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Calendar creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public Calendar getModificationDate() {
+        return modificationDate;
+    }
+
+    public void setModificationDate(Calendar modificationDate) {
+        this.modificationDate = modificationDate;
+    }
+
+    public Calendar getLastUsageDate() {
+        return lastUsageDate;
+    }
+
+    public void setLastUsageDate(Calendar lastUsageDate) {
+        this.lastUsageDate = lastUsageDate;
     }
 
     public boolean isActive() {
