@@ -21,6 +21,7 @@ import org.apache.commons.codec.digest.MessageDigestAlgorithms;
 import org.apache.commons.id.uuid.UUID;
 import org.apache.commons.id.uuid.VersionFourGenerator;
 
+import java.security.SecureRandom;
 import java.util.regex.Pattern;
 
 /**
@@ -30,6 +31,7 @@ public class TokenUtils {
 
     private Pattern uuidPattern = Pattern.compile("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}");
     private Base64 base64 = new Base64();
+    private SecureRandom random = new SecureRandom();
     private VersionFourGenerator generator = new VersionFourGenerator();
 
     private TokenUtils() {
@@ -51,9 +53,10 @@ public class TokenUtils {
     public String generateToken() {
         byte[] b = new byte[32];
         UUID key = (UUID) generator.nextIdentifier();
-        UUID secret = (UUID) generator.nextIdentifier();
+        byte[] secret = new byte[16];
+        random.nextBytes(secret);
         System.arraycopy(key.getRawBytes(), 0, b, 0, 16);
-        System.arraycopy(secret.getRawBytes(), 0, b, 16, 16);
+        System.arraycopy(secret, 0, b, 16, 16);
         return base64.encodeToString(b);
     }
 
@@ -73,8 +76,8 @@ public class TokenUtils {
      * @param token
      * @return
      */
-    public String getSecret(String token) {
-        return new UUID(getPart(token, 16, 16)).toString();
+    public byte[] getSecret(String token) {
+        return getPart(token, 16, 16);
     }
 
     /**

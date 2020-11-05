@@ -11,6 +11,6 @@ public class TokenUtilsTest {
         TokenUtils tokenUtils = TokenUtils.getInstance();
         String token = tokenUtils.generateToken();
         assertTrue(tokenUtils.checkKeyFormat(tokenUtils.getKey(token)));
-        assertTrue(tokenUtils.checkSecretFormat(tokenUtils.getSecret(token)));
+        assertTrue(tokenUtils.getSecret(token).length == 16);
     }
 }

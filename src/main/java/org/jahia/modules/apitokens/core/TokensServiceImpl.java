@@ -25,6 +25,8 @@ import org.jahia.services.content.JCRSessionWrapper;
 import org.jahia.services.content.decorator.JCRUserNode;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
@@ -35,8 +37,15 @@ import javax.jcr.query.Query;
  */
 @Component(immediate = true, service = TokenService.class)
 public class TokensServiceImpl implements TokenService {
+    private static final Logger logger = LoggerFactory.getLogger(TokensServiceImpl.class);
 
-    private static final String TOKENS = "tokens";
+    public static final String PATNT_TOKENS = "patnt:tokens";
+    public static final String PATNT_TOKEN = "patnt:token";
+    public static final String TOKENS = "tokens";
+    public static final String KEY = "key";
+    public static final String DIGEST = "digest";
+    public static final String ACTIVE = "active";
+    public static final String EXPIRATION_DATE = "expirationDate";
 
     private JCRTemplate jcrTemplate;
     private JahiaUserManagerService userManagerService;
@@ -63,16 +72,16 @@ public class TokensServiceImpl implements TokenService {
             throw new IllegalArgumentException("invalid user");
         }
 
-        JCRNodeWrapper tokens = userNode.hasNode(TOKENS) ? userNode.getNode(TOKENS) : userNode.addNode(TOKENS, "patnt:tokens");
-        JCRNodeWrapper tokenNode = tokens.addNode(tokenDetails.getName(), "patnt:token");
-        tokenNode.setProperty("key", key);
-        tokenNode.setProperty("digest", digestedSecret);
-        tokenNode.setProperty("active", tokenDetails.isActive());
-        tokenNode.setProperty("expirationDate", tokenDetails.getExpirationDate());
+        JCRNodeWrapper tokens = userNode.hasNode(TOKENS) ? userNode.getNode(TOKENS) : userNode.addNode(TOKENS, PATNT_TOKENS);
+        JCRNodeWrapper tokenNode = tokens.addNode(tokenDetails.getName(), PATNT_TOKEN);
+        tokenNode.setProperty(KEY, key);
+        tokenNode.setProperty(DIGEST, digestedSecret);
+        tokenNode.setProperty(ACTIVE, tokenDetails.isActive());
+        tokenNode.setProperty(EXPIRATION_DATE, tokenDetails.getExpirationDate());
 
         currentUserSession.save();
 
-        System.out.println(getTokenDetails(token));
+        logger.info("New token generated {}", getTokenDetails(token));
 
         return token;
     }
@@ -87,7 +96,7 @@ public class TokensServiceImpl implements TokenService {
             JCRNodeWrapper node = (JCRNodeWrapper) ni.nextNode();
 
             String digestedSecret = TokenUtils.getInstance().getDigestedSecret(token);
-            if (digestedSecret.equals(node.getProperty("digest").getString())) {
+            if (digestedSecret.equals(node.getProperty(DIGEST).getString())) {
                 return getTokenDetails(node);
             }
         }
@@ -102,10 +111,10 @@ public class TokensServiceImpl implements TokenService {
         }
 
         TokenDetails tokenDetails = new TokenDetails(parent.getName(), node.getName());
-        tokenDetails.setKey(node.getProperty("key").getString());
-        tokenDetails.setActive(node.getProperty("active").getBoolean());
-        if (node.hasProperty("expirationDate")) {
-            tokenDetails.setExpirationDate(node.getProperty("expirationDate").getDate());
+        tokenDetails.setKey(node.getProperty(KEY).getString());
+        tokenDetails.setActive(node.getProperty(ACTIVE).getBoolean());
+        if (node.hasProperty(EXPIRATION_DATE)) {
+            tokenDetails.setExpirationDate(node.getProperty(EXPIRATION_DATE).getDate());
         }
 
         return tokenDetails;
