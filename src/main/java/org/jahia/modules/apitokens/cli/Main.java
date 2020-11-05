@@ -21,20 +21,20 @@ import org.jahia.modules.apitokens.core.TokenUtils;
  * Command line to generate a new random token
  */
 public class Main {
-
+  
     public static final void main(String[] args) {
         TokenUtils utils = TokenUtils.getInstance();
         if (args.length == 0) {
             String token = utils.generateToken();
             System.out.println("{\"token\": \"" + token +"\", \"key\": \"" + utils.getKey(token) + "\"}");
         } else if (args[0].equals("--help")) {
-            System.out.println("Personal API Tokens generator\n");
-            System.out.println("Randomly generates a universally unique access key and token \n");
-            System.out.println("USAGE");
-            System.out.println("$ java -jar personal-api-token-cli.jar --get-key KTJcXXLiQsCtFJH1tytKctbGJIB6SEHypZrMrlu05PU= \n");            
-            System.out.println("OPTIONS");
-            System.out.println("--help      This help screen");
-            System.out.println("--get-key   Returns the key associated with the provided token");
+            System.out.println("Personal API Tokens generator\n" 
+            + "Randomly generates a universally unique access key and token \n\n"
+            + "USAGE\n"
+            + "$ java -jar personal-api-token-cli.jar --get-key KTJcXXLiQsCtFJH1tytKctbGJIB6SEHypZrMrlu05PU= \n\n"          
+            + "OPTIONS\n"
+            + "--help      This help screen\n"
+            + "--get-key   Returns the key associated with the provided token");
         } else if (args.length == 2 && args[0].equals("--get-key")) {
             String token = args[1];
             System.out.println("{\"token\": \"" + token +"\", \"key\": \"" + utils.getKey(token) + "\"}");
