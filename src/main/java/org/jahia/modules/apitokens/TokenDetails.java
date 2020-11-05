@@ -26,7 +26,7 @@ public class TokenDetails {
 
     private Calendar expirationDate;
 
-    private boolean isActive;
+    private boolean isActive = true;
 
     public TokenDetails(String userId, String name) {
         this.userId = userId;
@@ -37,8 +37,16 @@ public class TokenDetails {
         return key;
     }
 
+    public void setKey(String key) {
+        this.key = key;
+    }
+
     public String getUserId() {
         return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getName() {
@@ -63,5 +71,10 @@ public class TokenDetails {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    @Override
+    public String toString() {
+        return "TokenDetails{" + "key='" + key + '\'' + ", userId='" + userId + '\'' + ", name='" + name + '\'' + ", expirationDate=" + expirationDate + ", isActive=" + isActive + '}';
     }
 }

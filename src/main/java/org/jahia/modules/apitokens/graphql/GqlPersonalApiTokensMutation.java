@@ -19,13 +19,15 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
-import org.apache.jackrabbit.util.ISO8601;
 import org.jahia.modules.apitokens.TokenDetails;
 import org.jahia.modules.apitokens.TokenService;
+import org.jahia.modules.graphql.provider.dxm.DataFetchingException;
 import org.jahia.modules.graphql.provider.dxm.osgi.annotations.GraphQLOsgiService;
+import org.joda.time.DateTime;
 
 import javax.inject.Inject;
 import java.util.Calendar;
+import java.util.Locale;
 
 @GraphQLName("PersonalApiTokensMutation")
 public class GqlPersonalApiTokensMutation {
@@ -34,26 +36,25 @@ public class GqlPersonalApiTokensMutation {
     @GraphQLOsgiService
     private TokenService tokensService;
 
+    @GraphQLField
+    @GraphQLName("createToken")
+    public String createToken(@GraphQLName("userId") @GraphQLDescription("User ID to attach the token to") @GraphQLNonNull String userId, @GraphQLName("name") @GraphQLDescription("Name to give to the token") @GraphQLNonNull String name, @GraphQLName("expireAt") @GraphQLDescription("Expiration date of the token") String expireAt, @GraphQLName("state") @GraphQLDescription("State to give the newly created token") TokenState state) {
+        try {
+            Calendar expiration = expireAt != null ? new DateTime(expireAt).toCalendar(Locale.getDefault()): null;
+            TokenDetails tokenDetails = new TokenDetails(userId, name);
+            tokenDetails.setExpirationDate(expiration);
+            tokenDetails.setActive(state != TokenState.DISABLED);
+
+            return tokensService.createToken(tokenDetails);
+        } catch (Exception e) {
+            throw new DataFetchingException(e);
+        }
+    }
+
     @GraphQLName("TokenState")
     public enum TokenState {
         ACTIVE, DISABLED
     }
-
-    @GraphQLField
-    @GraphQLName("createToken")
-    public String createToken(@GraphQLName("userId") @GraphQLDescription("User ID to attach the token to") @GraphQLNonNull String userId,
-                              @GraphQLName("name") @GraphQLDescription("Name to give to the token") @GraphQLNonNull String name,
-                              @GraphQLName("expireAt") @GraphQLDescription("Expiration date of the token") String expireAt,
-                              @GraphQLName("state") @GraphQLDescription("State to give the newly created token") TokenState state
-    ) {
-        Calendar expiration = expireAt != null ? ISO8601.parse(expireAt) : null;
-        TokenDetails tokenDetails = new TokenDetails(userId, name);
-        tokenDetails.setExpirationDate(expiration);
-        tokenDetails.setActive(state != TokenState.DISABLED);
-
-        return tokensService.createToken(tokenDetails);
-    }
-
 
 
 }

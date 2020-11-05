@@ -113,8 +113,9 @@ public class TokenUtils {
     private byte[] getPart(String token, int offset, int length) {
         byte[] b = base64.decode(token);
         byte[] part = new byte[length];
-
-        System.arraycopy(b, offset, part, 0, length);
+        if (b.length >= offset + length) {
+            System.arraycopy(b, offset, part, 0, length);
+        }
 
         return part;
     }

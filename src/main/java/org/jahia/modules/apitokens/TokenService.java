@@ -17,8 +17,29 @@ package org.jahia.modules.apitokens;
 
 import org.jahia.services.usermanager.JahiaUser;
 
-public interface TokenService {
-    public String createToken(TokenDetails tokenDetails);
+import javax.jcr.RepositoryException;
 
-    public JahiaUser getUser(String token);
+/**
+ * Service to handle Personal API tokens
+ */
+public interface TokenService {
+    /**
+     * Create new token based on the specified token details
+     *
+     * The key, if provided, will be ignored as a new token will be randomly created
+     *
+     * @param tokenDetails Token details, including userId, name and other options
+     * @return The token
+     * @throws RepositoryException
+     */
+    public String createToken(TokenDetails tokenDetails) throws RepositoryException;
+
+    /**
+     * Get the token details for the specified token, or null if token is invalid
+     *
+     * @param token The token
+     * @return Token details
+     * @throws RepositoryException
+     */
+    public TokenDetails getTokenDetails(String token) throws RepositoryException;
 }

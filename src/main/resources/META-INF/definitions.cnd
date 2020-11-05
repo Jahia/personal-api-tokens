@@ -6,6 +6,7 @@
  + * (patnt:token)
 
 [patnt:token] > jnt:content
+ - key (string)
  - digest (string) indexed=no
  - active (boolean) = true
  - expirationDate (date)
