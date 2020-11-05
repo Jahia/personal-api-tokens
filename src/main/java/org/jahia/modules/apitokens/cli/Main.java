@@ -29,10 +29,10 @@ public class Main {
             System.out.println("{\"token\": \"" + token +"\", \"key\": \"" + utils.getKey(token) + "\"}");
         } else if (args[0].equals("--help")) {
             System.out.println("Personal API Tokens generator\n");
-            System.out.println("Randomly generates a universally unique access key and token");
-            System.out.println("USAGE\n\n");
-            System.out.println("$ java -jar personal-api-token-cli.jar --get-key KTJcXXLiQsCtFJH1tytKctbGJIB6SEHypZrMrlu05PU=");            
-            System.out.println("OPTIONS\n\n");
+            System.out.println("Randomly generates a universally unique access key and token \n");
+            System.out.println("USAGE");
+            System.out.println("$ java -jar personal-api-token-cli.jar --get-key KTJcXXLiQsCtFJH1tytKctbGJIB6SEHypZrMrlu05PU= \n");            
+            System.out.println("OPTIONS");
             System.out.println("--help      This help screen");
             System.out.println("--get-key   Returns the key associated with the provided token");
         } else if (args.length == 2 && args[0].equals("--get-key")) {
