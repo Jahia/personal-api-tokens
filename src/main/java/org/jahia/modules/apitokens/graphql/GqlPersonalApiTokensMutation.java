@@ -29,6 +29,9 @@ import javax.inject.Inject;
 import java.util.Calendar;
 import java.util.Locale;
 
+/**
+ * PersonalApiTokens mutation type
+ */
 @GraphQLName("PersonalApiTokensMutation")
 public class GqlPersonalApiTokensMutation {
 
@@ -36,7 +39,16 @@ public class GqlPersonalApiTokensMutation {
     @GraphQLOsgiService
     private TokenService tokensService;
 
+    /**
+     * Create a new token
+     * @param userId User ID to attach the token to
+     * @param name Name to give to the token
+     * @param expireAt Expiration date of the token
+     * @param state State to give the newly created token
+     * @return new token
+     */
     @GraphQLField
+    @GraphQLDescription("Create a new token")
     public String createToken(@GraphQLName("userId") @GraphQLDescription("User ID to attach the token to") @GraphQLNonNull String userId,
                               @GraphQLName("name") @GraphQLDescription("Name to give to the token") @GraphQLNonNull String name,
                               @GraphQLName("expireAt") @GraphQLDescription("Expiration date of the token") String expireAt,

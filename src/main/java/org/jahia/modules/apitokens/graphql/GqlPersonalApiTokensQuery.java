@@ -25,6 +25,9 @@ import org.jahia.modules.graphql.provider.dxm.osgi.annotations.GraphQLOsgiServic
 
 import javax.inject.Inject;
 
+/**
+ * PersonalApiTokens query type
+ */
 @GraphQLName("PersonalApiTokensQuery")
 public class GqlPersonalApiTokensQuery {
 
@@ -32,7 +35,13 @@ public class GqlPersonalApiTokensQuery {
     @GraphQLOsgiService
     private TokenService tokensService;
 
+    /**
+     * Get token details
+     * @param token The token
+     * @return token details
+     */
     @GraphQLField
+    @GraphQLDescription("Get token details")
     public GqlToken getToken(@GraphQLName("token") @GraphQLDescription("The token") @GraphQLNonNull String token) {
         try {
             return new GqlToken(tokensService.getTokenDetails(token));

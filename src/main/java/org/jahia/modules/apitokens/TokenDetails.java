@@ -17,6 +17,9 @@ package org.jahia.modules.apitokens;
 
 import java.util.Calendar;
 
+/**
+ * Token details bean
+ */
 public class TokenDetails {
     private String key;
 
@@ -31,6 +34,11 @@ public class TokenDetails {
 
     private boolean isActive = true;
 
+    /**
+     * New token details from userId and token name
+     * @param userId userId
+     * @param name name
+     */
     public TokenDetails(String userId, String name) {
         this.userId = userId;
         this.name = name;
@@ -102,6 +110,10 @@ public class TokenDetails {
 
     @Override
     public String toString() {
-        return "TokenDetails{" + "key='" + key + '\'' + ", userId='" + userId + '\'' + ", name='" + name + '\'' + ", expirationDate=" + expirationDate + ", isActive=" + isActive + '}';
+        return "TokenDetails{" + "key='" + key + '\'' +
+                ", userId='" + userId + '\'' +
+                ", name='" + name + '\'' +
+                ", expirationDate=" + expirationDate +
+                ", isActive=" + isActive + '}';
     }
 }

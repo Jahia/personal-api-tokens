@@ -15,8 +15,6 @@
  */
 package org.jahia.modules.apitokens;
 
-import org.jahia.services.usermanager.JahiaUser;
-
 import javax.jcr.RepositoryException;
 
 /**
@@ -30,7 +28,7 @@ public interface TokenService {
      *
      * @param tokenDetails Token details, including userId, name and other options
      * @return The token
-     * @throws RepositoryException
+     * @throws RepositoryException when repository operation fails
      */
     public String createToken(TokenDetails tokenDetails) throws RepositoryException;
 
@@ -39,7 +37,7 @@ public interface TokenService {
      *
      * @param token The token
      * @return Token details
-     * @throws RepositoryException
+     * @throws RepositoryException when repository operation fails
      */
     public TokenDetails getTokenDetails(String token) throws RepositoryException;
 }

@@ -17,6 +17,9 @@ package org.jahia.modules.apitokens.graphql;
 
 import graphql.annotations.annotationTypes.GraphQLName;
 
+/**
+ * Token state
+ */
 @GraphQLName("TokenState")
 public enum TokenState {
     ACTIVE, DISABLED

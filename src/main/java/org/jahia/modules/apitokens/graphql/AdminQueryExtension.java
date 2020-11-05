@@ -21,9 +21,16 @@ import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLTypeExtension;
 import org.jahia.modules.graphql.provider.dxm.node.GqlAdminQuery;
 
+/**
+ * Admin query extensions
+ */
 @GraphQLTypeExtension(GqlAdminQuery.class)
 public class AdminQueryExtension {
 
+    /**
+     * Get personalApiTokens
+     * @return personalApiTokens
+     */
     @GraphQLField
     @GraphQLName("personalApiTokens")
     @GraphQLDescription("Personal API tokens queries")

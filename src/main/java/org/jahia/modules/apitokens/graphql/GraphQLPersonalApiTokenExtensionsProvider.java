@@ -18,6 +18,10 @@ package org.jahia.modules.apitokens.graphql;
 import org.jahia.modules.graphql.provider.dxm.DXGraphQLExtensionsProvider;
 import org.osgi.service.component.annotations.Component;
 
+/**
+ * GraphQLPersonalApiTokenExtensionsProvider
+ * Uses DXGraphQLExtensionsProvider class scanning
+ */
 @Component(immediate = true)
 public class GraphQLPersonalApiTokenExtensionsProvider implements DXGraphQLExtensionsProvider {
 }

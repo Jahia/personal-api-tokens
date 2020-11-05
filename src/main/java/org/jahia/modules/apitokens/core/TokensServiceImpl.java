@@ -92,7 +92,8 @@ public class TokensServiceImpl implements TokenService {
         String key = TokenUtils.getInstance().getKey(token);
 
         JCRSessionWrapper currentUserSession = jcrTemplate.getSessionFactory().getCurrentUserSession();
-        Query q = currentUserSession.getWorkspace().getQueryManager().createQuery("select * from [patnt:token] where key=\"" + JCRContentUtils.sqlEncode(key) + "\"", Query.JCR_SQL2);
+        Query q = currentUserSession.getWorkspace().getQueryManager()
+                .createQuery("select * from [patnt:token] where key=\"" + JCRContentUtils.sqlEncode(key) + "\"", Query.JCR_SQL2);
         NodeIterator ni = q.execute().getNodes();
         if (ni.hasNext()) {
             JCRNodeWrapper node = (JCRNodeWrapper) ni.nextNode();
