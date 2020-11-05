@@ -65,7 +65,21 @@ Personal API Tokens
 <!-- 
     Instructions to build
 -->
+Use `mvn install` to build the module.
 
+## Installation
+
+### Module
+
+Deploy the module in your Jahia instance.
+
+### Token generation
+
+After building the project, you can generate a new random token by calling : 
+
+```
+java -jar target/personal-api-tokens-1.0.0-SNAPSHOT-cli.jar
+```
 
 ## E2E tests
 
@@ -133,11 +147,6 @@ Note that by default the new image name is `jahia/personal-api-tokens:latest` so
 If necessary, you could either change that in `env.build.sh` to your desired name or simply give your image a new tag `docker tag jahia/personal-api-tokens:latest jahia/personal-api-tokens:MY_NEW_TAG`
 
 Once built, the image can be used with docker-compose (see previous section).
-
-## Installation
-<!-- 
-    Instructions to install
--->
 
 ## Links
 <!-- 
