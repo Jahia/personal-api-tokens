@@ -23,6 +23,7 @@ import org.jahia.modules.apitokens.TokenDetails;
 import org.jahia.modules.apitokens.TokenService;
 import org.jahia.modules.graphql.provider.dxm.DataFetchingException;
 import org.jahia.modules.graphql.provider.dxm.osgi.annotations.GraphQLOsgiService;
+import org.jahia.services.content.JCRContentUtils;
 import org.joda.time.DateTime;
 
 import javax.inject.Inject;
@@ -55,7 +56,7 @@ public class GqlPersonalApiTokensMutation {
                               @GraphQLName("state") @GraphQLDescription("State to give the newly created token") TokenState state) {
         try {
             Calendar expiration = expireAt != null ? new DateTime(expireAt).toCalendar(Locale.getDefault()): null;
-            TokenDetails tokenDetails = new TokenDetails(userId, name);
+            TokenDetails tokenDetails = new TokenDetails(userId, JCRContentUtils.escapeLocalNodeName(name));
             tokenDetails.setExpirationDate(expiration);
             tokenDetails.setActive(state != TokenState.DISABLED);
 

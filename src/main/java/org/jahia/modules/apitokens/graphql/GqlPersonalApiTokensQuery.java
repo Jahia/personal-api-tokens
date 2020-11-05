@@ -19,6 +19,7 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import org.jahia.modules.apitokens.TokenDetails;
 import org.jahia.modules.apitokens.TokenService;
 import org.jahia.modules.graphql.provider.dxm.DataFetchingException;
 import org.jahia.modules.graphql.provider.dxm.osgi.annotations.GraphQLOsgiService;
@@ -44,7 +45,12 @@ public class GqlPersonalApiTokensQuery {
     @GraphQLDescription("Get token details")
     public GqlToken getToken(@GraphQLName("token") @GraphQLDescription("The token") @GraphQLNonNull String token) {
         try {
-            return new GqlToken(tokensService.getTokenDetails(token));
+            TokenDetails tokenDetails = tokensService.getTokenDetails(token);
+            if (tokenDetails != null) {
+                return new GqlToken(tokenDetails);
+            }
+
+            return null;
         } catch (Exception e) {
             throw new DataFetchingException(e);
         }
