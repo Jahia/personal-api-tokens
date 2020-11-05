@@ -23,7 +23,14 @@ import org.jahia.modules.apitokens.core.TokenUtils;
 public class Main {
 
     public static final void main(String[] args) {
-        System.out.println(TokenUtils.getInstance().generateToken());
+        TokenUtils utils = TokenUtils.getInstance();
+        if (args.length == 0) {
+            String token = utils.generateToken();
+            System.out.println("Token: " + token);
+            System.out.println("Key: " + utils.getKey(token));
+        } else if (args.length == 2 && args[0].equals("--get-key")) {
+            System.out.println("Key: " + utils.getKey(args[1]));
+        }
     }
 
 }
