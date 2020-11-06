@@ -9,7 +9,7 @@ describe('workspace api', () => {
     })
 
     it('queries workspace correctly', async function () {
-        const response = await apolloClient.query({
+        const response = await apolloClient().query({
             query: workspace,
             variables: {
                 workspace: 'EDIT',

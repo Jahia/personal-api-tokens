@@ -6,5 +6,9 @@
     "videoUploadOnPasses": false,
     "reporter": "reporter/json.js",
     "screenshotsFolder": "./results/screenshots",
-    "videosFolder": "./results/videos"
+    "videosFolder": "./results/videos",
+    "env": {
+        "JAHIA_USERNAME": "root",
+        "JAHIA_PASSWORD": "root"
+    }
 }
