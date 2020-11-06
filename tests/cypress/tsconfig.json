@@ -1,7 +1,7 @@
 {
   "extends": "../tsconfig.json",
   "include": [
-    "*/*.ts", "support/index.js", "integration/api/workspace.spec.ts"
+    "*/*.ts", "support/index.js"
   ],
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
