@@ -1,2 +1,13 @@
 <jnt = 'http://www.jahia.org/jahia/nt/1.0'>
 <jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<patnt = 'http://www.jahia.org/jahia/patnt/1.0'>
+
+[patnt:tokens]
+ + * (patnt:token)
+
+[patnt:token] > jnt:content, mix:created, mix:lastModified
+ - key (string)
+ - digest (string) indexed=no
+ - active (boolean) = true
+ - expirationDate (date)
+ - lastUsageDate (date)

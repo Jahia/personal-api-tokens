@@ -42,6 +42,7 @@ Personal API Tokens
 - [Dev Environment](#dev-environment)
 - [Build](#build)
 - [Installation](#installation)
+- [Usage](#usage)
 - [Links](#links)
 
 <!--
@@ -73,6 +74,8 @@ Use `mvn install` to build the module.
 
 Deploy the module in your Jahia instance.
 
+## Usage
+
 ### Token generation
 
 After building the project, you can generate a new random token by calling : 
@@ -86,6 +89,38 @@ You can also get the token key of an existing token by typing :
 ```
 java -jar target/personal-api-tokens-1.0.0-SNAPSHOT-cli.jar --get-key hHSppWmiQgmZ6KrUDR/w8VbEbsi/m08OlMiviLhIUfM=
 ```
+
+### GraphQL API
+
+The module provides a Graphql API extension, that will allow to manipulate tokens. You will find all fields
+related to personal API token and their documentation in query/admin/personalApiTokens
+
+For example it's possible to create a token by calling :
+```
+mutation {
+  admin {
+    personalApiTokens {
+      createToken(userId:"root", name:"my token", expireAt:"2020-12-12")
+    }
+  }
+}
+```
+
+And to get its data with :
+```
+query {
+  admin {
+    personalApiTokens {
+     token(token:"aJC9l44cSKGv4Xvb0Qc8o/V1Say1s77k0Q046/VIwo8=") {
+       key
+       name
+       user {
+         name
+       }
+     }
+    }
+  }
+}
 
 ## E2E tests
 

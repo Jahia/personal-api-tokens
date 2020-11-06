@@ -16,18 +16,23 @@
 package org.jahia.modules.apitokens.core;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.codec.digest.MessageDigestAlgorithms;
 import org.apache.commons.id.uuid.UUID;
 import org.apache.commons.id.uuid.VersionFourGenerator;
 
+import java.security.SecureRandom;
 import java.util.regex.Pattern;
 
 /**
  * Simple utils class to generate manipulate token
  */
-public class TokenUtils {
-
+public final class TokenUtils {
+    private static final int KEY_SIZE = 16;
+    private static final int SECRET_SIZE = 16;
     private Pattern uuidPattern = Pattern.compile("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}");
     private Base64 base64 = new Base64();
+    private SecureRandom random = new SecureRandom();
     private VersionFourGenerator generator = new VersionFourGenerator();
 
     private TokenUtils() {
@@ -44,64 +49,69 @@ public class TokenUtils {
     /**
      * Generate a new random token
      *
-     * @return
+     * @return token
      */
     public String generateToken() {
-        byte[] b = new byte[32];
+        byte[] b = new byte[KEY_SIZE + SECRET_SIZE];
         UUID key = (UUID) generator.nextIdentifier();
-        UUID secret = (UUID) generator.nextIdentifier();
-        System.arraycopy(key.getRawBytes(), 0, b, 0, 16);
-        System.arraycopy(secret.getRawBytes(), 0, b, 16, 16);
+        byte[] secret = new byte[SECRET_SIZE];
+        random.nextBytes(secret);
+        System.arraycopy(key.getRawBytes(), 0, b, 0, KEY_SIZE);
+        System.arraycopy(secret, 0, b, KEY_SIZE, SECRET_SIZE);
         return base64.encodeToString(b);
     }
 
     /**
      * Extract the key from the token
      *
-     * @param token
-     * @return
+     * @param token token
+     * @return key
      */
     public String getKey(String token) {
-        return getPart(token, 0, 16);
+        return new UUID(getPart(token, 0, KEY_SIZE)).toString();
     }
 
     /**
      * Extract the secret part from the token
      *
-     * @param token
-     * @return
+     * @param token token
+     * @return secret
      */
-    public String getSecret(String token) {
-        return getPart(token, 16, 16);
+    public byte[] getSecret(String token) {
+        return getPart(token, KEY_SIZE, SECRET_SIZE);
+    }
+
+    /**
+     * Get digested secret from token
+     *
+     * @param token token
+     * @return digested secret
+     */
+    public String getDigestedSecret(String token) {
+        byte[] part = getPart(token, KEY_SIZE, SECRET_SIZE);
+        byte[] digested = DigestUtils.getDigest(MessageDigestAlgorithms.SHA_256).digest(part);
+
+        return base64.encodeAsString(digested);
     }
 
     /**
      * Check if the key is in valid format
      *
-     * @param key
-     * @return
+     * @param key key
+     * @return if valid
      */
     public boolean checkKeyFormat(String key) {
         return uuidPattern.matcher(key).matches();
     }
 
-    /**
-     * Check if the secret is in valid format
-     *
-     * @param secret
-     * @return
-     */
-    public boolean checkSecretFormat(String secret) {
-        return uuidPattern.matcher(secret).matches();
-    }
-
-    private String getPart(String token, int offset, int length) {
+    private byte[] getPart(String token, int offset, int length) {
         byte[] b = base64.decode(token);
-        byte[] part = new byte[16];
+        byte[] part = new byte[length];
+        if (b.length >= offset + length) {
+            System.arraycopy(b, offset, part, 0, length);
+        }
 
-        System.arraycopy(b, offset, part, 0, length);
-
-        return new UUID(part).toString();
+        return part;
     }
 
 }

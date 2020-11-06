@@ -72,6 +72,7 @@
         <jahia-module-type>system</jahia-module-type>
         <jahia-deploy-on-site>system</jahia-deploy-on-site>
         <jahia-module-signature>MCwCFCZ0gWkXge/SzSYb19Ts7cl7T6JIAhRzkmdVnYeMQvR8cV/sx3g3uV2Ifg==</jahia-module-signature>
+        <export-package>org.jahia.modules.apitokens</export-package>
         <yarn.arguments>build:production</yarn.arguments>
     </properties>
 
@@ -89,6 +90,24 @@
             <artifactId>app-shell</artifactId>
             <version>2.1.0</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jahia.modules</groupId>
+            <artifactId>graphql-dxm-provider</artifactId>
+            <version>2.2.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.graphql-java</groupId>
+            <artifactId>graphql-java-annotations</artifactId>
+            <version>6.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
