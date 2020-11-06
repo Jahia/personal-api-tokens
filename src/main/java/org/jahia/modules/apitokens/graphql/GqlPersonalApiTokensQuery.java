@@ -23,6 +23,7 @@ import org.jahia.modules.apitokens.TokenDetails;
 import org.jahia.modules.apitokens.TokenService;
 import org.jahia.modules.graphql.provider.dxm.DataFetchingException;
 import org.jahia.modules.graphql.provider.dxm.osgi.annotations.GraphQLOsgiService;
+import org.jahia.services.content.JCRTemplate;
 
 import javax.inject.Inject;
 
@@ -36,6 +37,10 @@ public class GqlPersonalApiTokensQuery {
     @GraphQLOsgiService
     private TokenService tokensService;
 
+    @Inject
+    @GraphQLOsgiService
+    private JCRTemplate jcrTemplate;
+
     /**
      * Get token details
      * @param token The token
@@ -45,7 +50,7 @@ public class GqlPersonalApiTokensQuery {
     @GraphQLDescription("Get token details")
     public GqlToken getToken(@GraphQLName("token") @GraphQLDescription("The token") @GraphQLNonNull String token) {
         try {
-            TokenDetails tokenDetails = tokensService.getTokenDetails(token);
+            TokenDetails tokenDetails = tokensService.getTokenDetails(token, jcrTemplate.getSessionFactory().getCurrentUserSession());
             if (tokenDetails != null) {
                 return new GqlToken(tokenDetails);
             }

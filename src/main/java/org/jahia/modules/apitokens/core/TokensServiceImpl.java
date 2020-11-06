@@ -69,7 +69,7 @@ public class TokensServiceImpl implements TokenService {
         String digestedSecret = TokenUtils.getInstance().getDigestedSecret(token);
 
         JCRSessionWrapper currentUserSession = jcrTemplate.getSessionFactory().getCurrentUserSession();
-        JCRUserNode userNode = userManagerService.lookupUser(tokenDetails.getUserId(), currentUserSession);
+        JCRUserNode userNode = userManagerService.lookupUserByPath(tokenDetails.getUserPath(), currentUserSession);
         if (userNode == null) {
             throw new IllegalArgumentException("invalid user");
         }
@@ -83,16 +83,15 @@ public class TokensServiceImpl implements TokenService {
 
         currentUserSession.save();
 
-        logger.info("New token generated {}", getTokenDetails(token));
+        logger.info("New token generated {}", getTokenDetails(token, currentUserSession));
 
         return token;
     }
 
-    public TokenDetails getTokenDetails(String token) throws RepositoryException {
+    public TokenDetails getTokenDetails(String token, JCRSessionWrapper session) throws RepositoryException {
         String key = TokenUtils.getInstance().getKey(token);
 
-        JCRSessionWrapper currentUserSession = jcrTemplate.getSessionFactory().getCurrentUserSession();
-        Query q = currentUserSession.getWorkspace().getQueryManager()
+        Query q = session.getWorkspace().getQueryManager()
                 .createQuery("select * from [patnt:token] where key=\"" + JCRContentUtils.sqlEncode(key) + "\"", Query.JCR_SQL2);
         NodeIterator ni = q.execute().getNodes();
         if (ni.hasNext()) {
@@ -113,7 +112,7 @@ public class TokensServiceImpl implements TokenService {
             return null;
         }
 
-        TokenDetails tokenDetails = new TokenDetails(parent.getName(), node.getName());
+        TokenDetails tokenDetails = new TokenDetails(parent.getPath(), node.getName());
         tokenDetails.setKey(node.getProperty(KEY).getString());
         tokenDetails.setActive(node.getProperty(ACTIVE).getBoolean());
         if (node.hasProperty(EXPIRATION_DATE)) {

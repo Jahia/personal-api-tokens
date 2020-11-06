@@ -19,11 +19,13 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import org.jahia.api.usermanager.JahiaUserManagerService;
 import org.jahia.modules.apitokens.TokenDetails;
 import org.jahia.modules.apitokens.TokenService;
 import org.jahia.modules.graphql.provider.dxm.DataFetchingException;
 import org.jahia.modules.graphql.provider.dxm.osgi.annotations.GraphQLOsgiService;
 import org.jahia.services.content.JCRContentUtils;
+import org.jahia.services.content.decorator.JCRUserNode;
 import org.joda.time.DateTime;
 
 import javax.inject.Inject;
@@ -40,10 +42,15 @@ public class GqlPersonalApiTokensMutation {
     @GraphQLOsgiService
     private TokenService tokensService;
 
+    @Inject
+    @GraphQLOsgiService
+    private JahiaUserManagerService userManagerService;
+
     /**
      * Create a new token
      * @param userId User ID to attach the token to
      * @param name Name to give to the token
+     * @param site The site the user belongs to, null if global user
      * @param expireAt Expiration date of the token
      * @param state State to give the newly created token
      * @return new token
@@ -52,11 +59,17 @@ public class GqlPersonalApiTokensMutation {
     @GraphQLDescription("Create a new token")
     public String createToken(@GraphQLName("userId") @GraphQLDescription("User ID to attach the token to") @GraphQLNonNull String userId,
                               @GraphQLName("name") @GraphQLDescription("Name to give to the token") @GraphQLNonNull String name,
+                              @GraphQLName("site") @GraphQLDescription("The site the user belongs to, null if global user") String site,
                               @GraphQLName("expireAt") @GraphQLDescription("Expiration date of the token") String expireAt,
                               @GraphQLName("state") @GraphQLDescription("State to give the newly created token") TokenState state) {
+        JCRUserNode userNode = userManagerService.lookupUser(userId, site);
+        if (userNode == null) {
+            throw new DataFetchingException("Cannot find user");
+        }
+
         try {
             Calendar expiration = expireAt != null ? new DateTime(expireAt).toCalendar(Locale.getDefault()): null;
-            TokenDetails tokenDetails = new TokenDetails(userId, JCRContentUtils.escapeLocalNodeName(name));
+            TokenDetails tokenDetails = new TokenDetails(userNode.getPath(), JCRContentUtils.escapeLocalNodeName(name));
             tokenDetails.setExpirationDate(expiration);
             tokenDetails.setActive(state != TokenState.DISABLED);
 

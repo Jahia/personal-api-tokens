@@ -15,6 +15,8 @@
  */
 package org.jahia.modules.apitokens;
 
+import org.jahia.services.content.JCRSessionWrapper;
+
 import javax.jcr.RepositoryException;
 
 /**
@@ -36,8 +38,9 @@ public interface TokenService {
      * Get the token details for the specified token, or null if token is invalid
      *
      * @param token The token
+     * @param session The session to use to retrieve the token
      * @return Token details
      * @throws RepositoryException when repository operation fails
      */
-    public TokenDetails getTokenDetails(String token) throws RepositoryException;
+    public TokenDetails getTokenDetails(String token, JCRSessionWrapper session) throws RepositoryException;
 }

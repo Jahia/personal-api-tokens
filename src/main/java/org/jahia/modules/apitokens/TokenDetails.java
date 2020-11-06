@@ -23,7 +23,7 @@ import java.util.Calendar;
 public class TokenDetails {
     private String key;
 
-    private String userId;
+    private String userPath;
 
     private String name;
 
@@ -40,7 +40,7 @@ public class TokenDetails {
      * @param name name
      */
     public TokenDetails(String userId, String name) {
-        this.userId = userId;
+        this.userPath = userId;
         this.name = name;
     }
 
@@ -52,12 +52,12 @@ public class TokenDetails {
         this.key = key;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUserPath() {
+        return userPath;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUserPath(String userPath) {
+        this.userPath = userPath;
     }
 
     public String getName() {
@@ -104,6 +104,10 @@ public class TokenDetails {
         return isActive;
     }
 
+    public boolean isValid() {
+        return isActive && (expirationDate == null || Calendar.getInstance().before(expirationDate));
+    }
+
     public void setActive(boolean active) {
         isActive = active;
     }
@@ -111,7 +115,7 @@ public class TokenDetails {
     @Override
     public String toString() {
         return "TokenDetails{" + "key='" + key + '\'' +
-                ", userId='" + userId + '\'' +
+                ", userId='" + userPath + '\'' +
                 ", name='" + name + '\'' +
                 ", expirationDate=" + expirationDate +
                 ", isActive=" + isActive + '}';

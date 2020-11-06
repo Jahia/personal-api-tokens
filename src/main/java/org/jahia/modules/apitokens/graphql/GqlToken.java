@@ -62,7 +62,7 @@ public class GqlToken {
     @GraphQLField
     @GraphQLDescription("The user associated to the token")
     public GqlUser getUser() {
-        return new GqlUser(userManagerService.lookupUser(tokenDetails.getUserId()).getJahiaUser());
+        return new GqlUser(userManagerService.lookupUserByPath(tokenDetails.getUserPath()).getJahiaUser());
     }
 
     @GraphQLField
