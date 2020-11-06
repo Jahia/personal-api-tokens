@@ -17,6 +17,7 @@ package org.jahia.modules.apitokens.core;
 
 import org.apache.commons.lang.StringUtils;
 import org.jahia.api.usermanager.JahiaUserManagerService;
+import org.jahia.bin.filters.CompositeFilter;
 import org.jahia.modules.apitokens.TokenDetails;
 import org.jahia.modules.apitokens.TokenService;
 import org.jahia.params.valves.AuthValveContext;
@@ -30,22 +31,27 @@ import org.jahia.services.content.decorator.JCRUserNode;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ServiceScope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.jcr.RepositoryException;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.Map;
 
 /**
  * Authentication valve for APIToken Authorization header
  */
-@Component(service = Valve.class, immediate = true)
+@Component(service = Valve.class, immediate = true, scope = ServiceScope.SINGLETON)
 public class TokenAuthValve extends BaseAuthValve {
     public static final String API_TOKEN = "APIToken";
     private static final Logger logger = LoggerFactory.getLogger(TokenAuthValve.class);
     private Pipeline authPipeline;
     private TokenService tokenService;
     private JahiaUserManagerService userManagerService;
+
+    private String[] urlPatterns = null;
 
     @Reference(service = Pipeline.class, target = "(type=authentication)")
     public void setAuthPipeline(Pipeline authPipeline) {
@@ -66,8 +72,11 @@ public class TokenAuthValve extends BaseAuthValve {
      * Activate
      */
     @Activate
-    public void activate() {
+    public void activate(Map<String, ?> props) {
         setId("patValve");
+        if (props.get("urlPatterns") != null) {
+            urlPatterns = StringUtils.split((String) props.get("urlPatterns"), ",");
+        }
         removeValve(authPipeline);
         addValve(authPipeline, 0, null, null);
     }
@@ -77,15 +86,20 @@ public class TokenAuthValve extends BaseAuthValve {
         AuthValveContext authValveContext = (AuthValveContext) o;
         HttpServletRequest request = authValveContext.getRequest();
 
-        String authorization = request.getHeader("Authorization");
-        try {
-            JCRUserNode user = authenticate(authorization);
-            if (user != null) {
-                authValveContext.getSessionFactory().setCurrentUser(user.getJahiaUser());
-                return;
+        String uri = request.getRequestURI().substring(request.getContextPath().length());
+
+        if (Arrays.stream(urlPatterns).anyMatch(urlPattern -> CompositeFilter.matchFiltersURL(urlPattern, uri))) {
+            String authorization = request.getHeader("Authorization");
+            try {
+                JCRUserNode user = authenticate(authorization);
+                if (user != null) {
+                    authValveContext.getSessionFactory().setCurrentUser(user.getJahiaUser());
+                    return;
+                }
+
+            } catch (RepositoryException e) {
+                throw new PipelineException(e);
             }
-        } catch (RepositoryException e) {
-            throw new PipelineException(e);
         }
 
         valveContext.invokeNext(o);
