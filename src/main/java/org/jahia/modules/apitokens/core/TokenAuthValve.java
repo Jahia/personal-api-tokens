@@ -70,6 +70,8 @@ public class TokenAuthValve extends BaseAuthValve {
 
     /**
      * Activate
+     *
+     * @param props Configuration properties
      */
     @Activate
     public void activate(Map<String, ?> props) {
