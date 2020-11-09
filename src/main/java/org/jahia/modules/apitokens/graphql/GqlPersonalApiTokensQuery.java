@@ -15,7 +15,6 @@
  */
 package org.jahia.modules.apitokens.graphql;
 
-import graphql.ErrorType;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -25,7 +24,6 @@ import graphql.schema.DataFetchingEnvironment;
 import org.jahia.api.usermanager.JahiaUserManagerService;
 import org.jahia.modules.apitokens.TokenDetails;
 import org.jahia.modules.apitokens.TokenService;
-import org.jahia.modules.graphql.provider.dxm.BaseGqlClientException;
 import org.jahia.modules.graphql.provider.dxm.DataFetchingException;
 import org.jahia.modules.graphql.provider.dxm.osgi.annotations.GraphQLOsgiService;
 import org.jahia.modules.graphql.provider.dxm.relay.DXPaginatedData;
@@ -37,8 +35,6 @@ import org.jahia.services.usermanager.JahiaUser;
 
 import javax.inject.Inject;
 import java.util.stream.Stream;
-
-import static graphql.validation.ValidationErrorType.MissingFieldArgument;
 
 /**
  * PersonalApiTokens query type
