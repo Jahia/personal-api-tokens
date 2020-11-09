@@ -54,7 +54,7 @@ public class GqlPersonalApiTokensQuery {
      */
     @GraphQLField
     @GraphQLDescription("Get token details")
-    public GqlToken getToken(@GraphQLName("key") @GraphQLDescription("The token") @GraphQLNonNull String key) {
+    public GqlToken getToken(@GraphQLName("key") @GraphQLDescription("The token key") @GraphQLNonNull String key) {
         try {
 
             TokenDetails tokenDetails = tokensService.getTokenDetails(key, jcrTemplate.getSessionFactory().getCurrentUserSession());
