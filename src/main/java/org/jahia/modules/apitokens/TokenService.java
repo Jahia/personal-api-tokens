@@ -65,4 +65,25 @@ public interface TokenService {
      */
     public Stream<TokenDetails> getTokensDetails(String userId, JCRSessionWrapper session) throws RepositoryException;
 
+    /**
+     * Update token. You can change name, expiration date and state
+     *
+     * @param details The updated token details
+     * @param session The session
+     * @return true if operation succeeds, false if token does not exist
+     * @throws RepositoryException when repository operation fails
+     */
+    public boolean updateToken(TokenDetails details, JCRSessionWrapper session) throws RepositoryException;
+
+    /**
+     * Delete an existing token
+     *
+     * @param key The token key
+     * @param session The session
+     * @return true if operation succeeds, false if token does not exist
+     * @throws RepositoryException when repository operation fails
+     */
+    public boolean deleteToken(String key, JCRSessionWrapper session) throws RepositoryException;
+
+
 }

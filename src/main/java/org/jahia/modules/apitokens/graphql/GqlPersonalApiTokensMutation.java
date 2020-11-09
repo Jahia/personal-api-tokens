@@ -25,11 +25,13 @@ import org.jahia.modules.apitokens.TokenService;
 import org.jahia.modules.graphql.provider.dxm.DataFetchingException;
 import org.jahia.modules.graphql.provider.dxm.osgi.annotations.GraphQLOsgiService;
 import org.jahia.services.content.JCRContentUtils;
+import org.jahia.services.content.JCRSessionWrapper;
 import org.jahia.services.content.JCRTemplate;
 import org.jahia.services.content.decorator.JCRUserNode;
 import org.joda.time.DateTime;
 
 import javax.inject.Inject;
+import javax.jcr.RepositoryException;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -51,13 +53,16 @@ public class GqlPersonalApiTokensMutation {
     @GraphQLOsgiService
     private JahiaUserManagerService userManagerService;
 
+    private JCRSessionWrapper currentUserSession;
+
     /**
      * Create a new token
-     * @param userId User ID to attach the token to
-     * @param name Name to give to the token
-     * @param site The site the user belongs to, null if global user
+     *
+     * @param userId   User ID to attach the token to
+     * @param name     Name to give to the token
+     * @param site     The site the user belongs to, null if global user
      * @param expireAt Expiration date of the token
-     * @param state State to give the newly created token
+     * @param state    State to give the newly created token
      * @return new token
      */
     @GraphQLField
@@ -73,16 +78,76 @@ public class GqlPersonalApiTokensMutation {
         }
 
         try {
-            Calendar expiration = expireAt != null ? new DateTime(expireAt).toCalendar(Locale.getDefault()): null;
+            Calendar expiration = expireAt != null ? new DateTime(expireAt).toCalendar(Locale.getDefault()) : null;
             TokenDetails tokenDetails = new TokenDetails(userNode.getPath(), JCRContentUtils.escapeLocalNodeName(name));
             tokenDetails.setExpirationDate(expiration);
             tokenDetails.setActive(state != TokenState.DISABLED);
 
-            return tokensService.createToken(tokenDetails, jcrTemplate.getSessionFactory().getCurrentUserSession());
+            String token = tokensService.createToken(tokenDetails, getCurrentUserSession());
+            getCurrentUserSession().save();
+            return token;
         } catch (Exception e) {
             throw new DataFetchingException(e);
         }
     }
 
+    /**
+     * Update an existing token
+     *
+     * @param key The token key
+     * @param name Name to give to the token
+     * @param expireAt Expiration date of the token
+     * @param state State to give the token
+     * @return true if operation succeeds, false if token does not exist
+     */
+    @GraphQLField
+    @GraphQLDescription("Update an existing token")
+    public boolean updateToken(@GraphQLName("key") @GraphQLNonNull String key,
+                               @GraphQLName("name") @GraphQLDescription("Name to give to the token") String name,
+                               @GraphQLName("expireAt") @GraphQLDescription("Expiration date of the token") String expireAt,
+                               @GraphQLName("state") @GraphQLDescription("State to give the token") TokenState state) {
+        try {
+            TokenDetails details = tokensService.getTokenDetails(key, getCurrentUserSession());
+            if (name != null) {
+                details.setName(name);
+            }
+            if (expireAt != null) {
+                details.setExpirationDate(new DateTime(expireAt).toCalendar(Locale.getDefault()));
+            }
+            if (state != null) {
+                details.setActive(state != TokenState.DISABLED);
+            }
+            boolean updateToken = tokensService.updateToken(details, getCurrentUserSession());
+            getCurrentUserSession().save();
+            return updateToken;
+        } catch (RepositoryException e) {
+            throw new DataFetchingException(e);
+        }
+    }
+
+    /**
+     * Delete an existing token
+     *
+     * @param key The token key
+     * @return true if operation succeeds, false if token does not exist
+     */
+    @GraphQLField
+    @GraphQLDescription("Delete an existing token")
+    public boolean deleteToken(@GraphQLName("key") @GraphQLNonNull String key) {
+        try {
+            boolean deleteToken = tokensService.deleteToken(key, getCurrentUserSession());
+            getCurrentUserSession().save();
+            return deleteToken;
+        } catch (RepositoryException e) {
+            throw new DataFetchingException(e);
+        }
+    }
+
+    private JCRSessionWrapper getCurrentUserSession() throws RepositoryException {
+        if (currentUserSession == null) {
+            currentUserSession =jcrTemplate.getSessionFactory().getCurrentUserSession();
+        }
+        return currentUserSession;
+    }
 
 }

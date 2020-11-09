@@ -100,11 +100,9 @@ public class TokensServiceImpl implements TokenService {
     }
 
     public TokenDetails getTokenDetails(String key, JCRSessionWrapper session) throws RepositoryException {
-        Query q = session.getWorkspace().getQueryManager()
-                .createQuery("select * from [patnt:token] where key=\"" + JCRContentUtils.sqlEncode(key) + "\"", Query.JCR_SQL2);
-        NodeIterator ni = q.execute().getNodes();
-        if (ni.hasNext()) {
-            return getTokenDetails((JCRNodeWrapper) ni.nextNode());
+        JCRNodeWrapper tokenNode = getTokenNode(key, session);
+        if (tokenNode != null) {
+            return getTokenDetails(tokenNode);
         }
 
         return null;
@@ -137,6 +135,40 @@ public class TokensServiceImpl implements TokenService {
 
             throw e;
         }
+    }
+
+    @Override
+    public boolean updateToken(TokenDetails tokenDetails, JCRSessionWrapper session) throws RepositoryException {
+        JCRNodeWrapper tokenNode = getTokenNode(tokenDetails.getKey(), session);
+        if (tokenNode != null) {
+            if (!tokenNode.getName().equals(tokenDetails.getName())) {
+                tokenNode.rename(tokenDetails.getName());
+            }
+            tokenNode.setProperty(ACTIVE, tokenDetails.isActive());
+            tokenNode.setProperty(EXPIRATION_DATE, tokenDetails.getExpirationDate());
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean deleteToken(String key, JCRSessionWrapper session) throws RepositoryException {
+        JCRNodeWrapper tokenNode = getTokenNode(key, session);
+        if (tokenNode != null) {
+            tokenNode.remove();
+            return true;
+        }
+        return false;
+    }
+
+    private JCRNodeWrapper getTokenNode(String key, JCRSessionWrapper session) throws RepositoryException {
+        Query q = session.getWorkspace().getQueryManager()
+                .createQuery("select * from [patnt:token] where key=\"" + JCRContentUtils.sqlEncode(key) + "\"", Query.JCR_SQL2);
+        NodeIterator ni = q.execute().getNodes();
+        if (ni.hasNext()) {
+            return (JCRNodeWrapper) ni.nextNode();
+        }
+        return null;
     }
 
     private TokenDetails getTokenDetails(JCRNodeWrapper node) throws RepositoryException {
