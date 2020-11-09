@@ -38,7 +38,6 @@ public class GqlToken {
     @GraphQLOsgiService
     private JahiaUserManagerService userManagerService;
 
-
     /**
      * Constructor
      * @param tokenDetails tokenDetails

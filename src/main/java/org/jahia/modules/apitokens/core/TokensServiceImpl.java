@@ -16,11 +16,11 @@
 package org.jahia.modules.apitokens.core;
 
 import org.jahia.api.Constants;
-import org.jahia.api.content.JCRTemplate;
 import org.jahia.api.usermanager.JahiaUserManagerService;
 import org.jahia.modules.apitokens.TokenDetails;
 import org.jahia.modules.apitokens.TokenService;
 import org.jahia.services.content.JCRContentUtils;
+import org.jahia.services.content.JCRNodeIteratorWrapper;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.JCRSessionWrapper;
 import org.jahia.services.content.decorator.JCRUserNode;
@@ -28,11 +28,18 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pl.touk.throwing.ThrowingFunction;
+import pl.touk.throwing.exception.WrappedException;
 
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.query.Query;
 import java.util.Collections;
+import java.util.Iterator;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * Service to handle Personal API tokens
@@ -50,26 +57,19 @@ public class TokensServiceImpl implements TokenService {
     public static final String EXPIRATION_DATE = "expirationDate";
     public static final String LAST_USAGE_DATE = "lastUsageDate";
 
-    private JCRTemplate jcrTemplate;
     private JahiaUserManagerService userManagerService;
-
-    @Reference
-    public void setJcrTemplate(JCRTemplate jcrTemplate) {
-        this.jcrTemplate = jcrTemplate;
-    }
 
     @Reference
     public void setUserManagerService(JahiaUserManagerService userManagerService) {
         this.userManagerService = userManagerService;
     }
 
-    public String createToken(TokenDetails tokenDetails) throws RepositoryException {
+    public String createToken(TokenDetails tokenDetails, JCRSessionWrapper currentUserSession) throws RepositoryException {
         String token = TokenUtils.getInstance().generateToken();
 
         String key = TokenUtils.getInstance().getKey(token);
         String digestedSecret = TokenUtils.getInstance().getDigestedSecret(token);
 
-        JCRSessionWrapper currentUserSession = jcrTemplate.getSessionFactory().getCurrentUserSession();
         JCRUserNode userNode = userManagerService.lookupUserByPath(tokenDetails.getUserPath(), currentUserSession);
         if (userNode == null) {
             throw new IllegalArgumentException("invalid user");
@@ -82,29 +82,61 @@ public class TokensServiceImpl implements TokenService {
         tokenNode.setProperty(ACTIVE, tokenDetails.isActive());
         tokenNode.setProperty(EXPIRATION_DATE, tokenDetails.getExpirationDate());
 
-        currentUserSession.save();
-
         logger.info("New token generated {}", getTokenDetails(token, currentUserSession));
 
         return token;
     }
 
-    public TokenDetails getTokenDetails(String token, JCRSessionWrapper session) throws RepositoryException {
-        String key = TokenUtils.getInstance().getKey(token);
-
-        Query q = session.getWorkspace().getQueryManager()
-                .createQuery("select * from [patnt:token] where key=\"" + JCRContentUtils.sqlEncode(key) + "\"", Query.JCR_SQL2);
-        NodeIterator ni = q.execute().getNodes();
-        if (ni.hasNext()) {
-            JCRNodeWrapper node = (JCRNodeWrapper) ni.nextNode();
-
+    public TokenDetails verifyToken(String token, JCRSessionWrapper session) throws RepositoryException {
+        TokenDetails tokenDetails = getTokenDetails(TokenUtils.getInstance().getKey(token), session);
+        if (tokenDetails != null) {
             String digestedSecret = TokenUtils.getInstance().getDigestedSecret(token);
-            if (digestedSecret.equals(node.getProperty(DIGEST).getString())) {
-                return getTokenDetails(node);
+            if (digestedSecret.equals(tokenDetails.getDigest())) {
+                return tokenDetails;
             }
         }
 
         return null;
+    }
+
+    public TokenDetails getTokenDetails(String key, JCRSessionWrapper session) throws RepositoryException {
+        Query q = session.getWorkspace().getQueryManager()
+                .createQuery("select * from [patnt:token] where key=\"" + JCRContentUtils.sqlEncode(key) + "\"", Query.JCR_SQL2);
+        NodeIterator ni = q.execute().getNodes();
+        if (ni.hasNext()) {
+            return getTokenDetails((JCRNodeWrapper) ni.nextNode());
+        }
+
+        return null;
+    }
+
+    public Stream<TokenDetails> getTokensDetails(String userId, JCRSessionWrapper session) throws RepositoryException {
+        String path = null;
+        if (userId != null) {
+            JCRUserNode userNode = userManagerService.lookupUser(userId);
+            if (userNode == null) {
+                throw new IllegalArgumentException("Unknown user");
+            }
+            path = userNode.getPath();
+        }
+
+        String query = path == null ? "select * from [patnt:token]" :
+                "select * from [patnt:token] where isdescendantnode('" + JCRContentUtils.sqlEncode(path) + "')";
+
+        Query q = session.getWorkspace().getQueryManager().createQuery(query, Query.JCR_SQL2);
+
+        Iterator<JCRNodeWrapper> nodes = ((JCRNodeIteratorWrapper) q.execute().getNodes()).iterator();
+
+        try {
+            return StreamSupport.stream(Spliterators.spliteratorUnknownSize(nodes, Spliterator.ORDERED), false)
+                    .map(ThrowingFunction.unchecked(this::getTokenDetails));
+        } catch (WrappedException e) {
+            if (e.getCause() instanceof RepositoryException) {
+                throw (RepositoryException) e.getCause();
+            }
+
+            throw e;
+        }
     }
 
     private TokenDetails getTokenDetails(JCRNodeWrapper node) throws RepositoryException {
@@ -116,6 +148,7 @@ public class TokensServiceImpl implements TokenService {
         TokenDetails tokenDetails = new TokenDetails(parent.getPath(), node.getName());
         tokenDetails.setKey(node.getProperty(KEY).getString());
         tokenDetails.setActive(node.getProperty(ACTIVE).getBoolean());
+        tokenDetails.setDigest(node.getProperty(DIGEST).getString());
         if (node.hasProperty(EXPIRATION_DATE)) {
             tokenDetails.setExpirationDate(node.getProperty(EXPIRATION_DATE).getDate());
         }

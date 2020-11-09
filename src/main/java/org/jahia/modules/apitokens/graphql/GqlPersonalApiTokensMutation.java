@@ -25,6 +25,7 @@ import org.jahia.modules.apitokens.TokenService;
 import org.jahia.modules.graphql.provider.dxm.DataFetchingException;
 import org.jahia.modules.graphql.provider.dxm.osgi.annotations.GraphQLOsgiService;
 import org.jahia.services.content.JCRContentUtils;
+import org.jahia.services.content.JCRTemplate;
 import org.jahia.services.content.decorator.JCRUserNode;
 import org.joda.time.DateTime;
 
@@ -41,6 +42,10 @@ public class GqlPersonalApiTokensMutation {
     @Inject
     @GraphQLOsgiService
     private TokenService tokensService;
+
+    @Inject
+    @GraphQLOsgiService
+    private JCRTemplate jcrTemplate;
 
     @Inject
     @GraphQLOsgiService
@@ -73,7 +78,7 @@ public class GqlPersonalApiTokensMutation {
             tokenDetails.setExpirationDate(expiration);
             tokenDetails.setActive(state != TokenState.DISABLED);
 
-            return tokensService.createToken(tokenDetails);
+            return tokensService.createToken(tokenDetails, jcrTemplate.getSessionFactory().getCurrentUserSession());
         } catch (Exception e) {
             throw new DataFetchingException(e);
         }

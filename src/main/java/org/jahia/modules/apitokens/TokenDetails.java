@@ -25,6 +25,8 @@ public class TokenDetails {
 
     private String userPath;
 
+    private String digest;
+
     private String name;
 
     private Calendar expirationDate;
@@ -58,6 +60,14 @@ public class TokenDetails {
 
     public void setUserPath(String userPath) {
         this.userPath = userPath;
+    }
+
+    public String getDigest() {
+        return digest;
+    }
+
+    public void setDigest(String digest) {
+        this.digest = digest;
     }
 
     public String getName() {
