@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-const createToken = gql`
+const CreateTokenMutation = gql`
     mutation CreateToken($userId: String!, $name: String!, $expireAt: String!) {
         admin {
              personalApiTokens {
@@ -34,4 +34,4 @@ const getCurrentUserName = gql`
     }
 `;
 
-export {createToken, getTokenData, getCurrentUserName};
+export {CreateTokenMutation, getTokenData, getCurrentUserName};

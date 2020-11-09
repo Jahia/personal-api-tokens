@@ -1,5 +1,5 @@
 import React from 'react';
-import {act, cleanup, render, screen, fireEvent} from '@testing-library/react';
+import {act, cleanup, render, screen} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import {useSelector} from 'react-redux';
 import MyApiTokens from '../../../main/javascript/PersonalApiTokens/MyApiTokens/MyApiTokens';
@@ -38,13 +38,6 @@ describe('Test main screen functionality', () => {
         await act(async () => {
             await wait(0);
         });
-        const createTokenButton = screen.getByText(/translated_personal-api-tokens:createToken.buttonTitle/i);
-        expect(createTokenButton).toBeDefined();
-        await act(async () => {
-            // Nothing is happening as API still not wired
-            fireEvent.click(createTokenButton);
-        });
-        expect(createTokenButton).toBeDefined();
         const noTokensText = screen.getByText(/translated_personal-api-tokens:noTokens/i);
         expect(noTokensText).toBeDefined();
     });

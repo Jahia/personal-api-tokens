@@ -20,7 +20,6 @@ const CreateTokenDialogBody = ({tokenInformation, setTokenInformation}) => {
             >{t('personal-api-tokens:createToken.defineName')}
             </Typography>
             <TextField
-                required
                 value={tokenInformation.name}
                 InputProps={{
                     classes: {root: styles.inputStyle, focused: styles.inputFocus, input: styles.text},

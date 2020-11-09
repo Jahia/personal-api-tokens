@@ -1,12 +1,12 @@
-import {createToken, getCurrentUserName} from '../../main/javascript/PersonalApiTokens/MyApiTokens/MyApiTokens.gql';
+import {CreateTokenMutation, getCurrentUserName} from '../../main/javascript/PersonalApiTokens/MyApiTokens/MyApiTokens.gql';
 export const createTokenMocks = [
     {
         request: {
-            query: createToken,
+            query: CreateTokenMutation,
             variables: {
-                name: 'testToken',
                 userId: 'root',
-                expireAt: '2020-11-11 5:30'
+                name: 'testToken',
+                expireAt: '2020-11-11T07:24:00.000Z'
             }
         },
         result: () => {
@@ -14,7 +14,7 @@ export const createTokenMocks = [
                 data: {
                     admin: {
                         personalApiTokens: {
-                            createToken: 'dwkfewjkghefjkghejrkghrewjgherjgher12121212scdsfdsfdsf'
+                            createToken: 'psDi+YEQQ768/Wp+J8yL5r9p8+4r8DbSw+Dji1t9Dyk='
                         }
                     }
                 }
@@ -23,10 +23,28 @@ export const createTokenMocks = [
     },
     {
         request: {
-            query: getCurrentUserName,
+            query: CreateTokenMutation,
             variables: {
-                token: 'fgfdgfdgdfgdfgdfgdfgdfsgdfgdsfg'
+                userId: 'root',
+                name: 'testToken',
+                expireAt: null
             }
+        },
+        result: () => {
+            return {
+                data: {
+                    admin: {
+                        personalApiTokens: {
+                            createToken: 'tokenNoExpiryDate'
+                        }
+                    }
+                }
+            };
+        }
+    },
+    {
+        request: {
+            query: getCurrentUserName
         },
         result: () => {
             return {
