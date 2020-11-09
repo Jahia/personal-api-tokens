@@ -2,8 +2,9 @@ import { ApolloClient, HttpLink, InMemoryCache, NormalizedCacheObject } from 'ap
 
 export const apolloClient = (authToken?: string): ApolloClient<NormalizedCacheObject> => {
     const headers: string =
-        authToken ?? `Basic ${btoa(Cypress.env('JAHIA_USERNAME'))}:${btoa(Cypress.env('JAHIA_PASSWORD'))}`
+        authToken ?? `Basic ${btoa(Cypress.env('JAHIA_USERNAME') + ':' + Cypress.env('JAHIA_PASSWORD'))}`
     console.log(headers)
+
     return new ApolloClient({
         link: new HttpLink({
             uri: `${Cypress.config().baseUrl}/modules/graphql`,
@@ -12,5 +13,10 @@ export const apolloClient = (authToken?: string): ApolloClient<NormalizedCacheOb
             },
         }),
         cache: new InMemoryCache(),
+        defaultOptions: {
+            query: {
+                fetchPolicy: 'no-cache',
+            },
+        },
     })
 }

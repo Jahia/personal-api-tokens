@@ -57,6 +57,17 @@ public interface TokenService {
     public TokenDetails getTokenDetails(String key, JCRSessionWrapper session) throws RepositoryException;
 
     /**
+     * Get the token details for the specified key, or null if it does not exist
+     *
+     * @param userPath  The user path
+     * @param tokenName The token name
+     * @param session   The session to use to retrieve the token
+     * @return Token details
+     * @throws RepositoryException when repository operation fails
+     */
+    public TokenDetails getTokenDetails(String userPath, String tokenName, JCRSessionWrapper session) throws RepositoryException;
+
+    /**
      * Get a list of tokens for the specified user, or for all users if userId is null
      *
      * @param userPath The user path on which you want to filter the tokens

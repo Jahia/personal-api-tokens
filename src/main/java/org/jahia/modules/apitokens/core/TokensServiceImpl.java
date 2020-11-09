@@ -80,7 +80,7 @@ public class TokensServiceImpl implements TokenService {
         tokenNode.setProperty(ACTIVE, tokenDetails.isActive());
         tokenNode.setProperty(EXPIRATION_DATE, tokenDetails.getExpirationDate());
 
-        logger.info("New token generated {}", getTokenDetails(token, currentUserSession));
+        logger.info("New token generated {}", getTokenDetails(tokenNode));
 
         return token;
     }
@@ -99,6 +99,18 @@ public class TokensServiceImpl implements TokenService {
 
     public TokenDetails getTokenDetails(String key, JCRSessionWrapper session) throws RepositoryException {
         return getTokenDetails(getTokenNode(key, session));
+    }
+
+    public TokenDetails getTokenDetails(String userPath, String tokenName, JCRSessionWrapper session) throws RepositoryException {
+        Query q = session.getWorkspace().getQueryManager()
+                .createQuery("select * from [patnt:token] where isdescendantnode('" + JCRContentUtils.sqlEncode(userPath) + "') " +
+                        "and localname()='" + JCRContentUtils.sqlEncode(tokenName) + "'", Query.JCR_SQL2);
+        NodeIterator ni = q.execute().getNodes();
+        if (ni.hasNext()) {
+            return getTokenDetails((JCRNodeWrapper) ni.nextNode());
+        }
+
+        return null;
     }
 
     public Stream<TokenDetails> getTokensDetails(String userPath, JCRSessionWrapper session) throws RepositoryException {

@@ -55,16 +55,67 @@ public class GqlPersonalApiTokensQuery {
     private JahiaUserManagerService userManagerService;
 
     /**
-     * Get token details
+     * Check token validity
+     *
+     * @param token The token
+     * @return true if valid
+     */
+    @GraphQLField
+    @GraphQLDescription("Check token validity")
+    public boolean verifyToken(@GraphQLName("token") @GraphQLDescription("The token") @GraphQLNonNull String token) {
+        try {
+            TokenDetails tokenDetails = tokensService.verifyToken(token, jcrTemplate.getSessionFactory().getCurrentUserSession());
+            if (tokenDetails != null) {
+                return tokenDetails.isValid();
+            }
+
+            return false;
+        } catch (Exception e) {
+            throw new DataFetchingException(e);
+        }
+    }
+
+    /**
+     * Get token details, based on key
      *
      * @param key The token key
      * @return token details
      */
     @GraphQLField
-    @GraphQLDescription("Get token details")
-    public GqlToken getToken(@GraphQLName("key") @GraphQLDescription("The token key") @GraphQLNonNull String key) {
+    @GraphQLDescription("Get token details, based on key")
+    public GqlToken getTokenByKey(@GraphQLName("key") @GraphQLDescription("The token key") @GraphQLNonNull String key) {
         try {
             TokenDetails tokenDetails = tokensService.getTokenDetails(key, jcrTemplate.getSessionFactory().getCurrentUserSession());
+            if (tokenDetails != null) {
+                return new GqlToken(tokenDetails);
+            }
+
+            return null;
+        } catch (Exception e) {
+            throw new DataFetchingException(e);
+        }
+    }
+
+    /**
+     * Get token details, based on user and token name
+     *
+     * @param userId    The user id
+     * @param site      The site the user belongs to, null if global user
+     * @param tokenName The token name
+     * @return token details
+     */
+    @GraphQLField
+    @GraphQLDescription("Get token details, based on user and token name")
+    public GqlToken getTokenByUserAndName(@GraphQLName("userId") @GraphQLDescription("The user id") @GraphQLNonNull String userId,
+                                          @GraphQLName("site") @GraphQLDescription("The site the user belongs to, null if global user") String site,
+                                          @GraphQLName("tokenName") @GraphQLDescription("The token name") @GraphQLNonNull String tokenName) {
+        JCRUserNode userNode = userManagerService.lookupUser(userId, site);
+        if (userNode == null) {
+            throw new DataFetchingException("Cannot find user");
+        }
+
+        try {
+            TokenDetails tokenDetails = tokensService.getTokenDetails(userNode.getPath(), tokenName, jcrTemplate.getSessionFactory().getCurrentUserSession());
             if (tokenDetails != null) {
                 return new GqlToken(tokenDetails);
             }
