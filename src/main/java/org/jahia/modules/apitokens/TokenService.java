@@ -58,12 +58,12 @@ public interface TokenService {
 
     /**
      * Get a list of tokens for the specified user, or for all users if userId is null
-     * @param userId The userId on which you want to filter the tokens
+     * @param userPath The user path on which you want to filter the tokens
      * @param session The session to use to retrieve the tokens
      * @return The tokens details
      * @throws RepositoryException when repository operation fails
      */
-    public Stream<TokenDetails> getTokensDetails(String userId, JCRSessionWrapper session) throws RepositoryException;
+    public Stream<TokenDetails> getTokensDetails(String userPath, JCRSessionWrapper session) throws RepositoryException;
 
     /**
      * Update token. You can change name, expiration date and state

@@ -19,13 +19,13 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import org.apache.commons.lang.StringUtils;
 import org.jahia.api.usermanager.JahiaUserManagerService;
 import org.jahia.modules.apitokens.TokenDetails;
 import org.jahia.modules.apitokens.TokenService;
 import org.jahia.modules.graphql.provider.dxm.DataFetchingException;
 import org.jahia.modules.graphql.provider.dxm.osgi.annotations.GraphQLOsgiService;
 import org.jahia.services.content.JCRContentUtils;
-import org.jahia.services.content.JCRSessionWrapper;
 import org.jahia.services.content.JCRTemplate;
 import org.jahia.services.content.decorator.JCRUserNode;
 import org.joda.time.DateTime;
@@ -53,8 +53,6 @@ public class GqlPersonalApiTokensMutation {
     @GraphQLOsgiService
     private JahiaUserManagerService userManagerService;
 
-    private JCRSessionWrapper currentUserSession;
-
     /**
      * Create a new token
      *
@@ -78,14 +76,16 @@ public class GqlPersonalApiTokensMutation {
         }
 
         try {
-            Calendar expiration = expireAt != null ? new DateTime(expireAt).toCalendar(Locale.getDefault()) : null;
-            TokenDetails tokenDetails = new TokenDetails(userNode.getPath(), JCRContentUtils.escapeLocalNodeName(name));
-            tokenDetails.setExpirationDate(expiration);
-            tokenDetails.setActive(state != TokenState.DISABLED);
+            return jcrTemplate.doExecute(jcrTemplate.getSessionFactory().getCurrentUser(), null, null, session -> {
+                Calendar expiration = expireAt != null ? new DateTime(expireAt).toCalendar(Locale.getDefault()) : null;
+                TokenDetails tokenDetails = new TokenDetails(userNode.getPath(), JCRContentUtils.escapeLocalNodeName(name));
+                tokenDetails.setExpirationDate(expiration);
+                tokenDetails.setActive(state != TokenState.DISABLED);
 
-            String token = tokensService.createToken(tokenDetails, getCurrentUserSession());
-            getCurrentUserSession().save();
-            return token;
+                String token = tokensService.createToken(tokenDetails, session);
+                session.save();
+                return token;
+            });
         } catch (Exception e) {
             throw new DataFetchingException(e);
         }
@@ -104,22 +104,28 @@ public class GqlPersonalApiTokensMutation {
     @GraphQLDescription("Update an existing token")
     public boolean updateToken(@GraphQLName("key") @GraphQLNonNull String key,
                                @GraphQLName("name") @GraphQLDescription("Name to give to the token") String name,
-                               @GraphQLName("expireAt") @GraphQLDescription("Expiration date of the token") String expireAt,
+                               @GraphQLName("expireAt") @GraphQLDescription("Expiration date of the token, use empty string to unset expiration date") String expireAt,
                                @GraphQLName("state") @GraphQLDescription("State to give the token") TokenState state) {
         try {
-            TokenDetails details = tokensService.getTokenDetails(key, getCurrentUserSession());
-            if (name != null) {
-                details.setName(name);
-            }
-            if (expireAt != null) {
-                details.setExpirationDate(new DateTime(expireAt).toCalendar(Locale.getDefault()));
-            }
-            if (state != null) {
-                details.setActive(state != TokenState.DISABLED);
-            }
-            boolean updateToken = tokensService.updateToken(details, getCurrentUserSession());
-            getCurrentUserSession().save();
-            return updateToken;
+            return jcrTemplate.doExecute(jcrTemplate.getSessionFactory().getCurrentUser(), null, null, session -> {
+                TokenDetails details = tokensService.getTokenDetails(key, session);
+                if (name != null) {
+                    details.setName(name);
+                }
+                if (expireAt != null) {
+                    if (StringUtils.isEmpty(expireAt)) {
+                        details.setExpirationDate(null);
+                    } else {
+                        details.setExpirationDate(new DateTime(expireAt).toCalendar(Locale.getDefault()));
+                    }
+                }
+                if (state != null) {
+                    details.setActive(state != TokenState.DISABLED);
+                }
+                boolean updateToken = tokensService.updateToken(details, session);
+                session.save();
+                return updateToken;
+            });
         } catch (RepositoryException e) {
             throw new DataFetchingException(e);
         }
@@ -135,19 +141,14 @@ public class GqlPersonalApiTokensMutation {
     @GraphQLDescription("Delete an existing token")
     public boolean deleteToken(@GraphQLName("key") @GraphQLNonNull String key) {
         try {
-            boolean deleteToken = tokensService.deleteToken(key, getCurrentUserSession());
-            getCurrentUserSession().save();
-            return deleteToken;
+            return jcrTemplate.doExecute(jcrTemplate.getSessionFactory().getCurrentUser(), null, null, session -> {
+                boolean deleteToken = tokensService.deleteToken(key, session);
+                session.save();
+                return deleteToken;
+            });
         } catch (RepositoryException e) {
             throw new DataFetchingException(e);
         }
-    }
-
-    private JCRSessionWrapper getCurrentUserSession() throws RepositoryException {
-        if (currentUserSession == null) {
-            currentUserSession =jcrTemplate.getSessionFactory().getCurrentUserSession();
-        }
-        return currentUserSession;
     }
 
 }

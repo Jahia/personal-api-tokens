@@ -34,10 +34,7 @@ import pl.touk.throwing.exception.WrappedException;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.query.Query;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Spliterator;
-import java.util.Spliterators;
+import java.util.*;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -100,26 +97,12 @@ public class TokensServiceImpl implements TokenService {
     }
 
     public TokenDetails getTokenDetails(String key, JCRSessionWrapper session) throws RepositoryException {
-        JCRNodeWrapper tokenNode = getTokenNode(key, session);
-        if (tokenNode != null) {
-            return getTokenDetails(tokenNode);
-        }
-
-        return null;
+        return getTokenDetails(getTokenNode(key, session));
     }
 
-    public Stream<TokenDetails> getTokensDetails(String userId, JCRSessionWrapper session) throws RepositoryException {
-        String path = null;
-        if (userId != null) {
-            JCRUserNode userNode = userManagerService.lookupUser(userId);
-            if (userNode == null) {
-                throw new IllegalArgumentException("Unknown user");
-            }
-            path = userNode.getPath();
-        }
-
-        String query = path == null ? "select * from [patnt:token]" :
-                "select * from [patnt:token] where isdescendantnode('" + JCRContentUtils.sqlEncode(path) + "')";
+    public Stream<TokenDetails> getTokensDetails(String userPath, JCRSessionWrapper session) throws RepositoryException {
+        String query = userPath == null ? "select * from [patnt:token]" :
+                "select * from [patnt:token] where isdescendantnode('" + JCRContentUtils.sqlEncode(userPath) + "')";
 
         Query q = session.getWorkspace().getQueryManager().createQuery(query, Query.JCR_SQL2);
 
@@ -140,15 +123,24 @@ public class TokensServiceImpl implements TokenService {
     @Override
     public boolean updateToken(TokenDetails tokenDetails, JCRSessionWrapper session) throws RepositoryException {
         JCRNodeWrapper tokenNode = getTokenNode(tokenDetails.getKey(), session);
-        if (tokenNode != null) {
-            if (!tokenNode.getName().equals(tokenDetails.getName())) {
+        TokenDetails previousDetails = getTokenDetails(tokenNode);
+        if (previousDetails != null) {
+            if (!previousDetails.getName().equals(tokenDetails.getName())) {
                 tokenNode.rename(tokenDetails.getName());
             }
-            tokenNode.setProperty(ACTIVE, tokenDetails.isActive());
-            tokenNode.setProperty(EXPIRATION_DATE, tokenDetails.getExpirationDate());
+            if (previousDetails.isActive() != tokenDetails.isActive()) {
+                tokenNode.setProperty(ACTIVE, tokenDetails.isActive());
+            }
+            if (getTimeValue(previousDetails.getExpirationDate()) != getTimeValue(tokenDetails.getExpirationDate())) {
+                tokenNode.setProperty(EXPIRATION_DATE, tokenDetails.getExpirationDate());
+            }
             return true;
         }
         return false;
+    }
+
+    private long getTimeValue(Calendar d) {
+        return d != null ? d.getTimeInMillis() : -1;
     }
 
     @Override
@@ -172,6 +164,9 @@ public class TokensServiceImpl implements TokenService {
     }
 
     private TokenDetails getTokenDetails(JCRNodeWrapper node) throws RepositoryException {
+        if (node == null) {
+            return null;
+        }
         JCRNodeWrapper parent = node.getParent().getParent();
         if (!parent.isNodeType("jnt:user")) {
             return null;
