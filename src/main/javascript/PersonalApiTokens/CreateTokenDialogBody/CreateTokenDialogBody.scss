@@ -1,0 +1,38 @@
+.asterisk {
+    margin-left: 0.7%;
+
+    color: red;
+}
+
+.nameLabel {
+    margin-bottom: 2%;
+}
+
+.bodyContainer {
+    display: flex;
+    flex-direction: column;
+    margin-top: 3%;
+}
+
+.inputStyle {
+    box-sizing: border-box;
+    height: 2.5em;
+    margin-top: 3%;
+    margin-right: 1%;
+    margin-bottom: 10%;
+
+    color: #293136;
+
+    border: 1px solid #dadada;
+    border-radius: 2px;
+}
+
+.inputFocus {
+    border-color: #008;
+}
+
+.text {
+    margin-left: 2% !important;
+
+    font-size: 12px !important;
+}

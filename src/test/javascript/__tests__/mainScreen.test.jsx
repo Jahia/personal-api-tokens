@@ -3,6 +3,8 @@ import {act, cleanup, render, screen, fireEvent} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import {useSelector} from 'react-redux';
 import MyApiTokens from '../../../main/javascript/PersonalApiTokens/MyApiTokens/MyApiTokens';
+import {createTokenMocks} from '../apolloMocks';
+import {MockedProvider, wait} from '@apollo/react-testing';
 
 jest.mock('react-router', () => {
     return {
@@ -29,9 +31,14 @@ describe('Test main screen functionality', () => {
 
     test('test screen without any tokens', async () => {
         render(
-            <MyApiTokens/>
+            <MockedProvider mocks={createTokenMocks} addTypename={false}>
+                <MyApiTokens/>
+            </MockedProvider>
         );
-        const createTokenButton = screen.getByText(/translated_personal-api-tokens:create/i);
+        await act(async () => {
+            await wait(0);
+        });
+        const createTokenButton = screen.getByText(/translated_personal-api-tokens:createToken.buttonTitle/i);
         expect(createTokenButton).toBeDefined();
         await act(async () => {
             // Nothing is happening as API still not wired

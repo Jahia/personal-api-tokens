@@ -36,7 +36,7 @@ exports[`Validate main screen snapshot match snapshot 1`] = `
             <span
               class="moonstone-typography moonstone-variant_button moonstone-weight_semiBold flexFluid moonstone-nowrap moonstone-upperCase"
             >
-              translated_personal-api-tokens:create
+              translated_personal-api-tokens:createToken.buttonTitle
             </span>
           </button>
         </div>
