@@ -26,11 +26,11 @@ import java.util.stream.Stream;
 public interface TokenService {
     /**
      * Create new token based on the specified token details
-     *
+     * <p>
      * The key, if provided, will be ignored as a new token will be randomly created
      *
      * @param tokenDetails Token details, including userId, name and other options
-     * @param session The session
+     * @param session      The session
      * @return The token
      * @throws RepositoryException when repository operation fails
      */
@@ -39,7 +39,7 @@ public interface TokenService {
     /**
      * Verify the specifid and token and return the details if valid, or null if token is invalid
      *
-     * @param token The token
+     * @param token   The token
      * @param session The session to use to retrieve the token
      * @return Token details
      * @throws RepositoryException when repository operation fails
@@ -49,7 +49,7 @@ public interface TokenService {
     /**
      * Get the token details for the specified key, or null if it does not exist
      *
-     * @param key The token
+     * @param key     The token
      * @param session The session to use to retrieve the token
      * @return Token details
      * @throws RepositoryException when repository operation fails
@@ -58,8 +58,9 @@ public interface TokenService {
 
     /**
      * Get a list of tokens for the specified user, or for all users if userId is null
+     *
      * @param userPath The user path on which you want to filter the tokens
-     * @param session The session to use to retrieve the tokens
+     * @param session  The session to use to retrieve the tokens
      * @return The tokens details
      * @throws RepositoryException when repository operation fails
      */
@@ -78,7 +79,7 @@ public interface TokenService {
     /**
      * Delete an existing token
      *
-     * @param key The token key
+     * @param key     The token key
      * @param session The session
      * @return true if operation succeeds, false if token does not exist
      * @throws RepositoryException when repository operation fails

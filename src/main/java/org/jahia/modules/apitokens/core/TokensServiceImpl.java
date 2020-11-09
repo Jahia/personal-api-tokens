@@ -34,7 +34,10 @@ import pl.touk.throwing.exception.WrappedException;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.query.Query;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Iterator;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -43,8 +46,6 @@ import java.util.stream.StreamSupport;
  */
 @Component(immediate = true, service = TokenService.class)
 public class TokensServiceImpl implements TokenService {
-    private static final Logger logger = LoggerFactory.getLogger(TokensServiceImpl.class);
-
     public static final String PATNT_TOKENS = "patnt:tokens";
     public static final String PATNT_TOKEN = "patnt:token";
     public static final String TOKENS = "tokens";
@@ -53,7 +54,7 @@ public class TokensServiceImpl implements TokenService {
     public static final String ACTIVE = "active";
     public static final String EXPIRATION_DATE = "expirationDate";
     public static final String LAST_USAGE_DATE = "lastUsageDate";
-
+    private static final Logger logger = LoggerFactory.getLogger(TokensServiceImpl.class);
     private JahiaUserManagerService userManagerService;
 
     @Reference

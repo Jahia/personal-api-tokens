@@ -38,8 +38,9 @@ public class TokenDetails {
 
     /**
      * New token details from userId and token name
+     *
      * @param userId userId
-     * @param name name
+     * @param name   name
      */
     public TokenDetails(String userId, String name) {
         this.userPath = userId;
@@ -114,12 +115,12 @@ public class TokenDetails {
         return isActive;
     }
 
-    public boolean isValid() {
-        return isActive && (expirationDate == null || Calendar.getInstance().before(expirationDate));
-    }
-
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public boolean isValid() {
+        return isActive && (expirationDate == null || Calendar.getInstance().before(expirationDate));
     }
 
     @Override

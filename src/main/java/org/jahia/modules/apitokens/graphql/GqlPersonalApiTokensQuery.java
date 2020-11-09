@@ -56,6 +56,7 @@ public class GqlPersonalApiTokensQuery {
 
     /**
      * Get token details
+     *
      * @param key The token key
      * @return token details
      */
@@ -76,8 +77,9 @@ public class GqlPersonalApiTokensQuery {
 
     /**
      * Find tokens
-     * @param userId If a userId is provided, only returns tokens assigned to that user.
-     * @param site The site the user belongs to, null if global user
+     *
+     * @param userId      If a userId is provided, only returns tokens assigned to that user.
+     * @param site        The site the user belongs to, null if global user
      * @param environment GQL Environment
      * @return token details
      */
@@ -110,6 +112,7 @@ public class GqlPersonalApiTokensQuery {
 
     /**
      * Find tokens for current user
+     *
      * @param environment GQL Environment
      * @return token details
      */

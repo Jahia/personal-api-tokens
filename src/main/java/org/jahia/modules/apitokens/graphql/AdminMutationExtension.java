@@ -29,6 +29,7 @@ public class AdminMutationExtension {
 
     /**
      * Get personalApiTokens
+     *
      * @return personalApiTokens
      */
     @GraphQLField

@@ -94,10 +94,10 @@ public class GqlPersonalApiTokensMutation {
     /**
      * Update an existing token
      *
-     * @param key The token key
-     * @param name Name to give to the token
+     * @param key      The token key
+     * @param name     Name to give to the token
      * @param expireAt Expiration date of the token
-     * @param state State to give the token
+     * @param state    State to give the token
      * @return true if operation succeeds, false if token does not exist
      */
     @GraphQLField
