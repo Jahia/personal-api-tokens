@@ -32,6 +32,7 @@ import org.slf4j.LoggerFactory;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.query.Query;
+import java.util.Collections;
 
 /**
  * Service to handle Personal API tokens
@@ -74,7 +75,7 @@ public class TokensServiceImpl implements TokenService {
             throw new IllegalArgumentException("invalid user");
         }
 
-        JCRNodeWrapper tokens = userNode.hasNode(TOKENS) ? userNode.getNode(TOKENS) : userNode.addNode(TOKENS, PATNT_TOKENS);
+        JCRNodeWrapper tokens = getTokensNode(userNode);
         JCRNodeWrapper tokenNode = tokens.addNode(tokenDetails.getName(), PATNT_TOKEN);
         tokenNode.setProperty(KEY, key);
         tokenNode.setProperty(DIGEST, digestedSecret);
@@ -126,6 +127,17 @@ public class TokensServiceImpl implements TokenService {
         }
 
         return tokenDetails;
+    }
+
+    private JCRNodeWrapper getTokensNode(JCRUserNode userNode) throws RepositoryException {
+        if (userNode.hasNode(TOKENS)) {
+            return userNode.getNode(TOKENS);
+        }
+
+        JCRNodeWrapper tokens = userNode.addNode(TOKENS, PATNT_TOKENS);
+        tokens.setAclInheritanceBreak(true);
+        tokens.grantRoles("u:" + userNode.getName(), Collections.singleton("owner"));
+        return tokens;
     }
 
 }
