@@ -136,7 +136,7 @@ public class GqlPersonalApiTokensQuery {
      * @return token details
      */
     @GraphQLField
-    @GraphQLDescription("Find tokens")
+    @GraphQLDescription("List tokens attached to the provided user ID and site key")
     @GraphQLConnection(connectionFetcher = DXPaginatedDataConnectionFetcher.class)
     public DXPaginatedData<GqlToken> getTokens(@GraphQLName("userId") @GraphQLDescription("If a userId is provided, only returns tokens assigned to that user.") String userId,
                                                @GraphQLName("site") @GraphQLDescription("The site the user belongs to, null if global user") String site,
@@ -169,7 +169,7 @@ public class GqlPersonalApiTokensQuery {
      * @return token details
      */
     @GraphQLField
-    @GraphQLDescription("Find tokens for current user")
+    @GraphQLDescription("List tokens for current user")
     @GraphQLConnection(connectionFetcher = DXPaginatedDataConnectionFetcher.class)
     public DXPaginatedData<GqlToken> getCurrentUserTokens(DataFetchingEnvironment environment) {
         JahiaUser currentUser = jcrTemplate.getSessionFactory().getCurrentUser();
