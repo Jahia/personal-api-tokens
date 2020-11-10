@@ -25,10 +25,12 @@ import org.jahia.modules.graphql.provider.dxm.admin.GqlAdminMutation;
  * Admin mutation extension
  */
 @GraphQLTypeExtension(GqlAdminMutation.class)
+@GraphQLDescription("Mutations for Personal Api Tokens")
 public class AdminMutationExtension {
 
     /**
      * Get personalApiTokens
+     *
      * @return personalApiTokens
      */
     @GraphQLField

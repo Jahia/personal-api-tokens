@@ -30,6 +30,7 @@ import javax.inject.Inject;
  * Graphql representation for TokenDetails
  */
 @GraphQLName("PersonalApiToken")
+@GraphQLDescription("Token details")
 public class GqlToken {
 
     private TokenDetails tokenDetails;
@@ -38,9 +39,9 @@ public class GqlToken {
     @GraphQLOsgiService
     private JahiaUserManagerService userManagerService;
 
-
     /**
      * Constructor
+     *
      * @param tokenDetails tokenDetails
      */
     public GqlToken(TokenDetails tokenDetails) {
@@ -68,19 +69,19 @@ public class GqlToken {
     @GraphQLField
     @GraphQLDescription("Creation date and time")
     public String getCreatedAt() {
-        return tokenDetails.getCreationDate() != null ?(new DateTime(tokenDetails.getCreationDate().getTime().getTime())).toString() : null;
+        return tokenDetails.getCreationDate() != null ? (new DateTime(tokenDetails.getCreationDate().getTime().getTime())).toString() : null;
     }
 
     @GraphQLField
     @GraphQLDescription("Last modification date and time")
     public String getUpdatedAt() {
-        return tokenDetails.getModificationDate() != null ?(new DateTime(tokenDetails.getModificationDate().getTime().getTime())).toString() : null;
+        return tokenDetails.getModificationDate() != null ? (new DateTime(tokenDetails.getModificationDate().getTime().getTime())).toString() : null;
     }
 
     @GraphQLField
     @GraphQLDescription("Time of token last usage")
     public String getLastUsedAt() {
-        return tokenDetails.getLastUsageDate() != null ?(new DateTime(tokenDetails.getLastUsageDate().getTime().getTime())).toString() : null;
+        return tokenDetails.getLastUsageDate() != null ? (new DateTime(tokenDetails.getLastUsageDate().getTime().getTime())).toString() : null;
     }
 
     @GraphQLField

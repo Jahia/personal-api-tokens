@@ -112,7 +112,7 @@ public class TokenAuthValve extends BaseAuthValve {
             String token = StringUtils.substringAfter(authorization, API_TOKEN).trim();
 
             return JCRTemplate.getInstance().doExecuteWithSystemSession(session -> {
-                TokenDetails details = tokenService.getTokenDetails(token, session);
+                TokenDetails details = tokenService.verifyToken(token, session);
                 logger.debug("Received token {}", details);
                 if (details != null && details.isValid()) {
                     return userManagerService.lookupUserByPath(details.getUserPath());
