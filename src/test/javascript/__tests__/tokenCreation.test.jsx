@@ -56,10 +56,10 @@ describe('Test token creation', () => {
         const tokenExpiryDateInput = screen.getAllByRole('textbox')[1];
         await act(async () => {
             fireEvent.change(tokenNameInput, {target: {value: 'testToken'}});
-            await wait(100);
+            await wait(200);
             fireEvent.change(tokenExpiryDateInput, {target: {value: '2020/11/11 02:24'}});
             fireEvent.click(createButton);
-            await wait(300);
+            await wait(500);
         });
         // Check that token is displayed
         expect(screen.getByText(/tokenWithExpiryDate/i)).toBeDefined();

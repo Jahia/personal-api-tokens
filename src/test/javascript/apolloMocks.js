@@ -6,6 +6,27 @@ export const createTokenMocks = [
             variables: {
                 userId: 'root',
                 name: 'testToken',
+                expireAt: '2020-11-11T02:24:00.000Z'
+            }
+        },
+        result: () => {
+            return {
+                data: {
+                    admin: {
+                        personalApiTokens: {
+                            createToken: 'tokenWithExpiryDate'
+                        }
+                    }
+                }
+            };
+        }
+    },
+    {
+        request: {
+            query: CreateTokenMutation,
+            variables: {
+                userId: 'root',
+                name: 'testToken',
                 expireAt: '2020-11-11T07:24:00.000Z'
             }
         },
