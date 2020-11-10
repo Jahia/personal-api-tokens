@@ -6,8 +6,12 @@ import {KeyboardDateTimePicker} from '@material-ui/pickers';
 import {useTranslation} from 'react-i18next';
 import PropTypes from 'prop-types';
 
-const CreateTokenDialogBody = ({tokenInformation, setTokenInformation}) => {
+const CreateTokenDialogBody = ({tokenInformation, setTokenInformation, error}) => {
     const {t} = useTranslation('personal-api-tokens');
+    const errorMessage = (
+        <Typography className={styles.errorMessage} weight="default" variant="body">{t('personal-api-tokens:createToken.tokenAlreadyExists')}
+        </Typography>
+    );
     return (
         <div className={styles.bodyContainer}>
             <Typography className={styles.nameLabel}
@@ -20,13 +24,15 @@ const CreateTokenDialogBody = ({tokenInformation, setTokenInformation}) => {
             >{t('personal-api-tokens:createToken.defineName')}
             </Typography>
             <TextField
+                error={error}
                 value={tokenInformation.name}
                 InputProps={{
-                    classes: {root: styles.inputStyle, focused: styles.inputFocus, input: styles.text},
+                    classes: {root: styles.inputStyle, error: styles.inputError, focused: styles.inputFocus, input: styles.text},
                     disableUnderline: true
                 }}
                 onChange={e => setTokenInformation({...tokenInformation, name: e.target.value})}
             />
+            {error ? errorMessage : null}
             <Typography className={styles.nameLabel}
                         variant="subheading"
             >{t('personal-api-tokens:createToken.expirationDate')}
@@ -38,9 +44,10 @@ const CreateTokenDialogBody = ({tokenInformation, setTokenInformation}) => {
                                     value={tokenInformation.expireAt}
                                     ampm={false}
                                     InputProps={{
-                                        classes: {root: styles.inputStyle, focused: styles.inputFocus, input: styles.text},
+                                        classes: {root: styles.dateInput, error: styles.inputError, focused: styles.inputFocus, input: styles.text},
                                         disableUnderline: true
                                     }}
+                                    FormHelperTextProps={{classes: {error: styles.dateError}}}
                                     onChange={date => setTokenInformation({...tokenInformation, expireAt: date})}/>
         </div>
     );
@@ -48,7 +55,9 @@ const CreateTokenDialogBody = ({tokenInformation, setTokenInformation}) => {
 
 CreateTokenDialogBody.propTypes = {
     tokenInformation: PropTypes.object.isRequired,
-    setTokenInformation: PropTypes.func.isRequired
+    setTokenInformation: PropTypes.func.isRequired,
+    // eslint-disable-next-line react/boolean-prop-naming
+    error: PropTypes.bool.isRequired
 };
 
 export default CreateTokenDialogBody;

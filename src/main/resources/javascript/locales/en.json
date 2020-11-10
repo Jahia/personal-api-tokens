@@ -6,7 +6,8 @@
     "defineName": "Define the name of your token",
     "name": "Name",
     "expirationDate": "Expiration date",
-    "setDate": "Set the date when this token will be expired"
+    "setDate": "Set the date when this token will be expired",
+    "tokenAlreadyExists": "Token with this name already exists, please choose different name"
   },
   "copyToken": {
     "title": "Access token created",

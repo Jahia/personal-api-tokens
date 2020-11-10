@@ -12,7 +12,7 @@ exports[`Validate main screen snapshot match snapshot 1`] = `
         class="header"
       >
         <p
-          class="moonstone-typography moonstone-variant_title moonstone-weight_semiBold"
+          class="moonstone-typography moonstone-variant_title moonstone-weight_default"
         >
           translated_personal-api-tokens:title
         </p>

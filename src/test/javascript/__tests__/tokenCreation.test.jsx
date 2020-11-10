@@ -1,28 +1,12 @@
 import React from 'react';
 import {act, cleanup, fireEvent, render, screen} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import {useSelector} from 'react-redux';
 import MyApiTokens from '../../../main/javascript/PersonalApiTokens/MyApiTokens/MyApiTokens';
 import {createTokenMocks} from '../apolloMocks';
 import {MockedProvider, wait} from '@apollo/react-testing';
 
-jest.mock('react-router', () => {
-    return {
-        useHistory: jest.fn(() => {
-        })
-    };
-});
-
-jest.mock('react-redux', () => ({
-    ...jest.requireActual('react-redux'),
-    useSelector: jest.fn()
-}));
-
 describe('Test token creation', () => {
     beforeEach(async () => {
-        useSelector.mockImplementation(callback => {
-            return callback({uilang: 'en'});
-        });
         render(
             <MockedProvider mocks={createTokenMocks} addTypename={false}>
                 <MyApiTokens/>
@@ -37,7 +21,6 @@ describe('Test token creation', () => {
         });
     });
     afterEach(() => {
-        useSelector.mockClear();
         cleanup();
     });
 

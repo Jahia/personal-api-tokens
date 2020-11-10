@@ -16,6 +16,7 @@ const MyApiTokens = () => {
     const {t} = useTranslation('personal-api-tokens');
     const [isCreateTokenDialogOpen, setCreateTokenDialogOpen] = useState(false);
     const [isCopyTokenDialogOpen, setCopyTokenDialogOpen] = useState(false);
+    const [createTokenError, setCreateTokenError] = useState(false);
     const [userTokenInformation, setUserTokenInformation] = useState({userId: '', name: '', expireAt: moment().add(1, 'days')});
     const [tokenValue, setTokenValue] = useState('');
 
@@ -23,29 +24,28 @@ const MyApiTokens = () => {
         setUserTokenInformation({...userTokenInformation, userId: data.currentUser.name});
     };
 
+    const refreshState = () => {
+        setCreateTokenError(false);
+        setUserTokenInformation({...userTokenInformation, name: '', expireAt: moment().add(1, 'days')});
+        setTokenValue('');
+    };
+
     useQuery(getCurrentUserName, {
         onCompleted: updateCurrentUser
     });
 
     const updateTokenValue = data => {
+        setCreateTokenDialogOpen(false);
+        setCopyTokenDialogOpen(true);
         const tokenData = data.admin.personalApiTokens.createToken;
         setTokenValue(tokenData ? tokenData : '');
     };
 
     const [createTokenMutation] = useMutation(CreateTokenMutation, {
         onCompleted: updateTokenValue,
+        onError: () => setCreateTokenError(true),
         variables: userTokenInformation
     });
-
-    const createTokenHandler = async () => {
-        if (userTokenInformation.name === '') {
-            return;
-        }
-
-        await createTokenMutation();
-        setCreateTokenDialogOpen(false);
-        setCopyTokenDialogOpen(true);
-    };
 
     return (
         <MuiPickersUtilsProvider utils={MomentUtils}>
@@ -53,9 +53,7 @@ const MyApiTokens = () => {
             <div className={styles.root}>
                 <div className={styles.headerRoot}>
                     <header className={styles.header}>
-                        <Typography variant="title"
-                                    weight="semiBold"
-                        >{t('personal-api-tokens:title')}
+                        <Typography variant="title">{t('personal-api-tokens:title')}
                         </Typography>
                         <div className={styles.actionBar}>
                             <Button size="big"
@@ -63,6 +61,7 @@ const MyApiTokens = () => {
                                     label={t('personal-api-tokens:createToken.buttonTitle')}
                                     icon={<Add/>}
                                     onClick={() => {
+                                        refreshState();
                                         setCreateTokenDialogOpen(true);
                                     }}/>
                         </div>
@@ -76,9 +75,11 @@ const MyApiTokens = () => {
                                         body={<CreateTokenDialogBody
                                             tokenInformation={userTokenInformation}
                                             setTokenInformation={setUserTokenInformation}
+                                            error={createTokenError}
                                         />}
+                                        validationState={{acceptButtonDisabled: userTokenInformation.name === ''}}
                                         onClose={() => setCreateTokenDialogOpen(false)}
-                                        onAccept={() => createTokenHandler()}/>
+                                        onAccept={() => createTokenMutation()}/>
                     <ConfirmationDialog isOpen={isCopyTokenDialogOpen}
                                         acceptLabel={t('personal-api-tokens:close')}
                                         title={t('personal-api-tokens:copyToken.title')}
