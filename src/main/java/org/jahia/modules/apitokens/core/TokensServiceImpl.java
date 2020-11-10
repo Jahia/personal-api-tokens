@@ -35,10 +35,7 @@ import pl.touk.throwing.exception.WrappedException;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.query.Query;
-import java.util.Calendar;
-import java.util.Iterator;
-import java.util.Spliterator;
-import java.util.Spliterators;
+import java.util.*;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -65,7 +62,7 @@ public class TokensServiceImpl implements TokenService {
 
     public TokenBuilder tokenBuilder(String userPath, String name, JCRSessionWrapper currentUserSession) {
         TokenDetailsImpl details = new TokenDetailsImpl(userPath, name);
-        return new TokenBuilderImpl(details, currentUserSession, token -> createToken(token, details, currentUserSession));
+        return new TokenBuilderImpl(details, token -> createToken(token, details, currentUserSession));
     }
 
     private String createToken(String token, TokenDetailsImpl tokenDetails, JCRSessionWrapper session) throws RepositoryException {
@@ -74,6 +71,11 @@ public class TokensServiceImpl implements TokenService {
         }
 
         String key = TokenUtils.getInstance().getKey(token);
+
+        if (getTokenDetails(key, session) != null) {
+            throw new IllegalArgumentException("token already exists");
+        }
+
         String digestedSecret = TokenUtils.getInstance().getDigestedSecret(token);
 
         JCRUserNode userNode = userManagerService.lookupUserByPath(tokenDetails.getUserPath(), session);
