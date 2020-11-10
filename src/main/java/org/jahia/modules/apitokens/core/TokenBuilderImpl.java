@@ -17,7 +17,6 @@ package org.jahia.modules.apitokens.core;
 
 import org.jahia.modules.apitokens.TokenBuilder;
 import org.jahia.modules.apitokens.TokenDetails;
-import org.jahia.services.content.JCRSessionWrapper;
 import pl.touk.throwing.ThrowingFunction;
 
 import javax.jcr.RepositoryException;
@@ -27,13 +26,11 @@ import java.util.Calendar;
  * Implementation for Token builder
  */
 public class TokenBuilderImpl implements TokenBuilder {
-    private JCRSessionWrapper session;
     private String token;
     private ThrowingFunction<String, String, RepositoryException> create;
     private TokenDetails details;
 
-    TokenBuilderImpl(TokenDetailsImpl details, JCRSessionWrapper session, ThrowingFunction<String, String, RepositoryException> create) {
-        this.session = session;
+    TokenBuilderImpl(TokenDetailsImpl details, ThrowingFunction<String, String, RepositoryException> create) {
         this.details = details;
         this.create = create;
     }

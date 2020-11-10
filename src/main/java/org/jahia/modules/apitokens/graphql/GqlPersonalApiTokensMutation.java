@@ -82,7 +82,7 @@ public class GqlPersonalApiTokensMutation {
                 String token = tokensService.tokenBuilder(userNode.getPath(), JCRContentUtils.escapeLocalNodeName(name), session)
                         .setExpirationDate(expiration)
                         .setActive(state != TokenState.DISABLED)
-                        .create();;
+                        .create();
                 session.save();
                 return token;
             });
