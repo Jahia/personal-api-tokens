@@ -30,6 +30,7 @@ import javax.inject.Inject;
  * Graphql representation for TokenDetails
  */
 @GraphQLName("PersonalApiToken")
+@GraphQLDescription("Token details")
 public class GqlToken {
 
     private TokenDetails tokenDetails;

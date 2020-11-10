@@ -39,6 +39,7 @@ import java.util.Locale;
  * PersonalApiTokens mutation type
  */
 @GraphQLName("PersonalApiTokensMutation")
+@GraphQLDescription("Mutations for Personal Api Tokens")
 public class GqlPersonalApiTokensMutation {
 
     @Inject
@@ -102,7 +103,7 @@ public class GqlPersonalApiTokensMutation {
      */
     @GraphQLField
     @GraphQLDescription("Update an existing token")
-    public boolean updateToken(@GraphQLName("key") @GraphQLNonNull String key,
+    public boolean updateToken(@GraphQLName("key") @GraphQLDescription("The token key")  @GraphQLNonNull String key,
                                @GraphQLName("name") @GraphQLDescription("Name to give to the token") String name,
                                @GraphQLName("expireAt") @GraphQLDescription("Expiration date of the token, use empty string to unset expiration date") String expireAt,
                                @GraphQLName("state") @GraphQLDescription("State to give the token") TokenState state) {
@@ -139,7 +140,7 @@ public class GqlPersonalApiTokensMutation {
      */
     @GraphQLField
     @GraphQLDescription("Delete an existing token")
-    public boolean deleteToken(@GraphQLName("key") @GraphQLNonNull String key) {
+    public boolean deleteToken(@GraphQLName("key") @GraphQLDescription("The token key")  @GraphQLNonNull String key) {
         try {
             return jcrTemplate.doExecute(jcrTemplate.getSessionFactory().getCurrentUser(), null, null, session -> {
                 boolean deleteToken = tokensService.deleteToken(key, session);

@@ -40,6 +40,7 @@ import java.util.stream.Stream;
  * PersonalApiTokens query type
  */
 @GraphQLName("PersonalApiTokensQuery")
+@GraphQLDescription("Queries for Personal Api Tokens")
 public class GqlPersonalApiTokensQuery {
 
     @Inject
