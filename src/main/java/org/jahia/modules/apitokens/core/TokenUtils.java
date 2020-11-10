@@ -38,10 +38,6 @@ public final class TokenUtils {
     private TokenUtils() {
     }
 
-    private static class InstanceHolder {
-        public static final TokenUtils instance = new TokenUtils();
-    }
-
     public static TokenUtils getInstance() {
         return InstanceHolder.instance;
     }
@@ -112,6 +108,10 @@ public final class TokenUtils {
         }
 
         return part;
+    }
+
+    private static class InstanceHolder {
+        public static final TokenUtils instance = new TokenUtils();
     }
 
 }

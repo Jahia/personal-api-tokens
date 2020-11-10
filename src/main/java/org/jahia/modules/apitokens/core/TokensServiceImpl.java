@@ -16,11 +16,12 @@
 package org.jahia.modules.apitokens.core;
 
 import org.jahia.api.Constants;
-import org.jahia.api.content.JCRTemplate;
 import org.jahia.api.usermanager.JahiaUserManagerService;
+import org.jahia.modules.apitokens.TokenBuilder;
 import org.jahia.modules.apitokens.TokenDetails;
 import org.jahia.modules.apitokens.TokenService;
 import org.jahia.services.content.JCRContentUtils;
+import org.jahia.services.content.JCRNodeIteratorWrapper;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.JCRSessionWrapper;
 import org.jahia.services.content.decorator.JCRUserNode;
@@ -28,19 +29,21 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pl.touk.throwing.ThrowingFunction;
+import pl.touk.throwing.exception.WrappedException;
 
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.query.Query;
-import java.util.Collections;
+import java.util.*;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * Service to handle Personal API tokens
  */
 @Component(immediate = true, service = TokenService.class)
 public class TokensServiceImpl implements TokenService {
-    private static final Logger logger = LoggerFactory.getLogger(TokensServiceImpl.class);
-
     public static final String PATNT_TOKENS = "patnt:tokens";
     public static final String PATNT_TOKEN = "patnt:token";
     public static final String TOKENS = "tokens";
@@ -49,28 +52,33 @@ public class TokensServiceImpl implements TokenService {
     public static final String ACTIVE = "active";
     public static final String EXPIRATION_DATE = "expirationDate";
     public static final String LAST_USAGE_DATE = "lastUsageDate";
-
-    private JCRTemplate jcrTemplate;
+    private static final Logger logger = LoggerFactory.getLogger(TokensServiceImpl.class);
     private JahiaUserManagerService userManagerService;
-
-    @Reference
-    public void setJcrTemplate(JCRTemplate jcrTemplate) {
-        this.jcrTemplate = jcrTemplate;
-    }
 
     @Reference
     public void setUserManagerService(JahiaUserManagerService userManagerService) {
         this.userManagerService = userManagerService;
     }
 
-    public String createToken(TokenDetails tokenDetails) throws RepositoryException {
-        String token = TokenUtils.getInstance().generateToken();
+    public TokenBuilder tokenBuilder(String userPath, String name, JCRSessionWrapper currentUserSession) {
+        TokenDetailsImpl details = new TokenDetailsImpl(userPath, name);
+        return new TokenBuilderImpl(details, token -> createToken(token, details, currentUserSession));
+    }
+
+    private String createToken(String token, TokenDetailsImpl tokenDetails, JCRSessionWrapper session) throws RepositoryException {
+        if (token == null) {
+            token = TokenUtils.getInstance().generateToken();
+        }
 
         String key = TokenUtils.getInstance().getKey(token);
+
+        if (getTokenDetails(key, session) != null) {
+            throw new IllegalArgumentException("token already exists");
+        }
+
         String digestedSecret = TokenUtils.getInstance().getDigestedSecret(token);
 
-        JCRSessionWrapper currentUserSession = jcrTemplate.getSessionFactory().getCurrentUserSession();
-        JCRUserNode userNode = userManagerService.lookupUserByPath(tokenDetails.getUserPath(), currentUserSession);
+        JCRUserNode userNode = userManagerService.lookupUserByPath(tokenDetails.getUserPath(), session);
         if (userNode == null) {
             throw new IllegalArgumentException("invalid user");
         }
@@ -82,39 +90,114 @@ public class TokensServiceImpl implements TokenService {
         tokenNode.setProperty(ACTIVE, tokenDetails.isActive());
         tokenNode.setProperty(EXPIRATION_DATE, tokenDetails.getExpirationDate());
 
-        currentUserSession.save();
-
-        logger.info("New token generated {}", getTokenDetails(token, currentUserSession));
+        logger.info("New token generated {}", getTokenDetails(tokenNode));
 
         return token;
     }
 
-    public TokenDetails getTokenDetails(String token, JCRSessionWrapper session) throws RepositoryException {
-        String key = TokenUtils.getInstance().getKey(token);
-
-        Query q = session.getWorkspace().getQueryManager()
-                .createQuery("select * from [patnt:token] where key=\"" + JCRContentUtils.sqlEncode(key) + "\"", Query.JCR_SQL2);
-        NodeIterator ni = q.execute().getNodes();
-        if (ni.hasNext()) {
-            JCRNodeWrapper node = (JCRNodeWrapper) ni.nextNode();
-
+    public TokenDetails verifyToken(String token, JCRSessionWrapper session) throws RepositoryException {
+        TokenDetails tokenDetails = getTokenDetails(TokenUtils.getInstance().getKey(token), session);
+        if (tokenDetails != null) {
             String digestedSecret = TokenUtils.getInstance().getDigestedSecret(token);
-            if (digestedSecret.equals(node.getProperty(DIGEST).getString())) {
-                return getTokenDetails(node);
+            if (digestedSecret.equals(tokenDetails.getDigest())) {
+                return tokenDetails;
             }
         }
 
         return null;
     }
 
+    public TokenDetails getTokenDetails(String key, JCRSessionWrapper session) throws RepositoryException {
+        return getTokenDetails(getTokenNode(key, session));
+    }
+
+    public TokenDetails getTokenDetails(String userPath, String tokenName, JCRSessionWrapper session) throws RepositoryException {
+        Query q = session.getWorkspace().getQueryManager()
+                .createQuery("select * from [patnt:token] where isdescendantnode('" + JCRContentUtils.sqlEncode(userPath) + "') " +
+                        "and localname()='" + JCRContentUtils.sqlEncode(tokenName) + "'", Query.JCR_SQL2);
+        NodeIterator ni = q.execute().getNodes();
+        if (ni.hasNext()) {
+            return getTokenDetails((JCRNodeWrapper) ni.nextNode());
+        }
+
+        return null;
+    }
+
+    public Stream<TokenDetails> getTokensDetails(String userPath, JCRSessionWrapper session) throws RepositoryException {
+        String query = userPath == null ? "select * from [patnt:token]" :
+                "select * from [patnt:token] where isdescendantnode('" + JCRContentUtils.sqlEncode(userPath) + "')";
+
+        Query q = session.getWorkspace().getQueryManager().createQuery(query, Query.JCR_SQL2);
+
+        Iterator<JCRNodeWrapper> nodes = ((JCRNodeIteratorWrapper) q.execute().getNodes()).iterator();
+
+        try {
+            return StreamSupport.stream(Spliterators.spliteratorUnknownSize(nodes, Spliterator.ORDERED), false)
+                    .map(ThrowingFunction.unchecked(this::getTokenDetails));
+        } catch (WrappedException e) {
+            if (e.getCause() instanceof RepositoryException) {
+                throw (RepositoryException) e.getCause();
+            }
+
+            throw e;
+        }
+    }
+
+    @Override
+    public boolean updateToken(TokenDetails tokenDetails, JCRSessionWrapper session) throws RepositoryException {
+        JCRNodeWrapper tokenNode = getTokenNode(tokenDetails.getKey(), session);
+        TokenDetails previousDetails = getTokenDetails(tokenNode);
+        if (previousDetails != null) {
+            if (!previousDetails.getName().equals(tokenDetails.getName())) {
+                tokenNode.rename(tokenDetails.getName());
+            }
+            if (previousDetails.isActive() != tokenDetails.isActive()) {
+                tokenNode.setProperty(ACTIVE, tokenDetails.isActive());
+            }
+            if (getTimeValue(previousDetails.getExpirationDate()) != getTimeValue(tokenDetails.getExpirationDate())) {
+                tokenNode.setProperty(EXPIRATION_DATE, tokenDetails.getExpirationDate());
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private long getTimeValue(Calendar d) {
+        return d != null ? d.getTimeInMillis() : -1;
+    }
+
+    @Override
+    public boolean deleteToken(String key, JCRSessionWrapper session) throws RepositoryException {
+        JCRNodeWrapper tokenNode = getTokenNode(key, session);
+        if (tokenNode != null) {
+            tokenNode.remove();
+            return true;
+        }
+        return false;
+    }
+
+    private JCRNodeWrapper getTokenNode(String key, JCRSessionWrapper session) throws RepositoryException {
+        Query q = session.getWorkspace().getQueryManager()
+                .createQuery("select * from [patnt:token] where key=\"" + JCRContentUtils.sqlEncode(key) + "\"", Query.JCR_SQL2);
+        NodeIterator ni = q.execute().getNodes();
+        if (ni.hasNext()) {
+            return (JCRNodeWrapper) ni.nextNode();
+        }
+        return null;
+    }
+
     private TokenDetails getTokenDetails(JCRNodeWrapper node) throws RepositoryException {
+        if (node == null) {
+            return null;
+        }
         JCRNodeWrapper parent = node.getParent().getParent();
         if (!parent.isNodeType("jnt:user")) {
             return null;
         }
 
-        TokenDetails tokenDetails = new TokenDetails(parent.getPath(), node.getName());
+        TokenDetailsImpl tokenDetails = new TokenDetailsImpl(parent.getPath(), node.getName());
         tokenDetails.setKey(node.getProperty(KEY).getString());
+        tokenDetails.setDigest(node.getProperty(DIGEST).getString());
         tokenDetails.setActive(node.getProperty(ACTIVE).getBoolean());
         if (node.hasProperty(EXPIRATION_DATE)) {
             tokenDetails.setExpirationDate(node.getProperty(EXPIRATION_DATE).getDate());

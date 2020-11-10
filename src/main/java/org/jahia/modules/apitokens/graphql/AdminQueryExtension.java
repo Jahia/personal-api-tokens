@@ -29,6 +29,7 @@ public class AdminQueryExtension {
 
     /**
      * Get personalApiTokens
+     *
      * @return personalApiTokens
      */
     @GraphQLField

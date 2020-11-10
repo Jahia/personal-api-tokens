@@ -20,104 +20,77 @@ import java.util.Calendar;
 /**
  * Token details bean
  */
-public class TokenDetails {
-    private String key;
-
-    private String userPath;
-
-    private String name;
-
-    private Calendar expirationDate;
-    private Calendar creationDate;
-    private Calendar modificationDate;
-    private Calendar lastUsageDate;
-
-    private boolean isActive = true;
+public interface TokenDetails {
+    /**
+     * Get the token key, used for managing the token
+     * @return the key
+     */
+    String getKey();
 
     /**
-     * New token details from userId and token name
-     * @param userId userId
-     * @param name name
+     * Get the path of the user node associated to this token
+     * @return user path
      */
-    public TokenDetails(String userId, String name) {
-        this.userPath = userId;
-        this.name = name;
-    }
+    String getUserPath();
 
-    public String getKey() {
-        return key;
-    }
+    /**
+     * Get the digested secret, used for comparison only
+     * @return digested secret
+     */
+    String getDigest();
 
-    public void setKey(String key) {
-        this.key = key;
-    }
+    /**
+     * Get the name of the token
+     * @return name
+     */
+    String getName();
 
-    public String getUserPath() {
-        return userPath;
-    }
+    void setName(String name);
 
-    public void setUserPath(String userPath) {
-        this.userPath = userPath;
-    }
+    /**
+     * Get the expiration date
+     * @return expiration date
+     */
+    Calendar getExpirationDate();
 
-    public String getName() {
-        return name;
-    }
+    void setExpirationDate(Calendar expirationDate);
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    /**
+     * Get the creation date
+     * @return creation date
+     */
+    Calendar getCreationDate();
 
-    public Calendar getExpirationDate() {
-        return expirationDate;
-    }
+    void setCreationDate(Calendar creationDate);
 
-    public void setExpirationDate(Calendar expirationDate) {
-        this.expirationDate = expirationDate;
-    }
+    /**
+     * Get the modification date
+     * @return modification date
+     */
+    Calendar getModificationDate();
 
-    public Calendar getCreationDate() {
-        return creationDate;
-    }
+    void setModificationDate(Calendar modificationDate);
 
-    public void setCreationDate(Calendar creationDate) {
-        this.creationDate = creationDate;
-    }
+    /**
+     * Get the last usage date
+     * @return last usage date
+     */
+    Calendar getLastUsageDate();
 
-    public Calendar getModificationDate() {
-        return modificationDate;
-    }
+    void setLastUsageDate(Calendar lastUsageDate);
 
-    public void setModificationDate(Calendar modificationDate) {
-        this.modificationDate = modificationDate;
-    }
+    /**
+     * Get the active flag
+     * @return active flag
+     */
+    boolean isActive();
 
-    public Calendar getLastUsageDate() {
-        return lastUsageDate;
-    }
+    void setActive(boolean active);
 
-    public void setLastUsageDate(Calendar lastUsageDate) {
-        this.lastUsageDate = lastUsageDate;
-    }
+    /**
+     * Check current validity of the token - it will check the active flag and the expiration date
+     * @return true if valid
+     */
+    boolean isValid();
 
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public boolean isValid() {
-        return isActive && (expirationDate == null || Calendar.getInstance().before(expirationDate));
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
-    }
-
-    @Override
-    public String toString() {
-        return "TokenDetails{" + "key='" + key + '\'' +
-                ", userId='" + userPath + '\'' +
-                ", name='" + name + '\'' +
-                ", expirationDate=" + expirationDate +
-                ", isActive=" + isActive + '}';
-    }
 }

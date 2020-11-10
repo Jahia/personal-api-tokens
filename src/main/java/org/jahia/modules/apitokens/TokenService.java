@@ -18,29 +18,84 @@ package org.jahia.modules.apitokens;
 import org.jahia.services.content.JCRSessionWrapper;
 
 import javax.jcr.RepositoryException;
+import java.util.stream.Stream;
 
 /**
  * Service to handle Personal API tokens
  */
 public interface TokenService {
     /**
-     * Create new token based on the specified token details
+     * Gets a new token builder for the specified user and token name.
+     * You'll have to call create() on builder and save the session afterwards.
      *
-     * The key, if provided, will be ignored as a new token will be randomly created
-     *
-     * @param tokenDetails Token details, including userId, name and other options
-     * @return The token
+     * @param userPath The user path
+     * @param name     The name of the token
+     * @param session  The session
+     * @return The token builder
      * @throws RepositoryException when repository operation fails
      */
-    public String createToken(TokenDetails tokenDetails) throws RepositoryException;
+    public TokenBuilder tokenBuilder(String userPath, String name, JCRSessionWrapper session) throws RepositoryException;
 
     /**
-     * Get the token details for the specified token, or null if token is invalid
+     * Verify the specifid and token and return the details if valid, or null if token is invalid
      *
-     * @param token The token
+     * @param token   The token
      * @param session The session to use to retrieve the token
      * @return Token details
      * @throws RepositoryException when repository operation fails
      */
-    public TokenDetails getTokenDetails(String token, JCRSessionWrapper session) throws RepositoryException;
+    public TokenDetails verifyToken(String token, JCRSessionWrapper session) throws RepositoryException;
+
+    /**
+     * Get the token details for the specified key, or null if it does not exist
+     *
+     * @param key     The token
+     * @param session The session to use to retrieve the token
+     * @return Token details
+     * @throws RepositoryException when repository operation fails
+     */
+    public TokenDetails getTokenDetails(String key, JCRSessionWrapper session) throws RepositoryException;
+
+    /**
+     * Get the token details for the specified key, or null if it does not exist
+     *
+     * @param userPath  The user path
+     * @param tokenName The token name
+     * @param session   The session to use to retrieve the token
+     * @return Token details
+     * @throws RepositoryException when repository operation fails
+     */
+    public TokenDetails getTokenDetails(String userPath, String tokenName, JCRSessionWrapper session) throws RepositoryException;
+
+    /**
+     * Get a list of tokens for the specified user, or for all users if userId is null
+     *
+     * @param userPath The user path on which you want to filter the tokens
+     * @param session  The session to use to retrieve the tokens
+     * @return The tokens details
+     * @throws RepositoryException when repository operation fails
+     */
+    public Stream<TokenDetails> getTokensDetails(String userPath, JCRSessionWrapper session) throws RepositoryException;
+
+    /**
+     * Update token. You can change name, expiration date and state
+     *
+     * @param details The updated token details
+     * @param session The session
+     * @return true if operation succeeds, false if token does not exist
+     * @throws RepositoryException when repository operation fails
+     */
+    public boolean updateToken(TokenDetails details, JCRSessionWrapper session) throws RepositoryException;
+
+    /**
+     * Delete an existing token
+     *
+     * @param key     The token key
+     * @param session The session
+     * @return true if operation succeeds, false if token does not exist
+     * @throws RepositoryException when repository operation fails
+     */
+    public boolean deleteToken(String key, JCRSessionWrapper session) throws RepositoryException;
+
+
 }
