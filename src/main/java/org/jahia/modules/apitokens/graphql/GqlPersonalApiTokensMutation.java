@@ -79,11 +79,10 @@ public class GqlPersonalApiTokensMutation {
         try {
             return jcrTemplate.doExecute(jcrTemplate.getSessionFactory().getCurrentUser(), null, null, session -> {
                 Calendar expiration = expireAt != null ? new DateTime(expireAt).toCalendar(Locale.getDefault()) : null;
-                TokenDetails tokenDetails = new TokenDetails(userNode.getPath(), JCRContentUtils.escapeLocalNodeName(name));
-                tokenDetails.setExpirationDate(expiration);
-                tokenDetails.setActive(state != TokenState.DISABLED);
-
-                String token = tokensService.createToken(tokenDetails, session);
+                String token = tokensService.tokenBuilder(userNode.getPath(), JCRContentUtils.escapeLocalNodeName(name), session)
+                        .setExpirationDate(expiration)
+                        .setActive(state != TokenState.DISABLED)
+                        .create();;
                 session.save();
                 return token;
             });

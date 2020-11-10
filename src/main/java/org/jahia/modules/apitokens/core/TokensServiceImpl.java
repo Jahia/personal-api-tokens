@@ -17,6 +17,7 @@ package org.jahia.modules.apitokens.core;
 
 import org.jahia.api.Constants;
 import org.jahia.api.usermanager.JahiaUserManagerService;
+import org.jahia.modules.apitokens.TokenBuilder;
 import org.jahia.modules.apitokens.TokenDetails;
 import org.jahia.modules.apitokens.TokenService;
 import org.jahia.services.content.JCRContentUtils;
@@ -62,13 +63,20 @@ public class TokensServiceImpl implements TokenService {
         this.userManagerService = userManagerService;
     }
 
-    public String createToken(TokenDetails tokenDetails, JCRSessionWrapper currentUserSession) throws RepositoryException {
-        String token = TokenUtils.getInstance().generateToken();
+    public TokenBuilder tokenBuilder(String userPath, String name, JCRSessionWrapper currentUserSession) {
+        TokenDetailsImpl details = new TokenDetailsImpl(userPath, name);
+        return new TokenBuilderImpl(details, currentUserSession, token -> createToken(token, details, currentUserSession));
+    }
+
+    private String createToken(String token, TokenDetailsImpl tokenDetails, JCRSessionWrapper session) throws RepositoryException {
+        if (token == null) {
+            token = TokenUtils.getInstance().generateToken();
+        }
 
         String key = TokenUtils.getInstance().getKey(token);
         String digestedSecret = TokenUtils.getInstance().getDigestedSecret(token);
 
-        JCRUserNode userNode = userManagerService.lookupUserByPath(tokenDetails.getUserPath(), currentUserSession);
+        JCRUserNode userNode = userManagerService.lookupUserByPath(tokenDetails.getUserPath(), session);
         if (userNode == null) {
             throw new IllegalArgumentException("invalid user");
         }
@@ -185,10 +193,10 @@ public class TokensServiceImpl implements TokenService {
             return null;
         }
 
-        TokenDetails tokenDetails = new TokenDetails(parent.getPath(), node.getName());
+        TokenDetailsImpl tokenDetails = new TokenDetailsImpl(parent.getPath(), node.getName());
         tokenDetails.setKey(node.getProperty(KEY).getString());
-        tokenDetails.setActive(node.getProperty(ACTIVE).getBoolean());
         tokenDetails.setDigest(node.getProperty(DIGEST).getString());
+        tokenDetails.setActive(node.getProperty(ACTIVE).getBoolean());
         if (node.hasProperty(EXPIRATION_DATE)) {
             tokenDetails.setExpirationDate(node.getProperty(EXPIRATION_DATE).getDate());
         }

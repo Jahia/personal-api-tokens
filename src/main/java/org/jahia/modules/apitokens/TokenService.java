@@ -25,16 +25,16 @@ import java.util.stream.Stream;
  */
 public interface TokenService {
     /**
-     * Create new token based on the specified token details
-     * <p>
-     * The key, if provided, will be ignored as a new token will be randomly created
+     * Gets a new token builder for the specified user and token name.
+     * You'll have to call create() on builder and save the session afterwards.
      *
-     * @param tokenDetails Token details, including userId, name and other options
-     * @param session      The session
-     * @return The token
+     * @param userPath The user path
+     * @param name     The name of the token
+     * @param session  The session
+     * @return The token builder
      * @throws RepositoryException when repository operation fails
      */
-    public String createToken(TokenDetails tokenDetails, JCRSessionWrapper session) throws RepositoryException;
+    public TokenBuilder tokenBuilder(String userPath, String name, JCRSessionWrapper session) throws RepositoryException;
 
     /**
      * Verify the specifid and token and return the details if valid, or null if token is invalid

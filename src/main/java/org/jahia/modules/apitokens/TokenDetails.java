@@ -20,115 +20,77 @@ import java.util.Calendar;
 /**
  * Token details bean
  */
-public class TokenDetails {
-    private String key;
-
-    private String userPath;
-
-    private String digest;
-
-    private String name;
-
-    private Calendar expirationDate;
-    private Calendar creationDate;
-    private Calendar modificationDate;
-    private Calendar lastUsageDate;
-
-    private boolean isActive = true;
+public interface TokenDetails {
+    /**
+     * Get the token key, used for managing the token
+     * @return the key
+     */
+    String getKey();
 
     /**
-     * New token details from userId and token name
-     *
-     * @param userId userId
-     * @param name   name
+     * Get the path of the user node associated to this token
+     * @return user path
      */
-    public TokenDetails(String userId, String name) {
-        this.userPath = userId;
-        this.name = name;
-    }
+    String getUserPath();
 
-    public String getKey() {
-        return key;
-    }
+    /**
+     * Get the digested secret, used for comparison only
+     * @return digested secret
+     */
+    String getDigest();
 
-    public void setKey(String key) {
-        this.key = key;
-    }
+    /**
+     * Get the name of the token
+     * @return name
+     */
+    String getName();
 
-    public String getUserPath() {
-        return userPath;
-    }
+    void setName(String name);
 
-    public void setUserPath(String userPath) {
-        this.userPath = userPath;
-    }
+    /**
+     * Get the expiration date
+     * @return expiration date
+     */
+    Calendar getExpirationDate();
 
-    public String getDigest() {
-        return digest;
-    }
+    void setExpirationDate(Calendar expirationDate);
 
-    public void setDigest(String digest) {
-        this.digest = digest;
-    }
+    /**
+     * Get the creation date
+     * @return creation date
+     */
+    Calendar getCreationDate();
 
-    public String getName() {
-        return name;
-    }
+    void setCreationDate(Calendar creationDate);
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    /**
+     * Get the modification date
+     * @return modification date
+     */
+    Calendar getModificationDate();
 
-    public Calendar getExpirationDate() {
-        return expirationDate;
-    }
+    void setModificationDate(Calendar modificationDate);
 
-    public void setExpirationDate(Calendar expirationDate) {
-        this.expirationDate = expirationDate;
-    }
+    /**
+     * Get the last usage date
+     * @return last usage date
+     */
+    Calendar getLastUsageDate();
 
-    public Calendar getCreationDate() {
-        return creationDate;
-    }
+    void setLastUsageDate(Calendar lastUsageDate);
 
-    public void setCreationDate(Calendar creationDate) {
-        this.creationDate = creationDate;
-    }
+    /**
+     * Get the active flag
+     * @return active flag
+     */
+    boolean isActive();
 
-    public Calendar getModificationDate() {
-        return modificationDate;
-    }
+    void setActive(boolean active);
 
-    public void setModificationDate(Calendar modificationDate) {
-        this.modificationDate = modificationDate;
-    }
+    /**
+     * Check current validity of the token - it will check the active flag and the expiration date
+     * @return true if valid
+     */
+    boolean isValid();
 
-    public Calendar getLastUsageDate() {
-        return lastUsageDate;
-    }
-
-    public void setLastUsageDate(Calendar lastUsageDate) {
-        this.lastUsageDate = lastUsageDate;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
-    }
-
-    public boolean isValid() {
-        return isActive && (expirationDate == null || Calendar.getInstance().before(expirationDate));
-    }
-
-    @Override
-    public String toString() {
-        return "TokenDetails{" + "key='" + key + '\'' +
-                ", userId='" + userPath + '\'' +
-                ", name='" + name + '\'' +
-                ", expirationDate=" + expirationDate +
-                ", isActive=" + isActive + '}';
-    }
 }
