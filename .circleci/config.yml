@@ -313,12 +313,12 @@ jobs:
           when: always
           command: |
             set +e
-            export NVM_DIR="/opt/circleci/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-            nvm install v12
-            nvm alias default v12
-            npm install -g jahia-reporter   
             if [ "<< parameters.SKIP_TESTRAIL >>" != "true" ] || [ "$CIRCLE_BRANCH" = "<< pipeline.parameters.PRIMARY_RELEASE_BRANCH >>" ]; then
+              export NVM_DIR="/opt/circleci/.nvm"
+              [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+              nvm install v12
+              nvm alias default v12
+              npm install -g jahia-reporter   
               jahia-reporter testrail << pipeline.parameters.TESTS_PATH >>artifacts/reports $TESTRAIL_USERNAME $TESTRAIL_PASSWORD -t json --name="<< pipeline.parameters.TESTRAIL_PROJECTNAME >>" --milestone="<< parameters.TESTRAIL_MILESTONE >>" --defaultRunDescription="This test was executed on circleci, $CIRCLE_BUILD_URL"
               jahia-reporter slack << pipeline.parameters.TESTS_PATH >>artifacts/reports $SLACK_WEBHOOK_QA_NOTIFICATIONS -t json --module="personal-api-tokens (<< parameters.TESTRAIL_MILESTONE >>)" -w CircleCI -u $CIRCLE_BUILD_URL -g
             fi
