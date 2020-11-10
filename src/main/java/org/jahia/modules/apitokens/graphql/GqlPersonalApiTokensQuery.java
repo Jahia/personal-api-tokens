@@ -62,7 +62,7 @@ public class GqlPersonalApiTokensQuery {
      * @return true if valid
      */
     @GraphQLField
-    @GraphQLDescription("Check token validity")
+    @GraphQLDescription("Check if the token is valid for authentication")
     public boolean verifyToken(@GraphQLName("token") @GraphQLDescription("The token") @GraphQLNonNull String token) {
         try {
             TokenDetails tokenDetails = tokensService.verifyToken(token, jcrTemplate.getSessionFactory().getCurrentUserSession());
