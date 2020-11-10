@@ -62,7 +62,7 @@ describe('Test token creation', () => {
             await wait(300);
         });
         // Check that token is displayed
-        expect(screen.getByText(/psDi\+YEQQ768\/Wp\+J8yL5r9p8\+4r8DbSw\+Dji1t9Dyk=/i)).toBeDefined();
+        expect(screen.getByText(/tokenWithExpiryDate/i)).toBeDefined();
         const copyToClipboardButton = screen.getAllByRole('button')[1];
         document.execCommand = jest.fn();
         window.prompt = jest.fn();

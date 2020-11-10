@@ -14,7 +14,7 @@ export const createTokenMocks = [
                 data: {
                     admin: {
                         personalApiTokens: {
-                            createToken: 'psDi+YEQQ768/Wp+J8yL5r9p8+4r8DbSw+Dji1t9Dyk='
+                            createToken: 'tokenWithExpiryDate'
                         }
                     }
                 }
