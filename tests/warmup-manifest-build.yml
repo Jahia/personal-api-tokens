@@ -2,4 +2,7 @@ version: 1.0
 jobs:
   - type: module
     id: personal-api-tokens
-    filepath: /tmp/artifacts/personal-api-tokens-2.0.0-SNAPSHOT.jar
+    filepath: /tmp/artifacts/personal-api-tokens.jar
+  - type: module
+    id: graphql-dxm-provider
+    filepath: /tmp/artifacts/graphql-dxm-provider.jar
