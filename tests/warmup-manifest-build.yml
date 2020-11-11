@@ -2,4 +2,4 @@ version: 1.0
 jobs:
   - type: module
     id: personal-api-tokens
-    filepath: /tmp/artifacts/personal-api-tokens-SNAPSHOT.jar
+    filepath: /tmp/artifacts/personal-api-tokens-1.0.0-SNAPSHOT.jar

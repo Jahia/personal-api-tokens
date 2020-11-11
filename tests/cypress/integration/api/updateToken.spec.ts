@@ -1,7 +1,7 @@
 import { apolloClient } from '../../support/apollo'
 import { createToken, deleteToken, getToken, getTokens, updateToken } from '../../support/gql'
 
-describe('token creation', () => {
+describe('token update', () => {
     afterEach(async function () {
         const client = apolloClient()
         return Promise.all(

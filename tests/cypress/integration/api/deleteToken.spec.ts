@@ -1,7 +1,7 @@
 import { apolloClient } from '../../support/apollo'
 import { createToken, getToken, deleteToken } from '../../support/gql'
 
-describe('token creation', () => {
+describe('token deletion', () => {
     it('should delete a token', async function () {
         const client = apolloClient()
         const name = 'test' + new Date().getTime()
