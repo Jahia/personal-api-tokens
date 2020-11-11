@@ -137,8 +137,9 @@ jobs:
             mkdir /tmp/artifacts/
             cp /home/circleci/source/target/*.jar /tmp/artifacts/
             cp /home/circleci/source/target/*SNAPSHOT.jar /home/circleci/source/target/<< pipeline.parameters.MODULE_ID >>-SNAPSHOT.jar
-            if [[ -e /home/circleci/source/build-dependencies ]]; then
-              cp -r /home/circleci/source/build-dependencies /tmp/artifacts/
+            if [[ -e /home/circleci/source/target/dependency ]]; then
+              cp -r /home/circleci/source/target/dependency /tmp/artifacts/
+              cp /home/circleci/source/target/dependency/dependency/graphql-dxm-provider*.jar /tmp/artifacts/graphql-dxm-provider.jar
             fi            
       - store_artifacts:
           path: /tmp/artifacts/
@@ -271,6 +272,7 @@ jobs:
             export DOCKER_CLIENT_TIMEOUT=120
             export COMPOSE_HTTP_TIMEOUT=120            
             docker-compose -f docker-compose.yml up cypress
+            docker cp e2e-tests:/tmp/results ./artifacts/reports
           no_output_timeout: 2h
           environment:
             MANIFEST: << parameters.MANIFEST >>
@@ -282,8 +284,6 @@ jobs:
             TEST_URL: http://jahia:8080/modules/graphql
             JAHIA_USERNAME: root
             JAHIA_PASSWORD: root
-      - store_artifacts:
-          path: ./tests/results
       - run:
           name: Export jahia logs
           when: always
