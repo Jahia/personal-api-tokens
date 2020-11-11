@@ -11,7 +11,7 @@ fi
 
 if [[ -e ../target ]]; then
     cp -R ../target/* ./artifacts/
-    cp ./artifacts/*SNAPSHOT.jar ./artifacts/personal-api-tokens.jar
+    cp ./artifacts/*SNAPSHOT.jar ./artifacts/personal-api-tokens-SNAPSHOT.jar
 fi
 
 if [ ! -d ./build-dependencies ]; then
@@ -20,7 +20,7 @@ fi
 
 if [[ -e ../build-dependencies ]]; then
     cp -R ../build-dependencies/* ./build-dependencies/
-    cp ./artifacts/dependency/graphql-dxm-provider-*-SNAPSHOT.jar ./artifacts/graphql-dxm-provider.jar
+    cp ./artifacts/dependency/graphql-dxm-provider*SNAPSHOT.jar ./artifacts/graphql-dxm-provider-SNAPSHOT.jar
 fi
 
 docker build -t jahia/personal-api-tokens:latest .
