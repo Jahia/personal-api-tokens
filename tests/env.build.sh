@@ -20,7 +20,7 @@ fi
 
 if [[ -e ../target/dependency ]]; then
     cp -R ../target/dependency/* ./build-dependencies/
-    cp ./build-dependencies//graphql-dxm-provider*.jar ./artifacts/graphql-dxm-provider.jar
+    cp ./build-dependencies/graphql-dxm-provider*.jar ./artifacts/graphql-dxm-provider.jar
 fi
 
 docker build -t jahia/personal-api-tokens:latest .
