@@ -271,7 +271,6 @@ jobs:
             export DOCKER_CLIENT_TIMEOUT=120
             export COMPOSE_HTTP_TIMEOUT=120            
             docker-compose -f docker-compose.yml up cypress
-            docker cp e2e-tests:/tmp/results ./artifacts/reports
           no_output_timeout: 2h
           environment:
             MANIFEST: << parameters.MANIFEST >>
@@ -313,7 +312,7 @@ jobs:
           when: always
           command: |
             set +e
-            if [ "<< parameters.SKIP_TESTRAIL >>" = "true" ] || [ "$CIRCLE_BRANCH" = "<< pipeline.parameters.PRIMARY_RELEASE_BRANCH >>" ]; then
+            if [ "<< parameters.SKIP_TESTRAIL >>" != "true" ] || [ "$CIRCLE_BRANCH" = "<< pipeline.parameters.PRIMARY_RELEASE_BRANCH >>" ]; then
               export NVM_DIR="/opt/circleci/.nvm"
               [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
               nvm install v12

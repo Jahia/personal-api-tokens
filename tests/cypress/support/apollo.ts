@@ -3,7 +3,7 @@ import { ApolloClient, HttpLink, InMemoryCache, NormalizedCacheObject } from 'ap
 export const apolloClient = (authToken?: string): ApolloClient<NormalizedCacheObject> => {
     const headers: string =
         authToken ?? `Basic ${btoa(Cypress.env('JAHIA_USERNAME') + ':' + Cypress.env('JAHIA_PASSWORD'))}`
-    console.log(headers)
+    cy.log(headers)
 
     return new ApolloClient({
         link: new HttpLink({
