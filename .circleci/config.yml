@@ -282,6 +282,8 @@ jobs:
             TEST_URL: http://jahia:8080/modules/graphql
             JAHIA_USERNAME: root
             JAHIA_PASSWORD: root
+      - store_artifacts:
+          path: ./tests/results
       - run:
           name: Export jahia logs
           when: always
