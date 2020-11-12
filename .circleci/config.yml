@@ -138,7 +138,6 @@ jobs:
             cp /home/circleci/source/target/*.jar /tmp/artifacts/
             cp /home/circleci/source/target/*SNAPSHOT.jar /home/circleci/source/target/<< pipeline.parameters.MODULE_ID >>-SNAPSHOT.jar
             if [[ -e /home/circleci/source/target/dependency ]]; then
-              cp -r /home/circleci/source/target/dependency /tmp/artifacts/
               cp /home/circleci/source/target/dependency/graphql-dxm-provider*.jar /home/circleci/source/target/graphql-dxm-provider.jar
             fi            
       - store_artifacts:
@@ -218,8 +217,8 @@ jobs:
             if [ << parameters.SKIP_ARTIFACTS >> == false ]; then
               if [[ -e /home/circleci/source/build-dependencies ]]; then
                 sudo cp -r /home/circleci/source/build-dependencies/* << pipeline.parameters.TESTS_PATH >>build-dependencies/
-              fi               
-              sudo cp -r /home/circleci/source/target/* << pipeline.parameters.TESTS_PATH >>artifacts/
+              fi
+              sudo cp -r /home/circleci/source/target/*.jar << pipeline.parameters.TESTS_PATH >>artifacts/
             fi         
       - run:
           name: Docker login
