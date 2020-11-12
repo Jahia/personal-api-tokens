@@ -6,6 +6,15 @@ jobs:
     password: NEXUS_PASSWORD
     source: https://devtools.jahia.com/nexus/service/local/artifact/maven/redirect?r=jahia-snapshots&g=org.jahia.modules&a=personal-api-tokens&v=LATEST
     filepath: /tmp/personal-api-tokens-LATEST.jar
+  - type: asset
+    fetch: http
+    username: NEXUS_USERNAME
+    password: NEXUS_PASSWORD
+    source: https://devtools.jahia.com/nexus/service/local/artifact/maven/redirect?r=jahia-snapshots&g=org.jahia.modules&a=graphql-dxm-provider&v=LATEST
+    filepath: /tmp/graphql-dxm-provider-LATEST.jar
+  - type: module
+    id: graphql-dxm-provider
+    filepath: /tmp/graphql-dxm-provider-LATEST.jar
   - type: module
     id: personal-api-tokens
     filepath: /tmp/personal-api-tokens-LATEST.jar

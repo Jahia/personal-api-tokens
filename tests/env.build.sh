@@ -18,8 +18,9 @@ if [ ! -d ./build-dependencies ]; then
   mkdir -p ./build-dependencies
 fi
 
-if [[ -e ../build-dependencies ]]; then
-    cp -R ../build-dependencies/* ./build-dependencies/
+if [[ -e ../target/dependency ]]; then
+    cp -R ../target/dependency/* ./build-dependencies/
+    cp ./build-dependencies/graphql-dxm-provider*.jar ./artifacts/graphql-dxm-provider.jar
 fi
 
 docker build -t jahia/personal-api-tokens:latest .
