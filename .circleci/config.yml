@@ -218,8 +218,7 @@ jobs:
             if [ << parameters.SKIP_ARTIFACTS >> == false ]; then
               if [[ -e /home/circleci/source/build-dependencies ]]; then
                 sudo cp -r /home/circleci/source/build-dependencies/* << pipeline.parameters.TESTS_PATH >>build-dependencies/
-              fi               
-              sudo cp -r /home/circleci/source/target/* << pipeline.parameters.TESTS_PATH >>artifacts/
+              fi
             fi         
       - run:
           name: Docker login
