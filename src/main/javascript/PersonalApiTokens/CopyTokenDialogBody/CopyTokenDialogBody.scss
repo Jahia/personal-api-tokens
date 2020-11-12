@@ -1,0 +1,35 @@
+.bodyContainer {
+    display: flex;
+    flex-direction: column;
+    margin-top: 3%;
+
+    .copyContainer {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-top: 4%;
+    }
+
+    .tokenContainer {
+        display: flex;
+        align-items: flex-start;
+        box-sizing: border-box;
+        margin: 3% 0;
+        padding: 5%;
+
+        border: 2px solid #e8b606;
+        background: rgba(232, 182, 6, 0.4);
+
+        .secretLabel {
+            margin-right: 0.5em;
+
+            color: rgba(41, 49, 54, 0.6);
+        }
+    }
+
+    .secretKeyWarning {
+        margin-top: 3%;
+
+        color: #e0182d;
+    }
+}
