@@ -1,7 +1,7 @@
 import { apolloClient } from '../../support/apollo'
 import { DocumentNode } from 'graphql'
 
-import { createToken, deleteToken, getToken, getTokens, updateToken } from '../../support/gql'
+import { createToken, deleteToken, getToken, getTokens } from '../../support/gql'
 
 describe('Token update via API - mutation.admin.personalApiTokens.updateToken', () => {
     let GQL_UPDATE: DocumentNode
@@ -47,6 +47,7 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
         expect(await getToken('root', nameA, client)).to.be.null
     })
 
+    // eslint-disable-next-line cypress/no-async-tests
     it('Update Token by providing tokenKey, null tokenName, null expireAt, null state', async function () {
         const client = apolloClient()
         const nameA = 'test-A' + new Date().getTime()
@@ -72,6 +73,7 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
         expect(tokenA.name).to.equals(tokenDetails.name)
     })
 
+    // eslint-disable-next-line cypress/no-async-tests
     it('Update Token by providing tokenKey, EMPTY tokenName, null expireAt, null state', async function () {
         const client = apolloClient()
         const nameA = 'test-A' + new Date().getTime()
@@ -124,8 +126,8 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
         expect(tokenA.name).to.equals(nameA)
 
         const tokenB = await getToken('root', nameB, client)
-        expect(tokenB.name).to.equals(nameB)        
-        expect(tokenB.key).to.equals(tokenBDetails.key)        
+        expect(tokenB.name).to.equals(nameB)
+        expect(tokenB.key).to.equals(tokenBDetails.key)
     })
 
     it('Update Token by providing tokenKey, null tokenName, null expireAt, DISABLED state', async function () {
@@ -199,7 +201,7 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
         const updatedToken = await getToken('root', name, client)
         expect(updatedToken).to.not.be.null
         expect(updatedToken.expireAt.slice(0, 10)).to.equals(expireAt)
-    })      
+    })
 
     it('Update Token by providing tokenKey, null tokenName, EMPTY expireAt, null state', async function () {
         const client = apolloClient()
@@ -224,7 +226,7 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
         const updatedToken = await getToken('root', name, client)
         expect(updatedToken).to.not.be.null
         expect(updatedToken.expireAt).to.equals(tokenDetails.expireAt)
-    })   
+    })
 
     it('Update Token by providing tokenKey, null tokenName, INCORRECT expireAt, null state', async function () {
         const client = apolloClient()
@@ -249,5 +251,5 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
         const updatedToken = await getToken('root', name, client)
         expect(updatedToken).to.not.be.null
         expect(updatedToken.expireAt).to.equals(tokenDetails.expireAt)
-    })  
+    })
 })
