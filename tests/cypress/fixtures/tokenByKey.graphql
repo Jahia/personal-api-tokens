@@ -1,0 +1,17 @@
+query($tokenKey: String!) {
+  admin {
+    personalApiTokens {
+      tokenByKey(key: $tokenKey) {
+        key
+        state
+        name
+        createdAt
+        expireAt
+        lastUsedAt          
+        user {
+          name
+        }
+      }
+    }    
+  }
+}

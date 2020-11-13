@@ -47,6 +47,15 @@ public interface TokenService {
     public TokenDetails verifyToken(String token, JCRSessionWrapper session) throws RepositoryException;
 
     /**
+     * Provided a token, returns its access key
+     *
+     * @param token   The token
+     * @return The aaccess key
+     * @throws RepositoryException when repository operation fails
+     */
+    public String getTokenKey(String token) throws RepositoryException;
+
+    /**
      * Get the token details for the specified key, or null if it does not exist
      *
      * @param key     The token

@@ -1,0 +1,19 @@
+{
+  admin {
+    personalApiTokens {
+      tokens {
+        nodes {
+          key
+          state
+          name
+          createdAt
+          expireAt
+          lastUsedAt          
+          user {
+            name
+          }
+        }
+      }
+    }    
+  }
+}

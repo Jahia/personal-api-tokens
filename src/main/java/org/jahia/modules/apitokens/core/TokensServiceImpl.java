@@ -107,6 +107,10 @@ public class TokensServiceImpl implements TokenService {
         return null;
     }
 
+    public String getTokenKey(String token) throws RepositoryException {
+        return TokenUtils.getInstance().getKey(token);
+    }
+
     public TokenDetails getTokenDetails(String key, JCRSessionWrapper session) throws RepositoryException {
         return getTokenDetails(getTokenNode(key, session));
     }

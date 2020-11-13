@@ -77,6 +77,23 @@ public class GqlPersonalApiTokensQuery {
     }
 
     /**
+     * Return the key from the token
+     *
+     * @param token The token
+     * @return the token key
+     */
+    @GraphQLField
+    @GraphQLDescription("Returns the token key corresponding to the provided token")
+    public String getTokenKey(@GraphQLName("token") @GraphQLDescription("The token") @GraphQLNonNull String token) {
+        try {
+            String tokenKey = tokensService.getTokenKey(token);
+            return tokenKey;
+        } catch (Exception e) {
+            throw new DataFetchingException(e);
+        }
+    }
+
+    /**
      * Get token details, based on key
      *
      * @param key The token key
