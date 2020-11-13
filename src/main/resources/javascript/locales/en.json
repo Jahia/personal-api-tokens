@@ -1,5 +1,6 @@
 {
   "title": "My API tokens",
+  "delete": "Delete",
   "createToken": {
     "buttonTitle": "Create Token",
     "modalTitle": "Create a personal API token",
@@ -9,12 +10,23 @@
     "setDate": "Set the date when this token will be expired",
     "tokenAlreadyExists": "Token with this name already exists, please choose different name"
   },
+  "tokensList": {
+    "moreActions": "More actions",
+    "deactivate": "Deactivate",
+    "name": "Name",
+    "key": "Key",
+    "addedOn": "Added on",
+    "lastAccess": "Last access on",
+    "expiration": "Expiration",
+    "status": "Status",
+    "actions": "Actions"
+  },
   "copyToken": {
     "title": "Access token created",
     "warningNotToShareToken": "Don't give your personal access API token to anybody who you don't want to access your files",
     "copyToClipboard": "Copy token to clipboard",
     "copy": "Copy",
-    "warningToCopyToken": "This is the only time secret key can be viewed. You will not be able to recover it"
+    "warningToCopyToken": "This is the only time token can be viewed. You will not be able to recover it"
   },
   "create": "Create",
   "cancel": "Cancel",

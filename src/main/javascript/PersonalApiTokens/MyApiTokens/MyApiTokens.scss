@@ -6,6 +6,8 @@
 
     background-color: var(--color-gray_light40);
     box-shadow: 0 4px 4px rgba(59, 61, 64, 0.3);
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .headerRoot {

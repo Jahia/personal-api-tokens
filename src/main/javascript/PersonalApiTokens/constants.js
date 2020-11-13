@@ -1,0 +1,15 @@
+const NAME_PROPERTY = 'name';
+const KEY_PROPERTY = 'key';
+const ADDED_ON = 'addedOn';
+const LAST_ACCESS = 'lastAccess';
+const EXPIRATION = 'expiration';
+const STATUS = 'status';
+
+const DEFAULT_SORT_DIR = 'desc';
+
+const INITIAL_TOKEN_LIMIT = 5;
+const INITIAL_OFFSET = 0;
+
+const POLL_INTERVAL = 5000;
+
+export {NAME_PROPERTY, KEY_PROPERTY, ADDED_ON, EXPIRATION, LAST_ACCESS, STATUS, INITIAL_OFFSET, INITIAL_TOKEN_LIMIT, POLL_INTERVAL, DEFAULT_SORT_DIR};

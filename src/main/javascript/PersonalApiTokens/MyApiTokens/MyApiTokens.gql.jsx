@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 const CreateTokenMutation = gql`
-    mutation CreateToken($userId: String!, $name: String!, $expireAt: String!) {
+    mutation CreateToken($userId: String!, $name: String!, $expireAt: String) {
         admin {
              personalApiTokens {
                  createToken(userId: $userId, name: $name, expireAt: $expireAt)

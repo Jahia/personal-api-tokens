@@ -13,6 +13,13 @@
     margin: 3% 0 0 2%;
 }
 
+.tokensTable {
+    min-height: 80vh;
+
+    background-color: #fdfdfd;
+    box-shadow: 0 4px 8px rgba(19, 28, 33, 0.2);
+}
+
 .noTokens {
     align-self: center;
     margin-left: 23%;
