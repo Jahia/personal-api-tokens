@@ -179,7 +179,12 @@ From that point Jahia and the test container will start, the test container will
 If you modified the codebase (tests or module) you might want to build a new test image (it could be just a local test image).
 
 ```bash
-mvn clean install # If you first want to build the module, the docker build step will add the corresponding artifacts to the docker image
+# If you first want to build the module, the docker build step will add the corresponding artifacts to the docker image
+mvn clean install 
+# To run the module in build mode, you need to install graphql-dxm-provider
+mvn dependency:copy-dependencies 
+# To copy the dependency for installation by jahia-cli
+cp target/dependency/graphql-dxm-provider-2.2.2-SNAPSHOT.jar tests/artifacts/graphql-dxm-provider.jar 
 cd tests
 bash env.build.sh
 ```
