@@ -109,6 +109,9 @@ public class GqlPersonalApiTokensMutation {
         try {
             return jcrTemplate.doExecute(jcrTemplate.getSessionFactory().getCurrentUser(), null, null, session -> {
                 TokenDetails details = tokensService.getTokenDetails(key, session);
+                if (details == null) {
+                    return false;
+                }
                 if (name != null) {
                     details.setName(name);
                 }
