@@ -6,3 +6,5 @@ jobs:
   - type: module
     id: personal-api-tokens
     filepath: /tmp/artifacts/personal-api-tokens-SNAPSHOT.jar
+  - type: groovy
+    filepath: ./assets/createToken.groovy    
