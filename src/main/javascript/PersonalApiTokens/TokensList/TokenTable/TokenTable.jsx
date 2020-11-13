@@ -13,11 +13,12 @@ const TokenTable = ({tokensData, getTokensPaginated, rowsPerPage, setRowsPerPage
     const [order, setOrder] = useState(DEFAULT_SORT_DIR);
     const [orderBy, setOrderBy] = useState(ADDED_ON);
 
-    const handleSort = orderByProperty => {
+    const handleSort = async orderByProperty => {
         const isAsc = orderBy === orderByProperty && order === 'asc';
         const sortOrder = isAsc ? 'desc' : 'asc';
         setOrderBy(orderByProperty);
         setOrder(sortOrder);
+        await getTokensPaginated({variables: {limit: rowsPerPage, offset: INITIAL_OFFSET, order: order, orderBy: orderBy}});
     };
 
     const handleChangePage = async (event, newPage) => {
