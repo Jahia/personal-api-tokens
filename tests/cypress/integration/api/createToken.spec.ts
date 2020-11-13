@@ -1,7 +1,7 @@
 import { apolloClient } from '../../support/apollo'
 import { DocumentNode } from 'graphql'
 
-import { createToken, getToken, getTokens, deleteToken, verifyToken } from '../../support/gql'
+import { getToken, getTokens, deleteToken, verifyToken } from '../../support/gql'
 
 describe('Token creation via API - mutation.admin.personalApiTokens.createToken', () => {
     let GQL_CREATE: DocumentNode
@@ -85,7 +85,7 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
                 expireAt: null,
                 tokenState: 'INACTIVE', // This state does not exist
             },
-            errorPolicy: 'ignore'
+            errorPolicy: 'ignore',
         })
         expect(response.data).to.be.null
 
@@ -118,7 +118,7 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
         expect(tokenDetails).to.not.be.null
         expect(tokenDetails.state).to.equals('ACTIVE')
         // Using slice prevent us from having to deal with timezones (hopefully)
-        expect(tokenDetails.expireAt.slice(0, 10)).to.equals(expireAt) 
+        expect(tokenDetails.expireAt.slice(0, 10)).to.equals(expireAt)
     })
 
     it('Create token by providing userId, name, expiry date in the past, null state, null siteKey', async function () {
@@ -145,7 +145,7 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
         const tokenDetails = await getToken('root', name, client)
         expect(tokenDetails).to.not.be.null
         expect(tokenDetails.state).to.equals('ACTIVE')
-        expect(tokenDetails.expireAt.slice(0, 10)).to.equals(expireAt) 
+        expect(tokenDetails.expireAt.slice(0, 10)).to.equals(expireAt)
     })
 
     it('Create token by providing userId, name, INCORRECT expiry date, null state, null siteKey', async function () {
@@ -162,7 +162,7 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
                 expireAt: expireAt,
                 tokenState: null,
             },
-            errorPolicy: 'ignore'
+            errorPolicy: 'ignore',
         })
         expect(response.data.admin.personalApiTokens.createToken).to.be.null
 
@@ -184,7 +184,7 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
                 expireAt: expireAt,
                 tokenState: null,
             },
-            errorPolicy: 'ignore'
+            errorPolicy: 'ignore',
         })
         expect(response.data.admin.personalApiTokens.createToken).to.be.null
 
@@ -226,21 +226,19 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
                 expireAt: '2019-01-01',
                 tokenState: null,
             },
-            errorPolicy: 'ignore'
-        })     
+            errorPolicy: 'ignore',
+        })
         expect(response.data.admin.personalApiTokens.createToken).to.be.null
-   
+
         tokenDetails = await getToken('root', name, client)
         expect(tokenDetails).to.not.be.null
         expect(tokenDetails.name).to.equals(name)
-        expect(tokenDetails.expireAt.slice(0, 10)).to.equals(expireAt) 
-
-    })    
+        expect(tokenDetails.expireAt.slice(0, 10)).to.equals(expireAt)
+    })
 
     it('Create token by providing EMPTY userId, name, null date, null state, null siteKey', async function () {
         const client = apolloClient()
         const name = 'test-' + new Date().getTime()
-
 
         const response = await apolloClient().query({
             query: GQL_CREATE,
@@ -251,7 +249,7 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
                 expireAt: null,
                 tokenState: null,
             },
-            errorPolicy: 'ignore'
+            errorPolicy: 'ignore',
         })
         expect(response.data.admin.personalApiTokens.createToken).to.be.null
         const tokenDetails = await getToken('root', name, client)
@@ -271,15 +269,15 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
                 expireAt: null,
                 tokenState: null,
             },
-            errorPolicy: 'ignore'
+            errorPolicy: 'ignore',
         })
         expect(response.data.admin.personalApiTokens.createToken).to.be.null
         const tokenDetails = await getToken('root', name, client)
-        expect(tokenDetails).to.be.null        
-    })    
+        expect(tokenDetails).to.be.null
+    })
 
+    // eslint-disable-next-line cypress/no-async-tests
     it('Create token by providing userId, NULL name, null date, null state, null siteKey', async function () {
-        const client = apolloClient()
         const name = null
 
         const response = await apolloClient().query({
@@ -291,13 +289,14 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
                 expireAt: null,
                 tokenState: null,
             },
-            errorPolicy: 'ignore'
+            errorPolicy: 'ignore',
         })
         cy.log(JSON.stringify(response))
 
         expect(response.data).to.be.null
-    })        
+    })
 
+    // eslint-disable-next-line cypress/no-async-tests
     it('Create token by providing userId, EMPTY name, null date, null state, null siteKey', async function () {
         const client = apolloClient()
         const name = ''
@@ -311,13 +310,12 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
                 expireAt: null,
                 tokenState: null,
             },
-            errorPolicy: 'ignore'
+            errorPolicy: 'ignore',
         })
         cy.log(JSON.stringify(response))
         expect(response.data.admin.personalApiTokens.createToken).to.be.null
 
         const tokenDetails = await getToken('root', name, client)
-        expect(tokenDetails).to.be.null        
-    })    
-
+        expect(tokenDetails).to.be.null
+    })
 })
