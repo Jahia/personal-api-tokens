@@ -67,7 +67,7 @@ describe('Get single token via API - query.admin.personalApiTokens.tokenByKey', 
 
     it('Create a token and fetch it', async function () {
         const client = apolloClient()
-        const createdToken = await createToken('root', 'test-A', null, null, client)
+        await createToken('root', 'test-A', null, null, client)
         const token = await getToken('root', 'test-A', client)
 
         const response = await apolloClient().query({
@@ -83,7 +83,7 @@ describe('Get single token via API - query.admin.personalApiTokens.tokenByKey', 
 
     it('Fetch a token using a key that does not exist anymore', async function () {
         const client = apolloClient()
-        const createdToken = await createToken('root', 'test-A', null, null, client)
+        await createToken('root', 'test-A', null, null, client)
         const token = await getToken('root', 'test-A', client)
         await deleteToken(token.key, client)
 
