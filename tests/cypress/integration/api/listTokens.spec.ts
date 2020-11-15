@@ -60,6 +60,7 @@ describe('List tokens via API - query.admin.personalApiTokens.tokens', () => {
             errorPolicy: 'ignore',
         })
         expect(response.errors).to.be.undefined
+        cy.log(JSON.stringify(response))
         expect(response.data.admin.personalApiTokens.tokens).to.be.null
     })
 })
