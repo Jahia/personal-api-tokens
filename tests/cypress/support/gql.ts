@@ -66,6 +66,7 @@ export async function getToken(
                             key
                             expireAt
                             state
+                            lastUsedAt
                         }
                     }
                 }
@@ -94,6 +95,7 @@ export async function getTokens(userId: string, apolloClient: ApolloClient<Norma
                                 key
                                 expireAt
                                 state
+                                lastUsedAt
                             }
                         }
                     }

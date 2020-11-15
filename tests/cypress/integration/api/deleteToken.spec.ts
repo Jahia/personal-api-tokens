@@ -81,4 +81,144 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
         const allTokens = await getTokens('root', client)
         expect(allTokens.nodes.filter((token) => token.name.startsWith('test-E-')).length).to.equal(3)
     })
+
+    it('Security - Guest is NOT able to delete a token created by Root', async function () {
+        const client = apolloClient()
+        const name = 'test-' + new Date().getTime()
+
+        await createToken('root', name, null, null, client)
+        const tokenDetails = await getToken('root', name, client)
+
+        const response = await apolloClient({}).query({
+            query: GQL_DELETE,
+            variables: {
+                tokenKey: tokenDetails.key,
+            },
+        })
+        expect(response.errors).to.be.undefined
+        expect(response.data.admin.personalApiTokens.deleteToken).to.be.false
+
+        const deletedToken = await getToken('root', name, client)
+        expect(deletedToken).not.to.be.null
+    })
+
+    it('Security - Authenticated visitor (jay) is NOT able to delete a token created by Editor (mathias)', async function () {
+        const name = 'test-' + new Date().getTime()
+
+        const mathiasApolloClient = apolloClient({ username: 'mathias', password: 'password' })
+        await createToken('mathias', name, null, null, mathiasApolloClient)
+        const tokenDetails = await getToken('mathias', name, mathiasApolloClient)
+
+        const response = await apolloClient({ username: 'jay', password: 'password' }).query({
+            query: GQL_DELETE,
+            variables: {
+                tokenKey: tokenDetails.key,
+            },
+        })
+        expect(response.errors).to.be.undefined
+        expect(response.data.admin.personalApiTokens.deleteToken).to.be.false
+
+        const deletedToken = await getToken('mathias', name, mathiasApolloClient)
+        expect(deletedToken).not.to.be.null
+    })
+
+    it('Security - Authenticated visitor (jay) is NOT able to delete a token created by Root', async function () {
+        const name = 'test-' + new Date().getTime()
+
+        const rootApolloClient = apolloClient()
+        await createToken('root', name, null, null, rootApolloClient)
+        const tokenDetails = await getToken('root', name, rootApolloClient)
+
+        const response = await apolloClient({ username: 'root', password: 'password' }).query({
+            query: GQL_DELETE,
+            variables: {
+                tokenKey: tokenDetails.key,
+            },
+        })
+        expect(response.errors).to.be.undefined
+        expect(response.data.admin.personalApiTokens.deleteToken).to.be.false
+
+        const deletedToken = await getToken('root', name, rootApolloClient)
+        expect(deletedToken).not.to.be.null
+    })
+
+    it('Security - Editor (mathias) is NOT able to delete a token created by Authenticated user (jay)', async function () {
+        const name = 'test-' + new Date().getTime()
+
+        const mathiasApolloClient = apolloClient({ username: 'jay', password: 'password' })
+        await createToken('jay', name, null, null, mathiasApolloClient)
+        const tokenDetails = await getToken('jay', name, mathiasApolloClient)
+
+        const response = await apolloClient({ username: 'mathias', password: 'password' }).query({
+            query: GQL_DELETE,
+            variables: {
+                tokenKey: tokenDetails.key,
+            },
+        })
+        expect(response.errors).to.be.undefined
+        expect(response.data.admin.personalApiTokens.deleteToken).to.be.false
+
+        const deletedToken = await getToken('jay', name, mathiasApolloClient)
+        expect(deletedToken).not.to.be.null
+    })
+
+    it('Security - Editor (mathias) is NOT able to delete a token created by Root', async function () {
+        const name = 'test-' + new Date().getTime()
+
+        const rootApolloClient = apolloClient()
+        await createToken('root', name, null, null, rootApolloClient)
+        const tokenDetails = await getToken('root', name, rootApolloClient)
+
+        const response = await apolloClient({ username: 'mathias', password: 'password' }).query({
+            query: GQL_DELETE,
+            variables: {
+                tokenKey: tokenDetails.key,
+            },
+        })
+        expect(response.errors).to.be.undefined
+        expect(response.data.admin.personalApiTokens.deleteToken).to.be.false
+
+        const deletedToken = await getToken('root', name, rootApolloClient)
+        expect(deletedToken).not.to.be.null
+    })
+
+    it('Security - Root IS able to delete a token created by Editor (mathias)', async function () {
+        const name = 'test-' + new Date().getTime()
+
+        const mathiasApolloClient = apolloClient({ username: 'mathias', password: 'password' })
+        await createToken('mathias', name, null, null, mathiasApolloClient)
+        const tokenDetails = await getToken('mathias', name, mathiasApolloClient)
+
+        const response = await apolloClient().query({
+            query: GQL_DELETE,
+            variables: {
+                tokenKey: tokenDetails.key,
+            },
+        })
+        expect(response.errors).to.be.undefined
+        expect(response.data.admin.personalApiTokens.deleteToken).to.be.true
+
+        const deletedToken = await getToken('mathias', name, mathiasApolloClient)
+        expect(deletedToken).to.be.null
+    })
+
+    it('Security - Root IS able to delete a token created by Authenticated user (jay)', async function () {
+        const name = 'test-' + new Date().getTime()
+
+        const mathiasApolloClient = apolloClient({ username: 'jay', password: 'password' })
+        await createToken('jay', name, null, null, mathiasApolloClient)
+        const tokenDetails = await getToken('jay', name, mathiasApolloClient)
+
+        const response = await apolloClient().query({
+            query: GQL_DELETE,
+            variables: {
+                tokenKey: tokenDetails.key,
+            },
+        })
+        expect(response.errors).to.be.undefined
+        expect(response.data.admin.personalApiTokens.deleteToken).to.be.true
+
+        const deletedToken = await getToken('jay', name, mathiasApolloClient)
+        expect(deletedToken).to.be.null
+    })
 })
