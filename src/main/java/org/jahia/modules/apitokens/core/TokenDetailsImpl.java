@@ -34,7 +34,6 @@ public class TokenDetailsImpl implements TokenDetails {
     private Calendar expirationDate;
     private Calendar creationDate;
     private Calendar modificationDate;
-    private Calendar lastUsageDate;
 
     private boolean isActive = true;
 
@@ -103,14 +102,6 @@ public class TokenDetailsImpl implements TokenDetails {
 
     public void setModificationDate(Calendar modificationDate) {
         this.modificationDate = modificationDate;
-    }
-
-    public Calendar getLastUsageDate() {
-        return lastUsageDate;
-    }
-
-    public void setLastUsageDate(Calendar lastUsageDate) {
-        this.lastUsageDate = lastUsageDate;
     }
 
     public boolean isActive() {
