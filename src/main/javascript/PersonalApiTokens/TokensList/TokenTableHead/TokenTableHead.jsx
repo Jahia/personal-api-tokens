@@ -1,6 +1,6 @@
 import React from 'react';
 import {TableHead, TableSortLabel, TableCell, TableRow} from '@material-ui/core';
-import {NAME_PROPERTY, ADDED_ON, EXPIRATION, LAST_ACCESS, KEY_PROPERTY, STATUS} from '../../constants';
+import {NAME, CREATED_AT, EXPIRE_AT, KEY, STATE, ASCENDING_SORT} from '../../constants';
 import {Typography} from '@jahia/moonstone';
 import {useTranslation} from 'react-i18next';
 import styles from './TokenTableHead.scss';
@@ -13,67 +13,57 @@ const TokenTableHead = ({orderBy, order, handleSort}) => {
         <TableHead>
             <TableRow>
                 <TableCell classes={{root: tableStyles.cellFont}}
-                           sortDirection={orderBy === NAME_PROPERTY ? order : false}
+                           sortDirection={orderBy === NAME ? order.toLowerCase() : false}
                 >
                     <TableSortLabel
-                        active={orderBy === NAME_PROPERTY}
-                        classes={{icon: orderBy === NAME_PROPERTY ? styles.iconActive : styles.icon}}
-                        direction={orderBy === NAME_PROPERTY ? order : 'asc'}
-                        onClick={() => handleSort(NAME_PROPERTY)}
+                        active={orderBy === NAME}
+                        classes={{icon: orderBy === NAME ? styles.iconActive : styles.icon}}
+                        direction={orderBy === NAME ? order.toLowerCase() : ASCENDING_SORT.toLowerCase()}
+                        onClick={() => handleSort(NAME)}
                     >
                         <Typography variant="body" weight="semiBold">{t('personal-api-tokens:tokensList.name')}</Typography>
                     </TableSortLabel>
                 </TableCell>
                 <TableCell classes={{root: tableStyles.cellFont}}
-                           sortDirection={orderBy === KEY_PROPERTY ? order : false}
+                           sortDirection={orderBy === KEY ? order.toLowerCase() : false}
                 >
                     <TableSortLabel
-                        active={orderBy === KEY_PROPERTY}
-                        classes={{icon: orderBy === KEY_PROPERTY ? styles.iconActive : styles.icon}}
-                        direction={orderBy === KEY_PROPERTY ? order : 'asc'}
-                        onClick={() => handleSort(KEY_PROPERTY)}
+                        active={orderBy === KEY}
+                        classes={{icon: orderBy === KEY ? styles.iconActive : styles.icon}}
+                        direction={orderBy === KEY ? order.toLowerCase() : ASCENDING_SORT.toLowerCase()}
+                        onClick={() => handleSort(KEY)}
                     >
                         <Typography variant="body" weight="semiBold">{t('personal-api-tokens:tokensList.key')}</Typography>
                     </TableSortLabel>
                 </TableCell>
                 <TableCell classes={{root: tableStyles.cellFont}}
-                           sortDirection={orderBy === ADDED_ON ? order : false}
+                           sortDirection={orderBy === CREATED_AT ? order.toLowerCase() : false}
                 >
                     <TableSortLabel
-                        active={orderBy === ADDED_ON}
-                        classes={{icon: orderBy === ADDED_ON ? styles.iconActive : styles.icon}}
-                        direction={orderBy === ADDED_ON ? order : 'asc'}
-                        onClick={() => handleSort(ADDED_ON)}
+                        active={orderBy === CREATED_AT}
+                        classes={{icon: orderBy === CREATED_AT ? styles.iconActive : styles.icon}}
+                        direction={orderBy === CREATED_AT ? order.toLowerCase() : ASCENDING_SORT.toLowerCase()}
+                        onClick={() => handleSort(CREATED_AT)}
                     >
                         <Typography variant="body" weight="semiBold">{t('personal-api-tokens:tokensList.addedOn')}</Typography>
                     </TableSortLabel>
                 </TableCell>
-                <TableCell classes={{root: tableStyles.cellFont}} sortDirection={orderBy === LAST_ACCESS ? order : false}>
+                <TableCell classes={{root: tableStyles.cellFont}} sortDirection={orderBy === EXPIRE_AT ? order.toLowerCase() : false}>
                     <TableSortLabel
-                        active={orderBy === LAST_ACCESS}
-                        classes={{icon: orderBy === LAST_ACCESS ? styles.iconActive : styles.icon}}
-                        direction={orderBy === LAST_ACCESS ? order : 'asc'}
-                        onClick={() => handleSort(LAST_ACCESS)}
-                    >
-                        <Typography variant="body" weight="semiBold">{t('personal-api-tokens:tokensList.lastAccess')}</Typography>
-                    </TableSortLabel>
-                </TableCell>
-                <TableCell classes={{root: tableStyles.cellFont}} sortDirection={orderBy === EXPIRATION ? order : false}>
-                    <TableSortLabel
-                        active={orderBy === EXPIRATION}
-                        classes={{icon: orderBy === EXPIRATION ? styles.iconActive : styles.icon}}
-                        direction={orderBy === EXPIRATION ? order : 'asc'}
-                        onClick={() => handleSort(EXPIRATION)}
+                        active={orderBy === EXPIRE_AT}
+                        classes={{icon: orderBy === EXPIRE_AT ? styles.iconActive : styles.icon}}
+                        direction={orderBy === EXPIRE_AT ? order.toLowerCase() : ASCENDING_SORT.toLowerCase()}
+                        onClick={() => handleSort(EXPIRE_AT)}
                     >
                         <Typography variant="body" weight="semiBold">{t('personal-api-tokens:tokensList.expiration')}</Typography>
                     </TableSortLabel>
                 </TableCell>
-                <TableCell classes={{root: tableStyles.cellFont}} sortDirection={orderBy === STATUS ? order : false}>
+                <TableCell classes={{root: tableStyles.cellFont}} sortDirection={orderBy === STATE ? order.toLowerCase() : false}>
                     <TableSortLabel
-                        active={orderBy === STATUS}
-                        classes={{icon: orderBy === STATUS ? styles.iconActive : styles.icon}}
-                        direction={orderBy === STATUS ? order : 'asc'}
-                        onClick={() => handleSort(STATUS)}
+                        active={orderBy === STATE}
+                        classes={{icon: orderBy === STATE ? styles.iconActive : styles.icon}}
+                        direction={orderBy === STATE ? order.toLowerCase() : ASCENDING_SORT.toLowerCase()}
+                        onClick={() => handleSort(STATE)}
                     >
                         <Typography variant="body" weight="semiBold">{t('personal-api-tokens:tokensList.status')}</Typography>
                     </TableSortLabel>

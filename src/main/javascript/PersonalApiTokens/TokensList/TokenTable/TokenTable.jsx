@@ -1,56 +1,75 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Table, TableBody, TablePagination} from '@material-ui/core';
 import PropTypes from 'prop-types';
 import TokenTableHead from '../TokenTableHead/TokenTableHead';
 import TokenTableRow from '../TokenTableRow/TokenTableRow';
 import {useTranslation} from 'react-i18next';
-import {ADDED_ON, DEFAULT_SORT_DIR, INITIAL_OFFSET} from '../../constants';
+import {ASCENDING_SORT, DESCENDING_SORT, INITIAL_OFFSET} from '../../constants';
 import tableStyles from './TokenTable.scss';
+import {useMutation} from '@apollo/react-hooks';
+import {DeleteTokenMutation} from '../TokensList.gql';
 
-const TokenTable = ({tokensData, getTokensPaginated, rowsPerPage, setRowsPerPage, currentPage, setCurrentPage}) => {
+const TokenTable = props => {
     const {t} = useTranslation('personal-api-tokens');
 
-    const [order, setOrder] = useState(DEFAULT_SORT_DIR);
-    const [orderBy, setOrderBy] = useState(ADDED_ON);
+    const [deleteTokenMutation] = useMutation(DeleteTokenMutation, {
+        onCompleted: () => props.getTokensPaginated({
+            variables:
+                {
+                    limit: props.rowsPerPage,
+                    offset: props.currentPage * props.rowsPerPage,
+                    fieldSorter: {fieldName: props.orderBy, sortType: props.order}
+                }
+        })
+    });
+
+    const deleteToken = async key => {
+        await deleteTokenMutation({variables: {key: key}});
+    };
 
     const handleSort = async orderByProperty => {
-        const isAsc = orderBy === orderByProperty && order === 'asc';
-        const sortOrder = isAsc ? 'desc' : 'asc';
-        setOrderBy(orderByProperty);
-        setOrder(sortOrder);
-        await getTokensPaginated({variables: {limit: rowsPerPage, offset: INITIAL_OFFSET, order: order, orderBy: orderBy}});
+        const isAsc = props.orderBy === orderByProperty && props.order === ASCENDING_SORT;
+        const sortOrder = isAsc ? DESCENDING_SORT : ASCENDING_SORT;
+        props.setOrderBy(orderByProperty);
+        props.setOrder(sortOrder);
+        await props.getTokensPaginated({variables: {limit: props.rowsPerPage, offset: INITIAL_OFFSET,
+            fieldSorter: {fieldName: props.orderBy, sortType: props.order}}});
     };
 
     const handleChangePage = async (event, newPage) => {
-        await getTokensPaginated({variables: {limit: rowsPerPage, offset: newPage * rowsPerPage, order: order, orderBy: orderBy}});
-        setCurrentPage(newPage);
+        await props.getTokensPaginated({variables: {limit: props.rowsPerPage, offset: newPage * props.rowsPerPage,
+            fieldSorter: {fieldName: props.orderBy, sortType: props.order}}});
+        props.setCurrentPage(newPage);
     };
 
     const handleChangeRowsPerPage = async event => {
         const currentRowsPerPage = parseInt(event.target.value, 10);
-        await getTokensPaginated({variables: {limit: currentRowsPerPage, offset: INITIAL_OFFSET, order: order, orderBy: orderBy}});
-        setRowsPerPage(currentRowsPerPage);
-        setCurrentPage(INITIAL_OFFSET);
+        await props.getTokensPaginated({variables: {limit: currentRowsPerPage, offset: INITIAL_OFFSET,
+            fieldSorter: {fieldName: props.orderBy, sortType: props.order}}});
+        props.setRowsPerPage(currentRowsPerPage);
+        props.setCurrentPage(INITIAL_OFFSET);
     };
 
     return (
         <>
             <Table>
-                <TokenTableHead orderBy={orderBy} order={order} handleSort={handleSort}/>
+                <TokenTableHead orderBy={props.orderBy} order={props.order} handleSort={handleSort}/>
                 <TableBody>
-                    {tokensData.nodes.map(token => (
+                    {props.tokensData.nodes.map(token => (
                         <TokenTableRow key={token.name}
                                        token={token}
+                                       deleteToken={deleteToken}
                                        moreActionLabel={t('personal-api-tokens:tokensList.moreActions')}
-                                       deactivateLabel={t('personal-api-tokens:tokensList.deactivate')}/>
+                                       deactivateLabel={t('personal-api-tokens:tokensList.deactivate')}
+                                       activateLabel={t('personal-api-tokens:tokensList.activate')}/>
                 ))}
                 </TableBody>
             </Table>
             <TablePagination
                 classes={{caption: tableStyles.cellFont, select: tableStyles.cellFont, menuItem: tableStyles.cellFont}}
-                count={tokensData.pageInfo.totalCount}
-                page={currentPage}
-                rowsPerPage={rowsPerPage}
+                count={props.tokensData.pageInfo.totalCount}
+                page={props.currentPage}
+                rowsPerPage={props.rowsPerPage}
                 rowsPerPageOptions={[5, 10, 25]}
                 component="div"
                 onChangePage={handleChangePage}
@@ -65,7 +84,11 @@ TokenTable.propTypes = {
     rowsPerPage: PropTypes.number.isRequired,
     setRowsPerPage: PropTypes.func.isRequired,
     currentPage: PropTypes.number.isRequired,
-    setCurrentPage: PropTypes.func.isRequired
+    setCurrentPage: PropTypes.func.isRequired,
+    order: PropTypes.string.isRequired,
+    orderBy: PropTypes.string.isRequired,
+    setOrder: PropTypes.func.isRequired,
+    setOrderBy: PropTypes.func.isRequired
 };
 
 export default TokenTable;

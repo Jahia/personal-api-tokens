@@ -29,8 +29,10 @@ export const createTokenMocks = [
             variables: {
                 limit: 5,
                 offset: 0,
-                order: 'desc',
-                orderBy: 'addedOn'
+                fieldSorter: {
+                    fieldName: 'createdAt',
+                    sortType: 'DESC'
+                }
             }
         },
         result: () => {
@@ -54,7 +56,6 @@ export const createTokenMocks = [
                                         expireAt: '2020-11-11T15:57:23.762-05:00',
                                         state: 'ACTIVE',
                                         createdAt: '2020-11-10T15:58:06.808-05:00',
-                                        lastUsedAt: null,
                                         updatedAt: '2020-11-10T15:58:06.832-05:00',
                                         user: {
                                             name: 'root'
@@ -66,7 +67,6 @@ export const createTokenMocks = [
                                         expireAt: '2020-11-11T15:44:36.353-05:00',
                                         state: 'ACTIVE',
                                         createdAt: '2020-11-10T15:44:47.800-05:00',
-                                        lastUsedAt: null,
                                         updatedAt: '2020-11-10T15:44:47.827-05:00',
                                         user: {
                                             name: 'root'
@@ -78,7 +78,6 @@ export const createTokenMocks = [
                                         expireAt: '2020-11-11T15:57:02.048-05:00',
                                         state: 'ACTIVE',
                                         createdAt: '2020-11-10T15:57:18.036-05:00',
-                                        lastUsedAt: null,
                                         updatedAt: '2020-11-10T15:57:18.058-05:00',
                                         user: {
                                             name: 'root'
@@ -90,7 +89,6 @@ export const createTokenMocks = [
                                         expireAt: '2020-11-10T12:22:26.685-05:00',
                                         state: 'ACTIVE',
                                         createdAt: '2020-11-09T12:22:30.831-05:00',
-                                        lastUsedAt: null,
                                         updatedAt: '2020-11-09T12:22:30.857-05:00',
                                         user: {
                                             name: 'root'
@@ -102,7 +100,6 @@ export const createTokenMocks = [
                                         expireAt: '2020-11-10T11:57:47.827-05:00',
                                         state: 'ACTIVE',
                                         createdAt: '2020-11-09T12:00:16.624-05:00',
-                                        lastUsedAt: null,
                                         updatedAt: '2020-11-09T12:00:16.651-05:00',
                                         user: {
                                             name: 'root'
@@ -202,8 +199,10 @@ export const snapshotMocks = [
             variables: {
                 limit: 5,
                 offset: 0,
-                order: 'desc',
-                orderBy: 'addedOn'
+                fieldSorter: {
+                    fieldName: 'createdAt',
+                    sortType: 'DESC'
+                }
             }
         },
         result: () => {

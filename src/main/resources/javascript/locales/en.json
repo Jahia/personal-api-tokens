@@ -13,10 +13,10 @@
   "tokensList": {
     "moreActions": "More actions",
     "deactivate": "Deactivate",
+    "activate": "Activate",
     "name": "Name",
     "key": "Key",
     "addedOn": "Added on",
-    "lastAccess": "Last access on",
     "expiration": "Expiration",
     "status": "Status",
     "actions": "Actions"

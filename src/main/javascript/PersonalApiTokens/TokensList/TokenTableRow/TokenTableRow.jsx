@@ -1,20 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {capitalize, TableCell, TableRow} from '@material-ui/core';
-import {Chip, Button, Menu, MenuItem, MoreVert, Typography} from '@jahia/moonstone';
+import {Button, Chip, Menu, MenuItem, MoreVert, Typography} from '@jahia/moonstone';
 import Moment from 'react-moment';
 import {useTranslation} from 'react-i18next';
 import styles from './TokenTableRow.scss';
-import {useMutation} from '@apollo/react-hooks';
-import {CreateTokenMutation} from '../../MyApiTokens/MyApiTokens.gql';
 import tableStyles from '../TokenTable/TokenTable.scss';
 
-const TokenTableRow = props => {
+const TokenTableRow = ({token, deleteToken, moreActionLabel, deactivateLabel, activateLabel}) => {
     const {t} = useTranslation('personal-api-tokens');
-
-    const [deleteToken] = useMutation(CreateTokenMutation, {
-        variables: {key: props.token.key}
-    });
 
     const [menuOpen, setMenuOpen] = React.useState({});
     const [anchorEl, setAnchorEl] = React.useState({});
@@ -30,31 +24,28 @@ const TokenTableRow = props => {
     };
 
     function isMenuDisplayed() {
-        const menuOpenElement = menuOpen[props.token.name];
+        const menuOpenElement = menuOpen[token.name];
         return menuOpenElement !== undefined && menuOpenElement;
     }
 
     return (
         <TableRow>
             <TableCell classes={{root: tableStyles.cellFont}}>
-                <Typography>{props.token.name}</Typography>
+                <Typography>{token.name}</Typography>
             </TableCell>
             <TableCell classes={{root: tableStyles.cellFont}}>
-                <Typography>{props.token.key}</Typography>
+                <Typography>{token.key}</Typography>
             </TableCell>
             <TableCell classes={{root: tableStyles.cellFont}}>
-                <Typography><Moment format="MMM Do YYYY" date={props.token.createdAt}/></Typography>
+                <Typography><Moment format="MMM Do YYYY" date={token.createdAt}/></Typography>
             </TableCell>
-            <TableCell classes={{root: tableStyles.cellFont}}>{props.token.lastUsedAt !== null &&
-            <Typography><Moment calendar date={props.token.lastUsedAt}/></Typography>}
-            </TableCell>
-            <TableCell classes={{root: tableStyles.cellFont}}>{props.token.expireAt !== null &&
-            <Typography><Moment calendar date={props.token.expireAt}/></Typography>}
+            <TableCell classes={{root: tableStyles.cellFont}}>{token.expireAt !== null &&
+            <Typography><Moment calendar date={token.expireAt}/></Typography>}
             </TableCell>
             <TableCell classes={{root: tableStyles.cellFont}}>
                 <Chip key="tokenState"
-                      label={capitalize(props.token.state.toLowerCase())}
-                      color={props.token.state !== null && props.token.state.toLowerCase() === 'active' ? 'success' : 'warning'}/>
+                      label={capitalize(token.state.toLowerCase())}
+                      color={token.state !== null && token.state.toLowerCase() === 'active' ? 'success' : 'warning'}/>
             </TableCell>
             <TableCell classes={{root: tableStyles.cellFont}}>
                 <div className={styles.header}>
@@ -62,14 +53,14 @@ const TokenTableRow = props => {
                             color="danger"
                             size="big"
                             label={t('personal-api-tokens:delete')}
-                            onClick={() => deleteToken}/>
+                            onClick={() => deleteToken(token.key)}/>
                     <Button icon={<MoreVert/>}
                             variant="ghost"
                             size="big"
-                            onClick={e => handleMenu(e, props.token.name)}/>
+                            onClick={e => handleMenu(e, token.name)}/>
                 </div>
                 <Menu isDisplayed={isMenuDisplayed()}
-                      anchorEl={anchorEl[props.token.name]}
+                      anchorEl={anchorEl[token.name]}
                       anchorPosition={{top: 0, left: 0}}
                       anchorElOrigin={{
                           vertical: 'bottom',
@@ -79,13 +70,12 @@ const TokenTableRow = props => {
                           vertical: 'top',
                           horizontal: 'left'
                       }}
-                      onClose={() => handleClose(props.token.name)}
+                      onClose={() => handleClose(token.name)}
                 >
-                    <MenuItem label={props.moreActionLabel}
+                    <MenuItem label={moreActionLabel}
                               variant="title"/>
-                    <MenuItem label={props.deactivateLabel}
-                              isDisabled={props.token.state === 'DISABLED'}
-                              className={styles.remove}
+                    <MenuItem label={token.state.toLowerCase() === 'active' ? deactivateLabel : activateLabel}
+                              className={token.state.toLowerCase() === 'active' ? styles.remove : ''}
                               onClick={() => console.log('Deactivate')}/>
                 </Menu>
             </TableCell>
@@ -96,7 +86,9 @@ const TokenTableRow = props => {
 TokenTableRow.propTypes = {
     token: PropTypes.object.isRequired,
     moreActionLabel: PropTypes.string.isRequired,
-    deactivateLabel: PropTypes.string.isRequired
+    deactivateLabel: PropTypes.string.isRequired,
+    activateLabel: PropTypes.string.isRequired,
+    deleteToken: PropTypes.func.isRequired
 };
 
 export default TokenTableRow;

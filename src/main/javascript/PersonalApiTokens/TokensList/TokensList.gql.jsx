@@ -2,10 +2,11 @@ import gql from 'graphql-tag';
 
 const getTokens = gql`
    query GetTokens($userId: String, $site: String, $before: String, $after: String, 
-   $first: Int, $last: Int, $offset: Int, $limit: Int, $orderBy: String, $order: String) {
+   $first: Int, $last: Int, $offset: Int, $limit: Int, $orderBy: String, $order: String, $fieldSorter: FieldSorter) {
         admin {
           personalApiTokens {
-            tokens(userId: $userId, site: $site, before: $before, after: $after, first: $first, last: $last, offset: $offset, limit: $limit) {
+            tokens(userId: $userId, site: $site, before: $before, after: $after, first: $first, 
+            last: $last, offset: $offset, limit: $limit, fieldSorter: $fieldSorter) {
               pageInfo {
                 totalCount
                 nodesCount
@@ -20,7 +21,6 @@ const getTokens = gql`
                 expireAt
                 state
                 createdAt
-                lastUsedAt
                 updatedAt
                 user {
                     name

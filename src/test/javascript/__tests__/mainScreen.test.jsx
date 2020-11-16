@@ -12,8 +12,6 @@ function testTableHeaders() {
     expect(keyTableHeader).toBeDefined();
     const addedTableHeader = screen.getByText(/translated_personal-api-tokens:tokensList.addedOn/i);
     expect(addedTableHeader).toBeDefined();
-    const lastAccessTableHeader = screen.getByText(/translated_personal-api-tokens:tokensList.lastAccess/i);
-    expect(lastAccessTableHeader).toBeDefined();
     const expirationTableHeader = screen.getByText(/translated_personal-api-tokens:tokensList.expiration/i);
     expect(expirationTableHeader).toBeDefined();
     const statusTableHeader = screen.getByText(/translated_personal-api-tokens:tokensList.status/i);
