@@ -7,7 +7,6 @@ query($tokenKey: String!) {
         name
         createdAt
         expireAt
-        lastUsedAt          
         user {
           name
         }
