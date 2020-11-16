@@ -9,17 +9,23 @@ import {MuiPickersUtilsProvider} from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
 import moment from 'moment';
 import CopyTokenDialogBody from '../CopyTokenDialogBody/CopyTokenDialogBody';
-import {CreateTokenMutation, getCurrentUserName} from './MyApiTokens.gql';
+import {CreateTokenMutation, getUserInformation} from './MyApiTokens.gql';
 import {useMutation, useQuery} from '@apollo/react-hooks';
+import {useLocation} from 'react-router-dom';
 
 const MyApiTokens = () => {
     const {t} = useTranslation('personal-api-tokens');
+    const location = useLocation();
+    const user = new URLSearchParams(location.search).get('user');
+
     const [isCreateTokenDialogOpen, setCreateTokenDialogOpen] = useState(false);
     const [isCopyTokenDialogOpen, setCopyTokenDialogOpen] = useState(false);
     const [createTokenError, setCreateTokenError] = useState(false);
-    const [userTokenInformation, setUserTokenInformation] = useState({userId: '', name: '', expireAt: moment().add(1, 'days')});
+    const [userTokenInformation, setUserTokenInformation] = useState({userId: user ? user : contextJsParameters.user.path, name: '', expireAt: moment().add(1, 'days')});
     const [tokenValue, setTokenValue] = useState('');
 
+    // This is probably gonna be used
+    // eslint-disable-next-line
     const updateCurrentUser = data => {
         setUserTokenInformation({...userTokenInformation, userId: data.currentUser.name});
     };
@@ -30,8 +36,10 @@ const MyApiTokens = () => {
         setTokenValue('');
     };
 
-    useQuery(getCurrentUserName, {
-        onCompleted: updateCurrentUser
+    const userInformation = useQuery(getUserInformation, {
+        variables: {
+            userPath: userTokenInformation.userId
+        }
     });
 
     const updateTokenValue = data => {
@@ -53,7 +61,8 @@ const MyApiTokens = () => {
             <div className={styles.root}>
                 <div className={styles.headerRoot}>
                     <header className={styles.header}>
-                        <Typography variant="title">{t('personal-api-tokens:title')}
+                        <Typography variant="title">
+                            {user ? t('personal-api-tokens:adminTitle', {name: userInformation?.data?.jcr?.nodeByPath?.displayName}) : t('personal-api-tokens:title')}
                         </Typography>
                         <div className={styles.actionBar}>
                             <Button size="big"

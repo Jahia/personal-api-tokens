@@ -1,5 +1,6 @@
 {
   "title": "My API tokens",
+  "adminTitle": "{{name}}'s API tokens",
   "createToken": {
     "buttonTitle": "Create Token",
     "modalTitle": "Create a personal API token",
