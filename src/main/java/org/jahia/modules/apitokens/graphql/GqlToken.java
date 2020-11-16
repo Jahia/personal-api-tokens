@@ -79,12 +79,6 @@ public class GqlToken {
     }
 
     @GraphQLField
-    @GraphQLDescription("Time of token last usage")
-    public String getLastUsedAt() {
-        return tokenDetails.getLastUsageDate() != null ? (new DateTime(tokenDetails.getLastUsageDate().getTime().getTime())).toString() : null;
-    }
-
-    @GraphQLField
     @GraphQLDescription("Expiration date")
     public String getExpireAt() {
         return tokenDetails.getExpirationDate() != null ? (new DateTime(tokenDetails.getExpirationDate().getTime().getTime())).toString() : null;

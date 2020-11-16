@@ -107,24 +107,6 @@ export async function getTokens(userId: string, apolloClient: ApolloClient<Norma
     return response.data.admin.personalApiTokens.tokens
 }
 
-export async function getTokenKey(token: string, apolloClient: ApolloClient<NormalizedCacheObject>): Promise<any> {
-    const response = await apolloClient.query({
-        query: gql`
-            query($token: String!) {
-                admin {
-                    personalApiTokens {
-                        tokenKey(token: $token)
-                    }
-                }
-            }
-        `,
-        variables: {
-            token,
-        },
-    })
-    return response.data.admin.personalApiTokens.tokenKey
-}
-
 export async function deleteToken(key: string, apolloClient: ApolloClient<NormalizedCacheObject>): Promise<any> {
     const response = await apolloClient.mutate({
         mutation: gql`
