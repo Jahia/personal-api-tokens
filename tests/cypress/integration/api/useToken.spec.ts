@@ -31,7 +31,6 @@ describe('Validate ability to use token', () => {
 
         const tokenDetails = await getToken('jay', name, apolloClient({ username: 'jay', password: 'password' }))
         cy.log(JSON.stringify(tokenDetails))
-        expect(tokenDetails.lastUsedAt).to.be.null
 
         const response = await apolloClient({ token: createdToken }).query({
             query: GQL_APIUSER,
@@ -56,7 +55,6 @@ describe('Validate ability to use token', () => {
             apolloClient({ username: 'mathias', password: 'password' }),
         )
         cy.log(JSON.stringify(tokenDetails))
-        expect(tokenDetails.lastUsedAt).to.be.null
 
         const response = await apolloClient({ token: createdToken }).query({
             query: GQL_APIUSER,
@@ -71,7 +69,6 @@ describe('Validate ability to use token', () => {
 
         const tokenDetails = await getToken('root', name, apolloClient())
         cy.log(JSON.stringify(tokenDetails))
-        expect(tokenDetails.lastUsedAt).to.be.null
 
         const response = await apolloClient({ token: createdToken }).query({
             query: GQL_APIUSER,
