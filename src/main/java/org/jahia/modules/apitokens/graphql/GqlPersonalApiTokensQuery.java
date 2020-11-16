@@ -25,13 +25,15 @@ import org.jahia.api.usermanager.JahiaUserManagerService;
 import org.jahia.modules.apitokens.TokenDetails;
 import org.jahia.modules.apitokens.TokenService;
 import org.jahia.modules.graphql.provider.dxm.DataFetchingException;
+import org.jahia.modules.graphql.provider.dxm.predicate.FieldSorterInput;
 import org.jahia.modules.graphql.provider.dxm.osgi.annotations.GraphQLOsgiService;
+import org.jahia.modules.graphql.provider.dxm.predicate.FieldEvaluator;
+import org.jahia.modules.graphql.provider.dxm.predicate.SorterHelper;
 import org.jahia.modules.graphql.provider.dxm.relay.DXPaginatedData;
 import org.jahia.modules.graphql.provider.dxm.relay.DXPaginatedDataConnectionFetcher;
 import org.jahia.modules.graphql.provider.dxm.relay.PaginationHelper;
 import org.jahia.services.content.JCRTemplate;
 import org.jahia.services.content.decorator.JCRUserNode;
-import org.jahia.services.usermanager.JahiaUser;
 
 import javax.inject.Inject;
 import java.util.stream.Stream;
@@ -140,6 +142,7 @@ public class GqlPersonalApiTokensQuery {
     @GraphQLConnection(connectionFetcher = DXPaginatedDataConnectionFetcher.class)
     public DXPaginatedData<GqlToken> getTokens(@GraphQLName("userId") @GraphQLDescription("If a userId is provided, only returns tokens assigned to that user.") String userId,
                                                @GraphQLName("site") @GraphQLDescription("The site the user belongs to, null if global user") String site,
+                                               @GraphQLName("fieldSorter") @GraphQLDescription("Sort by graphQL fields values") FieldSorterInput fieldSorter,
                                                DataFetchingEnvironment environment) {
         PaginationHelper.Arguments arguments = PaginationHelper.parseArguments(environment);
 
@@ -156,24 +159,13 @@ public class GqlPersonalApiTokensQuery {
             Stream<GqlToken> tokens = tokensService.getTokensDetails(userPath, jcrTemplate.getSessionFactory().getCurrentUserSession())
                     .map(GqlToken::new);
 
+            if (fieldSorter != null) {
+                tokens = tokens.sorted(SorterHelper.getFieldComparator(fieldSorter, FieldEvaluator.forConnection(environment)));
+            }
+
             return PaginationHelper.paginate(tokens, n -> PaginationHelper.encodeCursor(n.getKey()), arguments);
         } catch (Exception e) {
             throw new DataFetchingException(e);
         }
     }
-
-    /**
-     * Find tokens for current user
-     *
-     * @param environment GQL Environment
-     * @return token details
-     */
-    @GraphQLField
-    @GraphQLDescription("List tokens for current user")
-    @GraphQLConnection(connectionFetcher = DXPaginatedDataConnectionFetcher.class)
-    public DXPaginatedData<GqlToken> getCurrentUserTokens(DataFetchingEnvironment environment) {
-        JahiaUser currentUser = jcrTemplate.getSessionFactory().getCurrentUser();
-        return getTokens(currentUser.getUsername(), currentUser.getRealm(), environment);
-    }
-
 }
