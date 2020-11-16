@@ -47,7 +47,6 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
         expect(await getToken('root', nameA, client)).to.be.null
     })
 
-    // eslint-disable-next-line cypress/no-async-tests
     it('Update Token by providing tokenKey, null tokenName, null expireAt, null state', async function () {
         const client = apolloClient()
         const nameA = 'test-A' + new Date().getTime()
@@ -73,7 +72,6 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
         expect(tokenA.name).to.equals(tokenDetails.name)
     })
 
-    // eslint-disable-next-line cypress/no-async-tests
     it('Update Token by providing tokenKey, EMPTY tokenName, null expireAt, null state', async function () {
         const client = apolloClient()
         const nameA = 'test-A' + new Date().getTime()

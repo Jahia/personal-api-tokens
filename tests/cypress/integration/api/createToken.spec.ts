@@ -276,7 +276,6 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
         expect(tokenDetails).to.be.null
     })
 
-    // eslint-disable-next-line cypress/no-async-tests
     it('Create token by providing userId, NULL name, null date, null state, null siteKey', async function () {
         const name = null
 
@@ -296,7 +295,6 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
         expect(response.data).to.be.null
     })
 
-    // eslint-disable-next-line cypress/no-async-tests
     it('Create token by providing userId, EMPTY name, null date, null state, null siteKey', async function () {
         const client = apolloClient()
         const name = ''
@@ -316,6 +314,179 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
         expect(response.data.admin.personalApiTokens.createToken).to.be.null
 
         const tokenDetails = await getToken('root', name, client)
+        expect(tokenDetails).to.be.null
+    })
+
+    it('Security - Guest user is NOT able to create a own token', async function () {
+        const name = 'test-' + new Date().getTime()
+
+        const response = await apolloClient({}).query({
+            query: GQL_CREATE,
+            variables: {
+                userId: 'guest',
+                tokenName: name,
+                siteKey: null,
+                expireAt: null,
+                tokenState: null,
+            },
+            errorPolicy: 'ignore',
+        })
+        cy.log(JSON.stringify(response))
+        expect(response.data.admin.personalApiTokens.createToken).to.be.null
+
+        const client = apolloClient()
+        const tokenDetails = await getToken('guest', name, client)
+        expect(tokenDetails).to.be.null
+    })
+
+    it('Security - Guest user is NOT able to create a token for root', async function () {
+        const name = 'test-' + new Date().getTime()
+
+        const response = await apolloClient({}).query({
+            query: GQL_CREATE,
+            variables: {
+                userId: 'root',
+                tokenName: name,
+                siteKey: null,
+                expireAt: null,
+                tokenState: null,
+            },
+            errorPolicy: 'ignore',
+        })
+        cy.log(JSON.stringify(response))
+        expect(response.data.admin.personalApiTokens.createToken).to.be.null
+
+        const client = apolloClient()
+        const tokenDetails = await getToken('root', name, client)
+        expect(tokenDetails).to.be.null
+    })
+
+    it('Security - Authenticated visitor (jay) is able to create own token', async function () {
+        const name = 'test-' + new Date().getTime()
+        const userId = 'jay'
+        const credentials = { username: userId, password: 'password' }
+        const client = apolloClient(credentials)
+
+        const response = await apolloClient(credentials).query({
+            query: GQL_CREATE,
+            variables: {
+                userId: userId,
+                tokenName: name,
+                siteKey: null,
+                expireAt: null,
+                tokenState: null,
+            },
+            errorPolicy: 'ignore',
+        })
+        cy.log(JSON.stringify(response))
+        expect(response.errors).to.be.undefined
+
+        const token = response.data.admin.personalApiTokens.createToken
+        expect(token).to.have.length.of.at.least(10, 'not a token')
+        expect(await verifyToken(token, client)).to.be.true
+
+        const tokenDetails = await getToken(userId, name, client)
+        expect(tokenDetails).to.not.be.null
+        expect(tokenDetails.name).to.equals(name)
+        expect(tokenDetails.state).to.equals('ACTIVE')
+    })
+
+    it('Security - Authenticated visitor (jay) is NOT able to create token on behalf of Editor (mathias)', async function () {
+        const name = 'test-' + new Date().getTime()
+        const userId = 'jay'
+        const credentials = { username: userId, password: 'password' }
+
+        const response = await apolloClient(credentials).query({
+            query: GQL_CREATE,
+            variables: {
+                userId: 'mathias',
+                tokenName: name,
+                siteKey: null,
+                expireAt: null,
+                tokenState: null,
+            },
+            errorPolicy: 'ignore',
+        })
+        cy.log(JSON.stringify(response))
+        expect(response.data.admin.personalApiTokens.createToken).to.be.null
+
+        const tokenDetails = await getToken('mathias', name, apolloClient())
+        expect(tokenDetails).to.be.null
+    })
+
+    it('Security - Editor (mathias) is able to create own token', async function () {
+        const name = 'test-' + new Date().getTime()
+        const userId = 'mathias'
+        const credentials = { username: userId, password: 'password' }
+        const client = apolloClient(credentials)
+
+        const response = await apolloClient(credentials).query({
+            query: GQL_CREATE,
+            variables: {
+                userId: userId,
+                tokenName: name,
+                siteKey: null,
+                expireAt: null,
+                tokenState: null,
+            },
+            errorPolicy: 'ignore',
+        })
+        cy.log(JSON.stringify(response))
+        expect(response.errors).to.be.undefined
+
+        const token = response.data.admin.personalApiTokens.createToken
+        expect(token).to.have.length.of.at.least(10, 'not a token')
+        expect(await verifyToken(token, client)).to.be.true
+
+        const tokenDetails = await getToken(userId, name, client)
+        expect(tokenDetails).to.not.be.null
+        expect(tokenDetails.name).to.equals(name)
+        expect(tokenDetails.state).to.equals('ACTIVE')
+    })
+
+    it('Security - Editor (mathias) is NOT able to create token on behalf of Authenticated visitor (jay)', async function () {
+        const name = 'test-' + new Date().getTime()
+        const userId = 'mathias'
+        const credentials = { username: userId, password: 'password' }
+
+        const response = await apolloClient(credentials).query({
+            query: GQL_CREATE,
+            variables: {
+                userId: 'jay',
+                tokenName: name,
+                siteKey: null,
+                expireAt: null,
+                tokenState: null,
+            },
+            errorPolicy: 'ignore',
+        })
+        cy.log(JSON.stringify(response))
+        expect(response.data.admin.personalApiTokens.createToken).to.be.null
+
+        const tokenDetails = await getToken('jay', name, apolloClient())
+        expect(tokenDetails).to.be.null
+    })
+
+    it('Security - Editor (mathias) is NOT able to create token on behalf of Root', async function () {
+        const name = 'test-' + new Date().getTime()
+        const userId = 'mathias'
+        const credentials = { username: userId, password: 'password' }
+
+        const response = await apolloClient(credentials).query({
+            query: GQL_CREATE,
+            variables: {
+                userId: 'root',
+                tokenName: name,
+                siteKey: null,
+                expireAt: null,
+                tokenState: null,
+            },
+            errorPolicy: 'ignore',
+        })
+        cy.log(JSON.stringify(response))
+        expect(response.data.admin.personalApiTokens.createToken).to.be.null
+
+        const tokenDetails = await getToken('root', name, apolloClient())
         expect(tokenDetails).to.be.null
     })
 })
