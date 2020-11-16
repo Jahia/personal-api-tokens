@@ -10,4 +10,3 @@
  - digest (string) indexed=no
  - active (boolean) = true
  - expirationDate (date)
- - lastUsageDate (date)

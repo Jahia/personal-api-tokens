@@ -51,7 +51,6 @@ public class TokensServiceImpl implements TokenService {
     public static final String DIGEST = "digest";
     public static final String ACTIVE = "active";
     public static final String EXPIRATION_DATE = "expirationDate";
-    public static final String LAST_USAGE_DATE = "lastUsageDate";
     private static final Logger logger = LoggerFactory.getLogger(TokensServiceImpl.class);
     private JahiaUserManagerService userManagerService;
 
@@ -205,9 +204,6 @@ public class TokensServiceImpl implements TokenService {
 
         tokenDetails.setCreationDate(node.getProperty(Constants.JCR_CREATED).getDate());
         tokenDetails.setModificationDate(node.getProperty(Constants.JCR_LASTMODIFIED).getDate());
-        if (node.hasProperty(LAST_USAGE_DATE)) {
-            tokenDetails.setExpirationDate(node.getProperty(LAST_USAGE_DATE).getDate());
-        }
 
         return tokenDetails;
     }

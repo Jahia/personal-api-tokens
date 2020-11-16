@@ -72,14 +72,6 @@ public interface TokenDetails {
     void setModificationDate(Calendar modificationDate);
 
     /**
-     * Get the last usage date
-     * @return last usage date
-     */
-    Calendar getLastUsageDate();
-
-    void setLastUsageDate(Calendar lastUsageDate);
-
-    /**
      * Get the active flag
      * @return active flag
      */
