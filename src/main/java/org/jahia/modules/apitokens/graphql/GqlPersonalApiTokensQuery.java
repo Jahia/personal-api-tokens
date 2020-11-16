@@ -134,6 +134,7 @@ public class GqlPersonalApiTokensQuery {
      *
      * @param userId      If a userId is provided, only returns tokens assigned to that user.
      * @param site        The site the user belongs to, null if global user
+     * @param fieldSorter Sort by graphQL fields values
      * @param environment GQL Environment
      * @return token details
      */
