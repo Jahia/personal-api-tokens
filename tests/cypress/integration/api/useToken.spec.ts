@@ -19,7 +19,7 @@ describe('Validate ability to use token', () => {
         )
     })
 
-    it('Authenticated user (jay) creates token, use it, verify lastUsedAt is updated', async function () {
+    it('Authenticated user (jay) creates token, use it', async function () {
         const name = 'test-' + new Date().getTime()
         const createdToken = await createToken(
             'jay',
@@ -38,10 +38,6 @@ describe('Validate ability to use token', () => {
         })
         expect(response.errors).to.be.undefined
         expect(response.data.currentUser.name).to.equal('jay')
-
-        const usedTokenDetails = await getToken('jay', name, apolloClient({ username: 'jay', password: 'password' }))
-        cy.log(JSON.stringify(usedTokenDetails))
-        expect(usedTokenDetails.lastUsedAt).not.to.be.null
     })
 
     it('Editor (mathias) creates token and use it', async function () {
@@ -67,14 +63,6 @@ describe('Validate ability to use token', () => {
         })
         expect(response.errors).to.be.undefined
         expect(response.data.currentUser.name).to.equal('mathias')
-
-        const usedTokenDetails = await getToken(
-            'mathias',
-            name,
-            apolloClient({ username: 'mathias', password: 'password' }),
-        )
-        cy.log(JSON.stringify(usedTokenDetails))
-        expect(usedTokenDetails.lastUsedAt).not.to.be.null
     })
 
     it('Root creates token and use it', async function () {
@@ -90,9 +78,5 @@ describe('Validate ability to use token', () => {
         })
         expect(response.errors).to.be.undefined
         expect(response.data.currentUser.name).to.equal('root')
-
-        const usedTokenDetails = await getToken('root', name, apolloClient())
-        cy.log(JSON.stringify(usedTokenDetails))
-        expect(usedTokenDetails.lastUsedAt).not.to.be.null
     })
 })
