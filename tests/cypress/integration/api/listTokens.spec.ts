@@ -61,7 +61,11 @@ describe('List tokens via API - query.admin.personalApiTokens.tokens', () => {
         })
         expect(response.errors).to.be.undefined
         cy.log(JSON.stringify(response))
-        expect(response.data.admin.personalApiTokens.tokens).to.be.null
+        if (response.data.admin.personalApiTokens.tokens === null) {
+            expect(response.data.admin.personalApiTokens.tokens).to.be.null
+        } else {
+            expect(response.data.admin.personalApiTokens.tokens.nodes.length).to.equal(0)
+        }
     })
 })
 
