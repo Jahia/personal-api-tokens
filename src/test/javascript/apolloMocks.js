@@ -81,7 +81,6 @@ export const createTokenMocks = [
         request: {
             query: CreateTokenMutation,
             variables: {
-                userId: 'root',
                 name: 'testToken',
                 expireAt: '2020-11-11T02:24:00.000Z'
             }
@@ -248,7 +247,6 @@ export const snapshotMocks = [
         request: {
             query: CreateTokenMutation,
             variables: {
-                userId: 'root',
                 name: 'testToken',
                 expireAt: '2020-11-11T07:24:00.000Z'
             }
@@ -269,7 +267,6 @@ export const snapshotMocks = [
         request: {
             query: CreateTokenMutation,
             variables: {
-                userId: 'root',
                 name: 'testToken',
                 expireAt: null
             }

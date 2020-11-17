@@ -24,7 +24,7 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
         const nameA = 'test-A' + new Date().getTime()
         const nameB = 'test-B' + new Date().getTime()
 
-        await createToken('root', nameA, null, null, client)
+        await createToken(nameA, null, null, client)
         const tokenDetails = await getToken('root', nameA, client)
 
         const response = await apolloClient().query({
@@ -51,7 +51,7 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
         const client = apolloClient()
         const nameA = 'test-A' + new Date().getTime()
 
-        await createToken('root', nameA, null, null, client)
+        await createToken(nameA, null, null, client)
         const tokenDetails = await getToken('root', nameA, client)
 
         const response = await apolloClient().query({
@@ -76,7 +76,7 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
         const client = apolloClient()
         const nameA = 'test-A' + new Date().getTime()
 
-        await createToken('root', nameA, null, null, client)
+        await createToken(nameA, null, null, client)
         const tokenDetails = await getToken('root', nameA, client)
 
         const response = await apolloClient().query({
@@ -102,10 +102,10 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
         const nameA = 'test-A' + new Date().getTime()
         const nameB = 'test-B' + new Date().getTime()
 
-        await createToken('root', nameA, null, null, client)
+        await createToken(nameA, null, null, client)
         const tokenADetails = await getToken('root', nameA, client)
 
-        await createToken('root', nameB, null, null, client)
+        await createToken(nameB, null, null, client)
         const tokenBDetails = await getToken('root', nameB, client)
 
         const response = await apolloClient().query({
@@ -132,7 +132,7 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
         const client = apolloClient()
         const name = 'test-' + new Date().getTime()
 
-        await createToken('root', name, null, null, client)
+        await createToken(name, null, null, client)
         const tokenDetails = await getToken('root', name, client)
 
         const response = await apolloClient().query({
@@ -156,7 +156,7 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
         const client = apolloClient()
         const name = 'test-' + new Date().getTime()
 
-        await createToken('root', name, null, null, client)
+        await createToken(name, null, null, client)
         const tokenDetails = await getToken('root', name, client)
 
         const response = await apolloClient().query({
@@ -181,7 +181,7 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
         const name = 'test-' + new Date().getTime()
         const expireAt = '2010-01-01'
 
-        await createToken('root', name, null, null, client)
+        await createToken(name, null, null, client)
         const tokenDetails = await getToken('root', name, client)
 
         const response = await apolloClient().query({
@@ -206,7 +206,7 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
         const name = 'test-' + new Date().getTime()
         const expireAt = ''
 
-        await createToken('root', name, null, null, client)
+        await createToken(name, null, null, client)
         const tokenDetails = await getToken('root', name, client)
 
         const response = await apolloClient().query({
@@ -231,7 +231,7 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
         const name = 'test-' + new Date().getTime()
         const expireAt = '2020-ABCD-12-1'
 
-        await createToken('root', name, null, null, client)
+        await createToken(name, null, null, client)
         const tokenDetails = await getToken('root', name, client)
 
         const response = await apolloClient().query({

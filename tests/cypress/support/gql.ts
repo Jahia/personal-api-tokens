@@ -5,7 +5,6 @@ import { apolloClient } from './apollo'
 import { OperationVariables } from 'apollo-client'
 
 export async function createToken(
-    userId: string,
     name: string,
     state: string,
     expireAt: string,
@@ -13,16 +12,15 @@ export async function createToken(
 ): Promise<any> {
     const response = await apolloClient.mutate({
         mutation: gql`
-            mutation($userId: String!, $name: String!, $expireAt: String, $state: TokenState) {
+            mutation($name: String!, $expireAt: String, $state: TokenState) {
                 admin {
                     personalApiTokens {
-                        createToken(userId: $userId, name: $name, expireAt: $expireAt, state: $state)
+                        createToken(name: $name, expireAt: $expireAt, state: $state)
                     }
                 }
             }
         `,
         variables: {
-            userId,
             name,
             state,
             expireAt,
