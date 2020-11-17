@@ -77,7 +77,7 @@ const MyApiTokens = () => {
                                             setTokenInformation={setUserTokenInformation}
                                             error={createTokenError}
                                         />}
-                                        validationState={{acceptButtonDisabled: userTokenInformation.name === ''}}
+                                        acceptButtonProps={{isDisabled: userTokenInformation.name === ''}}
                                         onClose={() => setCreateTokenDialogOpen(false)}
                                         onAccept={() => createTokenMutation()}/>
                     <ConfirmationDialog isOpen={isCopyTokenDialogOpen}

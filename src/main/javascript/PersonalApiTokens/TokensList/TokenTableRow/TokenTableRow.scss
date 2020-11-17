@@ -1,0 +1,11 @@
+.remove {
+    color: var(--color-danger);
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 64px;
+}
