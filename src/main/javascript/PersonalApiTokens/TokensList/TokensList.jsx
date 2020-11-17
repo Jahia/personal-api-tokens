@@ -19,6 +19,10 @@ const TokensList = () => {
         variables: {limit: rowsPerPage, offset: currentPage * rowsPerPage,
             fieldSorter: {fieldName: orderBy, sortType: order}}});
 
+    if (loading || error) {
+        return (<></>);
+    }
+
     const noTokensScreen = (
         <div className={styles.tokensList}>
             <Typography className={styles.personalTokens}
@@ -30,7 +34,7 @@ const TokensList = () => {
         </div>
     );
 
-    const tokensData = !error && data ? data.admin.personalApiTokens.tokens : {pageInfo: {totalCount: 0}, nodes: []};
+    const tokensData = data ? data.admin.personalApiTokens.tokens : {pageInfo: {totalCount: 0}, nodes: []};
 
     const tokensTable = (
         <div className={styles.tokensTable}>
@@ -45,10 +49,6 @@ const TokensList = () => {
                         setOrderBy={setOrderBy}/>
         </div>
     );
-
-    if (loading || error) {
-        return (<></>);
-    }
 
     return (
         <>
