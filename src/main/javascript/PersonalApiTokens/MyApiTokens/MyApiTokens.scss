@@ -1,13 +1,13 @@
 .root {
     display: flex;
+    flex: 1;
     flex-direction: column;
-    min-height: 100%;
     padding: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
 
     background-color: var(--color-gray_light40);
     box-shadow: 0 4px 4px rgba(59, 61, 64, 0.3);
-    overflow-y: auto;
-    overflow-x: hidden;
 }
 
 .headerRoot {
@@ -26,6 +26,8 @@
 }
 
 .content {
+    display: flex;
+    flex: 1;
     padding: var(--spacing-medium) var(--spacing-large) var(--spacing-medium) var(--spacing-large);
 
     background-color: var(--color-gray_light40);

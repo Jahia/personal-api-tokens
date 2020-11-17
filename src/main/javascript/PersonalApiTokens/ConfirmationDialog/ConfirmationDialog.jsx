@@ -30,10 +30,10 @@ const ConfirmationDialog = props => {
                                                  onClick={props.onClose}/> : ''}
                     <Button variant="default"
                             size="big"
-                            isDisabled={props.customProps && props.customProps.acceptButtonDisabled ? props.customProps.acceptButtonDisabled : false}
-                            color={props.customProps && props.customProps.acceptBtnColor ? props.customProps.acceptBtnColor : 'accent'}
                             label={props.acceptLabel}
-                            onClick={props.onAccept}/>
+                            color="accent"
+                            onClick={props.onAccept}
+                            {...props.acceptButtonProps}/>
                 </div>
             </div>
         </Dialog>
@@ -48,7 +48,7 @@ ConfirmationDialog.propTypes = {
     title: PropTypes.string.isRequired,
     onAccept: PropTypes.func.isRequired,
     body: PropTypes.element.isRequired,
-    customProps: PropTypes.object
+    acceptButtonProps: PropTypes.object
 };
 
 export default ConfirmationDialog;

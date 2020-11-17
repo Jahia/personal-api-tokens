@@ -2,7 +2,6 @@
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
-    min-height: 80vh;
 
     background-color: #fdfdfd;
     box-shadow: 0 4px 8px rgba(19, 28, 33, 0.2);
@@ -14,7 +13,9 @@
 }
 
 .tokensTable {
-    min-height: 80vh;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
 
     background-color: #fdfdfd;
     box-shadow: 0 4px 8px rgba(19, 28, 33, 0.2);

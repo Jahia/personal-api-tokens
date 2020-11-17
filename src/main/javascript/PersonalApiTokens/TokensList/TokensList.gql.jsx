@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 const getTokens = gql`
    query GetTokens($userId: String, $site: String, $before: String, $after: String, 
-   $first: Int, $last: Int, $offset: Int, $limit: Int, $orderBy: String, $order: String, $fieldSorter: FieldSorter) {
+   $first: Int, $last: Int, $offset: Int, $limit: Int, $fieldSorter: InputFieldSorterInput) {
         admin {
           personalApiTokens {
             tokens(userId: $userId, site: $site, before: $before, after: $after, first: $first, 

@@ -7,45 +7,29 @@ import {useTranslation} from 'react-i18next';
 import {ASCENDING_SORT, DESCENDING_SORT, INITIAL_OFFSET} from '../../constants';
 import tableStyles from './TokenTable.scss';
 import {useMutation} from '@apollo/react-hooks';
-import {DeleteTokenMutation} from '../TokensList.gql';
+import {DeleteTokenMutation, getTokens} from '../TokensList.gql';
 
 const TokenTable = props => {
     const {t} = useTranslation('personal-api-tokens');
 
     const [deleteTokenMutation] = useMutation(DeleteTokenMutation, {
-        onCompleted: () => props.getTokensPaginated({
-            variables:
-                {
-                    limit: props.rowsPerPage,
-                    offset: props.currentPage * props.rowsPerPage,
-                    fieldSorter: {fieldName: props.orderBy, sortType: props.order}
-                }
-        })
+        refetchQueries: [{query: getTokens, variables: {limit: props.rowsPerPage, offset: props.currentPage,
+            fieldSorter: {fieldName: props.orderBy, sortType: props.order}}}]
     });
 
-    const deleteToken = async key => {
-        await deleteTokenMutation({variables: {key: key}});
+    const deleteToken = key => {
+        deleteTokenMutation({variables: {key: key}});
     };
 
-    const handleSort = async orderByProperty => {
+    const handleSort = orderByProperty => {
         const isAsc = props.orderBy === orderByProperty && props.order === ASCENDING_SORT;
         const sortOrder = isAsc ? DESCENDING_SORT : ASCENDING_SORT;
         props.setOrderBy(orderByProperty);
         props.setOrder(sortOrder);
-        await props.getTokensPaginated({variables: {limit: props.rowsPerPage, offset: INITIAL_OFFSET,
-            fieldSorter: {fieldName: props.orderBy, sortType: props.order}}});
     };
 
-    const handleChangePage = async (event, newPage) => {
-        await props.getTokensPaginated({variables: {limit: props.rowsPerPage, offset: newPage * props.rowsPerPage,
-            fieldSorter: {fieldName: props.orderBy, sortType: props.order}}});
-        props.setCurrentPage(newPage);
-    };
-
-    const handleChangeRowsPerPage = async event => {
+    const handleChangeRowsPerPage = event => {
         const currentRowsPerPage = parseInt(event.target.value, 10);
-        await props.getTokensPaginated({variables: {limit: currentRowsPerPage, offset: INITIAL_OFFSET,
-            fieldSorter: {fieldName: props.orderBy, sortType: props.order}}});
         props.setRowsPerPage(currentRowsPerPage);
         props.setCurrentPage(INITIAL_OFFSET);
     };
@@ -72,7 +56,7 @@ const TokenTable = props => {
                 rowsPerPage={props.rowsPerPage}
                 rowsPerPageOptions={[5, 10, 25]}
                 component="div"
-                onChangePage={handleChangePage}
+                onChangePage={(event, newPage) => props.setCurrentPage(newPage)}
                 onChangeRowsPerPage={handleChangeRowsPerPage}/>
         </>
     );
@@ -80,7 +64,6 @@ const TokenTable = props => {
 
 TokenTable.propTypes = {
     tokensData: PropTypes.object.isRequired,
-    getTokensPaginated: PropTypes.func.isRequired,
     rowsPerPage: PropTypes.number.isRequired,
     setRowsPerPage: PropTypes.func.isRequired,
     currentPage: PropTypes.number.isRequired,

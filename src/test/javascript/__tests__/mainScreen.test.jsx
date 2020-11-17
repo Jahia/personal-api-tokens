@@ -54,9 +54,8 @@ describe('Test main screen functionality', () => {
         expect(sortHeaderSpan.children[0].innerHTML).toEqual('translated_personal-api-tokens:tokensList.addedOn');
         await act(async () => {
             fireEvent.click(sortHeaderSpan);
-            await wait(200);
+            await wait(400);
         });
-        expect(sortHeaderSpan.getElementsByClassName('MuiTableSortLabel-iconDirectionAsc')).toHaveLength(1);
-        expect(sortHeaderSpan.children[0].innerHTML).toEqual('translated_personal-api-tokens:tokensList.addedOn');
+        expect(screen.getByRole('table').getElementsByClassName('MuiTableSortLabel-iconDirectionAsc')).toBeDefined();
     });
 });
