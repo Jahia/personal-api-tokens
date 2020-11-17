@@ -400,7 +400,8 @@ workflows:
   # Current project configuration in circleci only builds on PR + main, so effectively this is only being executed
   on-code-change:
     jobs:
-      - initialize
+      - initialize:
+          context: cloud-docker-hub
       - lint:
           requires:
             - initialize
