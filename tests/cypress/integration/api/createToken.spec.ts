@@ -344,5 +344,4 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
         expect(tokenDetails.name).to.equals(name)
         expect(tokenDetails.state).to.equals('ACTIVE')
     })
-
 })

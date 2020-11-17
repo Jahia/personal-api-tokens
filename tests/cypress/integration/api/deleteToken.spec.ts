@@ -106,7 +106,7 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
         const name = 'test-' + new Date().getTime()
 
         const mathiasApolloClient = apolloClient({ username: 'mathias', password: 'password' })
-        await createToken( name, null, null, mathiasApolloClient)
+        await createToken(name, null, null, mathiasApolloClient)
         const tokenDetails = await getToken('mathias', name, mathiasApolloClient)
 
         const response = await apolloClient({ username: 'jay', password: 'password' }).query({
@@ -186,7 +186,7 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
         const name = 'test-' + new Date().getTime()
 
         const mathiasApolloClient = apolloClient({ username: 'mathias', password: 'password' })
-        await createToken( name, null, null, mathiasApolloClient)
+        await createToken(name, null, null, mathiasApolloClient)
         const tokenDetails = await getToken('mathias', name, mathiasApolloClient)
 
         const response = await apolloClient().query({
