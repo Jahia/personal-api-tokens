@@ -9,11 +9,11 @@
 
 |  |  | 
 | --- | --- |
-| Module | ![ID](https://img.shields.io/badge/ID--personal--api--tokens-blue) [![Store](https://img.shields.io/badge/Jahia%20Store-Yes-brightgreen)](https://store.jahia.com/contents/modules-repository/org/jahia/modules/augmented-search-ui.html) |
+| Module | ![ID](https://img.shields.io/badge/ID-personal--api--tokens-blue) [![Store](https://img.shields.io/badge/Jahia%20Store-Pending_release-brightgreen)](https://store.jahia.com/contents/modules-repository/org/jahia/modules/augmented-search-ui.html) |
 | Tests | [![Case Management](https://img.shields.io/badge/Case%20Management-Testrail-blue)](https://jahia.testrail.net/index.php?/projects/overview/20) |
-| CI / CD | [![CircleCI](https://circleci.com/gh/Jahia/augmented-search-ui/tree/master.svg?style=shield)](https://app.circleci.com/pipelines/github/Jahia/augmented-search) ![Unit Tests](https://img.shields.io/badge/Unit%20Tests-No-red) ![Integration Tests](https://img.shields.io/badge/Integration%20Tests-No-red) ![Build Snapshot](https://img.shields.io/badge/Build%20Snapshot-Yes-brightgreen) ![Build Release](https://img.shields.io/badge/Build%20Release-No-red) |
-| Artifacts | [![Snapshot](https://img.shields.io/badge/Snapshot-Nexus-blue)](https://devtools.jahia.com/nexus/content/repositories/jahia-enterprise-snapshots/org/jahia/modules/augmented-search-ui/) [![Release](https://img.shields.io/badge/Release-Nexus-blue)](https://devtools.jahia.com/nexus/content/repositories/jahia-enterprise-releases/org/jahia/modules/augmented-search-ui/) |
-| Slack | [![Discussion](https://img.shields.io/badge/Discussion-%23module--augmented--search-blue)](https://jahia.slack.com/archives/C013904SBRA) [![Notifications](https://img.shields.io/badge/Notifications-%23ci--augmented--search-blue)](https://jahia.slack.com/archives/CSMQ0DRHA)|
+| CI / CD | [![CircleCI](https://circleci.com/gh/Jahia/augmented-search-ui/tree/master.svg?style=shield)](https://app.circleci.com/pipelines/github/Jahia/augmented-search) ![Unit Tests](https://img.shields.io/badge/Unit%20Tests-Yes-green) ![Integration Tests](https://img.shields.io/badge/Integration%20Tests-Yes-green) ![Build Snapshot](https://img.shields.io/badge/Build%20Snapshot-Yes-brightgreen) ![Build Release](https://img.shields.io/badge/Build%20Release-No-red) |
+| Artifacts | [![Snapshot](https://img.shields.io/badge/Snapshot-Nexus-blue)](https://devtools.jahia.com/nexus/service/local/repositories/jahia-snapshots/content/org/jahia/modules/personal-api-tokens/) [![Release](https://img.shields.io/badge/Release-Nexus-blue)](https://devtools.jahia.com/nexus/service/local/repositories/jahia-releases/content/org/jahia/modules/personal-api-tokens/) |
+| Slack | [![Discussion](https://img.shields.io/badge/Discussion-%23personal--api--tokens-blue)](https://jahia.slack.com/archives/G01DQ0Z6UCE) [![Notifications](https://img.shields.io/badge/Notifications-%23team--product--qa--notifications-blue)](https://jahia.slack.com/archives/C01E9RUP4TT)|
 
 <a href="https://www.jahia.com/">
     <img src="https://www.jahia.com/modules/jahiacom-templates/images/jahia-3x.png" alt="Jahia logo" title="Jahia" align="right" height="60" />
@@ -133,12 +133,10 @@ You can run the test suite towards an existing and pre-configured Jahia instance
 ```bash 
 cd tests/
 yarn
-CYPRESS_baseUrl=http://localhost:8080 yarn e2e:ci
+CYPRESS_baseUrl=http://localhost:8080 JAHIA_USERNAME=root JAHIA_PASSWORD=root yarn e2e:debug
 ```
 
-`CYPRESS_baseUrl` is the URL you would use to access Jahia.
-
-This method is useful in development to quickly see if some of the tests are passing.
+This will open-up Cypress in dev mode, allowing you to select which tests to run. As you modify test files, the tests are automatically re-executed for the selected suite. 
 
 ### Using Docker
 
