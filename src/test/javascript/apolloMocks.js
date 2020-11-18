@@ -1,6 +1,6 @@
 import {CreateTokenMutation, getCurrentUserName} from '../../main/javascript/PersonalApiTokens/MyApiTokens/MyApiTokens.gql';
 import moment from 'moment';
-const expTime = moment('2020/11/11 02:24').utc().toISOString();
+const expTime = moment('2020/11/11 02:24', 'yyyy/MM/DD HH:mm').utc();
 import {DeleteTokenMutation, getTokens} from '../../main/javascript/PersonalApiTokens/TokensList/TokensList.gql';
 
 const tokenResult = {
