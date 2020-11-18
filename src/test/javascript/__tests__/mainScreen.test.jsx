@@ -40,8 +40,9 @@ describe('Test main screen functionality', () => {
         const noTokensText = screen.queryAllByText(/translated_personal-api-tokens:noTokens/i);
         expect(noTokensText).toEqual([]);
         // Test table and correct headers are present
-        const table = screen.getByRole('table');
-        expect(table).toBeDefined();
+        const tables = screen.getAllByRole('table');
+        expect(tables.length).toBe(2);
+        const table = tables[0];
         testTableHeaders();
         // Test correct number of rows based on default pagination
         const tableRows = table.getElementsByTagName('tr');
@@ -56,6 +57,6 @@ describe('Test main screen functionality', () => {
             fireEvent.click(sortHeaderSpan);
             await wait(400);
         });
-        expect(screen.getByRole('table').getElementsByClassName('MuiTableSortLabel-iconDirectionAsc')).toBeDefined();
+        expect(screen.getAllByRole('table')[0].getElementsByClassName('MuiTableSortLabel-iconDirectionAsc')).toBeDefined();
     });
 });
