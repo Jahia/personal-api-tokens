@@ -1,17 +1,11 @@
 import React from 'react';
 import {withTranslation} from 'react-i18next';
-import {IconButton, Table, TableFooter, TablePagination, TableRow, withStyles} from '@material-ui/core';
+import {IconButton, Table, TableFooter, TablePagination, TableRow} from '@material-ui/core';
 import {FirstPage, KeyboardArrowLeft, KeyboardArrowRight, LastPage} from '@material-ui/icons';
 import PropTypes from 'prop-types';
+import styles from './Pagination.scss';
 
-const actionsStyles = theme => ({
-    root: {
-        flexShrink: 0,
-        marginLeft: theme.spacing.unit * 2.5
-    }
-});
-
-class TablePaginationActionsCmp extends React.Component {
+class TablePaginationActions extends React.Component {
     constructor(props) {
         super(props);
         this.handleFirstPageButtonClick = this.handleFirstPageButtonClick.bind(this);
@@ -39,10 +33,10 @@ class TablePaginationActionsCmp extends React.Component {
     }
 
     render() {
-        const {classes, count, page, rowsPerPage} = this.props;
+        const {count, page, rowsPerPage} = this.props;
 
         return (
-            <div className={classes.root}>
+            <div className={styles.paginationActions}>
                 <IconButton
                     disabled={page === 0}
                     aria-label="First Page"
@@ -78,15 +72,12 @@ class TablePaginationActionsCmp extends React.Component {
     }
 }
 
-TablePaginationActionsCmp.propTypes = {
+TablePaginationActions.propTypes = {
     onChangePage: PropTypes.func.isRequired,
-    classes: PropTypes.object.isRequired,
     count: PropTypes.number.isRequired,
     page: PropTypes.number.isRequired,
     rowsPerPage: PropTypes.number.isRequired
 };
-
-const TablePaginationActions = withStyles(actionsStyles, {name: 'DxPaginationActions', withTheme: true})(TablePaginationActionsCmp);
 
 class PaginationCmp extends React.Component {
     constructor(props) {
@@ -105,6 +96,7 @@ class PaginationCmp extends React.Component {
                 <TableFooter>
                     <TableRow>
                         <TablePagination
+                            classes={{root: styles.pagination}}
                             count={totalCount}
                             rowsPerPage={pageSize}
                             page={currentPage}
