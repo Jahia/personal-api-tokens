@@ -13,7 +13,7 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
     afterEach(async function () {
         const client = apolloClient()
         return Promise.all(
-            (await getTokens('root', client)).nodes
+            (await getTokens({ userId: 'root' }, client)).nodes
                 .filter((token) => token.name.startsWith('test-'))
                 .map((token) => deleteToken(token.key, client)),
         )

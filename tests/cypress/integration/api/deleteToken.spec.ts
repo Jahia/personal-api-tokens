@@ -13,7 +13,7 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
     afterEach(async function () {
         const client = apolloClient()
         return Promise.all(
-            (await getTokens('root', client)).nodes
+            (await getTokens({ userId: 'root' }, client)).nodes
                 .filter((token) => token.name.startsWith('test-'))
                 .map((token) => deleteToken(token.key, client)),
         )
@@ -57,7 +57,7 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
         expect(response.data).to.be.null
 
         // We verify that by submitting null we don't end up deleting all tokens
-        const allTokens = await getTokens('root', client)
+        const allTokens = await getTokens({ userId: 'root' }, client)
         expect(allTokens.nodes.filter((token) => token.name.startsWith('test-D-')).length).to.equal(3)
     })
 
@@ -78,7 +78,7 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
         expect(response.data.admin.personalApiTokens.deleteToken).to.be.false
 
         // We verify that by submitting null we don't end up deleting all tokens
-        const allTokens = await getTokens('root', client)
+        const allTokens = await getTokens({ userId: 'root' }, client)
         expect(allTokens.nodes.filter((token) => token.name.startsWith('test-E-')).length).to.equal(3)
     })
 

@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import gql from 'graphql-tag'
 import { ApolloClient, NormalizedCacheObject } from 'apollo-client-preset'
+import { apolloClient } from './apollo'
+import { OperationVariables } from 'apollo-client'
 
 export async function createToken(
     userId: string,
@@ -79,15 +81,23 @@ export async function getToken(
     return response.data.admin.personalApiTokens.tokenByUserAndName
 }
 
-export async function getTokens(userId: string, apolloClient: ApolloClient<NormalizedCacheObject>): Promise<any> {
-    const response = await apolloClient.query({
+export async function getTokens(
+    variables: OperationVariables,
+    client?: ApolloClient<NormalizedCacheObject>,
+): Promise<any> {
+    if (!client) {
+        client = apolloClient()
+    }
+    const response = await client.query({
         query: gql`
-            query($userId: String!) {
+            query($userId: String, $limit: Int, $offset: Int, $sort: InputFieldSorterInput) {
                 admin {
                     personalApiTokens {
-                        tokens(userId: $userId) {
+                        tokens(userId: $userId, limit: $limit, offset: $offset, fieldSorter: $sort) {
                             pageInfo {
                                 totalCount
+                                hasNextPage
+                                hasPreviousPage
                             }
                             nodes {
                                 name
@@ -100,11 +110,12 @@ export async function getTokens(userId: string, apolloClient: ApolloClient<Norma
                 }
             }
         `,
-        variables: {
-            userId,
-        },
+        variables,
     })
-    return response.data.admin.personalApiTokens.tokens
+    return {
+        ...response,
+        ...response.data.admin.personalApiTokens.tokens,
+    }
 }
 
 export async function deleteToken(key: string, apolloClient: ApolloClient<NormalizedCacheObject>): Promise<any> {
