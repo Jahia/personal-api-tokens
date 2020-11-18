@@ -10,6 +10,7 @@
     "ignoreTestFiles": "*.example.ts",
     "env": {
         "JAHIA_USERNAME": "root",
-        "JAHIA_PASSWORD": "root"
+        "JAHIA_PASSWORD": "root",
+        "COVERAGE": false
     }
 }

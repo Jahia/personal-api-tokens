@@ -3069,6 +3069,14 @@ cyclist@^1.0.1:
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-1.0.1.tgz#596e9698fd0c80e12038c2b82d6eb1b35b6224d9"
   integrity sha1-WW6WmP0MgOEgOMK4LW6xs1tiJNk=
 
+cypress-failed-log@^2.7.0:
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/cypress-failed-log/-/cypress-failed-log-2.7.0.tgz#762026cbb52c0d0e85ccc0bb152cf8f767eb92a1"
+  integrity sha512-9tSuFRjlAGZuH+IIiyDM7IAvjh4dmet/iUPLRxet9ugLkELw/cyW7jUCQmR7j4aW8Fl+ZlbNUekVonBaS322SA==
+  dependencies:
+    debug "4.1.1"
+    logdown "3.3.1"
+
 cypress-file-upload@^4.0.7:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/cypress-file-upload/-/cypress-file-upload-4.1.1.tgz#952713c8104ab7008de99c65bd63f74b244fe4df"
@@ -5522,6 +5530,13 @@ log-update@^4.0.0:
     cli-cursor "^3.1.0"
     slice-ansi "^4.0.0"
     wrap-ansi "^6.2.0"
+
+logdown@3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/logdown/-/logdown-3.3.1.tgz#836d5a195b5949c6db631ccc9fecce0492e01d10"
+  integrity sha512-pjX0vlIJsYQlgVzFba2amXI1wZZnhrEorL68MdLI7B0/sN1TNUozBNFaHfcPHMM3A+INZ0OXFDxtnoaEgOmGjQ==
+  dependencies:
+    chalk "^2.3.0"
 
 loose-envify@^1.0.0:
   version "1.4.0"

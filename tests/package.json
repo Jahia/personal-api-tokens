@@ -12,6 +12,7 @@
     "apollo-client-preset": "^1.0.8",
     "babel-plugin-istanbul": "^6.0.0",
     "cypress": "^4.6.0",
+    "cypress-failed-log": "^2.7.0",
     "cypress-file-upload": "^4.0.7",
     "diff": "^4.0.2",
     "eslint": "^7.3.1",
@@ -38,7 +39,7 @@
   },
   "scripts": {
     "instrument": "nyc instrument --compact=false cypress instrumented",
-    "e2e:coverage": "yarn instrument && yarn cypress run --config integrationFolder=./instrumented/integration && yarn nyc report --reporter=html --report-dir=./results/coverage && yarn nyc report",
+    "e2e:coverage": "yarn instrument && yarn cypress run --env COVERAGE=true --config integrationFolder=./instrumented/integration && yarn nyc report --reporter=html --report-dir=./results/coverage && yarn nyc report",
     "e2e:ci": "cypress run",
     "e2e:debug": "cypress open",
     "lint": "eslint . -c .eslintrc.json --ext .ts"

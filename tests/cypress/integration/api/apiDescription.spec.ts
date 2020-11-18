@@ -6,7 +6,7 @@ describe('Test if every type in graphQL API has description', () => {
         const noDesc = new Set()
         await executeTest('PersonalApiTokensQuery', noDesc)
         await executeTest('PersonalApiTokensMutation', noDesc)
-        console.log(noDesc)
+        cy.log(noDesc.toString())
         expect(JSON.stringify(Array.from(noDesc))).to.equals('[]')
     })
 })
