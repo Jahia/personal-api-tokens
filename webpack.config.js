@@ -22,7 +22,8 @@ module.exports = (env, argv) => {
         output: {
             path: path.resolve(__dirname, 'src/main/resources/javascript/apps/'),
             filename: 'jahia.bundle.js',
-            chunkFilename: '[name].jahia.[chunkhash:6].js'
+            chunkFilename: '[name].jahia.[chunkhash:6].js',
+            jsonpFunction: 'patJsonp'
         },
         resolve: {
             mainFields: ['module', 'main'],
@@ -40,7 +41,17 @@ module.exports = (env, argv) => {
                     include: [path.join(__dirname, 'src')],
                     exclude: /node_modules/,
                     use: {
-                        loader: 'babel-loader'
+                        loader: 'babel-loader',
+                        options: {
+                            plugins:[
+                                ['transform-imports', {
+                                    '@material-ui/icons': {
+                                        transform: '@material-ui/icons/${member}',
+                                        preventFullImport: true
+                                    }
+                                }]
+                            ],
+                        }
                     }
                 },
                 {
