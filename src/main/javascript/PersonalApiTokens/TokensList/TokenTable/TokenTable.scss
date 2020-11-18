@@ -1,6 +1,9 @@
-.cellFont {
-    font: 16px 'Nunito Sans', sans-serif !important;
-    color: var(--color-dark);
+.table {
+    overflow-y: auto;
 
-    border-bottom: 0 !important;
+    flex: 1 1 0;
+}
+
+.pagination {
+    font: 12px 'Nunito Sans', sans-serif !important;
 }

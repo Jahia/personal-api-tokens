@@ -7,7 +7,7 @@ const STATE = 'state';
 const DESCENDING_SORT = 'DESC';
 const ASCENDING_SORT = 'ASC';
 
-const INITIAL_TOKEN_LIMIT = 5;
+const INITIAL_TOKEN_LIMIT = 25;
 const INITIAL_OFFSET = 0;
 
 const POLL_INTERVAL = 5000;
