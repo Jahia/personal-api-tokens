@@ -1,20 +1,28 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {capitalize, TableCell, TableRow} from '@material-ui/core';
 import {Button, Chip, Menu, MenuItem, MoreVert, Typography} from '@jahia/moonstone';
 import Moment from 'react-moment';
 import {useTranslation} from 'react-i18next';
 import styles from './TokenTableRow.scss';
+import ConfirmationDialog from '../../ConfirmationDialog/ConfirmationDialog';
 
 const TokenTableRow = ({token, deleteToken, moreActionLabel, deactivateLabel, activateLabel}) => {
     const {t} = useTranslation('personal-api-tokens');
 
-    const [menuOpen, setMenuOpen] = React.useState({});
-    const [anchorEl, setAnchorEl] = React.useState({});
+    const [deleteTokenDialogOpen, setDeleteTokenDialogOpen] = useState(false);
+
+    const [menuOpen, setMenuOpen] = useState({});
+    const [anchorEl, setAnchorEl] = useState({});
 
     const handleMenu = (e, tokenName) => {
         setAnchorEl(Object.assign({}, anchorEl, {[tokenName]: e.currentTarget}));
         setMenuOpen(Object.assign({}, menuOpen, {[tokenName]: !menuOpen[tokenName]}));
+    };
+
+    const deleteAndCloseDialog = () => {
+        setDeleteTokenDialogOpen(false);
+        deleteToken(token.key);
     };
 
     const handleClose = tokenName => {
@@ -22,61 +30,79 @@ const TokenTableRow = ({token, deleteToken, moreActionLabel, deactivateLabel, ac
         setMenuOpen(Object.assign({}, menuOpen, {[tokenName]: false}));
     };
 
+    const deleteTokenDialogBody = (
+        <Typography className={styles.deleteDialogBody}>{t('personal-api-tokens:deleteToken.deleteWarning')}
+            <span className={styles.tokenName}>&nbsp;{token.name}&nbsp;</span><span>?</span>
+        </Typography>
+    );
+
     function isMenuDisplayed() {
         const menuOpenElement = menuOpen[token.name];
         return menuOpenElement !== undefined && menuOpenElement;
     }
 
     return (
-        <TableRow>
-            <TableCell classes={{root: styles.cellFont}}>
-                <Typography>{token.name}</Typography>
-            </TableCell>
-            <TableCell classes={{root: styles.cellFont}}>
-                <Typography>{token.key}</Typography>
-            </TableCell>
-            <TableCell classes={{root: styles.cellFont}}>
-                <Typography><Moment format="MMM Do YYYY" date={token.createdAt}/></Typography>
-            </TableCell>
-            <TableCell classes={{root: styles.cellFont}}>{token.expireAt !== null &&
-            <Typography><Moment calendar date={token.expireAt}/></Typography>}
-            </TableCell>
-            <TableCell classes={{root: styles.cellFont}}>
-                <Chip key="tokenState"
-                      label={capitalize(token.state.toLowerCase())}
-                      color={token.state !== null && token.state.toLowerCase() === 'active' ? 'success' : 'warning'}/>
-            </TableCell>
-            <TableCell classes={{root: styles.cellFont}}>
-                <div className={styles.header}>
-                    <Button variant="outlined"
-                            color="danger"
-                            label={t('personal-api-tokens:delete')}
-                            onClick={() => deleteToken(token.key)}/>
-                    <Button icon={<MoreVert/>}
-                            variant="ghost"
-                            onClick={e => handleMenu(e, token.name)}/>
-                </div>
-                <Menu isDisplayed={isMenuDisplayed()}
-                      anchorEl={anchorEl[token.name]}
-                      anchorPosition={{top: 0, left: 0}}
-                      anchorElOrigin={{
+        <>
+            <TableRow>
+                <TableCell classes={{root: styles.cellFont}}>
+                    <Typography>{token.name}</Typography>
+                </TableCell>
+                <TableCell classes={{root: styles.cellFont}}>
+                    <Typography>{token.key}</Typography>
+                </TableCell>
+                <TableCell classes={{root: styles.cellFont}}>
+                    <Typography><Moment format="MMM Do YYYY" date={token.createdAt}/></Typography>
+                </TableCell>
+                <TableCell classes={{root: styles.cellFont}}>{token.expireAt !== null &&
+                <Typography><Moment calendar date={token.expireAt}/></Typography>}
+                </TableCell>
+                <TableCell classes={{root: styles.cellFont}}>
+                    <Chip key="tokenState"
+                          label={capitalize(token.state.toLowerCase())}
+                          color={token.state !== null && token.state.toLowerCase() === 'active' ? 'success' : 'warning'}/>
+                </TableCell>
+                <TableCell classes={{root: styles.cellFont}}>
+                    <div className={styles.header}>
+                        <Button variant="outlined"
+                                color="danger"
+                                size="big"
+                                label={t('personal-api-tokens:delete')}
+                                onClick={() => setDeleteTokenDialogOpen(true)}/>
+                        <Button icon={<MoreVert/>}
+                                variant="ghost"
+                                size="big"
+                                onClick={e => handleMenu(e, token.name)}/>
+                    </div>
+                    <Menu isDisplayed={isMenuDisplayed()}
+                          anchorEl={anchorEl[token.name]}
+                          anchorPosition={{top: 0, left: 0}}
+                          anchorElOrigin={{
                           vertical: 'bottom',
                           horizontal: 'left'
                       }}
-                      transformElOrigin={{
+                          transformElOrigin={{
                           vertical: 'top',
                           horizontal: 'left'
                       }}
-                      onClose={() => handleClose(token.name)}
-                >
-                    <MenuItem label={moreActionLabel}
-                              variant="title"/>
-                    <MenuItem label={token.state.toLowerCase() === 'active' ? deactivateLabel : activateLabel}
-                              className={token.state.toLowerCase() === 'active' ? styles.remove : ''}
-                              onClick={() => console.log('Deactivate')}/>
-                </Menu>
-            </TableCell>
-        </TableRow>
+                          onClose={() => handleClose(token.name)}
+                    >
+                        <MenuItem label={moreActionLabel}
+                                  variant="title"/>
+                        <MenuItem label={token.state.toLowerCase() === 'active' ? deactivateLabel : activateLabel}
+                                  className={token.state.toLowerCase() === 'active' ? styles.remove : ''}
+                                  onClick={() => console.log('Deactivate')}/>
+                    </Menu>
+                </TableCell>
+            </TableRow>
+            <ConfirmationDialog isOpen={deleteTokenDialogOpen}
+                                acceptLabel={t('personal-api-tokens:deleteToken.deleteForever')}
+                                cancelLabel={t('personal-api-tokens:cancel')}
+                                title={t('personal-api-tokens:deleteToken.confirmation')}
+                                body={deleteTokenDialogBody}
+                                acceptButtonProps={{color: 'danger'}}
+                                onClose={() => setDeleteTokenDialogOpen(false)}
+                                onAccept={() => deleteAndCloseDialog()}/>
+        </>
     );
 };
 

@@ -1,13 +1,14 @@
 import React from 'react';
 import {withTranslation} from 'react-i18next';
-import {IconButton, Table, TableFooter, TablePagination, TableRow, withStyles} from '@material-ui/core';
+import {withStyles} from '@material-ui/core/styles';
+import {IconButton, Table, TableFooter, TablePagination, TableRow} from '@material-ui/core';
 import {FirstPage, KeyboardArrowLeft, KeyboardArrowRight, LastPage} from '@material-ui/icons';
 import PropTypes from 'prop-types';
 
 const actionsStyles = theme => ({
     root: {
         flexShrink: 0,
-        marginLeft: theme.spacing.unit * 2.5
+        marginLeft: theme.spacing(2.5)
     }
 });
 

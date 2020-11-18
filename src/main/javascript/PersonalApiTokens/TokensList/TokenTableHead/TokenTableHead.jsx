@@ -1,18 +1,17 @@
 import React from 'react';
-import {TableHead, TableSortLabel, TableCell, TableRow} from '@material-ui/core';
-import {NAME, CREATED_AT, EXPIRE_AT, KEY, STATE, ASCENDING_SORT} from '../../constants';
+import {TableCell, TableHead, TableRow, TableSortLabel} from '@material-ui/core';
+import {ASCENDING_SORT, CREATED_AT, EXPIRE_AT, KEY, NAME, STATE} from '../../constants';
 import {Typography} from '@jahia/moonstone';
 import {useTranslation} from 'react-i18next';
 import styles from './TokenTableHead.scss';
 import PropTypes from 'prop-types';
-import tableStyles from '../TokenTable/TokenTable.scss';
 
 const TokenTableHead = ({orderBy, order, handleSort}) => {
     const {t} = useTranslation('personal-api-tokens');
     return (
         <TableHead>
             <TableRow>
-                <TableCell classes={{root: tableStyles.cellFont}}
+                <TableCell classes={{root: styles.cellFont}}
                            sortDirection={orderBy === NAME ? order.toLowerCase() : false}
                 >
                     <TableSortLabel
@@ -24,7 +23,7 @@ const TokenTableHead = ({orderBy, order, handleSort}) => {
                         <Typography variant="body" weight="semiBold">{t('personal-api-tokens:tokensList.name')}</Typography>
                     </TableSortLabel>
                 </TableCell>
-                <TableCell classes={{root: tableStyles.cellFont}}
+                <TableCell classes={{root: styles.cellFont}}
                            sortDirection={orderBy === KEY ? order.toLowerCase() : false}
                 >
                     <TableSortLabel
@@ -36,7 +35,7 @@ const TokenTableHead = ({orderBy, order, handleSort}) => {
                         <Typography variant="body" weight="semiBold">{t('personal-api-tokens:tokensList.key')}</Typography>
                     </TableSortLabel>
                 </TableCell>
-                <TableCell classes={{root: tableStyles.cellFont}}
+                <TableCell classes={{root: styles.cellFont}}
                            sortDirection={orderBy === CREATED_AT ? order.toLowerCase() : false}
                 >
                     <TableSortLabel
@@ -48,7 +47,7 @@ const TokenTableHead = ({orderBy, order, handleSort}) => {
                         <Typography variant="body" weight="semiBold">{t('personal-api-tokens:tokensList.addedOn')}</Typography>
                     </TableSortLabel>
                 </TableCell>
-                <TableCell classes={{root: tableStyles.cellFont}} sortDirection={orderBy === EXPIRE_AT ? order.toLowerCase() : false}>
+                <TableCell classes={{root: styles.cellFont}} sortDirection={orderBy === EXPIRE_AT ? order.toLowerCase() : false}>
                     <TableSortLabel
                         active={orderBy === EXPIRE_AT}
                         classes={{icon: orderBy === EXPIRE_AT ? styles.iconActive : styles.icon}}
@@ -58,7 +57,7 @@ const TokenTableHead = ({orderBy, order, handleSort}) => {
                         <Typography variant="body" weight="semiBold">{t('personal-api-tokens:tokensList.expiration')}</Typography>
                     </TableSortLabel>
                 </TableCell>
-                <TableCell classes={{root: tableStyles.cellFont}} sortDirection={orderBy === STATE ? order.toLowerCase() : false}>
+                <TableCell classes={{root: styles.cellFont}} sortDirection={orderBy === STATE ? order.toLowerCase() : false}>
                     <TableSortLabel
                         active={orderBy === STATE}
                         classes={{icon: orderBy === STATE ? styles.iconActive : styles.icon}}
@@ -68,7 +67,7 @@ const TokenTableHead = ({orderBy, order, handleSort}) => {
                         <Typography variant="body" weight="semiBold">{t('personal-api-tokens:tokensList.status')}</Typography>
                     </TableSortLabel>
                 </TableCell>
-                <TableCell classes={{root: tableStyles.cellFont}}>
+                <TableCell classes={{root: styles.cellFont}}>
                     <Typography variant="body" weight="semiBold">{t('personal-api-tokens:tokensList.actions')}</Typography>
                 </TableCell>
             </TableRow>
