@@ -19,8 +19,8 @@ const TokensList = () => {
         variables: {limit: rowsPerPage, offset: currentPage * rowsPerPage,
             fieldSorter: {fieldName: orderBy, sortType: order}}});
 
-    if (loading || error) {
-        return (<></>);
+    if (error || (loading && !data)) {
+        return (<div className={styles.tokensTable}/>);
     }
 
     const noTokensScreen = (

@@ -5,7 +5,6 @@ import {Button, Chip, Menu, MenuItem, MoreVert, Typography} from '@jahia/moonsto
 import Moment from 'react-moment';
 import {useTranslation} from 'react-i18next';
 import styles from './TokenTableRow.scss';
-import tableStyles from '../TokenTable/TokenTable.scss';
 
 const TokenTableRow = ({token, deleteToken, moreActionLabel, deactivateLabel, activateLabel}) => {
     const {t} = useTranslation('personal-api-tokens');
@@ -30,33 +29,31 @@ const TokenTableRow = ({token, deleteToken, moreActionLabel, deactivateLabel, ac
 
     return (
         <TableRow>
-            <TableCell classes={{root: tableStyles.cellFont}}>
+            <TableCell classes={{root: styles.cellFont}}>
                 <Typography>{token.name}</Typography>
             </TableCell>
-            <TableCell classes={{root: tableStyles.cellFont}}>
+            <TableCell classes={{root: styles.cellFont}}>
                 <Typography>{token.key}</Typography>
             </TableCell>
-            <TableCell classes={{root: tableStyles.cellFont}}>
+            <TableCell classes={{root: styles.cellFont}}>
                 <Typography><Moment format="MMM Do YYYY" date={token.createdAt}/></Typography>
             </TableCell>
-            <TableCell classes={{root: tableStyles.cellFont}}>{token.expireAt !== null &&
+            <TableCell classes={{root: styles.cellFont}}>{token.expireAt !== null &&
             <Typography><Moment calendar date={token.expireAt}/></Typography>}
             </TableCell>
-            <TableCell classes={{root: tableStyles.cellFont}}>
+            <TableCell classes={{root: styles.cellFont}}>
                 <Chip key="tokenState"
                       label={capitalize(token.state.toLowerCase())}
                       color={token.state !== null && token.state.toLowerCase() === 'active' ? 'success' : 'warning'}/>
             </TableCell>
-            <TableCell classes={{root: tableStyles.cellFont}}>
+            <TableCell classes={{root: styles.cellFont}}>
                 <div className={styles.header}>
                     <Button variant="outlined"
                             color="danger"
-                            size="big"
                             label={t('personal-api-tokens:delete')}
                             onClick={() => deleteToken(token.key)}/>
                     <Button icon={<MoreVert/>}
                             variant="ghost"
-                            size="big"
                             onClick={e => handleMenu(e, token.name)}/>
                 </div>
                 <Menu isDisplayed={isMenuDisplayed()}

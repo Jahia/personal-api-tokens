@@ -104,7 +104,7 @@ export const createTokenMocks = [
         request: {
             query: getTokens,
             variables: {
-                limit: 5,
+                limit: 25,
                 offset: 0,
                 fieldSorter: {
                     fieldName: 'createdAt',
@@ -120,7 +120,7 @@ export const createTokenMocks = [
         request: {
             query: getTokens,
             variables: {
-                limit: 5,
+                limit: 25,
                 offset: 0,
                 fieldSorter: {
                     fieldName: 'createdAt',
@@ -193,7 +193,7 @@ export const snapshotMocks = [
         request: {
             query: getTokens,
             variables: {
-                limit: 5,
+                limit: 25,
                 offset: 0,
                 fieldSorter: {
                     fieldName: 'createdAt',
