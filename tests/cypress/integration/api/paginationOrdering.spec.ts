@@ -1,8 +1,6 @@
 import { apolloClient } from '../../support/apollo'
-import { DocumentNode } from 'graphql'
 
 import { createToken, deleteToken, getTokens } from '../../support/gql'
-import gql from 'graphql-tag'
 
 describe('Pagination and ordering - query.admin.personalApiTokens.tokens', () => {
     before('load graphql file', async function () {

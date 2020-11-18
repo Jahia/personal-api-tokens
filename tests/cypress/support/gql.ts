@@ -2,6 +2,7 @@
 import gql from 'graphql-tag'
 import { ApolloClient, NormalizedCacheObject } from 'apollo-client-preset'
 import { apolloClient } from './apollo'
+import { OperationVariables } from 'apollo-client'
 
 export async function createToken(
     userId: string,
@@ -80,7 +81,10 @@ export async function getToken(
     return response.data.admin.personalApiTokens.tokenByUserAndName
 }
 
-export async function getTokens(variables, client?: ApolloClient<NormalizedCacheObject>): Promise<any> {
+export async function getTokens(
+    variables: OperationVariables,
+    client?: ApolloClient<NormalizedCacheObject>,
+): Promise<any> {
     if (!client) {
         client = apolloClient()
     }
