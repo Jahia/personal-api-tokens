@@ -60,7 +60,7 @@ describe('Test token deletion', () => {
         const cancelButton = screen.getByText(/translated_personal-api-tokens:cancel/i);
         await act(async () => {
             fireEvent.click(cancelButton);
-            await wait(200);
+            await wait(500);
         });
         expect(screen.queryAllByRole(dialogRole)).toHaveLength(0);
         await openDeleteTokenDialog();
@@ -69,7 +69,7 @@ describe('Test token deletion', () => {
         await act(async () => {
             // First button is close icon button, can't query it by text, it's svg
             fireEvent.click(buttons[0]);
-            await wait(200);
+            await wait(500);
         });
         expect(screen.queryAllByRole(dialogRole)).toHaveLength(0);
     });
