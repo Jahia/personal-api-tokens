@@ -82,6 +82,7 @@ module.exports = (env, argv) => {
                 hashDigest: 'hex',
                 hashDigestLength: 20
             }),
+            new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /en|fr|de/),
             new CopyWebpackPlugin([{from: './package.json', to: ''}]),
             new CaseSensitivePathsPlugin()
         ],

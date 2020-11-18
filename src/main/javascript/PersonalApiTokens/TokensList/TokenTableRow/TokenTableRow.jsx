@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {capitalize, TableCell, TableRow} from '@material-ui/core';
+import {TableCell, TableRow} from '@material-ui/core';
 import {Button, Chip, Menu, MenuItem, MoreVert, Typography} from '@jahia/moonstone';
 import Moment from 'react-moment';
 import {useTranslation} from 'react-i18next';
@@ -43,7 +43,7 @@ const TokenTableRow = ({token, deleteToken, moreActionLabel, deactivateLabel, ac
             </TableCell>
             <TableCell classes={{root: styles.cellFont}}>
                 <Chip key="tokenState"
-                      label={capitalize(token.state.toLowerCase())}
+                      label={token.state}
                       color={token.state !== null && token.state.toLowerCase() === 'active' ? 'success' : 'warning'}/>
             </TableCell>
             <TableCell classes={{root: styles.cellFont}}>
