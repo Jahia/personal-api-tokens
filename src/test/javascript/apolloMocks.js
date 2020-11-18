@@ -1,5 +1,8 @@
 import {CreateTokenMutation, getCurrentUserName} from '../../main/javascript/PersonalApiTokens/MyApiTokens/MyApiTokens.gql';
 import {getTokens} from '../../main/javascript/PersonalApiTokens/TokensList/TokensList.gql';
+import moment from 'moment';
+
+const expTime = moment('2020/11/11 02:24').utc().toISOString();
 
 const tokenResult = {
     data: {
@@ -81,9 +84,8 @@ export const createTokenMocks = [
         request: {
             query: CreateTokenMutation,
             variables: {
-                userId: 'root',
                 name: 'testToken',
-                expireAt: '2020-11-11T02:24:00.000Z'
+                expireAt: expTime
             }
         },
         result: () => {
@@ -134,28 +136,6 @@ export const createTokenMocks = [
         request: {
             query: CreateTokenMutation,
             variables: {
-                userId: 'root',
-                name: 'testToken',
-                expireAt: '2020-11-11T07:24:00.000Z'
-            }
-        },
-        result: () => {
-            return {
-                data: {
-                    admin: {
-                        personalApiTokens: {
-                            createToken: 'tokenWithExpiryDate'
-                        }
-                    }
-                }
-            };
-        }
-    },
-    {
-        request: {
-            query: CreateTokenMutation,
-            variables: {
-                userId: 'root',
                 name: 'testToken',
                 expireAt: null
             }
@@ -193,7 +173,6 @@ export const snapshotMocks = [
         request: {
             query: CreateTokenMutation,
             variables: {
-                userId: 'root',
                 name: 'testToken',
                 expireAt: '2020-11-11T02:24:00.000Z'
             }
@@ -248,7 +227,6 @@ export const snapshotMocks = [
         request: {
             query: CreateTokenMutation,
             variables: {
-                userId: 'root',
                 name: 'testToken',
                 expireAt: '2020-11-11T07:24:00.000Z'
             }
@@ -269,7 +247,6 @@ export const snapshotMocks = [
         request: {
             query: CreateTokenMutation,
             variables: {
-                userId: 'root',
                 name: 'testToken',
                 expireAt: null
             }

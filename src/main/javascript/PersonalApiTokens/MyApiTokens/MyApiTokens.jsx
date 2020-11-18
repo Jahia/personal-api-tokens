@@ -9,30 +9,22 @@ import {MuiPickersUtilsProvider} from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
 import moment from 'moment';
 import CopyTokenDialogBody from '../CopyTokenDialogBody/CopyTokenDialogBody';
-import {CreateTokenMutation, getCurrentUserName} from './MyApiTokens.gql';
-import {useMutation, useQuery} from '@apollo/react-hooks';
+import {CreateTokenMutation} from './MyApiTokens.gql';
+import {useMutation} from '@apollo/react-hooks';
 
 const MyApiTokens = () => {
     const {t} = useTranslation('personal-api-tokens');
     const [isCreateTokenDialogOpen, setCreateTokenDialogOpen] = useState(false);
     const [isCopyTokenDialogOpen, setCopyTokenDialogOpen] = useState(false);
     const [createTokenError, setCreateTokenError] = useState(false);
-    const [userTokenInformation, setUserTokenInformation] = useState({userId: '', name: '', expireAt: moment().add(1, 'days')});
+    const [userTokenInformation, setUserTokenInformation] = useState({name: '', expireAt: moment().add(1, 'days')});
     const [tokenValue, setTokenValue] = useState('');
-
-    const updateCurrentUser = data => {
-        setUserTokenInformation({...userTokenInformation, userId: data.currentUser.name});
-    };
 
     const refreshState = () => {
         setCreateTokenError(false);
         setUserTokenInformation({...userTokenInformation, name: '', expireAt: moment().add(1, 'days')});
         setTokenValue('');
     };
-
-    useQuery(getCurrentUserName, {
-        onCompleted: updateCurrentUser
-    });
 
     const updateTokenValue = data => {
         setCreateTokenDialogOpen(false);
