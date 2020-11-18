@@ -35,10 +35,7 @@ const MyApiTokens = () => {
 
     const [createTokenMutation] = useMutation(CreateTokenMutation, {
         onCompleted: updateTokenValue,
-        onError: err => {
-            console.log('jkhsahjkdsadsa', err);
-            setCreateTokenError(true);
-        },
+        onError: () => setCreateTokenError(true),
         variables: userTokenInformation
     });
 
