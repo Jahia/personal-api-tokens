@@ -5,16 +5,16 @@ import { createToken, deleteToken, getTokens } from '../../support/gql'
 describe('Pagination and ordering - query.admin.personalApiTokens.tokens', () => {
     before('load graphql file', async function () {
         const client = apolloClient()
-        await createToken('root', 'test-X-A', null, null, client)
-        await createToken('root', 'test-X-B', null, null, client)
-        await createToken('root', 'test-X-C', null, null, client)
-        await createToken('root', 'test-X-D', null, null, client)
-        await createToken('root', 'test-X-E', null, null, client)
-        await createToken('root', 'test-X-F', null, null, client)
-        await createToken('root', 'test-X-G', null, null, client)
-        await createToken('root', 'test-X-H', null, null, client)
-        await createToken('root', 'test-X-I', null, null, client)
-        await createToken('root', 'test-X-J', null, null, client)
+        await createToken('test-X-A', null, null, client)
+        await createToken('test-X-B', null, null, client)
+        await createToken('test-X-C', null, null, client)
+        await createToken('test-X-D', null, null, client)
+        await createToken('test-X-E', null, null, client)
+        await createToken('test-X-F', null, null, client)
+        await createToken('test-X-G', null, null, client)
+        await createToken('test-X-H', null, null, client)
+        await createToken('test-X-I', null, null, client)
+        await createToken('test-X-J', null, null, client)
     })
 
     after(async function () {
