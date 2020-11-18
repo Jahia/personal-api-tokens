@@ -13,7 +13,7 @@ describe('List tokens via API - query.admin.personalApiTokens.tokens', () => {
     afterEach(async function () {
         const client = apolloClient()
         return Promise.all(
-            (await getTokens('root', client)).nodes
+            (await getTokens({ userId: 'root' }, client)).nodes
                 .filter((token) => token.name.startsWith('test-'))
                 .map((token) => deleteToken(token.key, client)),
         )
@@ -78,7 +78,7 @@ describe('Get single token via API - query.admin.personalApiTokens.tokenByKey', 
     afterEach(async function () {
         const client = apolloClient()
         return Promise.all(
-            (await getTokens('root', client)).nodes
+            (await getTokens({ userId: 'root' }, client)).nodes
                 .filter((token) => token.name.startsWith('test-'))
                 .map((token) => deleteToken(token.key, client)),
         )

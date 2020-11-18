@@ -1529,6 +1529,7 @@ type PageInfo {
     totalCount: Int
 }
 
+"Token details"
 type PersonalApiToken {
     "Creation date and time"
     createdAt: String
@@ -1536,8 +1537,6 @@ type PersonalApiToken {
     expireAt: String
     "The key of the token, used for looking it up"
     key: String
-    "Time of token last usage"
-    lastUsedAt: String
     "The name of the token"
     name: String
     "Token state"
@@ -1568,6 +1567,7 @@ type PersonalApiTokenEdge {
     node: PersonalApiToken
 }
 
+"Mutations for Personal Api Tokens"
 type PersonalApiTokensMutation {
     "Create a new token"
     createToken(
@@ -1583,11 +1583,15 @@ type PersonalApiTokensMutation {
         userId: String!
     ): String
     "Delete an existing token"
-    deleteToken(key: String!): Boolean
+    deleteToken(
+        "The token key"
+        key: String!
+    ): Boolean
     "Update an existing token"
     updateToken(
         "Expiration date of the token, use empty string to unset expiration date"
         expireAt: String,
+        "The token key"
         key: String!,
         "Name to give to the token"
         name: String,
@@ -1596,28 +1600,14 @@ type PersonalApiTokensMutation {
     ): Boolean
 }
 
+"Queries for Personal Api Tokens"
 type PersonalApiTokensQuery {
-    "Find tokens for current user"
-    currentUserTokens(
-        "fetching only nodes after this node (exclusive)"
-        after: String,
-        "fetching only nodes before this node (exclusive)"
-        before: String,
-        "fetching only the first certain number of nodes"
-        first: Int,
-        "fetching only the last certain number of nodes"
-        last: Int,
-        "fetching only the first certain number of nodes"
-        limit: Int,
-        "fetching only nodes after this node (inclusive)"
-        offset: Int
-    ): PersonalApiTokenConnection
-    "Get token details"
+    "Get token details, based on key"
     tokenByKey(
         "The token key"
         key: String!
     ): PersonalApiToken
-    "Get token details"
+    "Get token details, based on user and token name"
     tokenByUserAndName(
         "The site the user belongs to, null if global user"
         site: String,
@@ -1626,12 +1616,14 @@ type PersonalApiTokensQuery {
         "The user id"
         userId: String!
     ): PersonalApiToken
-    "Find tokens"
+    "List tokens attached to the provided user ID and site key"
     tokens(
         "fetching only nodes after this node (exclusive)"
         after: String,
         "fetching only nodes before this node (exclusive)"
         before: String,
+        "Sort by graphQL fields values"
+        fieldSorter: InputFieldSorterInput,
         "fetching only the first certain number of nodes"
         first: Int,
         "fetching only the last certain number of nodes"
@@ -1645,7 +1637,7 @@ type PersonalApiTokensQuery {
         "If a userId is provided, only returns tokens assigned to that user."
         userId: String
     ): PersonalApiTokenConnection
-    "Check token validity"
+    "Check if the token is valid for authentication"
     verifyToken(
         "The token"
         token: String!
@@ -1748,7 +1740,9 @@ type Subscription {
 
 "GraphQL representation of a Jahia user"
 type User {
+    "User name"
     name: String
+    "User property"
     property(
         "The name of the property"
         name: String!
