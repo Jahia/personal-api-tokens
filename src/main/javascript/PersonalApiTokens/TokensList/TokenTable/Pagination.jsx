@@ -90,13 +90,12 @@ class PaginationCmp extends React.Component {
     }
 
     render() {
-        let {totalCount, pageSize, currentPage, onChangeRowsPerPage, labels} = this.props;
+        const {totalCount, pageSize, currentPage, onChangeRowsPerPage, labels} = this.props;
         return (
             <Table>
                 <TableFooter>
                     <TableRow>
                         <TablePagination
-                            classes={{root: styles.pagination}}
                             count={totalCount}
                             rowsPerPage={pageSize}
                             page={currentPage}

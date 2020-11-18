@@ -29,25 +29,25 @@ const TokenTableRow = ({token, deleteToken, moreActionLabel, deactivateLabel, ac
 
     return (
         <TableRow>
-            <TableCell classes={{root: styles.cellFont}}>
+            <TableCell>
                 <Typography>{token.name}</Typography>
             </TableCell>
-            <TableCell classes={{root: styles.cellFont}}>
+            <TableCell>
                 <Typography>{token.key}</Typography>
             </TableCell>
-            <TableCell classes={{root: styles.cellFont}}>
+            <TableCell>
                 <Typography><Moment format="MMM Do YYYY" date={token.createdAt}/></Typography>
             </TableCell>
-            <TableCell classes={{root: styles.cellFont}}>{token.expireAt !== null &&
+            <TableCell>{token.expireAt !== null &&
             <Typography><Moment calendar date={token.expireAt}/></Typography>}
             </TableCell>
-            <TableCell classes={{root: styles.cellFont}}>
+            <TableCell>
                 <Chip key="tokenState"
                       label={token.state}
                       color={token.state !== null && token.state.toLowerCase() === 'active' ? 'success' : 'warning'}/>
             </TableCell>
-            <TableCell classes={{root: styles.cellFont}}>
-                <div className={styles.header}>
+            <TableCell>
+                <div className="flexRow">
                     <Button variant="outlined"
                             color="danger"
                             label={t('personal-api-tokens:delete')}
