@@ -1,5 +1,8 @@
 import {CreateTokenMutation, getCurrentUserName} from '../../main/javascript/PersonalApiTokens/MyApiTokens/MyApiTokens.gql';
 import {getTokens} from '../../main/javascript/PersonalApiTokens/TokensList/TokensList.gql';
+import moment from "moment";
+
+const expTime = moment('2020/11/11 02:24').utc().toISOString();
 
 const tokenResult = {
     data: {
@@ -82,7 +85,7 @@ export const createTokenMocks = [
             query: CreateTokenMutation,
             variables: {
                 name: 'testToken',
-                expireAt: '2020-11-11T02:24:00.000Z'
+                expireAt: expTime
             }
         },
         result: () => {
@@ -127,26 +130,6 @@ export const createTokenMocks = [
         },
         result: () => {
             return tokenResult;
-        }
-    },
-    {
-        request: {
-            query: CreateTokenMutation,
-            variables: {
-                name: 'testToken',
-                expireAt: '2020-11-11T07:24:00.000Z'
-            }
-        },
-        result: () => {
-            return {
-                data: {
-                    admin: {
-                        personalApiTokens: {
-                            createToken: 'tokenWithExpiryDate'
-                        }
-                    }
-                }
-            };
         }
     },
     {
