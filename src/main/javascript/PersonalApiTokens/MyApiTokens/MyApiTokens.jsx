@@ -30,7 +30,7 @@ const MyApiTokens = () => {
 
     const userInformation = useQuery(getUserInformation, {
         variables: {
-            userPath: userTokenInformation.userId
+            userPath: user
         }
     });
 
