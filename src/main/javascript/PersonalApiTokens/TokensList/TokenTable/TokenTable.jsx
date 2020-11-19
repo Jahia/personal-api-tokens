@@ -29,8 +29,7 @@ const TokenTable = props => {
         props.setOrder(sortOrder);
     };
 
-    const handleChangeRowsPerPage = event => {
-        const currentRowsPerPage = parseInt(event.target.value, 10);
+    const handleChangeRowsPerPage = currentRowsPerPage => {
         props.setRowsPerPage(currentRowsPerPage);
         props.setCurrentPage(INITIAL_OFFSET);
     };
