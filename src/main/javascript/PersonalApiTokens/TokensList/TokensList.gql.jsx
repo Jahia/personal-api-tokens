@@ -43,7 +43,7 @@ const DeleteTokenMutation = gql`
 `;
 
 const StateTokenMutation = gql`
-    mutation DeleteToken($key: String!, $state: TokenState) {
+    mutation StateTokenMutation($key: String!, $state: TokenState) {
         admin {
             personalApiTokens {
                 updateToken(key: $key, state: $state)
