@@ -19,7 +19,12 @@
     "addedOn": "Added on",
     "expiration": "Expiration",
     "status": "Status",
-    "actions": "Actions"
+    "actions": "Actions",
+    "pagination":{
+      "rowsPerPage": "Rows per page",
+      "of": "of"
+    }
+
   },
   "copyToken": {
     "title": "Access token created",

@@ -1,5 +1,6 @@
 import React from 'react';
-import {Table, TableBody, TablePagination} from '@material-ui/core';
+import {Table, TableBody} from '@material-ui/core';
+import {Pagination} from './Pagination';
 import PropTypes from 'prop-types';
 import TokenTableHead from '../TokenTableHead/TokenTableHead';
 import TokenTableRow from '../TokenTableRow/TokenTableRow';
@@ -28,36 +29,39 @@ const TokenTable = props => {
         props.setOrder(sortOrder);
     };
 
-    const handleChangeRowsPerPage = event => {
-        const currentRowsPerPage = parseInt(event.target.value, 10);
+    const handleChangeRowsPerPage = currentRowsPerPage => {
         props.setRowsPerPage(currentRowsPerPage);
         props.setCurrentPage(INITIAL_OFFSET);
     };
 
     return (
         <>
-            <Table>
-                <TokenTableHead orderBy={props.orderBy} order={props.order} handleSort={handleSort}/>
-                <TableBody>
-                    {props.tokensData.nodes.map(token => (
-                        <TokenTableRow key={token.name}
-                                       token={token}
-                                       deleteToken={deleteToken}
-                                       moreActionLabel={t('personal-api-tokens:tokensList.moreActions')}
-                                       deactivateLabel={t('personal-api-tokens:tokensList.deactivate')}
-                                       activateLabel={t('personal-api-tokens:tokensList.activate')}/>
-                ))}
-                </TableBody>
-            </Table>
-            <TablePagination
-                classes={{caption: tableStyles.cellFont, select: tableStyles.cellFont, menuItem: tableStyles.cellFont}}
-                count={props.tokensData.pageInfo.totalCount}
-                page={props.currentPage}
-                rowsPerPage={props.rowsPerPage}
-                rowsPerPageOptions={[5, 10, 25]}
-                component="div"
+            <div className={tableStyles.table}>
+                <Table>
+                    <TokenTableHead orderBy={props.orderBy} order={props.order} handleSort={handleSort}/>
+                    <TableBody>
+                        {props.tokensData.nodes.map(token => (
+                            <TokenTableRow key={token.name}
+                                           token={token}
+                                           deleteToken={deleteToken}
+                                           moreActionLabel={t('personal-api-tokens:tokensList.moreActions')}
+                                           deactivateLabel={t('personal-api-tokens:tokensList.deactivate')}
+                                           activateLabel={t('personal-api-tokens:tokensList.activate')}/>
+                    ))}
+                    </TableBody>
+                </Table>
+            </div>
+            <Pagination
+                totalCount={props.tokensData.pageInfo.totalCount}
+                pageSize={props.rowsPerPage}
+                currentPage={props.currentPage}
+                labels={{
+                    labelRowsPerPage: t('personal-api-tokens:tokensList.pagination.rowsPerPage'),
+                    of: t('personal-api-tokens:tokensList.pagination.of')
+                }}
                 onChangePage={(event, newPage) => props.setCurrentPage(newPage)}
-                onChangeRowsPerPage={handleChangeRowsPerPage}/>
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+            />
         </>
     );
 };

@@ -2,9 +2,9 @@ import React from 'react';
 import {Typography} from '@jahia/moonstone';
 import styles from './CreateTokenDialogBody.scss';
 import {TextField} from '@material-ui/core';
-import {KeyboardDateTimePicker} from '@material-ui/pickers';
 import {useTranslation} from 'react-i18next';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 
 const CreateTokenDialogBody = ({tokenInformation, setTokenInformation, error}) => {
     const {t} = useTranslation('personal-api-tokens');
@@ -38,17 +38,10 @@ const CreateTokenDialogBody = ({tokenInformation, setTokenInformation, error}) =
             >{t('personal-api-tokens:createToken.expirationDate')}
             </Typography>
             <Typography weight="light" variant="caption">{t('personal-api-tokens:createToken.setDate')}</Typography>
-            <KeyboardDateTimePicker disablePast
-                                    disableToolbar
-                                    format="yyyy/MM/DD HH:mm"
-                                    value={tokenInformation.expireAt}
-                                    ampm={false}
-                                    InputProps={{
-                                        classes: {root: styles.dateInput, error: styles.inputError, focused: styles.inputFocus, input: styles.text},
-                                        disableUnderline: true
-                                    }}
-                                    FormHelperTextProps={{classes: {error: styles.dateError}}}
-                                    onChange={date => setTokenInformation({...tokenInformation, expireAt: date})}/>
+            <TextField
+                value={tokenInformation.expireAt.format()}
+                onChange={e => setTokenInformation({...tokenInformation, expireAt: moment(e.target.value)})}
+            />
         </div>
     );
 };

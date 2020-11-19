@@ -20,6 +20,10 @@ function testTableHeaders() {
     expect(actionsTableHeader).toBeDefined();
 }
 
+function getElementByTagAndClassNamePrefix(table, tagName, className) {
+    return Array.prototype.slice.call(table.getElementsByTagName(tagName)).filter(f => Array.prototype.slice.call(f.classList).filter(c => c.startsWith(className)).length > 0);
+}
+
 describe('Test main screen functionality', () => {
     afterEach(() => {
         cleanup();
@@ -40,22 +44,23 @@ describe('Test main screen functionality', () => {
         const noTokensText = screen.queryAllByText(/translated_personal-api-tokens:noTokens/i);
         expect(noTokensText).toEqual([]);
         // Test table and correct headers are present
-        const table = screen.getByRole('table');
-        expect(table).toBeDefined();
+        const tables = screen.getAllByRole('table');
+        expect(tables.length).toBe(2);
+        const table = tables[0];
         testTableHeaders();
         // Test correct number of rows based on default pagination
         const tableRows = table.getElementsByTagName('tr');
         expect(tableRows).toHaveLength(6);
         // Test sorting behaviour
-        const activeSortLabelElement = table.getElementsByClassName('MuiTableSortLabel-active');
+        const activeSortLabelElement = getElementByTagAndClassNamePrefix(table, 'span', 'MuiTableSortLabel-active');
         expect(activeSortLabelElement).toHaveLength(1);
         const sortHeaderSpan = activeSortLabelElement[0];
-        expect(sortHeaderSpan.getElementsByClassName('MuiTableSortLabel-iconDirectionDesc')).toHaveLength(1);
+        expect(getElementByTagAndClassNamePrefix(table, 'svg', 'MuiTableSortLabel-iconDirectionDesc')).toHaveLength(1);
         expect(sortHeaderSpan.children[0].innerHTML).toEqual('translated_personal-api-tokens:tokensList.addedOn');
         await act(async () => {
             fireEvent.click(sortHeaderSpan);
             await wait(400);
         });
-        expect(screen.getByRole('table').getElementsByClassName('MuiTableSortLabel-iconDirectionAsc')).toBeDefined();
+        expect(getElementByTagAndClassNamePrefix(screen.getAllByRole('table')[0], 'svg', 'MuiTableSortLabel-iconDirectionAsc')).toBeDefined();
     });
 });
