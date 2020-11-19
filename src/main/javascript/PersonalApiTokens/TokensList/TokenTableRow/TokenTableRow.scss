@@ -2,22 +2,6 @@
     color: var(--color-danger);
 }
 
-.header {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-}
-
-.cellFont {
-    padding: 12px 16px;
-
-    font: 16px 'Nunito Sans', sans-serif !important;
-    color: var(--color-dark);
-
-    border-bottom: 0 !important;
-}
-
 .deleteDialogBody {
     margin-top: 2%;
     margin-bottom: 5%;

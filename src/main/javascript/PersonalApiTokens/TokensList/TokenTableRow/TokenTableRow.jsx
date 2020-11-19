@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import {capitalize, TableCell, TableRow} from '@material-ui/core';
+import {TableCell, TableRow} from '@material-ui/core';
 import {Button, Chip, Menu, MenuItem, MoreVert, Typography} from '@jahia/moonstone';
 import Moment from 'react-moment';
 import {useTranslation} from 'react-i18next';
@@ -10,10 +10,9 @@ import ConfirmationDialog from '../../ConfirmationDialog/ConfirmationDialog';
 const TokenTableRow = ({token, deleteToken, moreActionLabel, deactivateLabel, activateLabel}) => {
     const {t} = useTranslation('personal-api-tokens');
 
-    const [deleteTokenDialogOpen, setDeleteTokenDialogOpen] = useState(false);
-
     const [menuOpen, setMenuOpen] = useState({});
     const [anchorEl, setAnchorEl] = useState({});
+    const [deleteTokenDialogOpen, setDeleteTokenDialogOpen] = useState(false);
 
     const handleMenu = (e, tokenName) => {
         setAnchorEl(Object.assign({}, anchorEl, {[tokenName]: e.currentTarget}));
@@ -44,33 +43,31 @@ const TokenTableRow = ({token, deleteToken, moreActionLabel, deactivateLabel, ac
     return (
         <>
             <TableRow>
-                <TableCell classes={{root: styles.cellFont}}>
+                <TableCell>
                     <Typography>{token.name}</Typography>
                 </TableCell>
-                <TableCell classes={{root: styles.cellFont}}>
+                <TableCell>
                     <Typography>{token.key}</Typography>
                 </TableCell>
-                <TableCell classes={{root: styles.cellFont}}>
+                <TableCell>
                     <Typography><Moment format="MMM Do YYYY" date={token.createdAt}/></Typography>
                 </TableCell>
-                <TableCell classes={{root: styles.cellFont}}>{token.expireAt !== null &&
+                <TableCell>{token.expireAt !== null &&
                 <Typography><Moment calendar date={token.expireAt}/></Typography>}
                 </TableCell>
-                <TableCell classes={{root: styles.cellFont}}>
+                <TableCell>
                     <Chip key="tokenState"
-                          label={capitalize(token.state.toLowerCase())}
+                          label={token.state}
                           color={token.state !== null && token.state.toLowerCase() === 'active' ? 'success' : 'warning'}/>
                 </TableCell>
-                <TableCell classes={{root: styles.cellFont}}>
-                    <div className={styles.header}>
+                <TableCell>
+                    <div className="flexRow">
                         <Button variant="outlined"
                                 color="danger"
-                                size="big"
                                 label={t('personal-api-tokens:delete')}
-                                onClick={() => setDeleteTokenDialogOpen(true)}/>
+                                onClick={() => deleteToken(token.key)}/>
                         <Button icon={<MoreVert/>}
                                 variant="ghost"
-                                size="big"
                                 onClick={e => handleMenu(e, token.name)}/>
                     </div>
                     <Menu isDisplayed={isMenuDisplayed()}
