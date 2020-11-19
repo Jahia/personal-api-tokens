@@ -2,7 +2,7 @@ import React from 'react';
 import {act, cleanup, render} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import MyApiTokens from '../../../main/javascript/PersonalApiTokens/MyApiTokens/MyApiTokens';
-import {createTokenMocks} from '../apolloMocks';
+import {snapshotMocks} from '../apolloMocks';
 import {MockedProvider, wait} from '@apollo/react-testing';
 
 describe('Validate main screen snapshot', () => {
@@ -11,7 +11,7 @@ describe('Validate main screen snapshot', () => {
     });
     test('match snapshot', async () => {
         const {container} = render(
-            <MockedProvider mocks={createTokenMocks} addTypename={false}>
+            <MockedProvider mocks={snapshotMocks} addTypename={false}>
                 <MyApiTokens/>
             </MockedProvider>
         );

@@ -27,7 +27,6 @@ import org.jahia.modules.graphql.provider.dxm.DataFetchingException;
 import org.jahia.modules.graphql.provider.dxm.osgi.annotations.GraphQLOsgiService;
 import org.jahia.services.content.JCRContentUtils;
 import org.jahia.services.content.JCRTemplate;
-import org.jahia.services.content.decorator.JCRUserNode;
 import org.joda.time.DateTime;
 
 import javax.inject.Inject;
@@ -57,7 +56,6 @@ public class GqlPersonalApiTokensMutation {
     /**
      * Create a new token
      *
-     * @param userId   User ID to attach the token to
      * @param name     Name to give to the token
      * @param site     The site the user belongs to, null if global user
      * @param expireAt Expiration date of the token
@@ -66,20 +64,16 @@ public class GqlPersonalApiTokensMutation {
      */
     @GraphQLField
     @GraphQLDescription("Create a new token")
-    public String createToken(@GraphQLName("userId") @GraphQLDescription("User ID to attach the token to") @GraphQLNonNull String userId,
-                              @GraphQLName("name") @GraphQLDescription("Name to give to the token") @GraphQLNonNull String name,
+    public String createToken(@GraphQLName("name") @GraphQLDescription("Name to give to the token") @GraphQLNonNull String name,
                               @GraphQLName("site") @GraphQLDescription("The site the user belongs to, null if global user") String site,
                               @GraphQLName("expireAt") @GraphQLDescription("Expiration date of the token") String expireAt,
                               @GraphQLName("state") @GraphQLDescription("State to give the newly created token") TokenState state) {
-        JCRUserNode userNode = userManagerService.lookupUser(userId, site);
-        if (userNode == null) {
-            throw new DataFetchingException("Cannot find user");
-        }
+        String path = jcrTemplate.getSessionFactory().getCurrentUser().getLocalPath();
 
         try {
             return jcrTemplate.doExecute(jcrTemplate.getSessionFactory().getCurrentUser(), null, null, session -> {
                 Calendar expiration = expireAt != null ? new DateTime(expireAt).toCalendar(Locale.getDefault()) : null;
-                String token = tokensService.tokenBuilder(userNode.getPath(), JCRContentUtils.escapeLocalNodeName(name), session)
+                String token = tokensService.tokenBuilder(path, JCRContentUtils.escapeLocalNodeName(name), session)
                         .setExpirationDate(expiration)
                         .setActive(state != TokenState.DISABLED)
                         .create();

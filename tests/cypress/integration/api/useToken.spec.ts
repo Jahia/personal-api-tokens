@@ -13,7 +13,7 @@ describe('Validate ability to use token', () => {
     afterEach(async function () {
         const client = apolloClient()
         return Promise.all(
-            (await getTokens('root', client)).nodes
+            (await getTokens({ userId: 'root' }, client)).nodes
                 .filter((token) => token.name.startsWith('test-'))
                 .map((token) => deleteToken(token.key, client)),
         )
@@ -22,7 +22,6 @@ describe('Validate ability to use token', () => {
     it('Authenticated user (jay) creates token, use it', async function () {
         const name = 'test-' + new Date().getTime()
         const createdToken = await createToken(
-            'jay',
             name,
             null,
             null,
@@ -42,7 +41,6 @@ describe('Validate ability to use token', () => {
     it('Editor (mathias) creates token and use it', async function () {
         const name = 'test-' + new Date().getTime()
         const createdToken = await createToken(
-            'mathias',
             name,
             null,
             null,
@@ -65,7 +63,7 @@ describe('Validate ability to use token', () => {
 
     it('Root creates token and use it', async function () {
         const name = 'test-' + new Date().getTime()
-        const createdToken = await createToken('root', name, null, null, apolloClient())
+        const createdToken = await createToken(name, null, null, apolloClient())
 
         const tokenDetails = await getToken('root', name, apolloClient())
         cy.log(JSON.stringify(tokenDetails))

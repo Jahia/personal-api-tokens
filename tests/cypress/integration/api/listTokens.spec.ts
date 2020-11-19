@@ -13,7 +13,7 @@ describe('List tokens via API - query.admin.personalApiTokens.tokens', () => {
     afterEach(async function () {
         const client = apolloClient()
         return Promise.all(
-            (await getTokens('root', client)).nodes
+            (await getTokens({ userId: 'root' }, client)).nodes
                 .filter((token) => token.name.startsWith('test-'))
                 .map((token) => deleteToken(token.key, client)),
         )
@@ -21,11 +21,11 @@ describe('List tokens via API - query.admin.personalApiTokens.tokens', () => {
 
     it('Create 5 tokens and list them', async function () {
         const client = apolloClient()
-        await createToken('root', 'test-X-A', null, null, client)
-        await createToken('root', 'test-X-B', null, null, client)
-        await createToken('root', 'test-X-C', null, null, client)
-        await createToken('root', 'test-X-D', null, null, client)
-        await createToken('root', 'test-X-E', null, null, client)
+        await createToken('test-X-A', null, null, client)
+        await createToken('test-X-B', null, null, client)
+        await createToken('test-X-C', null, null, client)
+        await createToken('test-X-D', null, null, client)
+        await createToken('test-X-E', null, null, client)
 
         const response = await apolloClient().query({
             query: GQL_TOKENS,
@@ -48,11 +48,11 @@ describe('List tokens via API - query.admin.personalApiTokens.tokens', () => {
 
     it('Security - Guest NOT able to list any tokens', async function () {
         const client = apolloClient()
-        await createToken('root', 'test-X-A', null, null, client)
-        await createToken('root', 'test-X-B', null, null, client)
-        await createToken('root', 'test-X-C', null, null, client)
-        await createToken('root', 'test-X-D', null, null, client)
-        await createToken('root', 'test-X-E', null, null, client)
+        await createToken('test-X-A', null, null, client)
+        await createToken('test-X-B', null, null, client)
+        await createToken('test-X-C', null, null, client)
+        await createToken('test-X-D', null, null, client)
+        await createToken('test-X-E', null, null, client)
 
         const response = await apolloClient({}).query({
             query: GQL_TOKENS,
@@ -78,7 +78,7 @@ describe('Get single token via API - query.admin.personalApiTokens.tokenByKey', 
     afterEach(async function () {
         const client = apolloClient()
         return Promise.all(
-            (await getTokens('root', client)).nodes
+            (await getTokens({ userId: 'root' }, client)).nodes
                 .filter((token) => token.name.startsWith('test-'))
                 .map((token) => deleteToken(token.key, client)),
         )
@@ -88,7 +88,7 @@ describe('Get single token via API - query.admin.personalApiTokens.tokenByKey', 
         const client = apolloClient()
         const name = 'test-' + new Date().getTime()
 
-        await createToken('root', name, null, null, client)
+        await createToken(name, null, null, client)
         const token = await getToken('root', name, client)
 
         const response = await apolloClient().query({
@@ -106,7 +106,7 @@ describe('Get single token via API - query.admin.personalApiTokens.tokenByKey', 
         const client = apolloClient()
         const name = 'test-' + new Date().getTime()
 
-        await createToken('root', name, null, null, client)
+        await createToken(name, null, null, client)
         const token = await getToken('root', name, client)
         await deleteToken(token.key, client)
 
@@ -146,7 +146,7 @@ describe('Get single token via API - query.admin.personalApiTokens.tokenByKey', 
         const client = apolloClient()
         const name = 'test-' + new Date().getTime()
 
-        await createToken('root', name, null, null, client)
+        await createToken(name, null, null, client)
         const token = await getToken('root', name, client)
 
         const response = await apolloClient({}).query({
@@ -164,7 +164,7 @@ describe('Get single token via API - query.admin.personalApiTokens.tokenByKey', 
         const client = apolloClient()
         const name = 'test-' + new Date().getTime()
 
-        await createToken('root', name, null, null, client)
+        await createToken(name, null, null, client)
         const token = await getToken('root', name, client)
 
         const response = await apolloClient({ username: 'jay', password: 'password' }).query({
@@ -182,7 +182,7 @@ describe('Get single token via API - query.admin.personalApiTokens.tokenByKey', 
         const client = apolloClient()
         const name = 'test-' + new Date().getTime()
 
-        await createToken('root', name, null, null, client)
+        await createToken(name, null, null, client)
         const token = await getToken('root', name, client)
 
         const response = await apolloClient({ username: 'mathias', password: 'password' }).query({
@@ -199,7 +199,7 @@ describe('Get single token via API - query.admin.personalApiTokens.tokenByKey', 
     it('Security - Editor (mathias) NOT able to get a token created by Authenticated user (jay)', async function () {
         const name = 'test-' + new Date().getTime()
 
-        await createToken('jay', name, null, null, apolloClient({ username: 'jay', password: 'password' }))
+        await createToken(name, null, null, apolloClient({ username: 'jay', password: 'password' }))
         const token = await getToken('jay', name, apolloClient({ username: 'jay', password: 'password' }))
 
         const response = await apolloClient({ username: 'mathias', password: 'password' }).query({
