@@ -1,5 +1,6 @@
 {
   "title": "My API tokens",
+  "adminTitle": "{{name}}'s API tokens",
   "delete": "Delete",
   "createToken": {
     "buttonTitle": "Create Token",

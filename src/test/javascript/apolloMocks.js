@@ -1,9 +1,9 @@
-import {CreateTokenMutation, getCurrentUserName} from '../../main/javascript/PersonalApiTokens/MyApiTokens/MyApiTokens.gql';
+import {CreateTokenMutation, getUserInformation} from '../../main/javascript/PersonalApiTokens/MyApiTokens/MyApiTokens.gql';
 import moment from 'moment';
 const expTime = moment('2020/11/11 02:24', 'yyyy/MM/DD HH:mm').utc();
 import {DeleteTokenMutation, getTokens} from '../../main/javascript/PersonalApiTokens/TokensList/TokensList.gql';
 
-const tokenResult = {
+const tokenResultWithoutTestToken = {
     data: {
         admin: {
             personalApiTokens: {
@@ -18,8 +18,8 @@ const tokenResult = {
                     },
                     nodes: [
                         {
-                            name: 'TestToken',
-                            key: '1b8c8b06-c9bd-4314-a981-68c8e2fe1d3a',
+                            name: 'Morceaux',
+                            key: '1b8c8b06-c9bd-4314-a981-68c8e2fe1dsa',
                             expireAt: '2020-11-11T15:57:23.762-05:00',
                             state: 'ACTIVE',
                             createdAt: '2020-11-10T15:58:06.808-05:00',
@@ -79,7 +79,7 @@ const tokenResult = {
     }
 };
 
-const tokenResultWithoutTestToken = {
+const tokenResult = {
     data: {
         admin: {
             personalApiTokens: {
@@ -94,8 +94,8 @@ const tokenResultWithoutTestToken = {
                     },
                     nodes: [
                         {
-                            name: 'Morceaux',
-                            key: '1b8c8b06-c9bd-4314-a981-68c8e2fe1dsa',
+                            name: 'TestToken',
+                            key: '1b8c8b06-c9bd-4314-a981-68c8e2fe1d3a',
                             expireAt: '2020-11-11T15:57:23.762-05:00',
                             state: 'ACTIVE',
                             createdAt: '2020-11-10T15:58:06.808-05:00',
@@ -264,13 +264,16 @@ export const createTokenMocks = [
     },
     {
         request: {
-            query: getCurrentUserName
+            query: getUserInformation
         },
         result: () => {
             return {
                 data: {
-                    currentUser: {
-                        name: 'root'
+                    jcr: {
+                        nodeByPath: {
+                            name: 'root',
+                            displayName: 'root'
+                        }
                     }
                 }
             };
@@ -375,13 +378,16 @@ export const snapshotMocks = [
     },
     {
         request: {
-            query: getCurrentUserName
+            query: getUserInformation
         },
         result: () => {
             return {
                 data: {
-                    currentUser: {
-                        name: 'root'
+                    jcr: {
+                        nodeByPath: {
+                            name: 'root',
+                            displayName: 'root'
+                        }
                     }
                 }
             };
