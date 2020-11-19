@@ -1,7 +1,4 @@
-import {
-    CreateTokenMutation,
-    getCurrentUserName
-} from '../../main/javascript/PersonalApiTokens/MyApiTokens/MyApiTokens.gql';
+import {CreateTokenMutation, getUserInformation} from '../../main/javascript/PersonalApiTokens/MyApiTokens/MyApiTokens.gql';
 import {getTokens, StateTokenMutation} from '../../main/javascript/PersonalApiTokens/TokensList/TokensList.gql';
 import moment from 'moment';
 
@@ -157,13 +154,16 @@ export const createTokenMocks = [
     },
     {
         request: {
-            query: getCurrentUserName
+            query: getUserInformation
         },
         result: () => {
             return {
                 data: {
-                    currentUser: {
-                        name: 'root'
+                    jcr: {
+                        nodeByPath: {
+                            name: 'root',
+                            displayName: 'root'
+                        }
                     }
                 }
             };
@@ -326,13 +326,16 @@ export const snapshotMocks = [
     },
     {
         request: {
-            query: getCurrentUserName
+            query: getUserInformation
         },
         result: () => {
             return {
                 data: {
-                    currentUser: {
-                        name: 'root'
+                    jcr: {
+                        nodeByPath: {
+                            name: 'root',
+                            displayName: 'root'
+                        }
                     }
                 }
             };
