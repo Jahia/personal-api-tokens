@@ -5,6 +5,13 @@ import MyApiTokens from '../../../main/javascript/PersonalApiTokens/MyApiTokens/
 import {toggleTokenStateMocks} from '../apolloMocks';
 import {MockedProvider, wait} from '@apollo/react-testing';
 
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useLocation: () => ({
+        pathname: 'localhost:3000/example/path'
+    })
+}));
+
 describe('Test token toggling state', () => {
     afterEach(() => {
         cleanup();
