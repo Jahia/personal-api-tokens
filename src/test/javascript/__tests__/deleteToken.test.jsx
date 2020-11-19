@@ -13,7 +13,7 @@ async function openDeleteTokenDialog() {
     expect(screen.queryAllByRole(dialogRole)).toHaveLength(0);
     await act(async () => {
         fireEvent.click(deleteTokenButtons[0]);
-        await wait(200);
+        await wait(500);
     });
 }
 

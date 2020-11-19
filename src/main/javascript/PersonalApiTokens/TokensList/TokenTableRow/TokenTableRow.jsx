@@ -65,7 +65,7 @@ const TokenTableRow = ({token, deleteToken, moreActionLabel, deactivateLabel, ac
                         <Button variant="outlined"
                                 color="danger"
                                 label={t('personal-api-tokens:delete')}
-                                onClick={() => deleteToken(token.key)}/>
+                                onClick={() => setDeleteTokenDialogOpen(true)}/>
                         <Button icon={<MoreVert/>}
                                 variant="ghost"
                                 onClick={e => handleMenu(e, token.name)}/>
