@@ -27,6 +27,11 @@
     }
 
   },
+  "deleteToken": {
+    "deleteForever": "Delete forever",
+    "confirmation": "Confirmation",
+    "deleteWarning": "Do you really want to delete your private access token"
+  },
   "copyToken": {
     "title": "Access token created",
     "warningNotToShareToken": "Don't give your personal access API token to anybody who you don't want to access your files",
