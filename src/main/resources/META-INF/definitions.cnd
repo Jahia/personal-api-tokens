@@ -2,7 +2,7 @@
 <jmix = 'http://www.jahia.org/jahia/mix/1.0'>
 <patnt = 'http://www.jahia.org/jahia/patnt/1.0'>
 
-[patnt:tokens]
+[patnt:tokens] > jmix:nolive
  + * (patnt:token)
 
 [patnt:token] > jnt:content, mix:created, mix:lastModified
