@@ -292,6 +292,24 @@ jobs:
             cd << pipeline.parameters.TESTS_PATH >>
             docker logs jahia > ./artifacts/reports/jahia.log
             docker logs e2e-tests > ./artifacts/reports/cypress.log
+      # This fetches data about the running Jahia (jahia versions, module version, ...)
+      # This is useful as an artifact but also used by the slack and zencrepes reporters to
+      # populate the data they're sending
+      - run:
+          name: Fetch module dependencies
+          when: always
+          command: |
+            set +e
+            cd << pipeline.parameters.TESTS_PATH >>
+            export NVM_DIR="/opt/circleci/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            nvm install v12
+            nvm alias default v12
+            npm install -g jahia-reporter
+            echo "Fetching modules"
+            jahia-reporter utils:modules \
+              --moduleId="<< pipeline.parameters.MODULE_ID >>" \
+              --filepath="artifacts/reports/installed-jahia-modules.json"            
       # This is not needed since cypress is going to terminat on failure with exit code 1
       - run:
           name: Analyze Test results
@@ -309,21 +327,44 @@ jobs:
           path: << pipeline.parameters.TESTS_PATH >>artifacts/reports
       # Once all is executed, results are submitted to external platforms
       # Testrail report and Slack (failure only) notifications are sent during scheduled executions or merged into the main branch
+      # jahia-reporter can be executed either in docker or through node directly. 
       - run:
-          name: Publish results to testrail
+          name: Publish test results with Jahia Reporter
           when: always
           command: |
             set +e
-            if [ "<< parameters.SKIP_TESTRAIL >>" != "true" ] || [ "$CIRCLE_BRANCH" = "<< pipeline.parameters.PRIMARY_RELEASE_BRANCH >>" ]; then
+            if [ "<< parameters.SKIP_TESTRAIL >>" != "true" ] || [ "$CIRCLE_BRANCH" = "<< pipeline.parameters.PRIMARY_RELEASE_BRANCH >>" ]; then            
+              cd << pipeline.parameters.TESTS_PATH >>
               export NVM_DIR="/opt/circleci/.nvm"
               [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-              nvm install v12
-              nvm alias default v12
-              npm install -g jahia-reporter   
-              jahia-reporter testrail << pipeline.parameters.TESTS_PATH >>artifacts/reports $TESTRAIL_USERNAME $TESTRAIL_PASSWORD --type=json --projectName="<< pipeline.parameters.TESTRAIL_PROJECTNAME >>" --milestone="<< parameters.TESTRAIL_MILESTONE >>" --defaultRunDescription="This test was executed on circleci, $CIRCLE_BUILD_URL"
-              jahia-reporter slack << pipeline.parameters.TESTS_PATH >>artifacts/reports $SLACK_WEBHOOK_QA_NOTIFICATIONS -t json --module="personal-api-tokens (<< parameters.TESTRAIL_MILESTONE >>)" -w CircleCI -u $CIRCLE_BUILD_URL -g
+              nvm alias default v12                    
+              echo "Sending slack message"
+              jahia-reporter slack \
+                --webhook=$SLACK_WEBHOOK_QA_NOTIFICATIONS \
+                --sourcePath="artifacts/reports" \
+                --sourceType="json" \
+                --moduleFilepath="artifacts/reports/installed-jahia-modules.json" \
+                --msgAuthor="CircleCI" \
+                --runUrl=$CIRCLE_BUILD_URL
+              echo "Sending Zencrepes matrix"
+              jahia-reporter zencrepes \
+                --webhook="https://zencrepes.jahia.com/zqueue/testing/webhook" \
+                --webhookSecret=$ZENCREPES_WEBHOOK_SECRET \
+                --sourcePath="artifacts/reports" \
+                --sourceType="json" \
+                --moduleFilepath="artifacts/reports/installed-jahia-modules.json" \
+                --name="<< pipeline.parameters.MODULE_ID >>" \
+                --runUrl=$CIRCLE_BUILD_URL
+              echo "Sending testrail report"
+              jahia-reporter testrail \
+                --testrailUsername=$TESTRAIL_USERNAME \
+                --testrailPassword=$TESTRAIL_PASSWORD \
+                --sourcePath="artifacts/reports" \
+                --sourceType="json" \
+                --projectName="<< pipeline.parameters.TESTRAIL_PROJECTNAME >>" \
+                --milestone="<< parameters.TESTRAIL_MILESTONE >>" \
+                --defaultRunDescription="This test was executed on circleci, $CIRCLE_BUILD_URL"
             fi
-            # jahia-reporter zencrepes << pipeline.parameters.TESTS_PATH >>artifacts/reports JAHIA_WEBHOOK $ZENCREPES_WEBHOOK_SECRET -t json -n="<< pipeline.parameters.MODULE_ID >>"
       - *persist-workspace
 
   # We also want the test image to be versioned and published to Docker Hub whenever a new tag is created 
