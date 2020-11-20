@@ -8,18 +8,35 @@ import {useTranslation} from 'react-i18next';
 import {ASCENDING_SORT, DESCENDING_SORT, INITIAL_OFFSET} from '../../constants';
 import tableStyles from './TokenTable.scss';
 import {useMutation} from '@apollo/react-hooks';
-import {DeleteTokenMutation, getTokens} from '../TokensList.gql';
+import {DeleteTokenMutation, getTokens, StateTokenMutation} from '../TokensList.gql';
 
 const TokenTable = props => {
     const {t} = useTranslation('personal-api-tokens');
 
     const [deleteTokenMutation] = useMutation(DeleteTokenMutation, {
-        refetchQueries: [{query: getTokens, variables: {limit: props.rowsPerPage, offset: props.currentPage,
-            fieldSorter: {fieldName: props.orderBy, sortType: props.order}}}]
+        refetchQueries: [{
+            query: getTokens, variables: {
+                limit: props.rowsPerPage, offset: props.currentPage,
+                fieldSorter: {fieldName: props.orderBy, sortType: props.order}
+            }
+        }]
+    });
+
+    const [stateTokenMutation] = useMutation(StateTokenMutation, {
+        refetchQueries: [{
+            query: getTokens, variables: {
+                limit: props.rowsPerPage, offset: props.currentPage,
+                fieldSorter: {fieldName: props.orderBy, sortType: props.order}
+            }
+        }]
     });
 
     const deleteToken = key => {
         deleteTokenMutation({variables: {key: key}});
+    };
+
+    const changeStateToken = (key, state) => {
+        stateTokenMutation({variables: {key: key, state: state}});
     };
 
     const handleSort = orderByProperty => {
@@ -44,10 +61,11 @@ const TokenTable = props => {
                             <TokenTableRow key={token.name}
                                            token={token}
                                            deleteToken={deleteToken}
+                                           changeStateToken={changeStateToken}
                                            moreActionLabel={t('personal-api-tokens:tokensList.moreActions')}
                                            deactivateLabel={t('personal-api-tokens:tokensList.deactivate')}
                                            activateLabel={t('personal-api-tokens:tokensList.activate')}/>
-                    ))}
+                        ))}
                     </TableBody>
                 </Table>
             </div>

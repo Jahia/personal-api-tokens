@@ -1,7 +1,7 @@
 import {CreateTokenMutation, getUserInformation} from '../../main/javascript/PersonalApiTokens/MyApiTokens/MyApiTokens.gql';
 import moment from 'moment';
 const expTime = moment('2020/11/11 02:24', 'yyyy/MM/DD HH:mm').utc();
-import {DeleteTokenMutation, getTokens} from '../../main/javascript/PersonalApiTokens/TokensList/TokensList.gql';
+import {DeleteTokenMutation, getTokens, StateTokenMutation} from '../../main/javascript/PersonalApiTokens/TokensList/TokensList.gql';
 
 const tokenResultWithoutTestToken = {
     data: {
@@ -78,7 +78,6 @@ const tokenResultWithoutTestToken = {
         }
     }
 };
-
 const tokenResult = {
     data: {
         admin: {
@@ -277,6 +276,64 @@ export const createTokenMocks = [
                     }
                 }
             };
+        }
+    },
+    {
+        request: {
+            query: StateTokenMutation,
+            variables: {key: '1b8c8b06-c9bd-4314-a981-68c8e2fe1d3a', state: 'DISABLED'}
+        }
+    }
+];
+
+export const toggleTokenStateMocks = [
+    {
+        request: {
+            query: getTokens,
+            variables: {
+                limit: 25,
+                offset: 0,
+                fieldSorter: {
+                    fieldName: 'createdAt',
+                    sortType: 'DESC'
+                }
+            }
+        },
+        result: () => {
+            return tokenResult;
+        }
+    },
+    {
+        request: {
+            query: getTokens,
+            variables: {
+                limit: 25,
+                offset: 0,
+                fieldSorter: {
+                    fieldName: 'createdAt',
+                    sortType: 'DESC'
+                }
+            }
+        },
+        result: () => {
+            let updatedResult = {...tokenResult};
+            updatedResult.data.admin.personalApiTokens.tokens.nodes[0].state = 'DISABLED';
+            return updatedResult;
+        }
+    },
+    {
+        request: {
+            query: StateTokenMutation,
+            variables: {key: '1b8c8b06-c9bd-4314-a981-68c8e2fe1d3a', state: 'DISABLED'}
+        },
+        result: {
+            data: {
+                admin: {
+                    personalApiTokens: {
+                        updateToken: true
+                    }
+                }
+            }
         }
     }
 ];

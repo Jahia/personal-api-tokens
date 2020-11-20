@@ -7,7 +7,7 @@ import {useTranslation} from 'react-i18next';
 import styles from './TokenTableRow.scss';
 import ConfirmationDialog from '../../ConfirmationDialog/ConfirmationDialog';
 
-const TokenTableRow = ({token, deleteToken, moreActionLabel, deactivateLabel, activateLabel}) => {
+const TokenTableRow = ({token, deleteToken, changeStateToken, moreActionLabel, deactivateLabel, activateLabel}) => {
     const {t} = useTranslation('personal-api-tokens');
 
     const [menuOpen, setMenuOpen] = useState({});
@@ -38,6 +38,11 @@ const TokenTableRow = ({token, deleteToken, moreActionLabel, deactivateLabel, ac
     function isMenuDisplayed() {
         const menuOpenElement = menuOpen[token.name];
         return menuOpenElement !== undefined && menuOpenElement;
+    }
+
+    function handleStateToken() {
+        handleClose(token.name);
+        changeStateToken(token.key, token.state.toLowerCase() === 'active' ? 'DISABLED' : 'ACTIVE');
     }
 
     return (
@@ -87,7 +92,7 @@ const TokenTableRow = ({token, deleteToken, moreActionLabel, deactivateLabel, ac
                                   variant="title"/>
                         <MenuItem label={token.state.toLowerCase() === 'active' ? deactivateLabel : activateLabel}
                                   className={token.state.toLowerCase() === 'active' ? styles.remove : ''}
-                                  onClick={() => console.log('Deactivate')}/>
+                                  onClick={() => handleStateToken()}/>
                     </Menu>
                 </TableCell>
             </TableRow>
@@ -108,7 +113,8 @@ TokenTableRow.propTypes = {
     moreActionLabel: PropTypes.string.isRequired,
     deactivateLabel: PropTypes.string.isRequired,
     activateLabel: PropTypes.string.isRequired,
-    deleteToken: PropTypes.func.isRequired
+    deleteToken: PropTypes.func.isRequired,
+    changeStateToken: PropTypes.func.isRequired
 };
 
 export default TokenTableRow;
