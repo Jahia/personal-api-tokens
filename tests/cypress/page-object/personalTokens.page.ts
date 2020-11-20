@@ -10,6 +10,14 @@ class PersonalTokensPage extends BasePage {
         cy.get(this.elements.personalTokens).click()
         return this
     }
+
+    clickOnCreateTokenBtn() {
+        this.getByText('button', 'Create Token').click()
+    }
+
+    clickOnCreateBtn() {
+        this.getByText('button', 'Create').click()
+    }
 }
 
 export const tokensPage = new PersonalTokensPage()
