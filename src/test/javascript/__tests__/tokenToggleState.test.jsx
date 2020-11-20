@@ -42,5 +42,5 @@ describe('Test token toggling state', () => {
         });
         let disabled = await screen.findAllByRole('cell', {name: /DISABLED/i});
         expect(disabled).toHaveLength(1);
-    });
+    }, 30000);
 });
