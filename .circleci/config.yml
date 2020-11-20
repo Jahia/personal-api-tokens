@@ -334,6 +334,9 @@ jobs:
             set +e
             if [ "<< parameters.SKIP_TESTRAIL >>" != "true" ] || [ "$CIRCLE_BRANCH" = "<< pipeline.parameters.PRIMARY_RELEASE_BRANCH >>" ]; then            
               cd << pipeline.parameters.TESTS_PATH >>
+              export NVM_DIR="/opt/circleci/.nvm"
+              [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+              nvm alias default v12                    
               echo "Sending slack message"
               jahia-reporter slack \
                 --webhook=$SLACK_WEBHOOK_QA_NOTIFICATIONS \
