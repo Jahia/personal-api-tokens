@@ -220,7 +220,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                   <p
                     class="moonstone-typography moonstone-variant_body moonstone-weight_default"
                   >
-                    ssssssssssss
+                    TestToken
                   </p>
                 </td>
                 <td
