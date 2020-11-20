@@ -15,8 +15,13 @@ class PersonalTokensPage extends BasePage {
         this.getByText('button', 'Create Token').click()
     }
 
+    getTableRowByTokenName(testTokenName: string) {
+        const regex = new RegExp(testTokenName)
+        return this.getByText('p', regex).parent().parent()
+    }
+
     clickOnCreateBtn() {
-        this.getByText('button', 'Create').click()
+        this.getByText('button', /^Create$/).click()
     }
 }
 
