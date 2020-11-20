@@ -12,4 +12,11 @@ export const registerPersonalApiTokens = () => {
         isSelectable: true,
         render: () => <MyApiTokens/>
     });
+
+    registry.add('adminRoute', 'manageUsers/pat', {
+        targets: ['administration-server-manageUsers:99.1'],
+        routeOnly: true,
+        isSelectable: true,
+        render: () => <MyApiTokens/>
+    });
 };

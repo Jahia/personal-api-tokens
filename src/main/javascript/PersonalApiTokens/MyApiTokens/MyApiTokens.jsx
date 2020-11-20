@@ -7,11 +7,15 @@ import ConfirmationDialog from '../ConfirmationDialog/ConfirmationDialog';
 import CreateTokenDialogBody from '../CreateTokenDialogBody/CreateTokenDialogBody';
 import moment from 'moment';
 import CopyTokenDialogBody from '../CopyTokenDialogBody/CopyTokenDialogBody';
-import {CreateTokenMutation} from './MyApiTokens.gql';
-import {useMutation} from '@apollo/react-hooks';
+import {CreateTokenMutation, getUserInformation} from './MyApiTokens.gql';
+import {useMutation, useQuery} from '@apollo/react-hooks';
+import {useLocation} from 'react-router-dom';
 
 const MyApiTokens = () => {
     const {t} = useTranslation('personal-api-tokens');
+    const location = useLocation();
+    const user = new URLSearchParams(location.search).get('user');
+
     const [isCreateTokenDialogOpen, setCreateTokenDialogOpen] = useState(false);
     const [isCopyTokenDialogOpen, setCopyTokenDialogOpen] = useState(false);
     const [createTokenError, setCreateTokenError] = useState(false);
@@ -23,6 +27,12 @@ const MyApiTokens = () => {
         setUserTokenInformation({...userTokenInformation, name: '', expireAt: moment().add(1, 'days')});
         setTokenValue('');
     };
+
+    const userInformation = useQuery(getUserInformation, {
+        variables: {
+            userPath: user
+        }
+    });
 
     const updateTokenValue = data => {
         setCreateTokenDialogOpen(false);
@@ -41,7 +51,8 @@ const MyApiTokens = () => {
         <div className={styles.root}>
             <div className={styles.headerRoot}>
                 <header className={styles.header}>
-                    <Typography variant="title">{t('personal-api-tokens:title')}
+                    <Typography variant="title">
+                        {user ? t('personal-api-tokens:adminTitle', {name: userInformation?.data?.jcr?.nodeByPath?.displayName}) : t('personal-api-tokens:title')}
                     </Typography>
                     <div className={styles.actionBar}>
                         <Button size="big"
