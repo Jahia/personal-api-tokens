@@ -31,7 +31,7 @@ export async function createToken(
 }
 
 export async function verifyToken(
-    token: Promise<any>,
+    token: string,
     apolloClient: ApolloClient<NormalizedCacheObject>,
 ): Promise<any> {
     const response = await apolloClient.query({
