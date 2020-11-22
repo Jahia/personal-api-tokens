@@ -45,6 +45,7 @@ describe('UI e2e test - Full lifecycle in the My API Tokens section', () => {
             TEST_TOKEN = $div.text().replace('My workspace', '')
         })
         tokensPage.getByText(BUTTON_ELEMENT, 'Close').click()
+        tokensPage.getByText(PARAGRAPH_ELEMENT, TEST_TOKEN_NAME).should('be.visible')
     })
 
     // it('Find Token in a list of many tokens', function () {
@@ -81,6 +82,7 @@ describe('UI e2e test - Full lifecycle in the My API Tokens section', () => {
     it('Delete the token', function () {
         cy.get('table').find(DELETE_BUTTON_SELECTOR).click()
         tokensPage.getByText(BUTTON_ELEMENT, /^Delete forever$/).click()
+        tokensPage.getByText(PARAGRAPH_ELEMENT, TEST_TOKEN_NAME).should('not.be.visible')
     })
 
     it('Verify deleted token', async function () {
