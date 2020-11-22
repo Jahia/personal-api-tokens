@@ -1,6 +1,6 @@
 import { tokensPage } from '../page-object/personalTokens.page'
 import { apolloClient } from '../support/apollo'
-import { deleteToken, getTokens, getToken, verifyToken } from '../support/gql'
+import { deleteToken, getTokens, verifyToken } from '../support/gql'
 
 const SPAN_ELEMENT = 'span'
 const BUTTON_ELEMENT = 'button'
@@ -12,8 +12,8 @@ const DELETE_BUTTON_SELECTOR = 'tbody tr:last td:last div button:first'
 const MENU_BUTTON_SELECTOR = 'tbody tr:last td:last div button:last'
 
 const NO_TOKENS = "You don't have any personal access tokens yet"
-const TEST_TOKEN_NAME = "test-token";
-let TEST_TOKEN = '';
+const TEST_TOKEN_NAME = 'test-token'
+let TEST_TOKEN = ''
 
 describe('UI e2e test - Full lifecycle in the My API Tokens section', () => {
     before(async function () {
@@ -40,7 +40,7 @@ describe('UI e2e test - Full lifecycle in the My API Tokens section', () => {
         expect(tokensPage.getByText(PARAGRAPH_ELEMENT, 'Access token created')).not.to.be.undefined
 
         // Copy the token value to be used byh other tests
-        // Couldn't find a way to use data-cy 
+        // Couldn't find a way to use data-cy
         cy.get('.moonstone-weight_bold').should(($div) => {
             TEST_TOKEN = $div.text().replace('My workspace', '')
         })
@@ -55,7 +55,7 @@ describe('UI e2e test - Full lifecycle in the My API Tokens section', () => {
 
     it('Verify created token', async function () {
         expect(await verifyToken(TEST_TOKEN, apolloClient())).to.be.true
-    }) 
+    })
 
     it('Disable the token', function () {
         cy.get('table').find(MENU_BUTTON_SELECTOR).click()
@@ -66,17 +66,17 @@ describe('UI e2e test - Full lifecycle in the My API Tokens section', () => {
 
     it('Verify disabled token', async function () {
         expect(await verifyToken(TEST_TOKEN, apolloClient())).to.be.false
-    })    
+    })
 
     it('Activate the token', function () {
         cy.get('table').find(MENU_BUTTON_SELECTOR).click()
         tokensPage.getByText(SPAN_ELEMENT, 'Activate').click()
         tokensPage.getByText(SPAN_ELEMENT, 'ACTIVE').should(EXIST_MATCHER)
-    })    
+    })
 
     it('Verify activated token', async function () {
         expect(await verifyToken(TEST_TOKEN, apolloClient())).to.be.true
-    }) 
+    })
 
     it('Delete the token', function () {
         cy.get('table').find(DELETE_BUTTON_SELECTOR).click()
@@ -86,8 +86,8 @@ describe('UI e2e test - Full lifecycle in the My API Tokens section', () => {
     it('Verify deleted token', async function () {
         const existingTokens = await getTokens({ userId: null }, apolloClient())
         cy.log(JSON.stringify(existingTokens))
-        expect(existingTokens.nodes.filter((t: any) => t.name === TEST_TOKEN_NAME).length).to.equal(0)
-    }) 
+        expect(existingTokens.nodes.filter((t: { name: string }) => t.name === TEST_TOKEN_NAME).length).to.equal(0)
+    })
 
     after(async function () {
         const client = apolloClient()
@@ -97,5 +97,5 @@ describe('UI e2e test - Full lifecycle in the My API Tokens section', () => {
         for (const token of existingTokens.nodes) {
             await deleteToken(token.key, client)
         }
-    })    
+    })
 })
