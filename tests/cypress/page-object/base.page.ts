@@ -6,7 +6,7 @@ export class BasePage {
      * @param type of content to find
      * @param text to find
      */
-    getByText(type: string, text: string): Cypress.Chainable {
+    getByText(type: string, text: string | RegExp): Cypress.Chainable {
         return cy.contains(type, text)
     }
 }
