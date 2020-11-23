@@ -5,7 +5,7 @@ import TokensList from '../TokensList/TokensList';
 import styles from './MyApiTokens.scss';
 import ConfirmationDialog from '../ConfirmationDialog/ConfirmationDialog';
 import CreateTokenDialogBody from '../CreateTokenDialogBody/CreateTokenDialogBody';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import CopyTokenDialogBody from '../CopyTokenDialogBody/CopyTokenDialogBody';
 import {CreateTokenMutation, getUserInformation} from './MyApiTokens.gql';
 import {useMutation, useQuery} from '@apollo/react-hooks';
@@ -19,12 +19,12 @@ const MyApiTokens = () => {
     const [isCreateTokenDialogOpen, setCreateTokenDialogOpen] = useState(false);
     const [isCopyTokenDialogOpen, setCopyTokenDialogOpen] = useState(false);
     const [createTokenError, setCreateTokenError] = useState(false);
-    const [userTokenInformation, setUserTokenInformation] = useState({name: '', expireAt: moment().add(1, 'days')});
+    const [userTokenInformation, setUserTokenInformation] = useState({name: '', expireAt: dayjs().add(1, 'day')});
     const [tokenValue, setTokenValue] = useState('');
 
     const refreshState = () => {
         setCreateTokenError(false);
-        setUserTokenInformation({...userTokenInformation, name: '', expireAt: moment().add(1, 'days')});
+        setUserTokenInformation({...userTokenInformation, name: '', expireAt: dayjs().add(1, 'day')});
         setTokenValue('');
     };
 
