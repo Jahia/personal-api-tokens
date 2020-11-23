@@ -67,9 +67,9 @@ describe('UI e2e test - Full lifecycle in the My API Tokens section', () => {
 
     it('Disable the token', function () {
         cy.get('table').find(MENU_BUTTON_SELECTOR).click()
-        tokensPage.getByText(SPAN_ELEMENT, 'ACTIVE').should(EXIST_MATCHER)
+        tokensPage.getByText(SPAN_ELEMENT, 'Active').should(EXIST_MATCHER)
         tokensPage.getByText(SPAN_ELEMENT, 'Deactivate').click()
-        tokensPage.getByText(SPAN_ELEMENT, 'DISABLED').should(EXIST_MATCHER)
+        tokensPage.getByText(SPAN_ELEMENT, 'Disabled').should(EXIST_MATCHER)
     })
 
     it('Verify disabled token', async function () {
@@ -79,7 +79,7 @@ describe('UI e2e test - Full lifecycle in the My API Tokens section', () => {
     it('Activate the token', function () {
         cy.get('table').find(MENU_BUTTON_SELECTOR).click()
         tokensPage.getByText(SPAN_ELEMENT, 'Activate').click()
-        tokensPage.getByText(SPAN_ELEMENT, 'ACTIVE').should(EXIST_MATCHER)
+        tokensPage.getByText(SPAN_ELEMENT, 'Active').should(EXIST_MATCHER)
     })
 
     it('Verify activated token', async function () {

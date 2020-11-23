@@ -267,7 +267,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     <span
                       class="moonstone-typography moonstone-variant_caption moonstone-weight_semiBold moonstone-nowrap"
                     >
-                      ACTIVE
+                      Active
                     </span>
                   </div>
                 </td>
@@ -393,7 +393,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     <span
                       class="moonstone-typography moonstone-variant_caption moonstone-weight_semiBold moonstone-nowrap"
                     >
-                      ACTIVE
+                      Active
                     </span>
                   </div>
                 </td>
@@ -515,7 +515,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     <span
                       class="moonstone-typography moonstone-variant_caption moonstone-weight_semiBold moonstone-nowrap"
                     >
-                      ACTIVE
+                      Active
                     </span>
                   </div>
                 </td>
@@ -637,7 +637,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     <span
                       class="moonstone-typography moonstone-variant_caption moonstone-weight_semiBold moonstone-nowrap"
                     >
-                      ACTIVE
+                      Active
                     </span>
                   </div>
                 </td>
@@ -759,7 +759,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     <span
                       class="moonstone-typography moonstone-variant_caption moonstone-weight_semiBold moonstone-nowrap"
                     >
-                      ACTIVE
+                      Active
                     </span>
                   </div>
                 </td>
