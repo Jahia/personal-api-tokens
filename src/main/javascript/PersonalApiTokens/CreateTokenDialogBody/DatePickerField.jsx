@@ -19,7 +19,7 @@ export const DatePickerField = ({selectedDateTime, onSelectDateTime}) => {
             <TextField
                 disabled
                 inputRef={calendarField}
-                value={selectedDateTime ? selectedDateTime.format('LLL') : ''}
+                value={selectedDateTime ? dayjs(selectedDateTime).format('LLL') : ''}
                 InputProps={{
                     disableUnderline: true,
                     classes: {root: styles.inputStyle, error: styles.inputError, focused: styles.inputFocus, input: styles.text},
@@ -34,7 +34,9 @@ export const DatePickerField = ({selectedDateTime, onSelectDateTime}) => {
                         </InputAdornment>
                     )
                 }}
-                onChange={e => onSelectDateTime(dayjs(e.target.value))}
+                onChange={e => {
+                    onSelectDateTime(e.target.value === '' ? null : dayjs(e.target.value).utc().format());
+                }}
             />
             <Popover
                 open={isShowPicker}
@@ -51,9 +53,9 @@ export const DatePickerField = ({selectedDateTime, onSelectDateTime}) => {
             >
                 <DatePicker lang="en"
                             variant="datetime"
-                            selectedDateTime={selectedDateTime?.toDate()}
+                            selectedDateTime={selectedDateTime ? dayjs(selectedDateTime).toDate() : null}
                             onSelectDateTime={date => {
-                                onSelectDateTime(dayjs(date));
+                                onSelectDateTime(dayjs(date).utc().format());
                             }}
                 />
             </Popover>
@@ -62,6 +64,6 @@ export const DatePickerField = ({selectedDateTime, onSelectDateTime}) => {
 };
 
 DatePickerField.propTypes = {
-    selectedDateTime: PropTypes.object.isRequired,
+    selectedDateTime: PropTypes.string,
     onSelectDateTime: PropTypes.func.isRequired
 };

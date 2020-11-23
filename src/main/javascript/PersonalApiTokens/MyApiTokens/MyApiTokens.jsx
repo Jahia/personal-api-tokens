@@ -5,11 +5,15 @@ import TokensList from '../TokensList/TokensList';
 import ConfirmationDialog from '../ConfirmationDialog/ConfirmationDialog';
 import CreateTokenDialogBody from '../CreateTokenDialogBody/CreateTokenDialogBody';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 import CopyTokenDialogBody from '../CopyTokenDialogBody/CopyTokenDialogBody';
 import {CreateTokenMutation, getUserInformation} from './MyApiTokens.gql';
 import {useMutation, useQuery} from '@apollo/react-hooks';
 import {useLocation} from 'react-router-dom';
 import {ContentHeader, ContentLayout} from '@jahia/moonstone-alpha';
+
+dayjs.extend(utc);
+
 const MyApiTokens = () => {
     const {t} = useTranslation('personal-api-tokens');
     const location = useLocation();
@@ -18,12 +22,12 @@ const MyApiTokens = () => {
     const [isCreateTokenDialogOpen, setCreateTokenDialogOpen] = useState(false);
     const [isCopyTokenDialogOpen, setCopyTokenDialogOpen] = useState(false);
     const [createTokenError, setCreateTokenError] = useState(false);
-    const [userTokenInformation, setUserTokenInformation] = useState({name: '', expireAt: dayjs().add(1, 'day')});
+    const [userTokenInformation, setUserTokenInformation] = useState({name: '', expireAt: dayjs().add(1, 'day').utc().format()});
     const [tokenValue, setTokenValue] = useState('');
 
     const refreshState = () => {
         setCreateTokenError(false);
-        setUserTokenInformation({...userTokenInformation, name: '', expireAt: dayjs().add(1, 'day')});
+        setUserTokenInformation({...userTokenInformation, name: '', expireAt: dayjs().add(1, 'day').utc().format()});
         setTokenValue('');
     };
 
@@ -42,7 +46,10 @@ const MyApiTokens = () => {
 
     const [createTokenMutation] = useMutation(CreateTokenMutation, {
         onCompleted: updateTokenValue,
-        onError: () => setCreateTokenError(true),
+        onError: err => {
+            console.log(err);
+            setCreateTokenError(true);
+        },
         variables: userTokenInformation
     });
 
