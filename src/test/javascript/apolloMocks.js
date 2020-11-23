@@ -1,6 +1,8 @@
-import {CreateTokenMutation, getUserInformation} from '../../main/javascript/PersonalApiTokens/MyApiTokens/MyApiTokens.gql';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
+import {CreateTokenMutation} from '../../main/javascript/PersonalApiTokens/MyApiTokens/MyApiTokens.gql';
+import {getUserInformation} from '../../main/javascript/PersonalApiTokens/UserApiTokens/UserApiTokens.gql';
+
 import {DeleteTokenMutation, getTokens, StateTokenMutation} from '../../main/javascript/PersonalApiTokens/TokensList/TokensList.gql';
 dayjs.extend(utc);
 
