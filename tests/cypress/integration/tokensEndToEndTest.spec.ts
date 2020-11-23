@@ -39,11 +39,6 @@ describe('UI e2e test - Full lifecycle in the My API Tokens section', () => {
         tokensPage.clickOnCreateBtn()
         expect(tokensPage.getByText(PARAGRAPH_ELEMENT, 'Access token created')).not.to.be.undefined
 
-        // Copy the token value to be used byh other tests
-        // Couldn't find a way to use data-cy
-        cy.get('.moonstone-weight_bold').should(($div) => {
-            TEST_TOKEN = $div.text().replace('My workspace', '')
-        })
         tokensPage
             .getByText('p', 'This is the only time token can be viewed. You will not be able to recover it')
             .parent()
