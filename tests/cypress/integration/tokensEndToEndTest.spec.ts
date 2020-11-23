@@ -44,6 +44,18 @@ describe('UI e2e test - Full lifecycle in the My API Tokens section', () => {
         cy.get('.moonstone-weight_bold').should(($div) => {
             TEST_TOKEN = $div.text().replace('My workspace', '')
         })
+        tokensPage
+            .getByText('p', 'This is the only time token can be viewed. You will not be able to recover it')
+            .parent()
+            .children()
+            .last()
+            .children()
+            .last()
+            .should(($div) => {
+                const text = $div.text()
+                expect(text).not.to.eql('')
+                TEST_TOKEN = text
+            })
         tokensPage.getByText(BUTTON_ELEMENT, 'Close').click()
         tokensPage.getByText(PARAGRAPH_ELEMENT, TEST_TOKEN_NAME).should('be.visible')
     })
