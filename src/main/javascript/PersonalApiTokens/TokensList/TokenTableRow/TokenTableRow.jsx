@@ -35,6 +35,14 @@ const TokenTableRow = ({token, deleteToken, changeStateToken, moreActionLabel, d
         </Typography>
     );
 
+    const capitalize = s => {
+        if (typeof s !== 'string') {
+            return '';
+        }
+
+        return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
+    };
+
     function isMenuDisplayed() {
         const menuOpenElement = menuOpen[token.name];
         return menuOpenElement !== undefined && menuOpenElement;
@@ -62,7 +70,7 @@ const TokenTableRow = ({token, deleteToken, changeStateToken, moreActionLabel, d
                 </TableCell>
                 <TableCell>
                     <Chip key="tokenState"
-                          label={token.state}
+                          label={capitalize(token.state)}
                           color={token.state !== null && token.state.toLowerCase() === 'active' ? 'success' : 'warning'}/>
                 </TableCell>
                 <TableCell>
