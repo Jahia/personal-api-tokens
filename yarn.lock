@@ -1072,16 +1072,17 @@
     eslint-plugin-react "^7.16.0"
     eslint-plugin-react-hooks "^2.2.0"
 
-"@jahia/moonstone-alpha@^0.1.0":
-  version "0.1.0"
-  resolved "https://npm.jahia.com/@jahia%2fmoonstone-alpha/-/moonstone-alpha-0.1.0.tgz#d715eaa5d282b487160a2a5bad71a162fcd9736b"
-  integrity sha512-FsQE3488WLsOIiOZRzUf8I/Y+PySS1onxxd+k2227nBlgG7nGIC8nqJJ0/G1kVpShsrCyjrJjzxLRiomI8Bvzw==
+"@jahia/moonstone-alpha@^0.1.1":
+  version "0.1.1"
+  resolved "https://npm.jahia.com/@jahia%2fmoonstone-alpha/-/moonstone-alpha-0.1.1.tgz#b5b2675e3982304b4d69d0e8f7b77e0abe5fd27a"
+  integrity sha512-8x9dqYHGDUnubO4ZZ4rr4bbURU2MILkFOGuTke2lkSeP5ewKT1NZFWEnn/WYQ0zZ4LMnBSutejBX7qaHXXlqEQ==
   dependencies:
     "@jahia/moonstone" "^0.17.0"
     clsx "^1.1.1"
     dayjs "^1.9.6"
     prop-types "^15.7.2"
     react-day-picker "^7.4.8"
+    webpack-node-externals "^2.5.2"
 
 "@jahia/moonstone@^0.17.0":
   version "0.17.0"
@@ -10420,6 +10421,11 @@ webpack-log@^2.0.0:
   dependencies:
     ansi-colors "^3.0.0"
     uuid "^3.3.2"
+
+webpack-node-externals@^2.5.2:
+  version "2.5.2"
+  resolved "https://registry.yarnpkg.com/webpack-node-externals/-/webpack-node-externals-2.5.2.tgz#178e017a24fec6015bc9e672c77958a6afac861d"
+  integrity sha512-aHdl/y2N7PW2Sx7K+r3AxpJO+aDMcYzMQd60Qxefq3+EwhewSbTBqNumOsCE1JsCUNoyfGj5465N0sSf6hc/5w==
 
 webpack-sources@^1.4.0, webpack-sources@^1.4.1:
   version "1.4.3"
