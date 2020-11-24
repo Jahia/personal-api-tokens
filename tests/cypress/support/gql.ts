@@ -30,10 +30,7 @@ export async function createToken(
     return response.data.admin.personalApiTokens.createToken
 }
 
-export async function verifyToken(
-    token: Promise<any>,
-    apolloClient: ApolloClient<NormalizedCacheObject>,
-): Promise<any> {
+export async function verifyToken(token: string, apolloClient: ApolloClient<NormalizedCacheObject>): Promise<any> {
     const response = await apolloClient.query({
         query: gql`
             query($token: String!) {
