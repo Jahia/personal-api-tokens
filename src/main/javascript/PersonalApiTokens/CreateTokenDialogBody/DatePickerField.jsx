@@ -29,7 +29,7 @@ export const DatePickerField = ({selectedDateTime, onSelectDateTime}) => {
                         </InputAdornment>
                     ),
                     endAdornment: (
-                        <InputAdornment position="end">
+                        <InputAdornment position="start">
                             <Button variant="ghost" icon={<Close/>} onClick={() => onSelectDateTime(null)}/>
                         </InputAdornment>
                     )
