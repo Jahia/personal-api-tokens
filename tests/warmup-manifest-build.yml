@@ -7,6 +7,9 @@ jobs:
     id: graphql-dxm-provider
     filepath: /tmp/artifacts/graphql-dxm-provider.jar
   - type: module
+    id: app-shell
+    filepath: /tmp/artifacts/app-shell.jar    
+  - type: module
     id: personal-api-tokens
     filepath: /tmp/artifacts/personal-api-tokens-SNAPSHOT.jar
   - type: groovy
