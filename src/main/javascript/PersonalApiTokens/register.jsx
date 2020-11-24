@@ -15,7 +15,7 @@ export const registerPersonalApiTokens = () => {
     });
 
     registry.add('adminRoute', 'pat', {
-        targets: ['administration-server-usersAndRoles:10'],
+        targets: ['administration-server-usersAndRoles:45'],
         label: 'personal-api-tokens:adminTitle',
         isSelectable: true,
         render: () => <UserApiTokens/>
