@@ -15,6 +15,7 @@ const TokensList = () => {
     const [orderBy, setOrderBy] = useState(CREATED_AT);
 
     const {loading, error, data} = useQuery(getTokens, {
+        fetchPolicy: 'network-only',
         pollInterval: POLL_INTERVAL,
         variables: {limit: rowsPerPage, offset: currentPage * rowsPerPage,
             fieldSorter: {fieldName: orderBy, sortType: order}}});
