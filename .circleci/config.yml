@@ -139,7 +139,6 @@ jobs:
             cp /home/circleci/source/target/*SNAPSHOT.jar /home/circleci/source/target/<< pipeline.parameters.MODULE_ID >>-SNAPSHOT.jar
             if [[ -e /home/circleci/source/target/dependency ]]; then
               cp /home/circleci/source/target/dependency/graphql-dxm-provider*.jar /home/circleci/source/target/graphql-dxm-provider.jar
-              cp /home/circleci/source/target/dependency/app-shell*.jar /home/circleci/source/target/app-shell.jar
             fi            
       - store_artifacts:
           path: /tmp/artifacts/
