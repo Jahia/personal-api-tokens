@@ -14,6 +14,12 @@ jest.mock('react-router-dom', () => ({
 
 const dialogRole = 'dialog';
 
+global.contextJsParameters = {
+    user: {
+        username: 'root'
+    }
+};
+
 async function openDeleteTokenDialog() {
     const deleteTokenButtons = screen.queryAllByText(/translated_personal-api-tokens:delete/i);
     expect(deleteTokenButtons).toHaveLength(5);

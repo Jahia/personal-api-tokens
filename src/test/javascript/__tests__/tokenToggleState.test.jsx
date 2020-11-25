@@ -12,6 +12,12 @@ jest.mock('react-router-dom', () => ({
     })
 }));
 
+global.contextJsParameters = {
+    user: {
+        username: 'root'
+    }
+};
+
 describe('Test token toggling state', () => {
     afterEach(() => {
         cleanup();

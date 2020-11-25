@@ -12,6 +12,12 @@ jest.mock('react-router-dom', () => ({
     })
 }));
 
+global.contextJsParameters = {
+    user: {
+        username: 'root'
+    }
+};
+
 describe('Validate main screen snapshot', () => {
     afterEach(() => {
         cleanup();

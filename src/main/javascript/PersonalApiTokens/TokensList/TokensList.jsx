@@ -47,7 +47,9 @@ const TokensList = ({user, noTokensMessage}) => {
                         order={order}
                         orderBy={orderBy}
                         setOrder={setOrder}
-                        setOrderBy={setOrderBy}/>
+                        setOrderBy={setOrderBy}
+                        user={user}
+            />
         </div>
     ) : (
         <div className={styles.tokensList}>

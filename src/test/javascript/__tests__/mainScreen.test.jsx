@@ -12,6 +12,12 @@ jest.mock('react-router-dom', () => ({
     })
 }));
 
+global.contextJsParameters = {
+    user: {
+        username: 'root'
+    }
+};
+
 function testTableHeaders() {
     const nameTableHeader = screen.getByText(/translated_personal-api-tokens:tokensList.name/i);
     expect(nameTableHeader).toBeDefined();

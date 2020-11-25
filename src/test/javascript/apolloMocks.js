@@ -36,11 +36,11 @@ export const tokenResultWithoutTestToken = {
                         hasPreviousPage: false
                     },
                     nodes: [
-                        tokenResultItem('Morceaux', '1b8c8b06-c9bd-4314-a981-68c8e2fe1dsa', '2020-11-11T15:57:23.762-05:00'),
-                        tokenResultItem('Yurec', 'e2c6c788-a685-4d0e-a687-bfff9f3af5cc', '2020-11-11T15:57:23.762-05:00'),
-                        tokenResultItem('Super Token', '46569c17-d953-4ede-a0c3-329e5bc8a61f', '2020-11-11T15:57:23.762-05:00'),
-                        tokenResultItem('ghfghfghfghf', '0f5cd483-3e0b-4b0c-87ea-1c13f3b358b2', '2020-11-11T15:57:23.762-05:00'),
-                        tokenResultItem('Anton', '1f4f0233-26fc-4b34-bc7f-b3fcca9a9f5b', '2020-11-11T15:57:23.762-05:00')
+                        tokenResultItem('Morceaux', '1b8c8b06-c9bd-4314-a981-68c8e2fe1dsa', '2020-11-11T15:57:23.762-05:00', 'ACTIVE', '2020-11-10T15:58:06.808-05:00'),
+                        tokenResultItem('Yurec', 'e2c6c788-a685-4d0e-a687-bfff9f3af5cc', '2020-11-11T15:57:23.762-05:00', 'ACTIVE', '2020-11-10T15:58:06.808-05:00'),
+                        tokenResultItem('Super Token', '46569c17-d953-4ede-a0c3-329e5bc8a61f', '2020-11-11T15:57:23.762-05:00', 'ACTIVE', '2020-11-10T15:58:06.808-05:00'),
+                        tokenResultItem('ghfghfghfghf', '0f5cd483-3e0b-4b0c-87ea-1c13f3b358b2', '2020-11-10T15:57:23.762-05:00', 'ACTIVE', '2020-11-09T15:58:06.808-05:00'),
+                        tokenResultItem('Anton', '1f4f0233-26fc-4b34-bc7f-b3fcca9a9f5b', '2020-11-10T15:57:23.762-05:00', 'ACTIVE', '2020-11-09T15:58:06.808-05:00')
                     ]
                 }
             }
@@ -62,11 +62,11 @@ export const tokenResult = {
                         hasPreviousPage: false
                     },
                     nodes: [
-                        tokenResultItem('TestToken', '1b8c8b06-c9bd-4314-a981-68c8e2fe1d3a', '2020-11-11T15:57:23.762-05:00'),
-                        tokenResultItem('Yurec', 'e2c6c788-a685-4d0e-a687-bfff9f3af5cc', '2020-11-11T15:57:23.762-05:00'),
-                        tokenResultItem('Super Token', '46569c17-d953-4ede-a0c3-329e5bc8a61f', '2020-11-11T15:57:23.762-05:00'),
-                        tokenResultItem('ghfghfghfghf', '0f5cd483-3e0b-4b0c-87ea-1c13f3b358b2', '2020-11-11T15:57:23.762-05:00'),
-                        tokenResultItem('Anton', '1f4f0233-26fc-4b34-bc7f-b3fcca9a9f5b', '2020-11-11T15:57:23.762-05:00')
+                        tokenResultItem('TestToken', '1b8c8b06-c9bd-4314-a981-68c8e2fe1d3a', '2020-11-11T15:57:23.762-05:00', 'ACTIVE', '2020-11-10T15:58:06.808-05:00'),
+                        tokenResultItem('Yurec', 'e2c6c788-a685-4d0e-a687-bfff9f3af5cc', '2020-11-11T15:57:23.762-05:00', 'ACTIVE', '2020-11-10T15:58:06.808-05:00'),
+                        tokenResultItem('Super Token', '46569c17-d953-4ede-a0c3-329e5bc8a61f', '2020-11-11T15:57:23.762-05:00', 'ACTIVE', '2020-11-10T15:58:06.808-05:00'),
+                        tokenResultItem('ghfghfghfghf', '0f5cd483-3e0b-4b0c-87ea-1c13f3b358b2', '2020-11-10T15:57:23.762-05:00', 'ACTIVE', '2020-11-09T15:58:06.808-05:00'),
+                        tokenResultItem('Anton', '1f4f0233-26fc-4b34-bc7f-b3fcca9a9f5b', '2020-11-10T15:57:23.762-05:00', 'ACTIVE', '2020-11-09T15:58:06.808-05:00')
                     ]
                 }
             }
@@ -88,12 +88,12 @@ export const tokenResultAllUsers = {
                         hasPreviousPage: false
                     },
                     nodes: [
-                        tokenResultItem('TestToken', '1b8c8b06-c9bd-4314-a981-68c8e2fe1d3a', '2020-11-11T15:57:23.762-05:00'),
-                        tokenResultItem('Yurec', 'e2c6c788-a685-4d0e-a687-bfff9f3af5cc', '2020-11-11T15:57:23.762-05:00'),
-                        tokenResultItem('Super Token', '46569c17-d953-4ede-a0c3-329e5bc8a61f', '2020-11-11T15:57:23.762-05:00'),
-                        tokenResultItem('ghfghfghfghf', '0f5cd483-3e0b-4b0c-87ea-1c13f3b358b2', '2020-11-11T15:57:23.762-05:00'),
-                        tokenResultItem('Anton', '1f4f0233-26fc-4b34-bc7f-b3fcca9a9f5b', '2020-11-11T15:57:23.762-05:00'),
-                        tokenResultItem('Bill', '12345678-26fc-4b34-bc7f-b3fcca9a9f5b', '2020-11-11T15:57:23.762-05:00')
+                        tokenResultItem('TestToken', '1b8c8b06-c9bd-4314-a981-68c8e2fe1d3a', '2020-11-11T15:57:23.762-05:00', 'ACTIVE', '2020-11-10T15:58:06.808-05:00'),
+                        tokenResultItem('Yurec', 'e2c6c788-a685-4d0e-a687-bfff9f3af5cc', '2020-11-11T15:57:23.762-05:00', 'ACTIVE', '2020-11-10T15:58:06.808-05:00'),
+                        tokenResultItem('Super Token', '46569c17-d953-4ede-a0c3-329e5bc8a61f', '2020-11-11T15:57:23.762-05:00', 'ACTIVE', '2020-11-10T15:58:06.808-05:00'),
+                        tokenResultItem('ghfghfghfghf', '0f5cd483-3e0b-4b0c-87ea-1c13f3b358b2', '2020-11-10T15:57:23.762-05:00', 'ACTIVE', '2020-11-09T15:58:06.808-05:00'),
+                        tokenResultItem('Anton', '1f4f0233-26fc-4b34-bc7f-b3fcca9a9f5b', '2020-11-10T15:57:23.762-05:00', 'ACTIVE', '2020-11-09T15:58:06.808-05:00'),
+                        tokenResultItem('Bill', '12345678-26fc-4b34-bc7f-b3fcca9a9f5b', '2020-11-11T15:57:23.762-05:00', 'ACTIVE', '2020-11-10T15:58:06.808-05:00')
                     ]
                 }
             }
@@ -115,7 +115,7 @@ export const tokenResultBill = {
                         hasPreviousPage: false
                     },
                     nodes: [
-                        tokenResultItem('Bill', '12345678-26fc-4b34-bc7f-b3fcca9a9f5b', '2020-11-11T15:57:23.762-05:00')
+                        tokenResultItem('Bill', '12345678-26fc-4b34-bc7f-b3fcca9a9f5b', '2020-11-11T15:57:23.762-05:00', '2020-11-10T15:58:06.808-05:00')
                     ]
                 }
             }
@@ -132,17 +132,15 @@ export const createTokenMocks = [
                 expireAt: expTime
             }
         },
-        result: () => {
-            return {
-                data: {
-                    admin: {
-                        personalApiTokens: {
-                            createToken: 'tokenWithExpiryDate'
-                        }
+        result: () => ({
+            data: {
+                admin: {
+                    personalApiTokens: {
+                        createToken: 'tokenWithExpiryDate'
                     }
                 }
-            };
-        }
+            }
+        })
     },
     {
         request: {
@@ -151,22 +149,21 @@ export const createTokenMocks = [
                 key: '1b8c8b06-c9bd-4314-a981-68c8e2fe1d3a'
             }
         },
-        result: () => {
-            return {
-                data: {
-                    admin: {
-                        personalApiTokens: {
-                            deleteToken: true
-                        }
+        result: () => ({
+            data: {
+                admin: {
+                    personalApiTokens: {
+                        deleteToken: true
                     }
                 }
-            };
-        }
+            }
+        })
     },
     {
         request: {
             query: getTokens,
             variables: {
+                userId: 'root',
                 limit: 25,
                 offset: 0,
                 fieldSorter: {
@@ -175,14 +172,13 @@ export const createTokenMocks = [
                 }
             }
         },
-        result: () => {
-            return tokenResult;
-        }
+        result: () => tokenResult
     },
     {
         request: {
             query: getTokens,
             variables: {
+                userId: 'root',
                 limit: 25,
                 offset: 0,
                 fieldSorter: {
@@ -191,14 +187,13 @@ export const createTokenMocks = [
                 }
             }
         },
-        result: () => {
-            return tokenResultWithoutTestToken;
-        }
+        result: () => tokenResultWithoutTestToken
     },
     {
         request: {
             query: getTokens,
             variables: {
+                userId: 'root',
                 limit: 25,
                 offset: 0,
                 fieldSorter: {
@@ -207,9 +202,7 @@ export const createTokenMocks = [
                 }
             }
         },
-        result: () => {
-            return tokenResult;
-        }
+        result: () => tokenResult
     },
     {
         request: {
@@ -219,34 +212,30 @@ export const createTokenMocks = [
                 expireAt: null
             }
         },
-        result: () => {
-            return {
-                data: {
-                    admin: {
-                        personalApiTokens: {
-                            createToken: 'tokenNoExpiryDate'
-                        }
+        result: () => ({
+            data: {
+                admin: {
+                    personalApiTokens: {
+                        createToken: 'tokenNoExpiryDate'
                     }
                 }
-            };
-        }
+            }
+        })
     },
     {
         request: {
             query: getUserInformation
         },
-        result: () => {
-            return {
-                data: {
-                    jcr: {
-                        nodeByPath: {
-                            name: 'root',
-                            displayName: 'root'
-                        }
+        result: () => ({
+            data: {
+                jcr: {
+                    nodeByPath: {
+                        name: 'root',
+                        displayName: 'root'
                     }
                 }
-            };
-        }
+            }
+        })
     },
     {
         request: {
@@ -261,6 +250,7 @@ export const toggleTokenStateMocks = [
         request: {
             query: getTokens,
             variables: {
+                userId: 'root',
                 limit: 25,
                 offset: 0,
                 fieldSorter: {
@@ -269,14 +259,13 @@ export const toggleTokenStateMocks = [
                 }
             }
         },
-        result: () => {
-            return tokenResult;
-        }
+        result: () => tokenResult
     },
     {
         request: {
             query: getTokens,
             variables: {
+                userId: 'root',
                 limit: 25,
                 offset: 0,
                 fieldSorter: {
@@ -321,9 +310,7 @@ export const tokenUserFilterMocks = [
                 }
             }
         },
-        result: () => {
-            return tokenResultAllUsers;
-        }
+        result: () => tokenResultAllUsers
     },
     {
         request: {
@@ -338,9 +325,7 @@ export const tokenUserFilterMocks = [
                 }
             }
         },
-        result: () => {
-            return tokenResultBill;
-        }
+        result: () => tokenResultBill
     },
     {
         request: {
@@ -355,9 +340,7 @@ export const tokenUserFilterMocks = [
                 }
             }
         },
-        result: () => {
-            return tokenResult;
-        }
+        result: () => tokenResult
     }
 ];
 
@@ -370,22 +353,21 @@ export const snapshotMocks = [
                 expireAt: '2020-11-11T02:24:00.000Z'
             }
         },
-        result: () => {
-            return {
-                data: {
-                    admin: {
-                        personalApiTokens: {
-                            createToken: 'tokenWithExpiryDate'
-                        }
+        result: () => ({
+            data: {
+                admin: {
+                    personalApiTokens: {
+                        createToken: 'tokenWithExpiryDate'
                     }
                 }
-            };
-        }
+            }
+        })
     },
     {
         request: {
             query: getTokens,
             variables: {
+                userId: 'root',
                 limit: 25,
                 offset: 0,
                 fieldSorter: {
@@ -394,27 +376,25 @@ export const snapshotMocks = [
                 }
             }
         },
-        result: () => {
-            return {
-                data: {
-                    admin: {
-                        personalApiTokens: {
-                            tokens: {
-                                pageInfo: {
-                                    totalCount: 0,
-                                    nodesCount: 0,
-                                    startCursor: null,
-                                    endCursor: null,
-                                    hasNextPage: false,
-                                    hasPreviousPage: false
-                                },
-                                nodes: []
-                            }
+        result: () => ({
+            data: {
+                admin: {
+                    personalApiTokens: {
+                        tokens: {
+                            pageInfo: {
+                                totalCount: 0,
+                                nodesCount: 0,
+                                startCursor: null,
+                                endCursor: null,
+                                hasNextPage: false,
+                                hasPreviousPage: false
+                            },
+                            nodes: []
                         }
                     }
                 }
-            };
-        }
+            }
+        })
     },
     {
         request: {
@@ -424,17 +404,15 @@ export const snapshotMocks = [
                 expireAt: '2020-11-11T07:24:00.000Z'
             }
         },
-        result: () => {
-            return {
-                data: {
-                    admin: {
-                        personalApiTokens: {
-                            createToken: 'tokenWithExpiryDate'
-                        }
+        result: () => ({
+            data: {
+                admin: {
+                    personalApiTokens: {
+                        createToken: 'tokenWithExpiryDate'
                     }
                 }
-            };
-        }
+            }
+        })
     },
     {
         request: {
@@ -444,33 +422,29 @@ export const snapshotMocks = [
                 expireAt: null
             }
         },
-        result: () => {
-            return {
-                data: {
-                    admin: {
-                        personalApiTokens: {
-                            createToken: 'tokenNoExpiryDate'
-                        }
+        result: () => ({
+            data: {
+                admin: {
+                    personalApiTokens: {
+                        createToken: 'tokenNoExpiryDate'
                     }
                 }
-            };
-        }
+            }
+        })
     },
     {
         request: {
             query: getUserInformation
         },
-        result: () => {
-            return {
-                data: {
-                    jcr: {
-                        nodeByPath: {
-                            name: 'root',
-                            displayName: 'root'
-                        }
+        result: () => ({
+            data: {
+                jcr: {
+                    nodeByPath: {
+                        name: 'root',
+                        displayName: 'root'
                     }
                 }
-            };
-        }
+            }
+        })
     }
 ];

@@ -16,6 +16,7 @@ const TokenTable = props => {
     const [deleteTokenMutation] = useMutation(DeleteTokenMutation, {
         refetchQueries: [{
             query: getTokens, variables: {
+                userId: props.user,
                 limit: props.rowsPerPage, offset: props.currentPage,
                 fieldSorter: {fieldName: props.orderBy, sortType: props.order}
             }
@@ -25,6 +26,7 @@ const TokenTable = props => {
     const [stateTokenMutation] = useMutation(StateTokenMutation, {
         refetchQueries: [{
             query: getTokens, variables: {
+                userId: props.user,
                 limit: props.rowsPerPage, offset: props.currentPage,
                 fieldSorter: {fieldName: props.orderBy, sortType: props.order}
             }
@@ -93,7 +95,8 @@ TokenTable.propTypes = {
     order: PropTypes.string.isRequired,
     orderBy: PropTypes.string.isRequired,
     setOrder: PropTypes.func.isRequired,
-    setOrderBy: PropTypes.func.isRequired
+    setOrderBy: PropTypes.func.isRequired,
+    user: PropTypes.string.isRequired
 };
 
 export default TokenTable;
