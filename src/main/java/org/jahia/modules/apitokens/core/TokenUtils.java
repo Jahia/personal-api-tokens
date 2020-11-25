@@ -30,7 +30,6 @@ import java.util.regex.Pattern;
 public final class TokenUtils {
     private static final int KEY_SIZE = 16;
     private static final int SECRET_SIZE = 16;
-    private Pattern uuidPattern = Pattern.compile("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}");
     private Base64 base64 = new Base64();
     private SecureRandom random = new SecureRandom();
     private VersionFourGenerator generator = new VersionFourGenerator();
@@ -88,16 +87,6 @@ public final class TokenUtils {
         byte[] digested = DigestUtils.getDigest(MessageDigestAlgorithms.SHA_256).digest(part);
 
         return base64.encodeAsString(digested);
-    }
-
-    /**
-     * Check if the key is in valid format
-     *
-     * @param key key
-     * @return if valid
-     */
-    public boolean checkKeyFormat(String key) {
-        return uuidPattern.matcher(key).matches();
     }
 
     private byte[] getPart(String token, int offset, int length) {
