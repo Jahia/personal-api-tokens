@@ -1,0 +1,27 @@
+
+.search {
+    align-items: center;
+    padding: 16px;
+}
+
+.input {
+    width: 300px;
+    margin: 0 8px;
+
+    border: 1px solid var(--color-gray_light);
+    border-radius: 2px;
+
+    .icon {
+        padding: 0 8px;
+
+        color: var(--color-gray_light);
+    }
+
+    .text.text {
+        height: 24px;
+        padding: 0;
+
+        background-color: var(--color-white);
+        box-shadow: none;
+    }
+}

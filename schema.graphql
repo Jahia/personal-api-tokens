@@ -1578,9 +1578,7 @@ type PersonalApiTokensMutation {
         "The site the user belongs to, null if global user"
         site: String,
         "State to give the newly created token"
-        state: TokenState,
-        "User ID to attach the token to"
-        userId: String!
+        state: TokenState
     ): String
     "Delete an existing token"
     deleteToken(

@@ -1,16 +1,13 @@
 .tokensList {
     display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
     width: 100%;
 
-    background-color: #fdfdfd;
-    box-shadow: 0 4px 8px rgba(19, 28, 33, 0.2);
-}
+    color: var(--color-gray);
 
-.personalTokens {
-    align-self: flex-start;
-    margin: 3% 0 0 2%;
+    background-color: var(--color-light);
 }
 
 .tokensTable {
@@ -19,13 +16,5 @@
     flex-direction: column;
     width: 100%;
 
-    background-color: #fdfdfd;
-    box-shadow: 0 4px 8px rgba(19, 28, 33, 0.2);
-}
-
-.noTokens {
-    align-self: center;
-    margin-left: 23%;
-
-    color: #7a7f88;
+    background-color: var(--color-light);
 }
