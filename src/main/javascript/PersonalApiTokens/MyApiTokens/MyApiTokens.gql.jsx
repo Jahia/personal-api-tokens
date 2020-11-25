@@ -10,15 +10,4 @@ const CreateTokenMutation = gql`
     }
 `;
 
-const getUserInformation = gql`
-    query getUserInformation($userPath: String!) {
-        jcr {
-            nodeByPath(path: $userPath) {
-                name
-                displayName
-            }
-        }
-    }
-`;
-
-export {CreateTokenMutation, getUserInformation};
+export {CreateTokenMutation};

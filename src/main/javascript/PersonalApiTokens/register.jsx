@@ -2,6 +2,7 @@ import React from 'react';
 import {registry} from '@jahia/ui-extender';
 import MyApiTokens from './MyApiTokens/MyApiTokens';
 import {Lock} from '@jahia/moonstone';
+import UserApiTokens from './UserApiTokens/UserApiTokens';
 
 export const registerPersonalApiTokens = () => {
     registry.add('adminRoute', 'personal-api-tokens', {
@@ -13,10 +14,10 @@ export const registerPersonalApiTokens = () => {
         render: () => <MyApiTokens/>
     });
 
-    registry.add('adminRoute', 'manageUsers/pat', {
-        targets: ['administration-server-manageUsers:99.1'],
-        routeOnly: true,
+    registry.add('adminRoute', 'pat', {
+        targets: ['administration-server-usersAndRoles:45'],
+        label: 'personal-api-tokens:adminTitle',
         isSelectable: true,
-        render: () => <MyApiTokens/>
+        render: () => <UserApiTokens/>
     });
 };
