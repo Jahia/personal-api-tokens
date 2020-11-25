@@ -1,7 +1,9 @@
 {
   "title": "My API tokens",
-  "adminTitle": "{{name}}'s API tokens",
+  "adminTitle": "User API tokens",
   "delete": "Delete",
+  "search": "Search",
+  "searchPlaceholder": "Search by username and press \"Enter\"",
   "createToken": {
     "buttonTitle": "Create Token",
     "modalTitle": "Create a personal API token",
@@ -43,5 +45,9 @@
   "cancel": "Cancel",
   "close": "Close",
   "noTokens": "You don't have any personal access tokens yet",
+  "noTokensAtAll": "There's no token configured yet",
+  "noTokensForUser": "No tokens were found for {{name}}",
+  "unknownUser": "This user cannot be found",
+  "error": "An error occured, try again later",
   "personalTokens": "Personal API Tokens"
 }
