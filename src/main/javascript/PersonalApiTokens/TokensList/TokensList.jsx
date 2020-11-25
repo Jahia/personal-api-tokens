@@ -4,7 +4,14 @@ import {useQuery} from '@apollo/react-hooks';
 import {getTokens} from './TokensList.gql';
 import TokenTable from './TokenTable/TokenTable';
 import PropTypes from 'prop-types';
-import {CREATED_AT, DESCENDING_SORT, INITIAL_OFFSET, INITIAL_TOKEN_LIMIT, POLL_INTERVAL} from '../constants';
+import {
+    CREATED_AT,
+    DESCENDING_SORT,
+    INITIAL_OFFSET,
+    INITIAL_TOKEN_LIMIT,
+    REFETCHER_MAP,
+    TOKENS_REFETCH_KEY
+} from '../constants';
 import {Typography} from '@jahia/moonstone';
 import {useTranslation} from 'react-i18next';
 
@@ -15,14 +22,17 @@ const TokensList = ({user, noTokensMessage}) => {
     const [order, setOrder] = useState(DESCENDING_SORT);
     const [orderBy, setOrderBy] = useState(CREATED_AT);
 
-    const {loading, error, data} = useQuery(getTokens, {
+    const {loading, error, data, refetch} = useQuery(getTokens, {
         fetchPolicy: 'network-only',
-        pollInterval: POLL_INTERVAL,
         variables: {
             userId: user, limit: rowsPerPage, offset: currentPage * rowsPerPage,
             fieldSorter: {fieldName: orderBy, sortType: order}
         }
     });
+
+    if (refetch) {
+        REFETCHER_MAP.set(TOKENS_REFETCH_KEY, refetch);
+    }
 
     if (loading && !data) {
         return (<div className={styles.tokensTable}/>);
