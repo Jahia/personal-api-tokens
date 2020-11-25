@@ -7,6 +7,8 @@ services:
       - "${JAHIA_PORT}:8080"
     extra_hosts:
       - jahia:127.0.0.1
+    networks:
+      - stack        
   # Cypress container
   cypress:
     image: "${TESTS_IMAGE}"
@@ -28,3 +30,7 @@ services:
       - type: bind
         source: ./results
         target: /tmp/results
+    networks:
+      - stack
+networks:
+  stack:        
