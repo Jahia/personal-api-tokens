@@ -1,7 +1,7 @@
 const NAME = 'name';
 const KEY = 'key';
 const CREATED_AT = 'createdAt';
-const EXPIRE_AT = 'expiration';
+const EXPIRE_AT = 'expireAt';
 const STATE = 'state';
 
 const DESCENDING_SORT = 'DESC';
