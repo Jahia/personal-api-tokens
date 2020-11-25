@@ -5,13 +5,6 @@ import UserApiTokens from '../../../main/javascript/PersonalApiTokens/UserApiTok
 import {MockedProvider, wait} from '@apollo/react-testing';
 import {tokenUserFilterMocks} from '../apolloMocks';
 
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
-    useLocation: () => ({
-        pathname: 'localhost:3000/example/path'
-    })
-}));
-
 global.contextJsParameters = {
     user: {
         username: 'root'
@@ -51,7 +44,6 @@ describe('Test token creation', () => {
             await wait(0);
         });
 
-        console.log(tableRows.length);
         expect(tableRows).toHaveLength(2);
 
         await act(async () => {
@@ -60,7 +52,6 @@ describe('Test token creation', () => {
             await wait(0);
         });
 
-        console.log(tableRows.length);
         expect(tableRows).toHaveLength(6);
     });
 });

@@ -5,13 +5,6 @@ import MyApiTokens from '../../../main/javascript/PersonalApiTokens/MyApiTokens/
 import {snapshotMocks} from '../apolloMocks';
 import {MockedProvider, wait} from '@apollo/react-testing';
 
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
-    useLocation: () => ({
-        pathname: 'localhost:3000/example/path'
-    })
-}));
-
 global.contextJsParameters = {
     user: {
         username: 'root'

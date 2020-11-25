@@ -96,7 +96,7 @@ TokenTable.propTypes = {
     orderBy: PropTypes.string.isRequired,
     setOrder: PropTypes.func.isRequired,
     setOrderBy: PropTypes.func.isRequired,
-    user: PropTypes.string.isRequired
+    user: PropTypes.string
 };
 
 export default TokenTable;
