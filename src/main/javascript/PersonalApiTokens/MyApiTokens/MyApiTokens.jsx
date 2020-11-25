@@ -10,6 +10,7 @@ import CopyTokenDialogBody from '../CopyTokenDialogBody/CopyTokenDialogBody';
 import {CreateTokenMutation} from './MyApiTokens.gql';
 import {useMutation} from '@apollo/react-hooks';
 import {ContentHeader, ContentLayout} from '@jahia/moonstone-alpha';
+import {REFETCHER_MAP, TOKENS_REFETCH_KEY} from '../constants';
 
 dayjs.extend(utc);
 
@@ -33,6 +34,10 @@ const MyApiTokens = () => {
         setCopyTokenDialogOpen(true);
         const tokenData = data.admin.personalApiTokens.createToken;
         setTokenValue(tokenData ? tokenData : '');
+        const refetch = REFETCHER_MAP.get(TOKENS_REFETCH_KEY);
+        if (refetch) {
+            refetch();
+        }
     };
 
     const [createTokenMutation] = useMutation(CreateTokenMutation, {
