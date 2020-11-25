@@ -5,7 +5,7 @@ import {useTranslation} from 'react-i18next';
 import {useQuery} from '@apollo/react-hooks';
 import {getTokens} from './TokensList.gql';
 import TokenTable from './TokenTable/TokenTable';
-import {CREATED_AT, DESCENDING_SORT, INITIAL_OFFSET, INITIAL_TOKEN_LIMIT, POLL_INTERVAL} from '../constants';
+import {CREATED_AT, DESCENDING_SORT, INITIAL_OFFSET, INITIAL_TOKEN_LIMIT} from '../constants';
 
 const TokensList = () => {
     const {t} = useTranslation('personal-api-tokens');
@@ -16,7 +16,6 @@ const TokensList = () => {
 
     const {loading, error, data} = useQuery(getTokens, {
         fetchPolicy: 'network-only',
-        pollInterval: POLL_INTERVAL,
         variables: {limit: rowsPerPage, offset: currentPage * rowsPerPage,
             fieldSorter: {fieldName: orderBy, sortType: order}}});
 
