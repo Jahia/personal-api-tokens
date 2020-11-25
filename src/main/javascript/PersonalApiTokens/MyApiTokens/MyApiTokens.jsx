@@ -7,17 +7,14 @@ import CreateTokenDialogBody from '../CreateTokenDialogBody/CreateTokenDialogBod
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import CopyTokenDialogBody from '../CopyTokenDialogBody/CopyTokenDialogBody';
-import {CreateTokenMutation, getUserInformation} from './MyApiTokens.gql';
-import {useMutation, useQuery} from '@apollo/react-hooks';
-import {useLocation} from 'react-router-dom';
+import {CreateTokenMutation} from './MyApiTokens.gql';
+import {useMutation} from '@apollo/react-hooks';
 import {ContentHeader, ContentLayout} from '@jahia/moonstone-alpha';
 
 dayjs.extend(utc);
 
 const MyApiTokens = () => {
     const {t} = useTranslation('personal-api-tokens');
-    const location = useLocation();
-    const user = new URLSearchParams(location.search).get('user');
 
     const [isCreateTokenDialogOpen, setCreateTokenDialogOpen] = useState(false);
     const [isCopyTokenDialogOpen, setCopyTokenDialogOpen] = useState(false);
@@ -30,12 +27,6 @@ const MyApiTokens = () => {
         setUserTokenInformation({...userTokenInformation, name: '', expireAt: dayjs().add(1, 'day').utc().format()});
         setTokenValue('');
     };
-
-    const userInformation = useQuery(getUserInformation, {
-        variables: {
-            userPath: user
-        }
-    });
 
     const updateTokenValue = data => {
         setCreateTokenDialogOpen(false);
@@ -61,7 +52,7 @@ const MyApiTokens = () => {
                     upperSection={(
                         <div className="flexRow">
                             <Typography variant="title">
-                                {user ? t('personal-api-tokens:adminTitle', {name: userInformation?.data?.jcr?.nodeByPath?.displayName}) : t('personal-api-tokens:title')}
+                                {t('personal-api-tokens:title')}
                             </Typography>
                             <div className="flexFluid"/>
                             <Button size="big"
@@ -96,7 +87,7 @@ const MyApiTokens = () => {
                                         body={<CopyTokenDialogBody tokenValue={tokenValue}/>}
                                         onClose={() => setCopyTokenDialogOpen(false)}
                                         onAccept={() => setCopyTokenDialogOpen(false)}/>
-                    <TokensList/>
+                    <TokensList user={window.contextJsParameters.user.username} noTokensMessage={t('personal-api-tokens:noTokens')}/>
                 </>
             )}
         />
