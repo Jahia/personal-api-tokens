@@ -55,6 +55,15 @@ module.exports = (env, argv) => {
                     }
                 },
                 {
+                    test: /\.css$/i,
+                    include: [path.join(__dirname, 'node_modules/@jahia/moonstone-alpha')],
+                    sideEffects: true,
+                    use: [
+                        'style-loader',
+                        'css-loader'
+                    ]
+                },
+                {
                     test: /\.s[ac]ss$/i,
                     sideEffects: true,
                     use: [

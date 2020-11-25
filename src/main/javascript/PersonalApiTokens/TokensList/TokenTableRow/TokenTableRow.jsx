@@ -2,10 +2,10 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {TableCell, TableRow} from '@material-ui/core';
 import {Button, Chip, Menu, MenuItem, MoreVert, Typography} from '@jahia/moonstone';
-import Moment from 'react-moment';
 import {useTranslation} from 'react-i18next';
 import styles from './TokenTableRow.scss';
 import ConfirmationDialog from '../../ConfirmationDialog/ConfirmationDialog';
+import dayjs from 'dayjs';
 
 const TokenTableRow = ({token, deleteToken, changeStateToken, moreActionLabel, deactivateLabel, activateLabel}) => {
     const {t} = useTranslation('personal-api-tokens');
@@ -63,10 +63,10 @@ const TokenTableRow = ({token, deleteToken, changeStateToken, moreActionLabel, d
                     <Typography>{token.key}</Typography>
                 </TableCell>
                 <TableCell>
-                    <Typography><Moment format="MMM Do YYYY" date={token.createdAt}/></Typography>
+                    <Typography>{dayjs(token.createdAt).format('MMM DD YYYY')}</Typography>
                 </TableCell>
                 <TableCell>{token.expireAt !== null &&
-                <Typography><Moment calendar date={token.expireAt}/></Typography>}
+                    <Typography>{dayjs(token.expireAt).format('MMM DD YYYY')}</Typography>}
                 </TableCell>
                 <TableCell>
                     <Chip key="tokenState"

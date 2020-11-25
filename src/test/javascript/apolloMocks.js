@@ -1,7 +1,10 @@
 import {CreateTokenMutation, getUserInformation} from '../../main/javascript/PersonalApiTokens/MyApiTokens/MyApiTokens.gql';
-import moment from 'moment';
-const expTime = moment('2020/11/11 02:24', 'yyyy/MM/DD HH:mm').utc();
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 import {DeleteTokenMutation, getTokens, StateTokenMutation} from '../../main/javascript/PersonalApiTokens/TokensList/TokensList.gql';
+dayjs.extend(utc);
+
+const expTime = dayjs('2020/11/11 02:24', 'yyyy/MM/DD HH:mm').utc().format();
 
 const tokenResultWithoutTestToken = {
     data: {
