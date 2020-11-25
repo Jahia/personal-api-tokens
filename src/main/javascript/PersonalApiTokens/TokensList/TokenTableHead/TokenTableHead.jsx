@@ -1,6 +1,6 @@
 import React from 'react';
 import {TableCell, TableHead, TableRow, TableSortLabel} from '@material-ui/core';
-import {ASCENDING_SORT, CREATED_AT, EXPIRE_AT, KEY, NAME, STATE} from '../../constants';
+import {ASCENDING_SORT, CREATED_AT, EXPIRE_AT, KEY, USERNAME, NAME, STATE} from '../../constants';
 import {Typography} from '@jahia/moonstone';
 import {useTranslation} from 'react-i18next';
 import styles from './TokenTableHead.scss';
@@ -11,6 +11,18 @@ const TokenTableHead = ({orderBy, order, handleSort}) => {
     return (
         <TableHead>
             <TableRow>
+                <TableCell classes={{root: styles.cellFont}}
+                           sortDirection={orderBy === USERNAME ? order.toLowerCase() : false}
+                >
+                    <TableSortLabel
+                        active={orderBy === USERNAME}
+                        classes={{icon: orderBy === USERNAME ? styles.iconActive : styles.icon}}
+                        direction={orderBy === USERNAME ? order.toLowerCase() : ASCENDING_SORT.toLowerCase()}
+                        onClick={() => handleSort(USERNAME)}
+                    >
+                        <Typography variant="body" weight="semiBold">{t('personal-api-tokens:tokensList.username')}</Typography>
+                    </TableSortLabel>
+                </TableCell>
                 <TableCell classes={{root: styles.cellFont}}
                            sortDirection={orderBy === NAME ? order.toLowerCase() : false}
                 >

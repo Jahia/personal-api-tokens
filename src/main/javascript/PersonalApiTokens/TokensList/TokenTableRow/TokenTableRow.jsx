@@ -57,6 +57,9 @@ const TokenTableRow = ({token, deleteToken, changeStateToken, moreActionLabel, d
         <>
             <TableRow>
                 <TableCell>
+                    <Typography>{token.user.name}</Typography>
+                </TableCell>
+                <TableCell>
                     <Typography>{token.name}</Typography>
                 </TableCell>
                 <TableCell>
