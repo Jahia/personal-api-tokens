@@ -19,22 +19,22 @@ describe('UI e2e test - Full lifecycle in the My API Tokens section', () => {
 
     it('Navigate to an empty token page', function () {
         tokensPage.goTo()
-        tokensPage.validateElementVisible(tokensPage.elements.noTokensMessage)
+        tokensPage.assertElementVisibleBySelector(tokensPage.elements.noTokensMessage)
     })
 
     it('Create the first token of the connected user', function () {
-        tokensPage.validateVisibilityOfButtonAndClick(tokensPage.elements.createTokenButton)
+        tokensPage.assertButtonVisibleAndClick(tokensPage.elements.createTokenButton)
 
-        tokensPage.validateElementVisible(tokensPage.elements.dialogHeader)
+        tokensPage.assertElementVisibleBySelector(tokensPage.elements.dialogHeader)
         tokensPage.fillTokenName()
-        tokensPage.validateVisibilityOfButtonAndClick(tokensPage.elements.acceptDialogBtn)
+        tokensPage.assertButtonVisibleAndClick(tokensPage.elements.acceptDialogBtn)
 
-        tokensPage.validateElementVisible(tokensPage.elements.dialogHeader)
+        tokensPage.assertElementVisibleBySelector(tokensPage.elements.dialogHeader)
         cy.get(tokensPage.elements.tokenValueParagraph).should(($div) => {
             expect($div.text()).not.to.be.empty
             TEST_TOKEN = $div.text()
         })
-        tokensPage.validateVisibilityOfButtonAndClick(tokensPage.elements.closeDialogBtn)
+        tokensPage.assertButtonVisibleAndClick(tokensPage.elements.closeDialogBtn)
         tokensPage.validateTokenIsVisibleInTheTable()
     })
 
@@ -44,8 +44,8 @@ describe('UI e2e test - Full lifecycle in the My API Tokens section', () => {
 
     it('Disable the token', function () {
         tokensPage.validateActiveTokenStatus()
-        tokensPage.validateVisibilityOfButtonAndClick(tokensPage.elements.displayMenuBtn)
-        tokensPage.validateVisibilityOfButtonAndClick(tokensPage.elements.activateDeactivateToggle)
+        tokensPage.assertButtonVisibleAndClick(tokensPage.elements.displayMenuBtn)
+        tokensPage.assertButtonVisibleAndClick(tokensPage.elements.activateDeactivateToggle)
         tokensPage.validateDisabledTokenStatus()
     })
 
@@ -54,8 +54,8 @@ describe('UI e2e test - Full lifecycle in the My API Tokens section', () => {
     })
 
     it('Activate the token', function () {
-        tokensPage.validateVisibilityOfButtonAndClick(tokensPage.elements.displayMenuBtn)
-        tokensPage.validateVisibilityOfButtonAndClick(tokensPage.elements.activateDeactivateToggle)
+        tokensPage.assertButtonVisibleAndClick(tokensPage.elements.displayMenuBtn)
+        tokensPage.assertButtonVisibleAndClick(tokensPage.elements.activateDeactivateToggle)
         tokensPage.validateActiveTokenStatus()
     })
 
@@ -64,8 +64,8 @@ describe('UI e2e test - Full lifecycle in the My API Tokens section', () => {
     })
 
     it('Delete the token', function () {
-        tokensPage.validateVisibilityOfButtonAndClick(tokensPage.elements.deleteTokenBtn)
-        tokensPage.validateVisibilityOfButtonAndClick(tokensPage.elements.acceptDialogBtn)
+        tokensPage.assertButtonVisibleAndClick(tokensPage.elements.deleteTokenBtn)
+        tokensPage.assertButtonVisibleAndClick(tokensPage.elements.acceptDialogBtn)
         tokensPage.getByText(PARAGRAPH_ELEMENT, TEST_TOKEN_NAME).should('not.be.visible')
     })
 

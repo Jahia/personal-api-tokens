@@ -11,11 +11,11 @@ export class BasePage {
         return cy.contains(type, text)
     }
 
-    validateElementVisible(selector: string): Cypress.Chainable {
+    assertElementVisibleBySelector(selector: string): Cypress.Chainable {
         return cy.get(selector).should(this.BE_VISIBLE)
     }
 
-    validateVisibilityOfButtonAndClick(selector: string): Cypress.Chainable {
+    assertButtonVisibleAndClick(selector: string): Cypress.Chainable {
         return cy.get(selector).last().should(this.BE_VISIBLE).click()
     }
 }
