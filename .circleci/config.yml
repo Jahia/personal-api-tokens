@@ -271,7 +271,7 @@ jobs:
             export DOCKER_CLIENT_TIMEOUT=120
             export COMPOSE_HTTP_TIMEOUT=120            
             docker-compose -f docker-compose.yml up cypress
-            docker cp e2e-tests:/tmp/results ./artifacts/results
+            docker cp e2e-tests:/tmp/results ./artifacts
           no_output_timeout: 2h
           environment:
             MANIFEST: << parameters.MANIFEST >>
