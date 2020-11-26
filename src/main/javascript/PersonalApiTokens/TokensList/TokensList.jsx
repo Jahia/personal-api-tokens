@@ -35,7 +35,7 @@ const TokensList = ({user, noTokensMessage}) => {
         return () => {
             REFETCHER_MAP.delete(TOKENS_REFETCH_KEY);
         };
-    });
+    }, [refetch]);
 
     if (loading && !data) {
         return (<div className={styles.tokensTable}/>);
