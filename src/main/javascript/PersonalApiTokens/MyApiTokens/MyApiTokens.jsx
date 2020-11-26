@@ -59,6 +59,7 @@ const MyApiTokens = () => {
                             <div className="flexFluid"/>
                             <Button size="big"
                                     color="accent"
+                                    data-testid="create-token-btn"
                                     label={t('personal-api-tokens:createToken.buttonTitle')}
                                     icon={<Add/>}
                                     onClick={() => {

@@ -65,9 +65,9 @@ const TokensList = ({user, noTokensMessage}) => {
         </div>
     ) : (
         <div className={styles.tokensList}>
-            <Typography className={styles.noTokens}
-                        weight="light"
+            <Typography weight="light"
                         variant="subheading"
+                        data-testid="no-tokens-message"
             >{emptyMessage}
             </Typography>
         </div>

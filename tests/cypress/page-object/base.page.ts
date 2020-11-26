@@ -1,4 +1,5 @@
 export class BasePage {
+    protected BE_VISIBLE = 'be.visible'
     /**
      * Get any element of given type that contain given text
      * It does not require to be the direct element containing text
@@ -8,5 +9,13 @@ export class BasePage {
      */
     getByText(type: string, text: string | RegExp): Cypress.Chainable {
         return cy.contains(type, text)
+    }
+
+    validateElementVisible(selector: string): Cypress.Chainable {
+        return cy.get(selector).should(this.BE_VISIBLE)
+    }
+
+    validateVisibilityOfButtonAndClick(selector: string): Cypress.Chainable {
+        return cy.get(selector).last().should(this.BE_VISIBLE).click()
     }
 }

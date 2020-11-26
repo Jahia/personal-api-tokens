@@ -23,7 +23,7 @@ const CopyTokenDialogBody = ({tokenValue}) => {
             <Typography className={styles.secretKeyWarning}>{t('personal-api-tokens:copyToken.warningToCopyToken')}</Typography>
             <div className={styles.tokenContainer}>
                 <Typography className={styles.secretLabel} weight="light">Token: </Typography>
-                <Typography weight="bold">{tokenValue}</Typography>
+                <Typography weight="bold" data-testid="token-value">{tokenValue}</Typography>
             </div>
         </div>
     );

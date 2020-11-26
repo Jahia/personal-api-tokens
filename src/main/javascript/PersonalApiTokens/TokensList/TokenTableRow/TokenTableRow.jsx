@@ -70,6 +70,7 @@ const TokenTableRow = ({token, deleteToken, changeStateToken, moreActionLabel, d
                 </TableCell>
                 <TableCell>
                     <Chip key="tokenState"
+                          data-testid="token-status-chip"
                           label={capitalize(token.state)}
                           color={token.state !== null && token.state.toLowerCase() === 'active' ? 'success' : 'warning'}/>
                 </TableCell>
@@ -77,10 +78,12 @@ const TokenTableRow = ({token, deleteToken, changeStateToken, moreActionLabel, d
                     <div className="flexRow">
                         <Button variant="outlined"
                                 color="danger"
+                                data-testid="delete-token-btn"
                                 label={t('personal-api-tokens:delete')}
                                 onClick={() => setDeleteTokenDialogOpen(true)}/>
                         <Button icon={<MoreVert/>}
                                 variant="ghost"
+                                data-testid="display-menu-btn"
                                 onClick={e => handleMenu(e, token.name)}/>
                     </div>
                     <Menu isDisplayed={isMenuDisplayed()}
@@ -100,6 +103,7 @@ const TokenTableRow = ({token, deleteToken, changeStateToken, moreActionLabel, d
                                   variant="title"/>
                         <MenuItem label={token.state.toLowerCase() === 'active' ? deactivateLabel : activateLabel}
                                   className={token.state.toLowerCase() === 'active' ? styles.remove : ''}
+                                  data-testid="activate-deactivate-toggle-btn"
                                   onClick={() => handleStateToken()}/>
                     </Menu>
                 </TableCell>
