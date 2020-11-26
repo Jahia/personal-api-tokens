@@ -51,7 +51,7 @@ const UserApiTokens = () => {
                                 onClick={() => setUser(inputRef.current.value)}
                         />
                     </div>
-                    <TokensList user={username} noTokensMessage={username ? t('personal-api-tokens:noTokensForUser', {name: username}) : t('personal-api-tokens:noTokensAtAll')}/>
+                    <TokensList isAllTokensPage user={username} noTokensMessage={username ? t('personal-api-tokens:noTokensForUser', {name: username}) : t('personal-api-tokens:noTokensAtAll')}/>
                 </div>
             )}
         />

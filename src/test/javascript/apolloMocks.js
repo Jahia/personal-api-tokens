@@ -8,6 +8,7 @@ dayjs.extend(utc);
 
 const expTime = dayjs('2020/11/11 02:24', 'yyyy/MM/DD HH:mm').utc().format();
 
+// eslint-disable-next-line max-params
 export function tokenResultItem(name, key, expireAt, state = 'ACTIVE', createdAt = '2020-11-10T15:58:06.808-05:00', updatedAt = '2020-11-10T15:58:06.808-05:00', username = 'root') {
     return {
         name: name,
