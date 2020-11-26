@@ -5,32 +5,22 @@ import PropTypes from 'prop-types';
 import TokenTableHead from '../TokenTableHead/TokenTableHead';
 import TokenTableRow from '../TokenTableRow/TokenTableRow';
 import {useTranslation} from 'react-i18next';
-import {ASCENDING_SORT, DESCENDING_SORT, INITIAL_OFFSET} from '../../constants';
+import {ASCENDING_SORT, DESCENDING_SORT, INITIAL_OFFSET, REFETCHER_MAP, TOKENS_REFETCH_KEY} from '../../constants';
 import tableStyles from './TokenTable.scss';
 import {useMutation} from '@apollo/react-hooks';
-import {DeleteTokenMutation, getTokens, StateTokenMutation} from '../TokensList.gql';
+import {DeleteTokenMutation, StateTokenMutation} from '../TokensList.gql';
 
 const TokenTable = props => {
     const {t} = useTranslation('personal-api-tokens');
 
+    const refreshList = () => REFETCHER_MAP.get(TOKENS_REFETCH_KEY)?.call();
+
     const [deleteTokenMutation] = useMutation(DeleteTokenMutation, {
-        refetchQueries: [{
-            query: getTokens, variables: {
-                userId: props.user,
-                limit: props.rowsPerPage, offset: props.currentPage,
-                fieldSorter: {fieldName: props.orderBy, sortType: props.order}
-            }
-        }]
+        onCompleted: refreshList
     });
 
     const [stateTokenMutation] = useMutation(StateTokenMutation, {
-        refetchQueries: [{
-            query: getTokens, variables: {
-                userId: props.user,
-                limit: props.rowsPerPage, offset: props.currentPage,
-                fieldSorter: {fieldName: props.orderBy, sortType: props.order}
-            }
-        }]
+        onCompleted: refreshList
     });
 
     const deleteToken = key => {
@@ -97,7 +87,6 @@ TokenTable.propTypes = {
     orderBy: PropTypes.string.isRequired,
     setOrder: PropTypes.func.isRequired,
     setOrderBy: PropTypes.func.isRequired,
-    user: PropTypes.string,
     isAllTokensPage: PropTypes.bool
 };
 

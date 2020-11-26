@@ -34,10 +34,7 @@ const MyApiTokens = () => {
         setCopyTokenDialogOpen(true);
         const tokenData = data.admin.personalApiTokens.createToken;
         setTokenValue(tokenData ? tokenData : '');
-        const refetch = REFETCHER_MAP.get(TOKENS_REFETCH_KEY);
-        if (refetch) {
-            refetch();
-        }
+        return REFETCHER_MAP.get(TOKENS_REFETCH_KEY)?.call();
     };
 
     const [createTokenMutation] = useMutation(CreateTokenMutation, {
