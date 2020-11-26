@@ -6,23 +6,24 @@ import {useTranslation} from 'react-i18next';
 import styles from './TokenTableHead.scss';
 import PropTypes from 'prop-types';
 
-const TokenTableHead = ({orderBy, order, handleSort}) => {
+const TokenTableHead = ({user, orderBy, order, handleSort}) => {
     const {t} = useTranslation('personal-api-tokens');
     return (
         <TableHead>
             <TableRow>
-                <TableCell classes={{root: styles.cellFont}}
-                           sortDirection={orderBy === USERNAME ? order.toLowerCase() : false}
-                >
-                    <TableSortLabel
-                        active={orderBy === USERNAME}
-                        classes={{icon: orderBy === USERNAME ? styles.iconActive : styles.icon}}
-                        direction={orderBy === USERNAME ? order.toLowerCase() : ASCENDING_SORT.toLowerCase()}
-                        onClick={() => handleSort(USERNAME)}
+                {user !== window.contextJsParameters.user.username &&
+                    <TableCell classes={{root: styles.cellFont}}
+                               sortDirection={orderBy === USERNAME ? order.toLowerCase() : false}
                     >
-                        <Typography variant="body" weight="semiBold">{t('personal-api-tokens:tokensList.username')}</Typography>
-                    </TableSortLabel>
-                </TableCell>
+                        <TableSortLabel
+                active={orderBy === USERNAME}
+                classes={{icon: orderBy === USERNAME ? styles.iconActive : styles.icon}}
+                direction={orderBy === USERNAME ? order.toLowerCase() : ASCENDING_SORT.toLowerCase()}
+                onClick={() => handleSort(USERNAME)}
+                        >
+                            <Typography variant="body" weight="semiBold">{t('personal-api-tokens:tokensList.username')}</Typography>
+                        </TableSortLabel>
+                    </TableCell>}
                 <TableCell classes={{root: styles.cellFont}}
                            sortDirection={orderBy === NAME ? order.toLowerCase() : false}
                 >
@@ -88,6 +89,7 @@ const TokenTableHead = ({orderBy, order, handleSort}) => {
 };
 
 TokenTableHead.propTypes = {
+    user: PropTypes.string.isRequired,
     orderBy: PropTypes.string.isRequired,
     order: PropTypes.string.isRequired,
     handleSort: PropTypes.func.isRequired
