@@ -7,7 +7,7 @@ import styles from './TokenTableRow.scss';
 import ConfirmationDialog from '../../ConfirmationDialog/ConfirmationDialog';
 import dayjs from 'dayjs';
 
-const TokenTableRow = ({token, isMyTokens, deleteToken, changeStateToken, moreActionLabel, deactivateLabel, activateLabel}) => {
+const TokenTableRow = ({token, isAllTokensPage, deleteToken, changeStateToken, moreActionLabel, deactivateLabel, activateLabel}) => {
     const {t} = useTranslation('personal-api-tokens');
 
     const [menuOpen, setMenuOpen] = useState({});
@@ -56,7 +56,7 @@ const TokenTableRow = ({token, isMyTokens, deleteToken, changeStateToken, moreAc
     return (
         <>
             <TableRow>
-                {isMyTokens &&
+                {isAllTokensPage &&
                 <TableCell>
                     <Typography>{token.user.name}</Typography>
                 </TableCell>}
@@ -122,7 +122,7 @@ const TokenTableRow = ({token, isMyTokens, deleteToken, changeStateToken, moreAc
 
 TokenTableRow.propTypes = {
     token: PropTypes.object.isRequired,
-    isMyTokens: PropTypes.bool,
+    isAllTokensPage: PropTypes.bool,
     moreActionLabel: PropTypes.string.isRequired,
     deactivateLabel: PropTypes.string.isRequired,
     activateLabel: PropTypes.string.isRequired,

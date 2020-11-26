@@ -77,33 +77,6 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                       <p
                         class="moonstone-typography moonstone-variant_body moonstone-weight_semiBold"
                       >
-                        translated_personal-api-tokens:tokensList.username
-                      </p>
-                      <svg
-                        aria-hidden="true"
-                        class="MuiSvgIcon-root-44 MuiTableSortLabel-icon-38 icon MuiTableSortLabel-iconDirectionAsc-40"
-                        focusable="false"
-                        role="presentation"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"
-                        />
-                      </svg>
-                    </span>
-                  </th>
-                  <th
-                    class="MuiTableCell-root-24 cellFont MuiTableCell-head-25"
-                    scope="col"
-                  >
-                    <span
-                      class="MuiButtonBase-root-41 MuiTableSortLabel-root-36"
-                      role="button"
-                      tabindex="0"
-                    >
-                      <p
-                        class="moonstone-typography moonstone-variant_body moonstone-weight_semiBold"
-                      >
                         translated_personal-api-tokens:tokensList.name
                       </p>
                       <svg
@@ -252,15 +225,6 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     <p
                       class="moonstone-typography moonstone-variant_body moonstone-weight_default"
                     >
-                      root
-                    </p>
-                  </td>
-                  <td
-                    class="MuiTableCell-root-24 MuiTableCell-body-26"
-                  >
-                    <p
-                      class="moonstone-typography moonstone-variant_body moonstone-weight_default"
-                    >
                       TestToken
                     </p>
                   </td>
@@ -371,15 +335,6 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                 <tr
                   class="MuiTableRow-root-19"
                 >
-                  <td
-                    class="MuiTableCell-root-24 MuiTableCell-body-26"
-                  >
-                    <p
-                      class="moonstone-typography moonstone-variant_body moonstone-weight_default"
-                    >
-                      root
-                    </p>
-                  </td>
                   <td
                     class="MuiTableCell-root-24 MuiTableCell-body-26"
                   >
@@ -498,15 +453,6 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     <p
                       class="moonstone-typography moonstone-variant_body moonstone-weight_default"
                     >
-                      root
-                    </p>
-                  </td>
-                  <td
-                    class="MuiTableCell-root-24 MuiTableCell-body-26"
-                  >
-                    <p
-                      class="moonstone-typography moonstone-variant_body moonstone-weight_default"
-                    >
                       Super Token
                     </p>
                   </td>
@@ -619,15 +565,6 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     <p
                       class="moonstone-typography moonstone-variant_body moonstone-weight_default"
                     >
-                      root
-                    </p>
-                  </td>
-                  <td
-                    class="MuiTableCell-root-24 MuiTableCell-body-26"
-                  >
-                    <p
-                      class="moonstone-typography moonstone-variant_body moonstone-weight_default"
-                    >
                       ghfghfghfghf
                     </p>
                   </td>
@@ -734,15 +671,6 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                 <tr
                   class="MuiTableRow-root-19"
                 >
-                  <td
-                    class="MuiTableCell-root-24 MuiTableCell-body-26"
-                  >
-                    <p
-                      class="moonstone-typography moonstone-variant_body moonstone-weight_default"
-                    >
-                      root
-                    </p>
-                  </td>
                   <td
                     class="MuiTableCell-root-24 MuiTableCell-body-26"
                   >

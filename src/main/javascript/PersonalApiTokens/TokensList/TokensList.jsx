@@ -15,7 +15,7 @@ import {
 import {Typography} from '@jahia/moonstone';
 import {useTranslation} from 'react-i18next';
 
-const TokensList = ({user, noTokensMessage, isMyTokens}) => {
+const TokensList = ({user, noTokensMessage, isAllTokensPage}) => {
     const {t} = useTranslation('personal-api-tokens');
     const [rowsPerPage, setRowsPerPage] = useState(INITIAL_TOKEN_LIMIT);
     const [currentPage, setCurrentPage] = useState(INITIAL_OFFSET);
@@ -59,7 +59,7 @@ const TokensList = ({user, noTokensMessage, isMyTokens}) => {
                         setOrder={setOrder}
                         setOrderBy={setOrderBy}
                         user={user}
-                        isMyTokens={isMyTokens}
+                        isAllTokensPage={isAllTokensPage}
             />
         </div>
     ) : (
@@ -78,5 +78,5 @@ export default TokensList;
 TokensList.propTypes = {
     user: PropTypes.string,
     noTokensMessage: PropTypes.string,
-    isMyTokens: PropTypes.bool
+    isAllTokensPage: PropTypes.bool
 };
