@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styles from './TokensList.scss';
 import {useQuery} from '@apollo/react-hooks';
 import {getTokens} from './TokensList.gql';
@@ -30,9 +30,12 @@ const TokensList = ({user, noTokensMessage}) => {
         }
     });
 
-    if (refetch) {
+    useEffect(() => {
         REFETCHER_MAP.set(TOKENS_REFETCH_KEY, refetch);
-    }
+        return () => {
+            REFETCHER_MAP.delete(TOKENS_REFETCH_KEY);
+        };
+    }, [refetch]);
 
     if (loading && !data) {
         return (<div className={styles.tokensTable}/>);
@@ -58,7 +61,6 @@ const TokensList = ({user, noTokensMessage}) => {
                         orderBy={orderBy}
                         setOrder={setOrder}
                         setOrderBy={setOrderBy}
-                        user={user}
             />
         </div>
     ) : (
