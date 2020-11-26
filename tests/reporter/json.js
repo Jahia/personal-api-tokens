@@ -73,9 +73,12 @@ function JSONReporter(runner, options) {
             console.log("Failed to write to report");
             return;
         }
-
+        var reportsPath = options.reporterOptions.reportsPath
+        if (!fs.existsSync(reportsPath)){
+            fs.mkdirSync(reportsPath);
+        }
         fs.writeFile(
-            "./results/" + fileName + ".json",
+            reportsPath + fileName + ".json",
             JSON.stringify(obj, null, 2),
             "utf8",
             function (err) {
@@ -86,7 +89,7 @@ function JSONReporter(runner, options) {
                     return console.log(err);
                 }
 
-                console.log(fileName + ".json" + " file has been saved.");
+                console.log(reportsPath + fileName + ".json" + " file has been saved.");
             }
         );
     });
