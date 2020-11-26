@@ -57,12 +57,12 @@ const TokenTable = props => {
         <>
             <div className={tableStyles.table}>
                 <Table>
-                    <TokenTableHead user={props.user} orderBy={props.orderBy} order={props.order} handleSort={handleSort}/>
+                    <TokenTableHead isMyTokens={props.isMyTokens} orderBy={props.orderBy} order={props.order} handleSort={handleSort}/>
                     <TableBody>
                         {props.tokensData.nodes.map(token => (
                             <TokenTableRow key={token.name}
                                            token={token}
-                                           user={props.user}
+                                           isMyTokens={props.isMyTokens}
                                            deleteToken={deleteToken}
                                            changeStateToken={changeStateToken}
                                            moreActionLabel={t('personal-api-tokens:tokensList.moreActions')}
@@ -97,7 +97,8 @@ TokenTable.propTypes = {
     orderBy: PropTypes.string.isRequired,
     setOrder: PropTypes.func.isRequired,
     setOrderBy: PropTypes.func.isRequired,
-    user: PropTypes.string
+    user: PropTypes.string,
+    isMyTokens: PropTypes.bool
 };
 
 export default TokenTable;

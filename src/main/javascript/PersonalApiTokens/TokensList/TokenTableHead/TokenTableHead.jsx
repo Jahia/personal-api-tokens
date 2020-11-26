@@ -6,12 +6,12 @@ import {useTranslation} from 'react-i18next';
 import styles from './TokenTableHead.scss';
 import PropTypes from 'prop-types';
 
-const TokenTableHead = ({user, orderBy, order, handleSort}) => {
+const TokenTableHead = ({isMyTokens, orderBy, order, handleSort}) => {
     const {t} = useTranslation('personal-api-tokens');
     return (
         <TableHead>
             <TableRow>
-                {user !== window.contextJsParameters.user.username &&
+                {isMyTokens &&
                     <TableCell classes={{root: styles.cellFont}}
                                sortDirection={orderBy === USERNAME ? order.toLowerCase() : false}
                     >
@@ -89,7 +89,7 @@ const TokenTableHead = ({user, orderBy, order, handleSort}) => {
 };
 
 TokenTableHead.propTypes = {
-    user: PropTypes.string.isRequired,
+    isMyTokens: PropTypes.bool,
     orderBy: PropTypes.string.isRequired,
     order: PropTypes.string.isRequired,
     handleSort: PropTypes.func.isRequired
