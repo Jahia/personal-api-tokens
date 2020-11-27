@@ -16,7 +16,7 @@ const ConfirmationDialog = props => {
         >
             <div className={styles.modal}>
                 <div className={styles.header}>
-                    <Typography variant="heading">{props.title}</Typography>
+                    <Typography variant="heading" data-testid="dialog-header">{props.title}</Typography>
                     <Button icon={<Close/>}
                             variant="ghost"
                             onClick={props.onClose}/>
@@ -26,9 +26,11 @@ const ConfirmationDialog = props => {
                     {props.acceptLabel ? <Button variant="ghost"
                                                  size="big"
                                                  color="default"
+                                                 data-testid="close-dialog-btn"
                                                  label={props.cancelLabel}
                                                  onClick={props.onClose}/> : ''}
                     <Button variant="default"
+                            data-testid="accept-dialog-btn"
                             size="big"
                             label={props.acceptLabel}
                             color="accent"
