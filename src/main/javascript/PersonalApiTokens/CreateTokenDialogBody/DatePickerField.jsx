@@ -39,6 +39,11 @@ export const DatePickerField = ({selectedDateTime, onSelectDateTime}) => {
                 }}
             />
             <Popover
+                TransitionProps={{
+                    onEntered: node => {
+                        node.style.removeProperty('transform');
+                    }
+                }}
                 open={isShowPicker}
                 anchorEl={calendarField.current}
                 anchorOrigin={{
