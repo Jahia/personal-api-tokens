@@ -24,6 +24,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
           />
           <button
             class="moonstone-button moonstone-size_big moonstone-variant_default moonstone-color_accent moonstone-icon"
+            data-testid="create-token-btn"
             type="button"
           >
             <svg
@@ -260,6 +261,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                   >
                     <div
                       class="moonstone-chip moonstone-color_success"
+                      data-testid="token-status-chip"
                     >
                       <span
                         class="moonstone-typography moonstone-variant_caption moonstone-weight_semiBold moonstone-nowrap"
@@ -276,6 +278,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     >
                       <button
                         class="moonstone-button moonstone-size_default moonstone-variant_outlined moonstone-color_danger"
+                        data-testid="delete-token-btn"
                         type="button"
                       >
                         <span
@@ -286,6 +289,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                       </button>
                       <button
                         class="moonstone-button moonstone-size_default moonstone-variant_ghost moonstone-color_default moonstone-icon-button"
+                        data-testid="display-menu-btn"
                         type="button"
                       >
                         <svg
@@ -317,6 +321,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                       <li
                         aria-disabled="false"
                         class="moonstone-menuItem moonstone-listItem flexRow alignCenter"
+                        data-testid="activate-deactivate-toggle-btn"
                         tabindex="0"
                       >
                         <span
@@ -376,6 +381,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                   >
                     <div
                       class="moonstone-chip moonstone-color_success"
+                      data-testid="token-status-chip"
                     >
                       <span
                         class="moonstone-typography moonstone-variant_caption moonstone-weight_semiBold moonstone-nowrap"
@@ -392,6 +398,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     >
                       <button
                         class="moonstone-button moonstone-size_default moonstone-variant_outlined moonstone-color_danger"
+                        data-testid="delete-token-btn"
                         type="button"
                       >
                         <span
@@ -402,6 +409,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                       </button>
                       <button
                         class="moonstone-button moonstone-size_default moonstone-variant_ghost moonstone-color_default moonstone-icon-button"
+                        data-testid="display-menu-btn"
                         type="button"
                       >
                         <svg
@@ -433,6 +441,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                       <li
                         aria-disabled="false"
                         class="moonstone-menuItem moonstone-listItem flexRow alignCenter"
+                        data-testid="activate-deactivate-toggle-btn"
                         tabindex="0"
                       >
                         <span
@@ -488,6 +497,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                   >
                     <div
                       class="moonstone-chip moonstone-color_success"
+                      data-testid="token-status-chip"
                     >
                       <span
                         class="moonstone-typography moonstone-variant_caption moonstone-weight_semiBold moonstone-nowrap"
@@ -504,6 +514,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     >
                       <button
                         class="moonstone-button moonstone-size_default moonstone-variant_outlined moonstone-color_danger"
+                        data-testid="delete-token-btn"
                         type="button"
                       >
                         <span
@@ -514,6 +525,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                       </button>
                       <button
                         class="moonstone-button moonstone-size_default moonstone-variant_ghost moonstone-color_default moonstone-icon-button"
+                        data-testid="display-menu-btn"
                         type="button"
                       >
                         <svg
@@ -545,6 +557,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                       <li
                         aria-disabled="false"
                         class="moonstone-menuItem moonstone-listItem flexRow alignCenter"
+                        data-testid="activate-deactivate-toggle-btn"
                         tabindex="0"
                       >
                         <span
@@ -600,6 +613,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                   >
                     <div
                       class="moonstone-chip moonstone-color_success"
+                      data-testid="token-status-chip"
                     >
                       <span
                         class="moonstone-typography moonstone-variant_caption moonstone-weight_semiBold moonstone-nowrap"
@@ -616,6 +630,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     >
                       <button
                         class="moonstone-button moonstone-size_default moonstone-variant_outlined moonstone-color_danger"
+                        data-testid="delete-token-btn"
                         type="button"
                       >
                         <span
@@ -626,6 +641,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                       </button>
                       <button
                         class="moonstone-button moonstone-size_default moonstone-variant_ghost moonstone-color_default moonstone-icon-button"
+                        data-testid="display-menu-btn"
                         type="button"
                       >
                         <svg
@@ -657,6 +673,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                       <li
                         aria-disabled="false"
                         class="moonstone-menuItem moonstone-listItem flexRow alignCenter"
+                        data-testid="activate-deactivate-toggle-btn"
                         tabindex="0"
                       >
                         <span
@@ -712,6 +729,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                   >
                     <div
                       class="moonstone-chip moonstone-color_success"
+                      data-testid="token-status-chip"
                     >
                       <span
                         class="moonstone-typography moonstone-variant_caption moonstone-weight_semiBold moonstone-nowrap"
@@ -728,6 +746,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     >
                       <button
                         class="moonstone-button moonstone-size_default moonstone-variant_outlined moonstone-color_danger"
+                        data-testid="delete-token-btn"
                         type="button"
                       >
                         <span
@@ -738,6 +757,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                       </button>
                       <button
                         class="moonstone-button moonstone-size_default moonstone-variant_ghost moonstone-color_default moonstone-icon-button"
+                        data-testid="display-menu-btn"
                         type="button"
                       >
                         <svg
@@ -769,6 +789,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                       <li
                         aria-disabled="false"
                         class="moonstone-menuItem moonstone-listItem flexRow alignCenter"
+                        data-testid="activate-deactivate-toggle-btn"
                         tabindex="0"
                       >
                         <span

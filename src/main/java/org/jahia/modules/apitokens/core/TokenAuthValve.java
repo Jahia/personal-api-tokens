@@ -87,7 +87,6 @@ public class TokenAuthValve extends BaseAuthValve {
     public void invoke(Object o, ValveContext valveContext) throws PipelineException {
         AuthValveContext authValveContext = (AuthValveContext) o;
         HttpServletRequest request = authValveContext.getRequest();
-        authValveContext.setShouldStoreAuthInSession(false);
 
         String uri = request.getRequestURI().substring(request.getContextPath().length());
 

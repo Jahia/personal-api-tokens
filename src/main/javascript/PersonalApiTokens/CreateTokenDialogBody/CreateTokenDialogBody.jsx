@@ -28,6 +28,7 @@ const CreateTokenDialogBody = ({tokenInformation, setTokenInformation, error}) =
                 value={tokenInformation.name}
                 InputProps={{
                     classes: {root: styles.inputStyle, error: styles.inputError, focused: styles.inputFocus, input: styles.text},
+                    'data-testid': 'token-name-input',
                     disableUnderline: true
                 }}
                 onChange={e => setTokenInformation({...tokenInformation, name: e.target.value})}
