@@ -28,10 +28,7 @@ import org.jahia.pipelines.valves.Valve;
 import org.jahia.pipelines.valves.ValveContext;
 import org.jahia.services.content.JCRTemplate;
 import org.jahia.services.content.decorator.JCRUserNode;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ServiceScope;
+import org.osgi.service.component.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -83,11 +80,18 @@ public class TokenAuthValve extends BaseAuthValve {
         addValve(authPipeline, 0, null, null);
     }
 
+    /**
+     * Deactivate
+     */
+    @Deactivate
+    public void deactivate() {
+        removeValve(authPipeline);
+    }
+
     @Override
     public void invoke(Object o, ValveContext valveContext) throws PipelineException {
         AuthValveContext authValveContext = (AuthValveContext) o;
         HttpServletRequest request = authValveContext.getRequest();
-        authValveContext.setShouldStoreAuthInSession(false);
 
         String uri = request.getRequestURI().substring(request.getContextPath().length());
 
@@ -97,6 +101,7 @@ public class TokenAuthValve extends BaseAuthValve {
             try {
                 JCRUserNode user = authenticate(authorization);
                 if (user != null) {
+                    authValveContext.setShouldStoreAuthInSession(false);
                     authValveContext.getSessionFactory().setCurrentUser(user.getJahiaUser());
                     return;
                 }
