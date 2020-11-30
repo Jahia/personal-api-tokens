@@ -174,8 +174,6 @@ jobs:
         default: Default
       JAHIA_IMAGE:
         type: string
-      JAHIA_CONTEXT:
-        type: string
       MANIFEST:
         type: string
       TOOLS_USER:
@@ -250,7 +248,6 @@ jobs:
             JAHIA_URL: << parameters.JAHIA_URL >>
             JAHIA_HOST: jahia
             JAHIA_PORT: 8080
-            JAHIA_CONTEXT:
             TEST_URL: http://jahia:8080/modules/graphql
             JAHIA_USERNAME: root
             JAHIA_PASSWORD: root
@@ -284,7 +281,6 @@ jobs:
             JAHIA_URL: << parameters.JAHIA_URL >>
             JAHIA_HOST: jahia
             JAHIA_PORT: 8080
-            JAHIA_CONTEXT:
             TEST_URL: http://jahia:8080/modules/graphql
             JAHIA_USERNAME: root
             JAHIA_PASSWORD: root
@@ -478,7 +474,6 @@ workflows:
           #Using Aliases here (8 is the latest of the 8 tree, 8.1 is the latest of the tree, ...)
           JAHIA_IMAGE: jahia/jahia-dev:8.0 
           RUN_TESTSIMAGE: << pipeline.parameters.TESTS_IMAGE >>:latest
-          JAHIA_CONTEXT:
           TOOLS_USER: root
           TOOLS_PWD: root
           MANIFEST: warmup-manifest-build.yml
@@ -516,7 +511,6 @@ workflows:
               JAHIA_IMAGE: ["jahia/jahia-private:snapshot", "jahia/jahia-dev:8.0"]
               RUN_TESTSIMAGE: ["<< pipeline.parameters.TESTS_IMAGE >>:latest"]
               MANIFEST: ["warmup-manifest-snapshot.yml"]
-              JAHIA_CONTEXT: [""]
               TESTRAIL_MILESTONE: ["<< matrix.JAHIA_IMAGE >>"]
               TOOLS_USER: ["root"]
               TOOLS_PWD: ["root"]
@@ -544,7 +538,6 @@ workflows:
       #         JAHIA_IMAGE: ["jahia/jahia-dev:8.0.1.0"]
       #         RUN_TESTSIMAGE: ["<< pipeline.parameters.TESTS_IMAGE >>:latest"]
       #         MANIFEST: ["warmup-manifest-snapshot.yml"]
-      #         JAHIA_CONTEXT: [""]
       #         TESTRAIL_MILESTONE: ["<< matrix.JAHIA_IMAGE >>"]
       #         TOOLS_USER: ["root"]
       #         TOOLS_PWD: ["root"]

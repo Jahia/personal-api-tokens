@@ -151,9 +151,9 @@ The following environment variables are available for executing the tests using 
 | MANIFEST | Manifest file detailing how the environment should be provisioned from a fresh Jahia image. The TESTS_IMAGE ship by default with a set of manifest covering various use cases (built module, snapshot module from nexus, built module from the store, ...) |
 | TESTS_IMAGE | Test image to run (for example: jahia/personal-api-tokens:1.0.0), Test images are releases alongside module releases and contain the release artifacts. It is useful if you want to test a particular module version with a specific Jahia version|
 | JAHIA_IMAGE | Docker image of Jahia to be started (for example: jahia/jahia-dev:8.0.1.0)|
+| JAHIA_URL | The base url to connect to Jahia (usually http://jahia:8080)|
 | JAHIA_HOST | Host running the Jahia server (usually localhost)|
 | JAHIA_PORT | Port for the Jahia server (usually 8080)|
-| JAHIA_CONTEXT | If the context is to be used|
 | JAHIA_USERNAME | Username to log into Jahia|
 | JAHIA_PASSWORD | Password to log into Jahia|
 | NEXUS_USERNAME | Username to connect to Nexus (if you were to fetch a snapshot module)|
