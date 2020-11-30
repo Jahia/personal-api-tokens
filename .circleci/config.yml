@@ -174,8 +174,6 @@ jobs:
         default: Default
       JAHIA_IMAGE:
         type: string
-      JAHIA_CONTEXT:
-        type: string
       MANIFEST:
         type: string
       TOOLS_USER:
@@ -184,6 +182,9 @@ jobs:
       TOOLS_PWD:
         type: string
         default: password
+      JAHIA_URL:
+        type: string
+        default: http://jahia:8080        
       # Why this is not a boolean, see: https://discuss.circleci.com/t/run-job-within-workflow-conditionally/34125/2        
       SKIP_TESTRAIL:
         type: string 
@@ -244,9 +245,9 @@ jobs:
             MANIFEST: << parameters.MANIFEST >>
             JAHIA_IMAGE: << parameters.JAHIA_IMAGE >>
             TESTS_IMAGE: << parameters.RUN_TESTSIMAGE >>
+            JAHIA_URL: << parameters.JAHIA_URL >>
             JAHIA_HOST: jahia
             JAHIA_PORT: 8080
-            JAHIA_CONTEXT:
             TEST_URL: http://jahia:8080/modules/graphql
             JAHIA_USERNAME: root
             JAHIA_PASSWORD: root
@@ -277,9 +278,9 @@ jobs:
             MANIFEST: << parameters.MANIFEST >>
             JAHIA_IMAGE: << parameters.JAHIA_IMAGE >>
             TESTS_IMAGE: << parameters.RUN_TESTSIMAGE >>
+            JAHIA_URL: << parameters.JAHIA_URL >>
             JAHIA_HOST: jahia
             JAHIA_PORT: 8080
-            JAHIA_CONTEXT:
             TEST_URL: http://jahia:8080/modules/graphql
             JAHIA_USERNAME: root
             JAHIA_PASSWORD: root
@@ -473,7 +474,6 @@ workflows:
           #Using Aliases here (8 is the latest of the 8 tree, 8.1 is the latest of the tree, ...)
           JAHIA_IMAGE: jahia/jahia-dev:8.0 
           RUN_TESTSIMAGE: << pipeline.parameters.TESTS_IMAGE >>:latest
-          JAHIA_CONTEXT:
           TOOLS_USER: root
           TOOLS_PWD: root
           MANIFEST: warmup-manifest-build.yml
@@ -511,7 +511,6 @@ workflows:
               JAHIA_IMAGE: ["jahia/jahia-private:snapshot", "jahia/jahia-dev:8.0"]
               RUN_TESTSIMAGE: ["<< pipeline.parameters.TESTS_IMAGE >>:latest"]
               MANIFEST: ["warmup-manifest-snapshot.yml"]
-              JAHIA_CONTEXT: [""]
               TESTRAIL_MILESTONE: ["<< matrix.JAHIA_IMAGE >>"]
               TOOLS_USER: ["root"]
               TOOLS_PWD: ["root"]
@@ -539,7 +538,6 @@ workflows:
       #         JAHIA_IMAGE: ["jahia/jahia-dev:8.0.1.0"]
       #         RUN_TESTSIMAGE: ["<< pipeline.parameters.TESTS_IMAGE >>:latest"]
       #         MANIFEST: ["warmup-manifest-snapshot.yml"]
-      #         JAHIA_CONTEXT: [""]
       #         TESTRAIL_MILESTONE: ["<< matrix.JAHIA_IMAGE >>"]
       #         TOOLS_USER: ["root"]
       #         TOOLS_PWD: ["root"]

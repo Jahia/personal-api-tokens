@@ -9,13 +9,6 @@ fi
 #!/usr/bin/env bash
 START_TIME=$SECONDS
 
-if [ -z "${JAHIA_CONTEXT}" ];
-then
-  JAHIA_URL=http://${JAHIA_HOST}:${JAHIA_PORT}
-else
-  JAHIA_URL=http://${JAHIA_HOST}:${JAHIA_PORT}/${JAHIA_CONTEXT}
-fi
-
 echo " == Using MANIFEST: ${MANIFEST}"
 echo " == Using JAHIA_URL= ${JAHIA_URL}"
 
@@ -47,7 +40,7 @@ echo " == Environment warmup complete =="
 mkdir /tmp/results/reports
 
 echo "== Run tests =="
-yarn e2e:ci
+CYPRESS_baseUrl=${JAHIA_URL} yarn e2e:ci
 if [[ $? -eq 0 ]]; then
   echo "success" > /tmp/results/test_success
   exit 0
