@@ -30,6 +30,7 @@ const UserApiTokens = () => {
                         <TextField
                             placeholder={t('personal-api-tokens:searchPlaceholder')}
                             InputProps={{
+                                'data-testid': 'search-user-input',
                                 classes: {root: style.input, input: style.text},
                                 inputRef,
                                 disableUnderline: true,
@@ -46,6 +47,7 @@ const UserApiTokens = () => {
                             }}
                         />
                         <Button color="accent"
+                                data-testid="search-user-btn"
                                 label={t('personal-api-tokens:search')}
                                 variant="outlined"
                                 onClick={() => setUser(inputRef.current.value)}
