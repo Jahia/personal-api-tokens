@@ -14,7 +14,6 @@
     }
 
     .inputStyle {
-        box-sizing: border-box;
         height: 2.5em;
         margin-top: var(--spacing-small);
         margin-right: var(--spacing-small);
@@ -39,26 +38,19 @@
         color: var(--color-danger);
     }
 
+    .errorDiv {
+        min-height: var(--spacing-large);
+    }
+
     .inputFocus {
-        border-color: #008;
+        border-color: var(--color-accent_dark60);
     }
 
     .inputError {
         border-color: var(--color-danger);
     }
 
-    .dateError {
-        font-size: 0.875rem;
-        font-family: inherit;
-        color: var(--color-danger);
-        line-height: 1.1875rem;
-
-        border-color: var(--color-danger);
-    }
-
     .text.text {
-        font-size: 0.875rem;
-
         color: var(--color-dark);
 
         background-color: unset;

@@ -58,6 +58,7 @@ export const DatePickerField = ({selectedDateTime, onSelectDateTime}) => {
             >
                 <DatePicker lang="en"
                             variant="datetime"
+                            disabledDays={[{before: new Date()}]}
                             selectedDateTime={selectedDateTime ? dayjs(selectedDateTime).toDate() : null}
                             onSelectDateTime={date => {
                                 onSelectDateTime(dayjs(date).utc().format());

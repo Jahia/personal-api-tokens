@@ -1,35 +1,29 @@
 .bodyContainer {
     display: flex;
     flex-direction: column;
-    margin-top: 3%;
+    margin-top: var(--spacing-large);
 
     .copyContainer {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        margin-top: 4%;
+        margin-top: var(--spacing-large);
     }
 
     .tokenContainer {
         display: flex;
-        align-items: flex-start;
-        box-sizing: border-box;
-        margin: 3% 0;
-        padding: 5%;
+        justify-content: center;
+        align-items: center;
+        margin: var(--spacing-large) 0;
+        padding: var(--spacing-large);
 
-        border: 2px solid #e8b606;
-        background: rgba(232, 182, 6, 0.4);
-
-        .secretLabel {
-            margin-right: 0.5em;
-
-            color: rgba(41, 49, 54, 0.6);
-        }
+        border: 2px solid var(--color-warning60);
+        background: var(--color-warning40);
     }
 
     .secretKeyWarning {
-        margin-top: 3%;
+        margin-top: var(--spacing-large);
 
-        color: #e0182d;
+        color: var(--color-danger);
     }
 }

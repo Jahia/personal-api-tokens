@@ -20,12 +20,12 @@ const MyApiTokens = () => {
     const [isCreateTokenDialogOpen, setCreateTokenDialogOpen] = useState(false);
     const [isCopyTokenDialogOpen, setCopyTokenDialogOpen] = useState(false);
     const [createTokenError, setCreateTokenError] = useState(false);
-    const [userTokenInformation, setUserTokenInformation] = useState({name: '', expireAt: dayjs().add(1, 'day').utc().format()});
+    const [userTokenInformation, setUserTokenInformation] = useState({name: ''});
     const [tokenValue, setTokenValue] = useState('');
 
     const refreshState = () => {
         setCreateTokenError(false);
-        setUserTokenInformation({...userTokenInformation, name: '', expireAt: dayjs().add(1, 'day').utc().format()});
+        setUserTokenInformation({...userTokenInformation, name: ''});
         setTokenValue('');
     };
 

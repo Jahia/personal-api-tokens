@@ -5,10 +5,10 @@
 
     border-radius: 2px;
     background-color: var(--color-white);
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 var(--spacing-nano) var(--spacing-nano) var(--color-dark40);
 
     &:focus {
-        outline: none !important;
+        outline: none;
     }
 
     .header {
@@ -16,7 +16,7 @@
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        min-height: 64px;
+        min-height: var(--spacing-huge);
 
         button {
             align-self: flex-start;
@@ -26,7 +26,7 @@
     .footer {
         display: flex;
         flex-grow: 0;
-        flex-basis: 64px;
+        flex-basis: var(--spacing-huge);
         flex-direction: row;
         justify-content: flex-end;
         align-items: center;

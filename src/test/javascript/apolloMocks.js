@@ -209,8 +209,7 @@ export const createTokenMocks = [
         request: {
             query: CreateTokenMutation,
             variables: {
-                name: 'testToken',
-                expireAt: null
+                name: 'testToken'
             }
         },
         result: () => ({

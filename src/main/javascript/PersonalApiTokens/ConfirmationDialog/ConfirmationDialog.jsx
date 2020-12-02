@@ -23,7 +23,7 @@ const ConfirmationDialog = props => {
                 </div>
                 {props.body}
                 <div className={styles.footer}>
-                    {props.acceptLabel ? <Button variant="ghost"
+                    {props.cancelLabel ? <Button variant="ghost"
                                                  size="big"
                                                  color="default"
                                                  data-testid="close-dialog-btn"
@@ -44,7 +44,7 @@ const ConfirmationDialog = props => {
 
 ConfirmationDialog.propTypes = {
     isOpen: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired,
+    onClose: PropTypes.func,
     acceptLabel: PropTypes.string.isRequired,
     cancelLabel: PropTypes.string,
     title: PropTypes.string.isRequired,

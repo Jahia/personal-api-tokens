@@ -11,7 +11,7 @@
     "name": "Name",
     "expirationDate": "Expiration date",
     "setDate": "Set the date when this token will be expired",
-    "tokenAlreadyExists": "Token with this name already exists, please choose different name"
+    "tokenAlreadyExists": "Token name already taken, try another."
   },
   "tokensList": {
     "moreActions": "More actions",
