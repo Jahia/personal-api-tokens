@@ -15,7 +15,7 @@ const ConfirmationDialog = props => {
                 onClose={props.onClose}
         >
             <div className={styles.modal}>
-                <div className={styles.header}>
+                <div className={`${styles.header} flexRow_between alignCenter`}>
                     <Typography variant="heading" data-testid="dialog-header">{props.title}</Typography>
                     <Button icon={<Close/>}
                             variant="ghost"
