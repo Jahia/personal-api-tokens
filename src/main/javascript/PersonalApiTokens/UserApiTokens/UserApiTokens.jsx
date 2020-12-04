@@ -26,7 +26,7 @@ const UserApiTokens = () => {
             )}
             content={(
                 <div className="flexCol flexFluid">
-                    <div className={`flexRow ${style.search}`}>
+                    <div className={`flexRow alignCenter ${style.search}`}>
                         <TextField
                             placeholder={t('personal-api-tokens:searchPlaceholder')}
                             InputProps={{
