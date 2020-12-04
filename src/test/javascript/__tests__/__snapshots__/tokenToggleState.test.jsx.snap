@@ -52,10 +52,10 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
         class="moonstone-contentLayout_paper flexCol"
       >
         <div
-          class="tokensTable"
+          class="tokensTable flexFluid flexCol"
         >
           <div
-            class="table"
+            class="table flexFluid"
           >
             <table
               class="MuiTable-root-17"
@@ -76,7 +76,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                       tabindex="0"
                     >
                       <p
-                        class="moonstone-typography moonstone-variant_body moonstone-weight_semiBold"
+                        class="moonstone-typography moonstone-variant_body moonstone-weight_semiBold moonstone-nowrap"
                       >
                         translated_personal-api-tokens:tokensList.name
                       </p>
@@ -103,7 +103,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                       tabindex="0"
                     >
                       <p
-                        class="moonstone-typography moonstone-variant_body moonstone-weight_semiBold"
+                        class="moonstone-typography moonstone-variant_body moonstone-weight_semiBold moonstone-nowrap"
                       >
                         translated_personal-api-tokens:tokensList.key
                       </p>
@@ -131,7 +131,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                       tabindex="0"
                     >
                       <p
-                        class="moonstone-typography moonstone-variant_body moonstone-weight_semiBold"
+                        class="moonstone-typography moonstone-variant_body moonstone-weight_semiBold moonstone-nowrap"
                       >
                         translated_personal-api-tokens:tokensList.addedOn
                       </p>
@@ -158,7 +158,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                       tabindex="0"
                     >
                       <p
-                        class="moonstone-typography moonstone-variant_body moonstone-weight_semiBold"
+                        class="moonstone-typography moonstone-variant_body moonstone-weight_semiBold moonstone-nowrap"
                       >
                         translated_personal-api-tokens:tokensList.expiration
                       </p>
@@ -185,7 +185,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                       tabindex="0"
                     >
                       <p
-                        class="moonstone-typography moonstone-variant_body moonstone-weight_semiBold"
+                        class="moonstone-typography moonstone-variant_body moonstone-weight_semiBold moonstone-nowrap"
                       >
                         translated_personal-api-tokens:tokensList.status
                       </p>
@@ -207,7 +207,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     scope="col"
                   >
                     <p
-                      class="moonstone-typography moonstone-variant_body moonstone-weight_semiBold"
+                      class="moonstone-typography moonstone-variant_body moonstone-weight_semiBold moonstone-nowrap"
                     >
                       translated_personal-api-tokens:tokensList.actions
                     </p>
@@ -224,7 +224,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     class="MuiTableCell-root-24 MuiTableCell-body-26"
                   >
                     <p
-                      class="moonstone-typography moonstone-variant_body moonstone-weight_default"
+                      class="moonstone-typography moonstone-variant_body moonstone-weight_default moonstone-nowrap"
                     >
                       TestToken
                     </p>
@@ -233,7 +233,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     class="MuiTableCell-root-24 MuiTableCell-body-26"
                   >
                     <p
-                      class="moonstone-typography moonstone-variant_body moonstone-weight_default"
+                      class="moonstone-typography moonstone-variant_body moonstone-weight_default moonstone-nowrap"
                     >
                       1b8c8b06-c9bd-4314-a981-68c8e2fe1d3a
                     </p>
@@ -242,7 +242,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     class="MuiTableCell-root-24 MuiTableCell-body-26"
                   >
                     <p
-                      class="moonstone-typography moonstone-variant_body moonstone-weight_default"
+                      class="moonstone-typography moonstone-variant_body moonstone-weight_default moonstone-nowrap"
                     >
                       Nov 10 2020
                     </p>
@@ -251,7 +251,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     class="MuiTableCell-root-24 MuiTableCell-body-26"
                   >
                     <p
-                      class="moonstone-typography moonstone-variant_body moonstone-weight_default"
+                      class="moonstone-typography moonstone-variant_body moonstone-weight_default moonstone-nowrap"
                     >
                       Nov 11 2020
                     </p>
@@ -277,7 +277,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                       class="flexRow"
                     >
                       <button
-                        class="moonstone-button moonstone-size_default moonstone-variant_outlined moonstone-color_danger"
+                        class="moonstone-button moonstone-size_default moonstone-variant_outlined moonstone-color_danger deleteButton"
                         data-testid="delete-token-btn"
                         type="button"
                       >
@@ -344,7 +344,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     class="MuiTableCell-root-24 MuiTableCell-body-26"
                   >
                     <p
-                      class="moonstone-typography moonstone-variant_body moonstone-weight_default"
+                      class="moonstone-typography moonstone-variant_body moonstone-weight_default moonstone-nowrap"
                     >
                       Yurec
                     </p>
@@ -353,7 +353,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     class="MuiTableCell-root-24 MuiTableCell-body-26"
                   >
                     <p
-                      class="moonstone-typography moonstone-variant_body moonstone-weight_default"
+                      class="moonstone-typography moonstone-variant_body moonstone-weight_default moonstone-nowrap"
                     >
                       e2c6c788-a685-4d0e-a687-bfff9f3af5cc
                     </p>
@@ -362,7 +362,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     class="MuiTableCell-root-24 MuiTableCell-body-26"
                   >
                     <p
-                      class="moonstone-typography moonstone-variant_body moonstone-weight_default"
+                      class="moonstone-typography moonstone-variant_body moonstone-weight_default moonstone-nowrap"
                     >
                       Nov 10 2020
                     </p>
@@ -371,7 +371,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     class="MuiTableCell-root-24 MuiTableCell-body-26"
                   >
                     <p
-                      class="moonstone-typography moonstone-variant_body moonstone-weight_default"
+                      class="moonstone-typography moonstone-variant_body moonstone-weight_default moonstone-nowrap"
                     >
                       Nov 11 2020
                     </p>
@@ -397,7 +397,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                       class="flexRow"
                     >
                       <button
-                        class="moonstone-button moonstone-size_default moonstone-variant_outlined moonstone-color_danger"
+                        class="moonstone-button moonstone-size_default moonstone-variant_outlined moonstone-color_danger deleteButton"
                         data-testid="delete-token-btn"
                         type="button"
                       >
@@ -460,7 +460,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     class="MuiTableCell-root-24 MuiTableCell-body-26"
                   >
                     <p
-                      class="moonstone-typography moonstone-variant_body moonstone-weight_default"
+                      class="moonstone-typography moonstone-variant_body moonstone-weight_default moonstone-nowrap"
                     >
                       Super Token
                     </p>
@@ -469,7 +469,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     class="MuiTableCell-root-24 MuiTableCell-body-26"
                   >
                     <p
-                      class="moonstone-typography moonstone-variant_body moonstone-weight_default"
+                      class="moonstone-typography moonstone-variant_body moonstone-weight_default moonstone-nowrap"
                     >
                       46569c17-d953-4ede-a0c3-329e5bc8a61f
                     </p>
@@ -478,7 +478,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     class="MuiTableCell-root-24 MuiTableCell-body-26"
                   >
                     <p
-                      class="moonstone-typography moonstone-variant_body moonstone-weight_default"
+                      class="moonstone-typography moonstone-variant_body moonstone-weight_default moonstone-nowrap"
                     >
                       Nov 10 2020
                     </p>
@@ -487,7 +487,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     class="MuiTableCell-root-24 MuiTableCell-body-26"
                   >
                     <p
-                      class="moonstone-typography moonstone-variant_body moonstone-weight_default"
+                      class="moonstone-typography moonstone-variant_body moonstone-weight_default moonstone-nowrap"
                     >
                       Nov 11 2020
                     </p>
@@ -513,7 +513,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                       class="flexRow"
                     >
                       <button
-                        class="moonstone-button moonstone-size_default moonstone-variant_outlined moonstone-color_danger"
+                        class="moonstone-button moonstone-size_default moonstone-variant_outlined moonstone-color_danger deleteButton"
                         data-testid="delete-token-btn"
                         type="button"
                       >
@@ -576,7 +576,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     class="MuiTableCell-root-24 MuiTableCell-body-26"
                   >
                     <p
-                      class="moonstone-typography moonstone-variant_body moonstone-weight_default"
+                      class="moonstone-typography moonstone-variant_body moonstone-weight_default moonstone-nowrap"
                     >
                       ghfghfghfghf
                     </p>
@@ -585,7 +585,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     class="MuiTableCell-root-24 MuiTableCell-body-26"
                   >
                     <p
-                      class="moonstone-typography moonstone-variant_body moonstone-weight_default"
+                      class="moonstone-typography moonstone-variant_body moonstone-weight_default moonstone-nowrap"
                     >
                       0f5cd483-3e0b-4b0c-87ea-1c13f3b358b2
                     </p>
@@ -594,7 +594,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     class="MuiTableCell-root-24 MuiTableCell-body-26"
                   >
                     <p
-                      class="moonstone-typography moonstone-variant_body moonstone-weight_default"
+                      class="moonstone-typography moonstone-variant_body moonstone-weight_default moonstone-nowrap"
                     >
                       Nov 09 2020
                     </p>
@@ -603,7 +603,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     class="MuiTableCell-root-24 MuiTableCell-body-26"
                   >
                     <p
-                      class="moonstone-typography moonstone-variant_body moonstone-weight_default"
+                      class="moonstone-typography moonstone-variant_body moonstone-weight_default moonstone-nowrap"
                     >
                       Nov 10 2020
                     </p>
@@ -629,7 +629,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                       class="flexRow"
                     >
                       <button
-                        class="moonstone-button moonstone-size_default moonstone-variant_outlined moonstone-color_danger"
+                        class="moonstone-button moonstone-size_default moonstone-variant_outlined moonstone-color_danger deleteButton"
                         data-testid="delete-token-btn"
                         type="button"
                       >
@@ -692,7 +692,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     class="MuiTableCell-root-24 MuiTableCell-body-26"
                   >
                     <p
-                      class="moonstone-typography moonstone-variant_body moonstone-weight_default"
+                      class="moonstone-typography moonstone-variant_body moonstone-weight_default moonstone-nowrap"
                     >
                       Anton
                     </p>
@@ -701,7 +701,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     class="MuiTableCell-root-24 MuiTableCell-body-26"
                   >
                     <p
-                      class="moonstone-typography moonstone-variant_body moonstone-weight_default"
+                      class="moonstone-typography moonstone-variant_body moonstone-weight_default moonstone-nowrap"
                     >
                       1f4f0233-26fc-4b34-bc7f-b3fcca9a9f5b
                     </p>
@@ -710,7 +710,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     class="MuiTableCell-root-24 MuiTableCell-body-26"
                   >
                     <p
-                      class="moonstone-typography moonstone-variant_body moonstone-weight_default"
+                      class="moonstone-typography moonstone-variant_body moonstone-weight_default moonstone-nowrap"
                     >
                       Nov 09 2020
                     </p>
@@ -719,7 +719,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     class="MuiTableCell-root-24 MuiTableCell-body-26"
                   >
                     <p
-                      class="moonstone-typography moonstone-variant_body moonstone-weight_default"
+                      class="moonstone-typography moonstone-variant_body moonstone-weight_default moonstone-nowrap"
                     >
                       Nov 10 2020
                     </p>
@@ -745,7 +745,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                       class="flexRow"
                     >
                       <button
-                        class="moonstone-button moonstone-size_default moonstone-variant_outlined moonstone-color_danger"
+                        class="moonstone-button moonstone-size_default moonstone-variant_outlined moonstone-color_danger deleteButton"
                         data-testid="delete-token-btn"
                         type="button"
                       >

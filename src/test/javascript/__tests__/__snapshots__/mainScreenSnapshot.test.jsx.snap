@@ -52,7 +52,7 @@ exports[`Validate main screen snapshot match snapshot 1`] = `
         class="moonstone-contentLayout_paper flexCol"
       >
         <div
-          class="tokensList"
+          class="tokensList flexRow_center alignCenter"
         >
           <p
             class="moonstone-typography moonstone-variant_subheading moonstone-weight_light"

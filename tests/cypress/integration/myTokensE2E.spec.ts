@@ -34,7 +34,7 @@ describe('UI e2e test - Full lifecycle in the My API Tokens section', () => {
             expect($div.text()).not.to.be.empty
             TEST_TOKEN = $div.text()
         })
-        tokensPage.assertButtonVisibleAndClick(tokensPage.elements.closeDialogBtn)
+        tokensPage.assertButtonVisibleAndClick(tokensPage.elements.acceptDialogBtn)
         tokensPage.validateTokenIsVisibleInTheTable()
     })
 

@@ -45,7 +45,7 @@ const TokenTable = props => {
 
     return (
         <>
-            <div className={tableStyles.table}>
+            <div className={`${tableStyles.table} flexFluid`}>
                 <Table>
                     <TokenTableHead isAllTokensPage={props.isAllTokensPage} orderBy={props.orderBy} order={props.order} handleSort={handleSort}/>
                     <TableBody>

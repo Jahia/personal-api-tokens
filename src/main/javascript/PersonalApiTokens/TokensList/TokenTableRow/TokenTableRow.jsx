@@ -58,19 +58,19 @@ const TokenTableRow = ({token, isAllTokensPage, deleteToken, changeStateToken, m
             <TableRow>
                 {isAllTokensPage &&
                 <TableCell>
-                    <Typography>{token.user.name}</Typography>
+                    <Typography isNowrap>{token.user.name}</Typography>
                 </TableCell>}
                 <TableCell>
-                    <Typography>{token.name}</Typography>
+                    <Typography isNowrap>{token.name}</Typography>
                 </TableCell>
                 <TableCell>
-                    <Typography>{token.key}</Typography>
+                    <Typography isNowrap>{token.key}</Typography>
                 </TableCell>
                 <TableCell>
-                    <Typography>{dayjs(token.createdAt).format('MMM DD YYYY')}</Typography>
+                    <Typography isNowrap>{dayjs(token.createdAt).format('MMM DD YYYY')}</Typography>
                 </TableCell>
                 <TableCell>{token.expireAt !== null &&
-                    <Typography>{dayjs(token.expireAt).format('MMM DD YYYY')}</Typography>}
+                    <Typography isNowrap>{dayjs(token.expireAt).format('MMM DD YYYY')}</Typography>}
                 </TableCell>
                 <TableCell>
                     <Chip key="tokenState"
@@ -81,6 +81,7 @@ const TokenTableRow = ({token, isAllTokensPage, deleteToken, changeStateToken, m
                 <TableCell>
                     <div className="flexRow">
                         <Button variant="outlined"
+                                className={styles.deleteButton}
                                 color="danger"
                                 data-testid="delete-token-btn"
                                 label={t('personal-api-tokens:delete')}

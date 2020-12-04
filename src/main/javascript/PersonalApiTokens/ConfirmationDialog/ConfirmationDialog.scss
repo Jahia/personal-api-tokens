@@ -1,22 +1,16 @@
 .modal {
-    display: flex;
-    flex-direction: column;
-    padding: var(--spacing-medium) var(--spacing-large) 0 var(--spacing-large);
+    padding: var(--spacing-medium) var(--spacing-large);
 
     border-radius: 2px;
     background-color: var(--color-white);
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 4px 4px var(--color-dark40);
 
     &:focus {
-        outline: none !important;
+        outline: none;
     }
 
     .header {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        min-height: 64px;
+        min-height: var(--spacing-huge);
 
         button {
             align-self: flex-start;
@@ -24,14 +18,7 @@
     }
 
     .footer {
-        display: flex;
-        flex-grow: 0;
-        flex-basis: 64px;
-        flex-direction: row;
-        justify-content: flex-end;
-        align-items: center;
-        align-self: flex-end;
-        width: 30%;
+        margin-top: var(--spacing-large);
 
         button:last-child {
             margin-left: var(--spacing-medium);

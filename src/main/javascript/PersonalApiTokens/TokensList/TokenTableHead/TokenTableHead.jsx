@@ -21,7 +21,7 @@ const TokenTableHead = ({isAllTokensPage, orderBy, order, handleSort}) => {
                 direction={orderBy === USERNAME ? order.toLowerCase() : ASCENDING_SORT.toLowerCase()}
                 onClick={() => handleSort(USERNAME)}
                         >
-                            <Typography variant="body" weight="semiBold">{t('personal-api-tokens:tokensList.username')}</Typography>
+                            <Typography isNowrap weight="semiBold">{t('personal-api-tokens:tokensList.username')}</Typography>
                         </TableSortLabel>
                     </TableCell>}
                 <TableCell classes={{root: styles.cellFont}}
@@ -33,7 +33,7 @@ const TokenTableHead = ({isAllTokensPage, orderBy, order, handleSort}) => {
                         direction={orderBy === NAME ? order.toLowerCase() : ASCENDING_SORT.toLowerCase()}
                         onClick={() => handleSort(NAME)}
                     >
-                        <Typography variant="body" weight="semiBold">{t('personal-api-tokens:tokensList.name')}</Typography>
+                        <Typography isNowrap weight="semiBold">{t('personal-api-tokens:tokensList.name')}</Typography>
                     </TableSortLabel>
                 </TableCell>
                 <TableCell classes={{root: styles.cellFont}}
@@ -45,7 +45,7 @@ const TokenTableHead = ({isAllTokensPage, orderBy, order, handleSort}) => {
                         direction={orderBy === KEY ? order.toLowerCase() : ASCENDING_SORT.toLowerCase()}
                         onClick={() => handleSort(KEY)}
                     >
-                        <Typography variant="body" weight="semiBold">{t('personal-api-tokens:tokensList.key')}</Typography>
+                        <Typography isNowrap weight="semiBold">{t('personal-api-tokens:tokensList.key')}</Typography>
                     </TableSortLabel>
                 </TableCell>
                 <TableCell classes={{root: styles.cellFont}}
@@ -57,7 +57,7 @@ const TokenTableHead = ({isAllTokensPage, orderBy, order, handleSort}) => {
                         direction={orderBy === CREATED_AT ? order.toLowerCase() : ASCENDING_SORT.toLowerCase()}
                         onClick={() => handleSort(CREATED_AT)}
                     >
-                        <Typography variant="body" weight="semiBold">{t('personal-api-tokens:tokensList.addedOn')}</Typography>
+                        <Typography isNowrap weight="semiBold">{t('personal-api-tokens:tokensList.addedOn')}</Typography>
                     </TableSortLabel>
                 </TableCell>
                 <TableCell classes={{root: styles.cellFont}} sortDirection={orderBy === EXPIRE_AT ? order.toLowerCase() : false}>
@@ -67,7 +67,7 @@ const TokenTableHead = ({isAllTokensPage, orderBy, order, handleSort}) => {
                         direction={orderBy === EXPIRE_AT ? order.toLowerCase() : ASCENDING_SORT.toLowerCase()}
                         onClick={() => handleSort(EXPIRE_AT)}
                     >
-                        <Typography variant="body" weight="semiBold">{t('personal-api-tokens:tokensList.expiration')}</Typography>
+                        <Typography isNowrap weight="semiBold">{t('personal-api-tokens:tokensList.expiration')}</Typography>
                     </TableSortLabel>
                 </TableCell>
                 <TableCell classes={{root: styles.cellFont}} sortDirection={orderBy === STATE ? order.toLowerCase() : false}>
@@ -77,11 +77,11 @@ const TokenTableHead = ({isAllTokensPage, orderBy, order, handleSort}) => {
                         direction={orderBy === STATE ? order.toLowerCase() : ASCENDING_SORT.toLowerCase()}
                         onClick={() => handleSort(STATE)}
                     >
-                        <Typography variant="body" weight="semiBold">{t('personal-api-tokens:tokensList.status')}</Typography>
+                        <Typography isNowrap weight="semiBold">{t('personal-api-tokens:tokensList.status')}</Typography>
                     </TableSortLabel>
                 </TableCell>
                 <TableCell classes={{root: styles.cellFont}}>
-                    <Typography variant="body" weight="semiBold">{t('personal-api-tokens:tokensList.actions')}</Typography>
+                    <Typography isNowrap weight="semiBold">{t('personal-api-tokens:tokensList.actions')}</Typography>
                 </TableCell>
             </TableRow>
         </TableHead>

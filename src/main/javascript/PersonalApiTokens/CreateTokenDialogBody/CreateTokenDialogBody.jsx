@@ -13,7 +13,7 @@ const CreateTokenDialogBody = ({tokenInformation, setTokenInformation, error}) =
         </Typography>
     );
     return (
-        <div className={styles.bodyContainer}>
+        <div className={`${styles.bodyContainer} flexCol`}>
             <Typography className={styles.nameLabel}
                         variant="subheading"
             >{t('personal-api-tokens:createToken.name')}
@@ -33,7 +33,9 @@ const CreateTokenDialogBody = ({tokenInformation, setTokenInformation, error}) =
                 }}
                 onChange={e => setTokenInformation({...tokenInformation, name: e.target.value})}
             />
-            {error ? errorMessage : null}
+            <div className={styles.errorDiv}>
+                {error ? errorMessage : null}
+            </div>
             <Typography className={styles.nameLabel}
                         variant="subheading"
             >{t('personal-api-tokens:createToken.expirationDate')}

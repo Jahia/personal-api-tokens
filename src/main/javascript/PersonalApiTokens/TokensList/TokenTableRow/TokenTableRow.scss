@@ -3,10 +3,14 @@
 }
 
 .deleteDialogBody {
-    margin-top: 2%;
-    margin-bottom: 5%;
+    margin: var(--spacing-medium) 0;
 }
 
 .tokenName {
     font-weight: bold;
+}
+
+.deleteButton.deleteButton {
+    width: fit-content;
+    height: var(--spacing-large);
 }
