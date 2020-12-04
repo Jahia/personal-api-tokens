@@ -52,10 +52,10 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
         class="moonstone-contentLayout_paper flexCol"
       >
         <div
-          class="tokensTable"
+          class="tokensTable flexFluid flexCol"
         >
           <div
-            class="table"
+            class="table flexFluid"
           >
             <table
               class="MuiTable-root-17"
