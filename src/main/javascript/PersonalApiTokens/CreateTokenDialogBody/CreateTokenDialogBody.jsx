@@ -13,7 +13,7 @@ const CreateTokenDialogBody = ({tokenInformation, setTokenInformation, error}) =
         </Typography>
     );
     return (
-        <div className={styles.bodyContainer}>
+        <div className={`${styles.bodyContainer} flexCol`}>
             <Typography className={styles.nameLabel}
                         variant="subheading"
             >{t('personal-api-tokens:createToken.name')}

@@ -14,7 +14,7 @@ const ConfirmationDialog = props => {
                 aria-describedby="simple-modal-description"
                 onClose={props.onClose}
         >
-            <div className={styles.modal}>
+            <div className={`${styles.modal} flexCol`}>
                 <div className={`${styles.header} flexRow_between alignCenter`}>
                     <Typography variant="heading" data-testid="dialog-header">{props.title}</Typography>
                     <Button icon={<Close/>}
@@ -22,7 +22,7 @@ const ConfirmationDialog = props => {
                             onClick={props.onClose}/>
                 </div>
                 {props.body}
-                <div className={styles.footer}>
+                <div className={`${styles.footer} flexRow_reverse`}>
                     {props.cancelLabel ? <Button variant="ghost"
                                                  size="big"
                                                  color="default"

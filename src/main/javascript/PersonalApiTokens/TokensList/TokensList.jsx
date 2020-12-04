@@ -38,7 +38,7 @@ const TokensList = ({user, noTokensMessage, isAllTokensPage}) => {
     }, [refetch]);
 
     if (loading && !data) {
-        return (<div className={styles.tokensTable}/>);
+        return (<div className={`${styles.tokensTable} flexFluid flexCol`}/>);
     }
 
     const tokensData = (!error && data) ? data.admin.personalApiTokens.tokens : {pageInfo: {totalCount: 0}, nodes: []};
@@ -51,7 +51,7 @@ const TokensList = ({user, noTokensMessage, isAllTokensPage}) => {
     }
 
     return tokensData.nodes.length > 0 ? (
-        <div className={styles.tokensTable}>
+        <div className={`${styles.tokensTable} flexFluid flexCol`}>
             <TokenTable tokensData={tokensData}
                         rowsPerPage={rowsPerPage}
                         currentPage={currentPage}
@@ -65,7 +65,7 @@ const TokensList = ({user, noTokensMessage, isAllTokensPage}) => {
             />
         </div>
     ) : (
-        <div className={styles.tokensList}>
+        <div className={`${styles.tokensList} flexRow_center alignCenter`}>
             <Typography weight="light"
                         variant="subheading"
                         data-testid="no-tokens-message"

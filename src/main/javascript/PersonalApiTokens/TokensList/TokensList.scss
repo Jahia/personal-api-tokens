@@ -1,20 +1,9 @@
 .tokensList {
-    display: flex;
-    flex: 1;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-
     color: var(--color-gray);
 
     background-color: var(--color-light);
 }
 
 .tokensTable {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    width: 100%;
-
     background-color: var(--color-light);
 }
