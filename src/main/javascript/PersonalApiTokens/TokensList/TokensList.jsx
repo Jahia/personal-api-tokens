@@ -65,7 +65,7 @@ const TokensList = ({user, noTokensMessage, isAllTokensPage}) => {
             />
         </div>
     ) : (
-        <div className={`${styles.tokensList} flexRow_center alignCenter`}>
+        <div className={`${styles.tokensList} flexRow_center alignCenter flexFluid`}>
             <Typography weight="light"
                         variant="subheading"
                         data-testid="no-tokens-message"
