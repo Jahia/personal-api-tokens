@@ -15,7 +15,7 @@
   },
   "tokensList": {
     "moreActions": "More actions",
-    "deactivate": "Deactivate",
+    "deactivate": "Disable",
     "activate": "Activate",
     "username": "User name",
     "name": "Token name",
