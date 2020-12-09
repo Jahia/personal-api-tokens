@@ -65,18 +65,18 @@ describe('Pagination and ordering - query.admin.personalApiTokens.tokens', () =>
         const tokens = await getTokens({ userId: 'root', limit: 20, sort: { fieldName: 'state', sortType: 'ASC' } })
         expect(tokens.errors).to.be.undefined
         // The first 3 items of the array should be ACTIVE
-        expect(tokens.nodes.slice(0, 3).filter(t => t.state === 'ACTIVE').length).to.equal(3)
+        expect(tokens.nodes.slice(0, 3).filter((t) => t.state === 'ACTIVE').length).to.equal(3)
         // While the last 3 items should be DISABLED
-        expect(tokens.nodes.slice(-3).filter(t => t.state === 'DISABLED').length).to.equal(3)
+        expect(tokens.nodes.slice(-3).filter((t) => t.state === 'DISABLED').length).to.equal(3)
     })
 
     it('Order tokens by state DESC', async function () {
         const tokens = await getTokens({ userId: 'root', limit: 20, sort: { fieldName: 'state', sortType: 'DESC' } })
         expect(tokens.errors).to.be.undefined
         // The first 3 items of the array should be DISABLED
-        expect(tokens.nodes.slice(0, 3).filter(t => t.state === 'DISABLED').length).to.equal(3)
+        expect(tokens.nodes.slice(0, 3).filter((t) => t.state === 'DISABLED').length).to.equal(3)
         // While the last 3 items should be ACTIVE
-        expect(tokens.nodes.slice(-3).filter(t => t.state === 'ACTIVE').length).to.equal(3)
+        expect(tokens.nodes.slice(-3).filter((t) => t.state === 'ACTIVE').length).to.equal(3)
     })
 
     it('Shows only 2 tokens with offset', async function () {
