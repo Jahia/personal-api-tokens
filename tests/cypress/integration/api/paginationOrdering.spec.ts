@@ -1,6 +1,6 @@
 import { apolloClient } from '../../support/apollo'
 
-import { createToken, deleteToken, getTokens } from '../../support/gql'
+import { createToken, deleteToken, getTokens, updateToken } from '../../support/gql'
 
 describe('Pagination and ordering - query.admin.personalApiTokens.tokens', () => {
     before('load graphql file', async function () {
@@ -15,6 +15,12 @@ describe('Pagination and ordering - query.admin.personalApiTokens.tokens', () =>
         await createToken('test-X-H', null, null, client)
         await createToken('test-X-I', null, null, client)
         await createToken('test-X-J', null, null, client)
+
+        // Distable the first 3 tokens
+        const tokens = await getTokens({ userId: 'root', limit: 3, sort: { fieldName: 'name', sortType: 'ASC' } })
+        for (const token of tokens.nodes) {
+            await updateToken(token.key, null, 'DISABLED', null, client)
+        }
     })
 
     after(async function () {
@@ -53,6 +59,24 @@ describe('Pagination and ordering - query.admin.personalApiTokens.tokens', () =>
         expect(tokens.pageInfo.hasNextPage).to.be.true
         expect(tokens.nodes[0].name).to.equal('test-X-J')
         expect(tokens.nodes[1].name).to.equal('test-X-I')
+    })
+
+    it('Order tokens by state ASC', async function () {
+        const tokens = await getTokens({ userId: 'root', limit: 20, sort: { fieldName: 'state', sortType: 'ASC' } })
+        expect(tokens.errors).to.be.undefined
+        // The first 3 items of the array should be ACTIVE
+        expect(tokens.nodes.slice(0, 3).filter((t) => t.state === 'ACTIVE').length).to.equal(3)
+        // While the last 3 items should be DISABLED
+        expect(tokens.nodes.slice(-3).filter((t) => t.state === 'DISABLED').length).to.equal(3)
+    })
+
+    it('Order tokens by state DESC', async function () {
+        const tokens = await getTokens({ userId: 'root', limit: 20, sort: { fieldName: 'state', sortType: 'DESC' } })
+        expect(tokens.errors).to.be.undefined
+        // The first 3 items of the array should be DISABLED
+        expect(tokens.nodes.slice(0, 3).filter((t) => t.state === 'DISABLED').length).to.equal(3)
+        // While the last 3 items should be ACTIVE
+        expect(tokens.nodes.slice(-3).filter((t) => t.state === 'ACTIVE').length).to.equal(3)
     })
 
     it('Shows only 2 tokens with offset', async function () {
