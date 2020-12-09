@@ -68,7 +68,7 @@
     </scm>
 
     <properties>
-        <jahia-depends>default,userDashboard</jahia-depends>
+        <jahia-depends>default,userDashboard,graphql-dxm-provider</jahia-depends>
         <jahia-module-type>system</jahia-module-type>
         <jahia-deploy-on-site>system</jahia-deploy-on-site>
         <jahia-module-signature>MCwCFCZ0gWkXge/SzSYb19Ts7cl7T6JIAhRzkmdVnYeMQvR8cV/sx3g3uV2Ifg==</jahia-module-signature>
@@ -94,7 +94,7 @@
         <dependency>
             <groupId>org.jahia.modules</groupId>
             <artifactId>graphql-dxm-provider</artifactId>
-            <version>2.2.2-SNAPSHOT</version>
+            <version>2.2.3</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
