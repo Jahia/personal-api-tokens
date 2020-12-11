@@ -36,11 +36,11 @@
     "deleteWarning": "Do you really want to delete your private access token"
   },
   "copyToken": {
-    "title": "Access token created",
-    "warningNotToShareToken": "Don't give your personal access API token to anybody who you don't want to access your files",
+    "title": "API token created",
+    "warningNotToShareToken": "Don't share your API token with anyone",
     "copyToClipboard": "Copy token to clipboard",
     "copy": "Copy",
-    "warningToCopyToken": "This is the only time token can be viewed. You will not be able to recover it"
+    "warningToCopyToken": "This is the only time you can view the token. You cannot recover it later"
   },
   "create": "Create",
   "cancel": "Cancel",
