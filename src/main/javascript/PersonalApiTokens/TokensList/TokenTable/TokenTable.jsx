@@ -9,9 +9,15 @@ import {ASCENDING_SORT, DESCENDING_SORT, INITIAL_OFFSET, REFETCHER_MAP, TOKENS_R
 import tableStyles from './TokenTable.scss';
 import {useMutation} from '@apollo/react-hooks';
 import {DeleteTokenMutation, StateTokenMutation} from '../TokensList.gql';
+import useStore from '../../store/store';
+import shallow from 'zustand/shallow';
 
 const TokenTable = props => {
     const {t} = useTranslation('personal-api-tokens');
+    const [rowsPerPage, currentPage, orderBy, order] = useStore(state =>
+        [state.rowsPerPage, state.currentPage, state.orderBy, state.order], shallow);
+    const [setRowsPerPage, setCurrentPage, setOrderBy, setOrder] = useStore(state =>
+        [state.setRowsPerPage, state.setCurrentPage, state.setOrderBy, state.setOrder], shallow);
 
     const refreshList = () => REFETCHER_MAP.get(TOKENS_REFETCH_KEY)?.call();
 
@@ -32,22 +38,22 @@ const TokenTable = props => {
     };
 
     const handleSort = orderByProperty => {
-        const isAsc = props.orderBy === orderByProperty && props.order === ASCENDING_SORT;
+        const isAsc = orderBy === orderByProperty && order === ASCENDING_SORT;
         const sortOrder = isAsc ? DESCENDING_SORT : ASCENDING_SORT;
-        props.setOrderBy(orderByProperty);
-        props.setOrder(sortOrder);
+        setOrderBy(orderByProperty);
+        setOrder(sortOrder);
     };
 
     const handleChangeRowsPerPage = currentRowsPerPage => {
-        props.setRowsPerPage(currentRowsPerPage);
-        props.setCurrentPage(INITIAL_OFFSET);
+        setRowsPerPage(currentRowsPerPage);
+        setCurrentPage(INITIAL_OFFSET);
     };
 
     return (
         <>
             <div className={`${tableStyles.table} flexFluid`}>
                 <Table>
-                    <TokenTableHead isAllTokensPage={props.isAllTokensPage} orderBy={props.orderBy} order={props.order} handleSort={handleSort}/>
+                    <TokenTableHead isAllTokensPage={props.isAllTokensPage} handleSort={handleSort}/>
                     <TableBody>
                         {props.tokensData.nodes.map(token => (
                             <TokenTableRow key={token.name}
@@ -64,13 +70,13 @@ const TokenTable = props => {
             </div>
             <Pagination
                 totalCount={props.tokensData.pageInfo.totalCount}
-                pageSize={props.rowsPerPage}
-                currentPage={props.currentPage}
+                pageSize={rowsPerPage}
+                currentPage={currentPage}
                 labels={{
                     labelRowsPerPage: t('personal-api-tokens:tokensList.pagination.rowsPerPage'),
                     of: t('personal-api-tokens:tokensList.pagination.of')
                 }}
-                onChangePage={(event, newPage) => props.setCurrentPage(newPage)}
+                onChangePage={(event, newPage) => setCurrentPage(newPage)}
                 onChangeRowsPerPage={handleChangeRowsPerPage}
             />
         </>
@@ -79,14 +85,6 @@ const TokenTable = props => {
 
 TokenTable.propTypes = {
     tokensData: PropTypes.object.isRequired,
-    rowsPerPage: PropTypes.number.isRequired,
-    setRowsPerPage: PropTypes.func.isRequired,
-    currentPage: PropTypes.number.isRequired,
-    setCurrentPage: PropTypes.func.isRequired,
-    order: PropTypes.string.isRequired,
-    orderBy: PropTypes.string.isRequired,
-    setOrder: PropTypes.func.isRequired,
-    setOrderBy: PropTypes.func.isRequired,
     isAllTokensPage: PropTypes.bool
 };
 

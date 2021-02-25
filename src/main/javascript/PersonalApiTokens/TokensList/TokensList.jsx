@@ -1,26 +1,18 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import styles from './TokensList.scss';
 import {useQuery} from '@apollo/react-hooks';
 import {getTokens} from './TokensList.gql';
 import TokenTable from './TokenTable/TokenTable';
 import PropTypes from 'prop-types';
-import {
-    CREATED_AT,
-    DESCENDING_SORT,
-    INITIAL_OFFSET,
-    INITIAL_TOKEN_LIMIT,
-    REFETCHER_MAP,
-    TOKENS_REFETCH_KEY
-} from '../constants';
+import {REFETCHER_MAP, TOKENS_REFETCH_KEY} from '../constants';
 import {Typography} from '@jahia/moonstone';
 import {useTranslation} from 'react-i18next';
+import shallow from 'zustand/shallow';
+import useStore from '../store/store';
 
 const TokensList = ({user, noTokensMessage, isAllTokensPage}) => {
     const {t} = useTranslation('personal-api-tokens');
-    const [rowsPerPage, setRowsPerPage] = useState(INITIAL_TOKEN_LIMIT);
-    const [currentPage, setCurrentPage] = useState(INITIAL_OFFSET);
-    const [order, setOrder] = useState(DESCENDING_SORT);
-    const [orderBy, setOrderBy] = useState(CREATED_AT);
+    const [rowsPerPage, currentPage, orderBy, order] = useStore(state => [state.rowsPerPage, state.currentPage, state.orderBy, state.order], shallow);
 
     const {loading, error, data, refetch} = useQuery(getTokens, {
         fetchPolicy: 'network-only',
@@ -53,14 +45,6 @@ const TokensList = ({user, noTokensMessage, isAllTokensPage}) => {
     return tokensData.nodes.length > 0 ? (
         <div className={`${styles.tokensTable} flexFluid flexCol`}>
             <TokenTable tokensData={tokensData}
-                        rowsPerPage={rowsPerPage}
-                        currentPage={currentPage}
-                        setRowsPerPage={setRowsPerPage}
-                        setCurrentPage={setCurrentPage}
-                        order={order}
-                        orderBy={orderBy}
-                        setOrder={setOrder}
-                        setOrderBy={setOrderBy}
                         isAllTokensPage={isAllTokensPage}
             />
         </div>

@@ -1,13 +1,16 @@
 import React from 'react';
 import {TableCell, TableHead, TableRow, TableSortLabel} from '@material-ui/core';
-import {ASCENDING_SORT, CREATED_AT, EXPIRE_AT, KEY, USERNAME, NAME, STATE} from '../../constants';
+import {ASCENDING_SORT, CREATED_AT, EXPIRE_AT, KEY, NAME, STATE, USERNAME} from '../../constants';
 import {Typography} from '@jahia/moonstone';
 import {useTranslation} from 'react-i18next';
 import styles from './TokenTableHead.scss';
 import PropTypes from 'prop-types';
+import useStore from '../../store/store';
+import shallow from 'zustand/shallow';
 
-const TokenTableHead = ({isAllTokensPage, orderBy, order, handleSort}) => {
+const TokenTableHead = ({isAllTokensPage, handleSort}) => {
     const {t} = useTranslation('personal-api-tokens');
+    const [order, orderBy] = useStore(state => [state.order, state.orderBy], shallow);
     return (
         <TableHead>
             <TableRow>
@@ -90,8 +93,6 @@ const TokenTableHead = ({isAllTokensPage, orderBy, order, handleSort}) => {
 
 TokenTableHead.propTypes = {
     isAllTokensPage: PropTypes.bool,
-    orderBy: PropTypes.string.isRequired,
-    order: PropTypes.string.isRequired,
     handleSort: PropTypes.func.isRequired
 };
 
