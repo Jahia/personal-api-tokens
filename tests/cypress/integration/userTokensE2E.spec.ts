@@ -20,8 +20,8 @@ describe('UI e2e test - Full lifecycle in the User API Tokens section in Adminis
         userTokensPage.assertElementVisibleBySelector(userTokensPage.elements.searchUserInput)
     })
 
-    it('Creates sample tokens in the background and checks that tokens are present in table', async function () {
-        await createToken(`test-token`, 'ACTIVE', null, apolloClient())
+    it('Creates sample tokens in the background and checks that tokens are present in table', () => {
+        cy.wrap(createToken(`test-token`, 'ACTIVE', null, apolloClient()));
         cy.reload()
         tokensPage.validateTokenIsVisibleInTheTable()
     })
