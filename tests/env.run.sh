@@ -13,7 +13,7 @@ echo " == Using MANIFEST: ${MANIFEST}"
 echo " == Using JAHIA_URL= ${JAHIA_URL}"
 
 echo " == Waiting for Jahia to startup"
-./node_modules/jahia-cli/bin/run alive --jahiaAdminUrl=${JAHIA_URL}
+./node_modules/jahia-reporter/bin/run utils:alive --jahiaUrl=${JAHIA_URL}
 ELAPSED_TIME=$(($SECONDS - $START_TIME))
 echo " == Jahia became alive in ${ELAPSED_TIME} seconds"
 
@@ -31,10 +31,15 @@ fi
 sed -i -e "s/NEXUS_USERNAME/${NEXUS_USERNAME}/g" /tmp/run-artifacts/${MANIFEST}
 sed -i -e "s/NEXUS_PASSWORD/${NEXUS_PASSWORD}/g" /tmp/run-artifacts/${MANIFEST}
 
+# If we're building the module (and manifest name contains build), then start with submitting that module
+if [[ ${MANIFEST} == *"build"* ]]; then
+  echo " == Submitting Sandbox module from: /tmp/artifacts/personal-api-tokens-SNAPSHOT.jar =="
+  ./node_modules/jahia-reporter/bin/run utils:module --jahiaUrl=${JAHIA_URL} --moduleId=personal-api-tokens --moduleFile=/tmp/artifacts/personal-api-tokens-SNAPSHOT.jar
+  echo " == Module submitted =="
+fi
+
 echo " == Warming up the environement =="
-
-./node_modules/jahia-cli/bin/run manifest:run --manifest=/tmp/run-artifacts/${MANIFEST} --jahiaAdminUrl=${JAHIA_URL}
-
+curl -u root:${SUPER_USER_PASSWORD} -X POST ${JAHIA_URL}/modules/api/provisioning -H 'content-type: application/yaml' --data-binary "@${MANIFEST}"
 echo " == Environment warmup complete =="
 
 mkdir /tmp/results/reports

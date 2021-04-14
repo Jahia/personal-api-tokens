@@ -29,6 +29,10 @@ parameters:
   PRIMARY_RELEASE_BRANCH:
     type: string
     default: 'main' # main or master ? set the branch for the main release   
+  SUPER_USER_PASSWORD:
+    type: string
+    default: 'root1234'   
+
 
 references:
   workdir: &workdir
@@ -276,6 +280,7 @@ jobs:
           no_output_timeout: 2h
           environment:
             MANIFEST: << parameters.MANIFEST >>
+            SUPER_USER_PASSWORD: << pipeline.parameters.SUPER_USER_PASSWORD >>
             JAHIA_IMAGE: << parameters.JAHIA_IMAGE >>
             TESTS_IMAGE: << parameters.RUN_TESTSIMAGE >>
             JAHIA_URL: << parameters.JAHIA_URL >>
