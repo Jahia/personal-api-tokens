@@ -34,7 +34,7 @@ sed -i -e "s/NEXUS_PASSWORD/${NEXUS_PASSWORD}/g" /tmp/run-artifacts/${MANIFEST}
 # If we're building the module (and manifest name contains build), then start with submitting that module
 if [[ ${MANIFEST} == *"build"* ]]; then
   echo " == Submitting Sandbox module from: /tmp/artifacts/personal-api-tokens-SNAPSHOT.jar =="
-  ./node_modules/jahia-reporter/bin/run utils:module --jahiaUrl=${JAHIA_URL} --moduleId=personal-api-tokens --moduleFile=/tmp/artifacts/personal-api-tokens-SNAPSHOT.jar
+  ./node_modules/jahia-reporter/bin/run utils:module --jahiaUrl=${JAHIA_URL} --jahiaPassword=${SUPER_USER_PASSWORD} --moduleId=personal-api-tokens --moduleFile=/tmp/artifacts/personal-api-tokens-SNAPSHOT.jar
   echo " == Module submitted =="
 fi
 
