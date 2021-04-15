@@ -41,6 +41,9 @@ fi
 echo " == Warming up the environement =="
 # curl -u root:${SUPER_USER_PASSWORD} -X POST ${JAHIA_URL}/modules/api/provisioning --form script="@${MANIFEST};type=text/yaml" --form file="@./assets/createToken.groovy"
 # curl -u root:${SUPER_USER_PASSWORD} -X POST ${JAHIA_URL}/modules/api/provisioning --form script="@${MANIFEST};type=text/yaml" --form file="@${PWD}/assets/createToken.groovy"
+ls -lah
+cat warmup-manifest-build.yaml
+echo ${SUPER_USER_PASSWORD}
 curl -u root:${SUPER_USER_PASSWORD} -X POST ${JAHIA_URL}/modules/api/provisioning --form script="@warmup-manifest-build.yaml;type=text/yaml" --form file="@createToken.groovy"
 echo " == Environment warmup complete =="
 
