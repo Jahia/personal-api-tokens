@@ -39,7 +39,7 @@ if [[ ${MANIFEST} == *"build"* ]]; then
 fi
 
 echo " == Warming up the environement =="
-curl -u root:${SUPER_USER_PASSWORD} -X POST ${JAHIA_URL}/modules/api/provisioning -H 'content-type: application/yaml' --form script="@${MANIFEST}" --form file="@./assets/createToken.groovy"
+curl -u root:${SUPER_USER_PASSWORD} -X POST ${JAHIA_URL}/modules/api/provisioning -H 'content-type: application/yaml' --form script="@${MANIFEST};type=text/yaml" --form file="@./assets/createToken.groovy"
 echo " == Environment warmup complete =="
 
 mkdir /tmp/results/reports
