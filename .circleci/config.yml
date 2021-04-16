@@ -254,7 +254,7 @@ jobs:
             JAHIA_PORT: 8080
             TEST_URL: http://jahia:8080/modules/graphql
             JAHIA_USERNAME: root
-            JAHIA_PASSWORD: root
+            JAHIA_PASSWORD: root1234
       - run:
           # We want to build the test image from scratch with any code change (since that code change could be in the tests themselves)
           name: Build << pipeline.parameters.TESTS_IMAGE >> image
@@ -288,7 +288,7 @@ jobs:
             JAHIA_PORT: 8080
             TEST_URL: http://jahia:8080/modules/graphql
             JAHIA_USERNAME: root
-            JAHIA_PASSWORD: root
+            JAHIA_PASSWORD: root1234
       - run:
           name: Export jahia logs
           when: always
