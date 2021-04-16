@@ -38,6 +38,8 @@ if [[ ${MANIFEST} == *"build"* ]]; then
   echo " == Module submitted =="
 fi
 
+sleep 20
+
 echo " == Warming up the environement =="
 # curl -u root:${SUPER_USER_PASSWORD} -X POST ${JAHIA_URL}/modules/api/provisioning --form script="@${MANIFEST};type=text/yaml" --form file="@./assets/createToken.groovy"
 # curl -u root:${SUPER_USER_PASSWORD} -X POST ${JAHIA_URL}/modules/api/provisioning --form script="@${MANIFEST};type=text/yaml" --form file="@${PWD}/assets/createToken.groovy"
