@@ -42,7 +42,7 @@ echo "$(date +'%d %B %Y - %k:%M') == Pausing during 20s =="
 sleep 20
 
 echo "$(date +'%d %B %Y - %k:%M') == Warming up the environement =="
-curl -v -u root:${SUPER_USER_PASSWORD} -X POST ${JAHIA_URL}/modules/api/provisioning --form script="@warmup-manifest-build.yaml;type=text/yaml" --form file="@${PWD}/assets/createToken.groovy"
+curl -v -u root:${SUPER_USER_PASSWORD} -X POST ${JAHIA_URL}/modules/api/provisioning --form script="@warmup-manifest-build.yaml;type=text/yaml" --form file="@assets/createToken.groovy"
 echo "$(date +'%d %B %Y - %k:%M') == Environment warmup complete =="
 
 mkdir /tmp/results/reports
