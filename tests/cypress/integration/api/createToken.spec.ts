@@ -301,7 +301,7 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
                 expireAt: null,
                 tokenState: null,
             },
-            errorPolicy: 'ignore',
+            // errorPolicy: 'ignore',
         })
         cy.log(JSON.stringify(response))
         expect(response.errors).to.be.undefined
@@ -330,7 +330,7 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
                 expireAt: null,
                 tokenState: null,
             },
-            errorPolicy: 'ignore',
+            // errorPolicy: 'ignore',
         })
         cy.log(JSON.stringify(response))
         expect(response.errors).to.be.undefined
