@@ -1,31 +1,26 @@
 # Adding the snapshot repository
 - addMavenRepository: 'https://devtools.jahia.com/nexus/content/repositories/jahia-snapshots@id=jahia-snapshots@snapshots'
 
-# Install Personal API Tokens
-- installBundle: 'mvn:org.jahia.modules/personal-api-tokens'
+- installBundle: 
+  - 'mvn:org.jahia.modules/personal-api-tokens'
+  - 'mvn:org.jahia.modules/press/3.0.0'
+  - 'mvn:org.jahia.modules/person/3.1.0'
+  - 'mvn:org.jahia.modules/news/3.1.0'
+  - 'mvn:org.jahia.modules/font-awesome/6.1.3'
+  - 'mvn:org.jahia.modules/calendar/3.1.0'
+  - 'mvn:org.jahia.modules/bootstrap3-core/4.1.0'
+  - 'mvn:org.jahia.modules/bootstrap3-components/4.1.0'
+  - 'mvn:org.jahia.modules/location/3.0.0'
+  - 'mvn:org.jahia.modules/topstories/3.0.0'
+  - 'mvn:org.jahia.modules/rating/3.2.0'
+  - 'mvn:org.jahia.modules/event/3.0.0'
+  - 'mvn:org.jahia.modules/bookmarks/3.1.0'
+  - 'mvn:org.jahia.modules/dx-base-demo-core/2.2.0'
+  - 'mvn:org.jahia.modules/dx-base-demo-templates/3.1.0'
+  - 'mvn:org.jahia.modules/dx-base-demo-components/2.1.0'
+  - 'mvn:org.jahia.modules/digitall/2.0.0'
   autoStart: true
   uninstallPreviousVersion: true
-
-# Install and start all the modules needed by Digitall
-- installAndStartBundle: 'mvn:org.jahia.modules/press/3.0.0'
-- installAndStartBundle: 'mvn:org.jahia.modules/person/3.1.0'
-- installAndStartBundle: 'mvn:org.jahia.modules/news/3.1.0'
-- installAndStartBundle: 'mvn:org.jahia.modules/font-awesome/6.1.3'
-- installAndStartBundle: 'mvn:org.jahia.modules/calendar/3.1.0'
-- installAndStartBundle: 'mvn:org.jahia.modules/bootstrap3-core/4.1.0'
-- installAndStartBundle: 'mvn:org.jahia.modules/bootstrap3-components/4.1.0'
-- installAndStartBundle: 'mvn:org.jahia.modules/location/3.0.0'
-- installAndStartBundle: 'mvn:org.jahia.modules/topstories/3.0.0'
-- installAndStartBundle: 'mvn:org.jahia.modules/rating/3.2.0'
-- installAndStartBundle: 'mvn:org.jahia.modules/event/3.0.0'
-- installAndStartBundle: 'mvn:org.jahia.modules/bookmarks/3.1.0'
-- installAndStartBundle: 'mvn:org.jahia.modules/dx-base-demo-core/2.2.0'
-- installAndStartBundle: 'mvn:org.jahia.modules/dx-base-demo-templates/3.1.0'
-- installAndStartBundle: 'mvn:org.jahia.modules/dx-base-demo-components/2.1.0'
-- installAndStartBundle: 'mvn:org.jahia.modules/digitall/2.0.0'
-
-# Wait for all bundles to have started
-- startBundle: "pending"
 
 # Create a token, the script is passed alongside the API call to the provisioning API
 - executeScript: "create-token.groovy"
@@ -33,4 +28,3 @@
 # Import the Digitall site
 - import: "jar:mvn:org.jahia.modules/digitall/2.0.0/zip/import!/users.zip"
 - importSite: "jar:mvn:org.jahia.modules/digitall/2.0.0/zip/import!/Digitall.zip"
-
