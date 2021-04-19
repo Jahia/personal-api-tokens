@@ -4910,10 +4910,10 @@ istanbul-reports@^3.0.2:
     html-escaper "^2.0.0"
     istanbul-lib-report "^3.0.0"
 
-jahia-reporter@^0.2.17:
-  version "0.2.17"
-  resolved "https://registry.yarnpkg.com/jahia-reporter/-/jahia-reporter-0.2.17.tgz#01644348eb23cc3f73e77ed494a79dc81726b91d"
-  integrity sha512-rYRnpUNpACGH7xc1xVN1d6DQeGvDyAHsNKEwUT5+yoNjkI2GOQPhJe8dZygb0FNxi2nZtcjRlyQON4n2nYxPtA==
+jahia-reporter@^0.2.18:
+  version "0.2.18"
+  resolved "https://registry.yarnpkg.com/jahia-reporter/-/jahia-reporter-0.2.18.tgz#809027778e698013832563115cddd512cda71262"
+  integrity sha512-dvb50rBBMk2xUVf/XufaNJ+Gz3bK5ms951T8g/9phDWmOH/+aMOVwnTCEHRANWnjxYX3FHHMZkvGkNXRNaxsEA==
   dependencies:
     "@oclif/command" "^1"
     "@oclif/config" "^1"
