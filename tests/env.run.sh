@@ -9,13 +9,13 @@ fi
 #!/usr/bin/env bash
 START_TIME=$SECONDS
 
-echo " == Using MANIFEST: ${MANIFEST}"
-echo " == Using JAHIA_URL= ${JAHIA_URL}"
+echo "$(date +'%d %B %Y - %k:%M') == Using MANIFEST: ${MANIFEST}"
+echo "$(date +'%d %B %Y - %k:%M') == Using JAHIA_URL= ${JAHIA_URL}"
 
-echo " == Waiting for Jahia to startup"
-./node_modules/jahia-cli/bin/run alive --jahiaAdminUrl=${JAHIA_URL}
+echo "$(date +'%d %B %Y - %k:%M') == Waiting for Jahia to startup"
+./node_modules/jahia-reporter/bin/run utils:alive --jahiaUrl=${JAHIA_URL}
 ELAPSED_TIME=$(($SECONDS - $START_TIME))
-echo " == Jahia became alive in ${ELAPSED_TIME} seconds"
+echo "$(date +'%d %B %Y - %k:%M') == Jahia became alive in ${ELAPSED_TIME} seconds"
 
 # Add the credentials to a temporary manifest for downloading files
 mkdir /tmp/run-artifacts
@@ -31,15 +31,23 @@ fi
 sed -i -e "s/NEXUS_USERNAME/${NEXUS_USERNAME}/g" /tmp/run-artifacts/${MANIFEST}
 sed -i -e "s/NEXUS_PASSWORD/${NEXUS_PASSWORD}/g" /tmp/run-artifacts/${MANIFEST}
 
-echo " == Warming up the environement =="
+# If we're building the module (and manifest name contains build), then start with submitting that module
+if [[ ${MANIFEST} == *"build"* ]]; then
+  echo "$(date +'%d %B %Y - %k:%M') == Submitting Sandbox module from: /tmp/artifacts/personal-api-tokens-SNAPSHOT.jar =="
+  ./node_modules/jahia-reporter/bin/run utils:module --jahiaUrl=${JAHIA_URL} --jahiaPassword=${SUPER_USER_PASSWORD} --moduleId=personal-api-tokens --moduleFile=/tmp/artifacts/personal-api-tokens-SNAPSHOT.jar
+  echo "$(date +'%d %B %Y - %k:%M') == Module submitted =="
+fi
 
-./node_modules/jahia-cli/bin/run manifest:run --manifest=/tmp/run-artifacts/${MANIFEST} --jahiaAdminUrl=${JAHIA_URL}
+echo "$(date +'%d %B %Y - %k:%M') == Pausing during 20s =="
+sleep 20
 
-echo " == Environment warmup complete =="
+echo "$(date +'%d %B %Y - %k:%M') == Warming up the environement =="
+curl -v -u root:${SUPER_USER_PASSWORD} -X POST ${JAHIA_URL}/modules/api/provisioning --form script="@warmup-manifest-build.yaml;type=text/yaml" --form file="@assets/createToken.groovy"
+echo "$(date +'%d %B %Y - %k:%M') == Environment warmup complete =="
 
 mkdir /tmp/results/reports
 
-echo "== Run tests =="
+echo "$(date +'%d %B %Y - %k:%M') == Run tests =="
 CYPRESS_baseUrl=${JAHIA_URL} yarn e2e:ci
 if [[ $? -eq 0 ]]; then
   echo "success" > /tmp/results/test_success
