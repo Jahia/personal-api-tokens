@@ -56,9 +56,7 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
             })
         } catch (err) {
             cy.log(JSON.stringify(err))
-            expect(err.graphQLErrors[0].message).to.contain(
-                'GraphQL error: Internal Server Error(s) while executing query',
-            )
+            expect(err.graphQLErrors[0].message).to.contain('Internal Server Error(s) while executing query')
         }
 
         // We verify that by submitting null we don't end up deleting all tokens
@@ -124,9 +122,7 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
             })
         } catch (err) {
             cy.log(JSON.stringify(err))
-            expect(err.graphQLErrors[0].message).to.contain(
-                'GraphQL error: java.lang.IllegalArgumentException: invalid user',
-            )
+            expect(err.graphQLErrors[0].message).to.contain('java.lang.IllegalArgumentException: invalid user')
         }
 
         const deletedToken = await getToken('mathias', name, mathiasApolloClient)
@@ -191,9 +187,7 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
             })
         } catch (err) {
             cy.log(JSON.stringify(err))
-            expect(err.graphQLErrors[0].message).to.contain(
-                'GraphQL error: java.lang.IllegalArgumentException: invalid user',
-            )
+            expect(err.graphQLErrors[0].message).to.contain('java.lang.IllegalArgumentException: invalid user')
         }
 
         const deletedToken = await getToken('root', name, rootApolloClient)

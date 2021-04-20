@@ -88,9 +88,7 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
             })
         } catch (err) {
             cy.log(JSON.stringify(err))
-            expect(err.graphQLErrors[0].message).to.contain(
-                'GraphQL error: Internal Server Error(s) while executing query',
-            )
+            expect(err.graphQLErrors[0].message).to.contain('Internal Server Error(s) while executing query')
         }
 
         const tokenDetails = await getToken('root', name, client)
@@ -170,7 +168,7 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
         } catch (err) {
             cy.log(JSON.stringify(err))
             expect(err.graphQLErrors[0].message).to.contain(
-                'GraphQL error: java.lang.IllegalArgumentException: Invalid format: "2010-ABCDEF-01" is malformed at "-ABCDEF-01"',
+                'java.lang.IllegalArgumentException: Invalid format: "2010-ABCDEF-01" is malformed at "-ABCDEF-01"',
             )
         }
 
@@ -195,9 +193,7 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
             })
         } catch (err) {
             cy.log(JSON.stringify(err))
-            expect(err.graphQLErrors[0].message).to.contain(
-                'GraphQL error: java.lang.IllegalArgumentException: Invalid format: ""',
-            )
+            expect(err.graphQLErrors[0].message).to.contain('java.lang.IllegalArgumentException: Invalid format: ""')
         }
 
         const tokenDetails = await getToken('root', name, client)
@@ -242,7 +238,7 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
         } catch (err) {
             cy.log(JSON.stringify(err))
             expect(err.graphQLErrors[0].message).to.contain(
-                'GraphQL error: javax.jcr.ItemExistsException: This node already exists: /users/root/tokens/test',
+                'javax.jcr.ItemExistsException: This node already exists: /users/root/tokens/test',
             )
         }
 
@@ -267,9 +263,7 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
             })
         } catch (err) {
             cy.log(JSON.stringify(err))
-            expect(err.graphQLErrors[0].message).to.contain(
-                'GraphQL error: Internal Server Error(s) while executing query',
-            )
+            expect(err.graphQLErrors[0].message).to.contain('Internal Server Error(s) while executing query')
         }
     })
 
@@ -290,7 +284,7 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
         } catch (err) {
             cy.log(JSON.stringify(err))
             expect(err.graphQLErrors[0].message).to.contain(
-                'GraphQL error: javax.jcr.RepositoryException: Failed to resolve path relative to node /users/root/tokens',
+                'javax.jcr.RepositoryException: Failed to resolve path relative to node /users/root/tokens',
             )
         }
 
@@ -313,9 +307,7 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
             })
         } catch (err) {
             cy.log(JSON.stringify(err))
-            expect(err.graphQLErrors[0].message).to.contain(
-                'GraphQL error: java.lang.IllegalArgumentException: invalid user',
-            )
+            expect(err.graphQLErrors[0].message).to.contain('java.lang.IllegalArgumentException: invalid user')
         }
 
         const client = apolloClient()

@@ -92,7 +92,7 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
         } catch (err) {
             cy.log(JSON.stringify(err))
             expect(err.graphQLErrors[0].message).to.contain(
-                'GraphQL error: javax.jcr.ItemExistsException: Same name siblings are not allowed: node /users/root/tokens',
+                'javax.jcr.ItemExistsException: Same name siblings are not allowed: node /users/root/tokens',
             )
         }
 
@@ -124,7 +124,7 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
         } catch (err) {
             cy.log(JSON.stringify(err))
             expect(err.graphQLErrors[0].message).to.contain(
-                'GraphQL error: javax.jcr.ItemExistsException: Same name siblings are not allowed: node /users/root/tokens/test',
+                'javax.jcr.ItemExistsException: Same name siblings are not allowed: node /users/root/tokens/test',
             )
         }
 
@@ -180,9 +180,7 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
             })
         } catch (err) {
             cy.log(JSON.stringify(err))
-            expect(err.graphQLErrors[0].message).to.contain(
-                'GraphQL error: Internal Server Error(s) while executing query',
-            )
+            expect(err.graphQLErrors[0].message).to.contain('Internal Server Error(s) while executing query')
         }
 
         const updatedToken = await getToken('root', name, client)
@@ -260,9 +258,7 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
             })
         } catch (err) {
             cy.log(JSON.stringify(err))
-            expect(err.graphQLErrors[0].message).to.contain(
-                'GraphQL error: Internal Server Error(s) while executing query',
-            )
+            expect(err.graphQLErrors[0].message).to.contain('Internal Server Error(s) while executing query')
         }
 
         const updatedToken = await getToken('root', name, client)
