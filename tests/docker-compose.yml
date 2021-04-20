@@ -17,6 +17,7 @@ services:
       - jahia
     environment:
       - MANIFEST=${MANIFEST}
+      - SUPER_USER_PASSWORD=${SUPER_USER_PASSWORD}
       - JAHIA_USERNAME=${JAHIA_USERNAME}
       - JAHIA_PASSWORD=${JAHIA_PASSWORD}
       - JAHIA_URL=${JAHIA_URL}

@@ -11,12 +11,8 @@
     "ignoreTestFiles": "*.example.ts",
     "env": {
         "JAHIA_USERNAME": "root",
-        "JAHIA_PASSWORD": "root"
+        "JAHIA_PASSWORD": "root1234"
     },
     "viewportWidth": 1366,
-    "viewportHeight": 768,
-    "testFiles": [
-        "*",
-        "api/*"
-    ]
+    "viewportHeight": 768
 }
