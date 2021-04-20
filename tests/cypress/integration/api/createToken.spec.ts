@@ -76,18 +76,22 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
         const client = apolloClient()
         const name = 'test-' + new Date().getTime()
 
-        const response = await apolloClient().query({
-            query: GQL_CREATE,
-            variables: {
-                tokenName: name,
-                siteKey: null,
-                expireAt: null,
-                tokenState: 'INACTIVE', // This state does not exist
-            },
-            // errorPolicy: 'ignore',
-        })
-        cy.log(JSON.stringify(response))
-        expect(response.data).to.be.null
+        try {
+            await apolloClient().query({
+                query: GQL_CREATE,
+                variables: {
+                    tokenName: name,
+                    siteKey: null,
+                    expireAt: null,
+                    tokenState: 'INACTIVE', // This state does not exist
+                },
+            })
+        } catch (err) {
+            cy.log(JSON.stringify(err))
+            expect(err.graphQLErrors[0].message).to.contain(
+                'GraphQL error: Internal Server Error(s) while executing query',
+            )
+        }
 
         const tokenDetails = await getToken('root', name, client)
         expect(tokenDetails).to.be.null
@@ -153,17 +157,22 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
         const name = 'test-' + new Date().getTime()
         const expireAt = '2010-ABCDEF-01'
 
-        const response = await apolloClient().query({
-            query: GQL_CREATE,
-            variables: {
-                tokenName: name,
-                siteKey: null,
-                expireAt: expireAt,
-                tokenState: null,
-            },
-        })
-        cy.log(JSON.stringify(response))
-        expect(response.data.admin.personalApiTokens.createToken).to.be.null
+        try {
+            await apolloClient().query({
+                query: GQL_CREATE,
+                variables: {
+                    tokenName: name,
+                    siteKey: null,
+                    expireAt: expireAt,
+                    tokenState: null,
+                },
+            })
+        } catch (err) {
+            cy.log(JSON.stringify(err))
+            expect(err.graphQLErrors[0].message).to.contain(
+                'GraphQL error: java.lang.IllegalArgumentException: Invalid format: "2010-ABCDEF-01" is malformed at "-ABCDEF-01"',
+            )
+        }
 
         const tokenDetails = await getToken('root', name, client)
         expect(tokenDetails).to.be.null
@@ -174,17 +183,22 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
         const name = 'test-' + new Date().getTime()
         const expireAt = ''
 
-        const response = await apolloClient().query({
-            query: GQL_CREATE,
-            variables: {
-                tokenName: name,
-                siteKey: null,
-                expireAt: expireAt,
-                tokenState: null,
-            },
-        })
-        cy.log(JSON.stringify(response))
-        expect(response.data.admin.personalApiTokens.createToken).to.be.null
+        try {
+            await apolloClient().query({
+                query: GQL_CREATE,
+                variables: {
+                    tokenName: name,
+                    siteKey: null,
+                    expireAt: expireAt,
+                    tokenState: null,
+                },
+            })
+        } catch (err) {
+            cy.log(JSON.stringify(err))
+            expect(err.graphQLErrors[0].message).to.contain(
+                'GraphQL error: java.lang.IllegalArgumentException: Invalid format: ""',
+            )
+        }
 
         const tokenDetails = await getToken('root', name, client)
         expect(tokenDetails).to.be.null
@@ -195,7 +209,7 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
         const name = 'test-' + new Date().getTime()
         const expireAt = '2040-01-01'
 
-        let response = await apolloClient().query({
+        const response = await apolloClient().query({
             query: GQL_CREATE,
             variables: {
                 tokenName: name,
@@ -215,17 +229,22 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
         expect(tokenDetails).to.not.be.null
         expect(tokenDetails.name).to.equals(name)
 
-        response = await apolloClient().query({
-            query: GQL_CREATE,
-            variables: {
-                tokenName: name,
-                siteKey: null,
-                expireAt: '2019-01-01',
-                tokenState: null,
-            },
-        })
-        cy.log(JSON.stringify(response))
-        expect(response.data.admin.personalApiTokens.createToken).to.be.null
+        try {
+            await apolloClient().query({
+                query: GQL_CREATE,
+                variables: {
+                    tokenName: name,
+                    siteKey: null,
+                    expireAt: expireAt,
+                    tokenState: null,
+                },
+            })
+        } catch (err) {
+            cy.log(JSON.stringify(err))
+            expect(err.graphQLErrors[0].message).to.contain(
+                'GraphQL error: javax.jcr.ItemExistsException: This node already exists: /users/root/tokens/test',
+            )
+        }
 
         tokenDetails = await getToken('root', name, client)
         expect(tokenDetails).to.not.be.null
@@ -236,35 +255,44 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
     it('Create token by providing userId, NULL name, null date, null state, null siteKey', async function () {
         const name = null
 
-        const response = await apolloClient().query({
-            query: GQL_CREATE,
-            variables: {
-                tokenName: name,
-                siteKey: null,
-                expireAt: null,
-                tokenState: null,
-            },
-        })
-        cy.log(JSON.stringify(response))
-
-        expect(response.data).to.be.null
+        try {
+            await apolloClient().query({
+                query: GQL_CREATE,
+                variables: {
+                    tokenName: name,
+                    siteKey: null,
+                    expireAt: null,
+                    tokenState: null,
+                },
+            })
+        } catch (err) {
+            cy.log(JSON.stringify(err))
+            expect(err.graphQLErrors[0].message).to.contain(
+                'GraphQL error: Internal Server Error(s) while executing query',
+            )
+        }
     })
 
     it('Create token by providing userId, EMPTY name, null date, null state, null siteKey', async function () {
         const client = apolloClient()
         const name = ''
 
-        const response = await apolloClient().query({
-            query: GQL_CREATE,
-            variables: {
-                tokenName: name,
-                siteKey: null,
-                expireAt: null,
-                tokenState: null,
-            },
-        })
-        cy.log(JSON.stringify(response))
-        expect(response.data.admin.personalApiTokens.createToken).to.be.null
+        try {
+            await apolloClient().query({
+                query: GQL_CREATE,
+                variables: {
+                    tokenName: name,
+                    siteKey: null,
+                    expireAt: null,
+                    tokenState: null,
+                },
+            })
+        } catch (err) {
+            cy.log(JSON.stringify(err))
+            expect(err.graphQLErrors[0].message).to.contain(
+                'GraphQL error: javax.jcr.RepositoryException: Failed to resolve path relative to node /users/root/tokens',
+            )
+        }
 
         const tokenDetails = await getToken('root', name, client)
         expect(tokenDetails).to.be.null
@@ -273,17 +301,22 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
     it('Security - Guest user is NOT able to create a own token', async function () {
         const name = 'test-' + new Date().getTime()
 
-        const response = await apolloClient({}).query({
-            query: GQL_CREATE,
-            variables: {
-                tokenName: name,
-                siteKey: null,
-                expireAt: null,
-                tokenState: null,
-            },
-        })
-        cy.log(JSON.stringify(response))
-        expect(response.data.admin.personalApiTokens.createToken).to.be.null
+        try {
+            await apolloClient({}).query({
+                query: GQL_CREATE,
+                variables: {
+                    tokenName: name,
+                    siteKey: null,
+                    expireAt: null,
+                    tokenState: null,
+                },
+            })
+        } catch (err) {
+            cy.log(JSON.stringify(err))
+            expect(err.graphQLErrors[0].message).to.contain(
+                'GraphQL error: java.lang.IllegalArgumentException: invalid user',
+            )
+        }
 
         const client = apolloClient()
         const tokenDetails = await getToken('guest', name, client)
