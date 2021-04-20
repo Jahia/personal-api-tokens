@@ -56,7 +56,7 @@ describe('List tokens via API - query.admin.personalApiTokens.tokens', () => {
 
         const response = await apolloClient({}).query({
             query: GQL_TOKENS,
-            errorPolicy: 'ignore',
+            // errorPolicy: 'ignore',
         })
         expect(response.errors).to.be.undefined
         cy.log(JSON.stringify(response))
@@ -126,8 +126,8 @@ describe('Get single token via API - query.admin.personalApiTokens.tokenByKey', 
             variables: {
                 tokenKey: null,
             },
-            errorPolicy: 'ignore',
         })
+        cy.log(JSON.stringify(response))
         expect(response.data).to.be.null
     })
 
@@ -137,8 +137,8 @@ describe('Get single token via API - query.admin.personalApiTokens.tokenByKey', 
             variables: {
                 tokenKey: '',
             },
-            errorPolicy: 'ignore',
         })
+        cy.log(JSON.stringify(response))
         expect(response.data.admin.personalApiTokens.tokenByKey).to.be.null
     })
 

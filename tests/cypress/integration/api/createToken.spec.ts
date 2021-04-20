@@ -32,6 +32,7 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
                 tokenState: null,
             },
         })
+        cy.log(JSON.stringify(response))
         expect(response.errors).to.be.undefined
 
         const token = response.data.admin.personalApiTokens.createToken
@@ -57,6 +58,7 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
                 tokenState: 'DISABLED',
             },
         })
+        cy.log(JSON.stringify(response))
         expect(response.errors).to.be.undefined
 
         const token = response.data.admin.personalApiTokens.createToken
@@ -82,8 +84,9 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
                 expireAt: null,
                 tokenState: 'INACTIVE', // This state does not exist
             },
-            errorPolicy: 'ignore',
+            // errorPolicy: 'ignore',
         })
+        cy.log(JSON.stringify(response))
         expect(response.data).to.be.null
 
         const tokenDetails = await getToken('root', name, client)
@@ -104,6 +107,7 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
                 tokenState: null,
             },
         })
+        cy.log(JSON.stringify(response))
         expect(response.errors).to.be.undefined
 
         const token = response.data.admin.personalApiTokens.createToken
@@ -131,6 +135,7 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
                 tokenState: null,
             },
         })
+        cy.log(JSON.stringify(response))
         expect(response.errors).to.be.undefined
 
         const token = response.data.admin.personalApiTokens.createToken
@@ -156,8 +161,8 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
                 expireAt: expireAt,
                 tokenState: null,
             },
-            errorPolicy: 'ignore',
         })
+        cy.log(JSON.stringify(response))
         expect(response.data.admin.personalApiTokens.createToken).to.be.null
 
         const tokenDetails = await getToken('root', name, client)
@@ -177,8 +182,8 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
                 expireAt: expireAt,
                 tokenState: null,
             },
-            errorPolicy: 'ignore',
         })
+        cy.log(JSON.stringify(response))
         expect(response.data.admin.personalApiTokens.createToken).to.be.null
 
         const tokenDetails = await getToken('root', name, client)
@@ -199,6 +204,7 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
                 tokenState: null,
             },
         })
+        cy.log(JSON.stringify(response))
         expect(response.errors).to.be.undefined
 
         const token = response.data.admin.personalApiTokens.createToken
@@ -217,8 +223,8 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
                 expireAt: '2019-01-01',
                 tokenState: null,
             },
-            errorPolicy: 'ignore',
         })
+        cy.log(JSON.stringify(response))
         expect(response.data.admin.personalApiTokens.createToken).to.be.null
 
         tokenDetails = await getToken('root', name, client)
@@ -238,7 +244,6 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
                 expireAt: null,
                 tokenState: null,
             },
-            errorPolicy: 'ignore',
         })
         cy.log(JSON.stringify(response))
 
@@ -257,7 +262,6 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
                 expireAt: null,
                 tokenState: null,
             },
-            errorPolicy: 'ignore',
         })
         cy.log(JSON.stringify(response))
         expect(response.data.admin.personalApiTokens.createToken).to.be.null
@@ -277,7 +281,6 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
                 expireAt: null,
                 tokenState: null,
             },
-            errorPolicy: 'ignore',
         })
         cy.log(JSON.stringify(response))
         expect(response.data.admin.personalApiTokens.createToken).to.be.null
@@ -301,7 +304,6 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
                 expireAt: null,
                 tokenState: null,
             },
-            errorPolicy: 'ignore',
         })
         cy.log(JSON.stringify(response))
         expect(response.errors).to.be.undefined
@@ -330,7 +332,6 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
                 expireAt: null,
                 tokenState: null,
             },
-            errorPolicy: 'ignore',
         })
         cy.log(JSON.stringify(response))
         expect(response.errors).to.be.undefined

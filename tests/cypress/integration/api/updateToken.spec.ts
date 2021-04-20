@@ -36,6 +36,7 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
                 tokenState: null,
             },
         })
+        cy.log(JSON.stringify(response))
         expect(response.errors).to.be.undefined
 
         expect(response.data.admin.personalApiTokens.updateToken).to.be.true
@@ -62,9 +63,8 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
                 expireAt: null,
                 tokenState: null,
             },
-            errorPolicy: 'ignore',
         })
-        cy.log(JSON.stringify(response.data))
+        cy.log(JSON.stringify(response))
         expect(response.errors).to.be.undefined
         expect(response.data.admin.personalApiTokens.updateToken).to.be.true
 
@@ -87,7 +87,6 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
                 expireAt: null,
                 tokenState: null,
             },
-            errorPolicy: 'ignore',
         })
         cy.log(JSON.stringify(response))
         expect(response.errors).to.be.undefined
@@ -116,8 +115,8 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
                 expireAt: null,
                 tokenState: null,
             },
-            errorPolicy: 'ignore',
         })
+        cy.log(JSON.stringify(response))
         expect(response.data.admin.personalApiTokens.updateToken).to.be.null
 
         const tokenA = await getToken('root', nameA, client)
@@ -144,6 +143,7 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
                 tokenState: 'DISABLED',
             },
         })
+        cy.log(JSON.stringify(response))
         expect(response.errors).to.be.undefined
         expect(response.data.admin.personalApiTokens.updateToken).to.be.true
 
@@ -167,8 +167,8 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
                 expireAt: null,
                 tokenState: 'INACTIVE',
             },
-            errorPolicy: 'ignore',
         })
+        cy.log(JSON.stringify(response))
         expect(response.data).to.be.null
 
         const updatedToken = await getToken('root', name, client)
@@ -192,8 +192,8 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
                 expireAt: expireAt,
                 tokenState: null,
             },
-            errorPolicy: 'ignore',
         })
+        cy.log(JSON.stringify(response))
         expect(response.data.admin.personalApiTokens.updateToken).to.be.true
 
         const updatedToken = await getToken('root', name, client)
@@ -217,8 +217,8 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
                 expireAt: expireAt,
                 tokenState: null,
             },
-            errorPolicy: 'ignore',
         })
+        cy.log(JSON.stringify(response))
         expect(response.data.admin.personalApiTokens.updateToken).to.be.true
 
         const updatedToken = await getToken('root', name, client)
@@ -242,8 +242,8 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
                 expireAt: expireAt,
                 tokenState: null,
             },
-            errorPolicy: 'ignore',
         })
+        cy.log(JSON.stringify(response))
         expect(response.data.admin.personalApiTokens.updateToken).to.be.null
 
         const updatedToken = await getToken('root', name, client)

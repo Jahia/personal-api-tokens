@@ -32,6 +32,7 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
                 tokenKey: tokenDetails.key,
             },
         })
+        cy.log(JSON.stringify(response))
         expect(response.errors).to.be.undefined
         expect(response.data.admin.personalApiTokens.deleteToken).to.be.true
 
@@ -51,9 +52,8 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
             variables: {
                 tokenKey: null,
             },
-            errorPolicy: 'ignore',
         })
-
+        cy.log(JSON.stringify(response))
         expect(response.data).to.be.null
 
         // We verify that by submitting null we don't end up deleting all tokens
@@ -73,8 +73,8 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
             variables: {
                 tokenKey: '',
             },
-            errorPolicy: 'ignore',
         })
+        cy.log(JSON.stringify(response))
         expect(response.data.admin.personalApiTokens.deleteToken).to.be.false
 
         // We verify that by submitting null we don't end up deleting all tokens
@@ -95,6 +95,7 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
                 tokenKey: tokenDetails.key,
             },
         })
+        cy.log(JSON.stringify(response))
         expect(response.errors).to.be.undefined
         expect(response.data.admin.personalApiTokens.deleteToken).to.be.false
 
@@ -115,6 +116,7 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
                 tokenKey: tokenDetails.key,
             },
         })
+        cy.log(JSON.stringify(response))
         expect(response.errors).to.be.undefined
         expect(response.data.admin.personalApiTokens.deleteToken).to.be.false
 
@@ -135,6 +137,7 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
                 tokenKey: tokenDetails.key,
             },
         })
+        cy.log(JSON.stringify(response))
         expect(response.errors).to.be.undefined
         expect(response.data.admin.personalApiTokens.deleteToken).to.be.false
 
@@ -155,6 +158,7 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
                 tokenKey: tokenDetails.key,
             },
         })
+        cy.log(JSON.stringify(response))
         expect(response.errors).to.be.undefined
         expect(response.data.admin.personalApiTokens.deleteToken).to.be.false
 
@@ -175,6 +179,7 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
                 tokenKey: tokenDetails.key,
             },
         })
+        cy.log(JSON.stringify(response))
         expect(response.errors).to.be.undefined
         expect(response.data.admin.personalApiTokens.deleteToken).to.be.false
 
@@ -195,6 +200,7 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
                 tokenKey: tokenDetails.key,
             },
         })
+        cy.log(JSON.stringify(response))
         expect(response.errors).to.be.undefined
         expect(response.data.admin.personalApiTokens.deleteToken).to.be.true
 
@@ -215,6 +221,7 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
                 tokenKey: tokenDetails.key,
             },
         })
+        cy.log(JSON.stringify(response))
         expect(response.errors).to.be.undefined
         expect(response.data.admin.personalApiTokens.deleteToken).to.be.true
 
