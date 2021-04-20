@@ -29,6 +29,10 @@ parameters:
   PRIMARY_RELEASE_BRANCH:
     type: string
     default: 'main' # main or master ? set the branch for the main release   
+  SUPER_USER_PASSWORD:
+    type: string
+    default: 'root1234'   
+
 
 references:
   workdir: &workdir
@@ -250,7 +254,7 @@ jobs:
             JAHIA_PORT: 8080
             TEST_URL: http://jahia:8080/modules/graphql
             JAHIA_USERNAME: root
-            JAHIA_PASSWORD: root
+            JAHIA_PASSWORD: root1234
       - run:
           # We want to build the test image from scratch with any code change (since that code change could be in the tests themselves)
           name: Build << pipeline.parameters.TESTS_IMAGE >> image
@@ -276,6 +280,7 @@ jobs:
           no_output_timeout: 2h
           environment:
             MANIFEST: << parameters.MANIFEST >>
+            SUPER_USER_PASSWORD: << pipeline.parameters.SUPER_USER_PASSWORD >>
             JAHIA_IMAGE: << parameters.JAHIA_IMAGE >>
             TESTS_IMAGE: << parameters.RUN_TESTSIMAGE >>
             JAHIA_URL: << parameters.JAHIA_URL >>
@@ -283,7 +288,7 @@ jobs:
             JAHIA_PORT: 8080
             TEST_URL: http://jahia:8080/modules/graphql
             JAHIA_USERNAME: root
-            JAHIA_PASSWORD: root
+            JAHIA_PASSWORD: root1234
       - run:
           name: Export jahia logs
           when: always
@@ -474,11 +479,11 @@ workflows:
             - build
           context: QA_ENVIRONMENT
           #Using Aliases here (8 is the latest of the 8 tree, 8.1 is the latest of the tree, ...)
-          JAHIA_IMAGE: jahia/jahia-dev:8.0 
+          JAHIA_IMAGE: jahia/jahia-ee-dev:8-SNAPSHOT 
           RUN_TESTSIMAGE: << pipeline.parameters.TESTS_IMAGE >>:latest
           TOOLS_USER: root
           TOOLS_PWD: root
-          MANIFEST: warmup-manifest-build.yml
+          MANIFEST: warmup-manifest-build.yaml
           TESTRAIL_MILESTONE: Jahia-Latest
           SKIP_TESTRAIL: "true"
           SKIP_ARTIFACTS: false
@@ -510,9 +515,9 @@ workflows:
       - integration_tests:
           matrix:
             parameters:
-              JAHIA_IMAGE: ["jahia/jahia-private:snapshot-dev", "jahia/jahia-dev:8.0"]
+              JAHIA_IMAGE: ["jahia/jahia-ee-dev:8-SNAPSHOT", "jahia/jahia-ee:8"]
               RUN_TESTSIMAGE: ["<< pipeline.parameters.TESTS_IMAGE >>:latest"]
-              MANIFEST: ["warmup-manifest-snapshot.yml"]
+              MANIFEST: ["warmup-manifest-snapshot.yaml"]
               TESTRAIL_MILESTONE: ["<< matrix.JAHIA_IMAGE >>"]
               TOOLS_USER: ["root"]
               TOOLS_PWD: ["root"]
@@ -520,30 +525,3 @@ workflows:
           context: QA_ENVIRONMENT
           requires:
             - initialize
-
-  # Monthly, we run the integration testing suite with older (but still supported) versions of Jahia and set versions of the module:
-  # This provides a reference point (when was the latest time this was tested)
-  # In this section we want to see set Jahia versions (not aliases)
-  monthly:
-    triggers:
-      - schedule:
-          cron: '0 0 1 * *'
-          filters:
-            branches:
-              only:
-                - << pipeline.parameters.PRIMARY_RELEASE_BRANCH >>
-    jobs:
-      - initialize
-      # - integration_tests:
-      #     matrix:
-      #       parameters:
-      #         JAHIA_IMAGE: ["jahia/jahia-dev:8.0.1.0"]
-      #         RUN_TESTSIMAGE: ["<< pipeline.parameters.TESTS_IMAGE >>:latest"]
-      #         MANIFEST: ["warmup-manifest-snapshot.yml"]
-      #         TESTRAIL_MILESTONE: ["<< matrix.JAHIA_IMAGE >>"]
-      #         TOOLS_USER: ["root"]
-      #         TOOLS_PWD: ["root"]
-      #     name: Monthly-<< matrix.JAHIA_IMAGE >>-with-ES-<< matrix.ELASTICSEARCH_VERSION >>
-      #     context: QA_ENVIRONMENT
-      #     requires:
-      #       - initialize
