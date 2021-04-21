@@ -222,7 +222,7 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
         await createToken(name, null, null, mathiasApolloClient)
         const tokenDetails = await getToken('jay', name, mathiasApolloClient)
 
-        const response = await apolloClient().query({
+        const response = await apolloClient({ username: 'root', password: 'root1234' }).query({
             query: GQL_DELETE,
             variables: {
                 tokenKey: tokenDetails.key,
