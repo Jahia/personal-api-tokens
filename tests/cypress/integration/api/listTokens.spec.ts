@@ -121,14 +121,17 @@ describe('Get single token via API - query.admin.personalApiTokens.tokenByKey', 
     })
 
     it('Fetch a token passing a null key', async function () {
-        const response = await apolloClient().query({
-            query: GQL_TOKEN,
-            variables: {
-                tokenKey: null,
-            },
-        })
-        cy.log(JSON.stringify(response))
-        expect(response.data).to.be.null
+        try {
+            await apolloClient().query({
+                query: GQL_TOKEN,
+                variables: {
+                    tokenKey: null,
+                },
+            })
+        } catch (err) {
+            cy.log(JSON.stringify(err))
+            expect(err.graphQLErrors[0].message).to.contain('Internal Server Error(s) while executing query')
+        }
     })
 
     it('Fetch a token passing an EMPTY key', async function () {

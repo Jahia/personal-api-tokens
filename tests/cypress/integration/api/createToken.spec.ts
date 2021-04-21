@@ -284,7 +284,7 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
         } catch (err) {
             cy.log(JSON.stringify(err))
             expect(err.graphQLErrors[0].message).to.contain(
-                'javax.jcr.RepositoryException: Failed to resolve path relative to node /users/root/tokens',
+                'javax.jcr.RepositoryException: Failed to resolve path relative to node',
             )
         }
 
