@@ -39,12 +39,11 @@ if [[ ${MANIFEST} == *"build"* ]]; then
 fi
 
 # TO be removed
-# sleep 45
-echo "$(date +'%d %B %Y - %T') == First try Warming up the environement =="
-curl -v -trace-ascii -u root:${SUPER_USER_PASSWORD} -X POST ${JAHIA_URL}/modules/api/provisioning --form script="@warmup-manifest-build.yaml;type=text/yaml" --form file="@assets/createToken.groovy"
-echo "$(date +'%d %B %Y - %T') == End First try Warming up the environement =="
+# echo "$(date +'%d %B %Y - %T') == First try Warming up the environement =="
+# curl -v -trace-ascii -u root:${SUPER_USER_PASSWORD} -X POST ${JAHIA_URL}/modules/api/provisioning --form script="@warmup-manifest-build.yaml;type=text/yaml" --form file="@assets/createToken.groovy"
+# echo "$(date +'%d %B %Y - %T') == End First try Warming up the environement =="
 
-sleep 45
+sleep 15
 
 echo "$(date +'%d %B %Y - %T') == Warming up the environement =="
 curl -v --fail -u root:${SUPER_USER_PASSWORD} -X POST ${JAHIA_URL}/modules/api/provisioning --form script="@warmup-manifest-build.yaml;type=text/yaml" --form file="@assets/createToken.groovy"
@@ -56,9 +55,6 @@ fi
 echo "$(date +'%d %B %Y - %T') == Environment warmup complete =="
 
 mkdir /tmp/results/reports
-
-# TO be removed
-# sleep 45
 
 echo "$(date +'%d %B %Y - %T') == Run tests =="
 CYPRESS_baseUrl=${JAHIA_URL} yarn e2e:ci
