@@ -42,7 +42,12 @@ fi
 sleep 45
 
 echo "$(date +'%d %B %Y - %k:%M') == Warming up the environement =="
-curl -v -u root:${SUPER_USER_PASSWORD} -X POST ${JAHIA_URL}/modules/api/provisioning --form script="@warmup-manifest-build.yaml;type=text/yaml" --form file="@assets/createToken.groovy"
+curl -v --fail -u root:${SUPER_USER_PASSWORD} -X POST ${JAHIA_URL}/modules/api/provisioning --form script="@warmup-manifest-build.yaml;type=text/yaml" --form file="@assets/createToken.groovy"
+if [[ $? -ne 0 ]]; then
+  echo "PROVISIONING FAILURE - EXITING SCRIPT, NOT RUNNING THE TESTS"
+  echo "failure" > /tmp/results/test_failure
+  exit 1
+fi
 echo "$(date +'%d %B %Y - %k:%M') == Environment warmup complete =="
 
 mkdir /tmp/results/reports
