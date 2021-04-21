@@ -44,6 +44,9 @@ echo "$(date +'%d %B %Y - %k:%M') == Environment warmup complete =="
 
 mkdir /tmp/results/reports
 
+# TO be removed
+sleep 45
+
 echo "$(date +'%d %B %Y - %k:%M') == Run tests =="
 CYPRESS_baseUrl=${JAHIA_URL} yarn e2e:ci
 if [[ $? -eq 0 ]]; then
