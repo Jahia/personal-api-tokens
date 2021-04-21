@@ -39,7 +39,7 @@ if [[ ${MANIFEST} == *"build"* ]]; then
 fi
 
 # TO be removed
-sleep 45
+# sleep 45
 
 echo "$(date +'%d %B %Y - %k:%M') == Warming up the environement =="
 curl -v --fail -u root:${SUPER_USER_PASSWORD} -X POST ${JAHIA_URL}/modules/api/provisioning --form script="@warmup-manifest-build.yaml;type=text/yaml" --form file="@assets/createToken.groovy"
@@ -53,7 +53,7 @@ echo "$(date +'%d %B %Y - %k:%M') == Environment warmup complete =="
 mkdir /tmp/results/reports
 
 # TO be removed
-sleep 45
+# sleep 45
 
 echo "$(date +'%d %B %Y - %k:%M') == Run tests =="
 CYPRESS_baseUrl=${JAHIA_URL} yarn e2e:ci
