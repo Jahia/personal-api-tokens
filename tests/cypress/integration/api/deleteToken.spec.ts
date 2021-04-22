@@ -32,6 +32,7 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
                 tokenKey: tokenDetails.key,
             },
         })
+        cy.log(JSON.stringify(response))
         expect(response.errors).to.be.undefined
         expect(response.data.admin.personalApiTokens.deleteToken).to.be.true
 
@@ -46,15 +47,17 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
         await createToken('test-D-B', null, null, client)
         await createToken('test-D-C', null, null, client)
 
-        const response = await apolloClient().query({
-            query: GQL_DELETE,
-            variables: {
-                tokenKey: null,
-            },
-            errorPolicy: 'ignore',
-        })
-
-        expect(response.data).to.be.null
+        try {
+            await apolloClient().query({
+                query: GQL_DELETE,
+                variables: {
+                    tokenKey: null,
+                },
+            })
+        } catch (err) {
+            cy.log(JSON.stringify(err))
+            expect(err.graphQLErrors[0].message).to.contain('Internal Server Error(s) while executing query')
+        }
 
         // We verify that by submitting null we don't end up deleting all tokens
         const allTokens = await getTokens({ userId: 'root' }, client)
@@ -73,8 +76,8 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
             variables: {
                 tokenKey: '',
             },
-            errorPolicy: 'ignore',
         })
+        cy.log(JSON.stringify(response))
         expect(response.data.admin.personalApiTokens.deleteToken).to.be.false
 
         // We verify that by submitting null we don't end up deleting all tokens
@@ -95,6 +98,7 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
                 tokenKey: tokenDetails.key,
             },
         })
+        cy.log(JSON.stringify(response))
         expect(response.errors).to.be.undefined
         expect(response.data.admin.personalApiTokens.deleteToken).to.be.false
 
@@ -109,14 +113,17 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
         await createToken(name, null, null, mathiasApolloClient)
         const tokenDetails = await getToken('mathias', name, mathiasApolloClient)
 
-        const response = await apolloClient({ username: 'jay', password: 'password' }).query({
-            query: GQL_DELETE,
-            variables: {
-                tokenKey: tokenDetails.key,
-            },
-        })
-        expect(response.errors).to.be.undefined
-        expect(response.data.admin.personalApiTokens.deleteToken).to.be.false
+        try {
+            await apolloClient({ username: 'jay', password: 'password' }).query({
+                query: GQL_DELETE,
+                variables: {
+                    tokenKey: tokenDetails.key,
+                },
+            })
+        } catch (err) {
+            cy.log(JSON.stringify(err))
+            expect(err.graphQLErrors[0].message).to.contain('java.lang.IllegalArgumentException: invalid user')
+        }
 
         const deletedToken = await getToken('mathias', name, mathiasApolloClient)
         expect(deletedToken).not.to.be.null
@@ -135,6 +142,7 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
                 tokenKey: tokenDetails.key,
             },
         })
+        cy.log(JSON.stringify(response))
         expect(response.errors).to.be.undefined
         expect(response.data.admin.personalApiTokens.deleteToken).to.be.false
 
@@ -155,6 +163,7 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
                 tokenKey: tokenDetails.key,
             },
         })
+        cy.log(JSON.stringify(response))
         expect(response.errors).to.be.undefined
         expect(response.data.admin.personalApiTokens.deleteToken).to.be.false
 
@@ -169,14 +178,17 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
         await createToken(name, null, null, rootApolloClient)
         const tokenDetails = await getToken('root', name, rootApolloClient)
 
-        const response = await apolloClient({ username: 'mathias', password: 'password' }).query({
-            query: GQL_DELETE,
-            variables: {
-                tokenKey: tokenDetails.key,
-            },
-        })
-        expect(response.errors).to.be.undefined
-        expect(response.data.admin.personalApiTokens.deleteToken).to.be.false
+        try {
+            await apolloClient({ username: 'mathias', password: 'password' }).query({
+                query: GQL_DELETE,
+                variables: {
+                    tokenKey: tokenDetails.key,
+                },
+            })
+        } catch (err) {
+            cy.log(JSON.stringify(err))
+            expect(err.graphQLErrors[0].message).to.contain('java.lang.IllegalArgumentException: invalid user')
+        }
 
         const deletedToken = await getToken('root', name, rootApolloClient)
         expect(deletedToken).not.to.be.null
@@ -195,6 +207,7 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
                 tokenKey: tokenDetails.key,
             },
         })
+        cy.log(JSON.stringify(response))
         expect(response.errors).to.be.undefined
         expect(response.data.admin.personalApiTokens.deleteToken).to.be.true
 
@@ -204,7 +217,6 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
 
     it('Security - Root IS able to delete a token created by Authenticated user (jay)', async function () {
         const name = 'test-' + new Date().getTime()
-
         const mathiasApolloClient = apolloClient({ username: 'jay', password: 'password' })
         await createToken(name, null, null, mathiasApolloClient)
         const tokenDetails = await getToken('jay', name, mathiasApolloClient)
@@ -215,6 +227,7 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
                 tokenKey: tokenDetails.key,
             },
         })
+        cy.log(JSON.stringify(response))
         expect(response.errors).to.be.undefined
         expect(response.data.admin.personalApiTokens.deleteToken).to.be.true
 

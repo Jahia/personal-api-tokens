@@ -36,6 +36,7 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
                 tokenState: null,
             },
         })
+        cy.log(JSON.stringify(response))
         expect(response.errors).to.be.undefined
 
         expect(response.data.admin.personalApiTokens.updateToken).to.be.true
@@ -62,9 +63,8 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
                 expireAt: null,
                 tokenState: null,
             },
-            errorPolicy: 'ignore',
         })
-        cy.log(JSON.stringify(response.data))
+        cy.log(JSON.stringify(response))
         expect(response.errors).to.be.undefined
         expect(response.data.admin.personalApiTokens.updateToken).to.be.true
 
@@ -79,19 +79,22 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
         await createToken(nameA, null, null, client)
         const tokenDetails = await getToken('root', nameA, client)
 
-        const response = await apolloClient().query({
-            query: GQL_UPDATE,
-            variables: {
-                tokenKey: tokenDetails.key,
-                tokenName: '',
-                expireAt: null,
-                tokenState: null,
-            },
-            errorPolicy: 'ignore',
-        })
-        cy.log(JSON.stringify(response))
-        expect(response.errors).to.be.undefined
-        expect(response.data.admin.personalApiTokens.updateToken).to.be.null
+        try {
+            await apolloClient().query({
+                query: GQL_UPDATE,
+                variables: {
+                    tokenKey: tokenDetails.key,
+                    tokenName: '',
+                    expireAt: null,
+                    tokenState: null,
+                },
+            })
+        } catch (err) {
+            cy.log(JSON.stringify(err))
+            expect(err.graphQLErrors[0].message).to.contain(
+                'javax.jcr.ItemExistsException: Same name siblings are not allowed: node /users/root/tokens',
+            )
+        }
 
         const tokenA = await getToken('root', nameA, client)
         expect(tokenA.name).to.equals(tokenDetails.name)
@@ -108,17 +111,22 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
         await createToken(nameB, null, null, client)
         const tokenBDetails = await getToken('root', nameB, client)
 
-        const response = await apolloClient().query({
-            query: GQL_UPDATE,
-            variables: {
-                tokenKey: tokenADetails.key,
-                tokenName: nameB,
-                expireAt: null,
-                tokenState: null,
-            },
-            errorPolicy: 'ignore',
-        })
-        expect(response.data.admin.personalApiTokens.updateToken).to.be.null
+        try {
+            await apolloClient().query({
+                query: GQL_UPDATE,
+                variables: {
+                    tokenKey: tokenADetails.key,
+                    tokenName: nameB,
+                    expireAt: null,
+                    tokenState: null,
+                },
+            })
+        } catch (err) {
+            cy.log(JSON.stringify(err))
+            expect(err.graphQLErrors[0].message).to.contain(
+                'javax.jcr.ItemExistsException: Same name siblings are not allowed: node /users/root/tokens/test',
+            )
+        }
 
         const tokenA = await getToken('root', nameA, client)
         expect(tokenA.name).to.equals(nameA)
@@ -144,6 +152,7 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
                 tokenState: 'DISABLED',
             },
         })
+        cy.log(JSON.stringify(response))
         expect(response.errors).to.be.undefined
         expect(response.data.admin.personalApiTokens.updateToken).to.be.true
 
@@ -159,17 +168,20 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
         await createToken(name, null, null, client)
         const tokenDetails = await getToken('root', name, client)
 
-        const response = await apolloClient().query({
-            query: GQL_UPDATE,
-            variables: {
-                tokenKey: tokenDetails.key,
-                tokenName: null,
-                expireAt: null,
-                tokenState: 'INACTIVE',
-            },
-            errorPolicy: 'ignore',
-        })
-        expect(response.data).to.be.null
+        try {
+            await apolloClient().query({
+                query: GQL_UPDATE,
+                variables: {
+                    tokenKey: tokenDetails.key,
+                    tokenName: null,
+                    expireAt: null,
+                    tokenState: 'INACTIVE',
+                },
+            })
+        } catch (err) {
+            cy.log(JSON.stringify(err))
+            expect(err.graphQLErrors[0].message).to.contain('Internal Server Error(s) while executing query')
+        }
 
         const updatedToken = await getToken('root', name, client)
         expect(updatedToken).to.not.be.null
@@ -192,8 +204,8 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
                 expireAt: expireAt,
                 tokenState: null,
             },
-            errorPolicy: 'ignore',
         })
+        cy.log(JSON.stringify(response))
         expect(response.data.admin.personalApiTokens.updateToken).to.be.true
 
         const updatedToken = await getToken('root', name, client)
@@ -217,8 +229,8 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
                 expireAt: expireAt,
                 tokenState: null,
             },
-            errorPolicy: 'ignore',
         })
+        cy.log(JSON.stringify(response))
         expect(response.data.admin.personalApiTokens.updateToken).to.be.true
 
         const updatedToken = await getToken('root', name, client)
@@ -234,17 +246,20 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
         await createToken(name, null, null, client)
         const tokenDetails = await getToken('root', name, client)
 
-        const response = await apolloClient().query({
-            query: GQL_UPDATE,
-            variables: {
-                tokenKey: tokenDetails.key,
-                tokenName: null,
-                expireAt: expireAt,
-                tokenState: null,
-            },
-            errorPolicy: 'ignore',
-        })
-        expect(response.data.admin.personalApiTokens.updateToken).to.be.null
+        try {
+            await apolloClient().query({
+                query: GQL_UPDATE,
+                variables: {
+                    tokenKey: tokenDetails.key,
+                    tokenName: null,
+                    expireAt: expireAt,
+                    tokenState: null,
+                },
+            })
+        } catch (err) {
+            cy.log(JSON.stringify(err))
+            expect(err.graphQLErrors[0].message).to.contain('Internal Server Error(s) while executing query')
+        }
 
         const updatedToken = await getToken('root', name, client)
         expect(updatedToken).to.not.be.null

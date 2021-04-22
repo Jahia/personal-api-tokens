@@ -9,13 +9,13 @@ fi
 #!/usr/bin/env bash
 START_TIME=$SECONDS
 
-echo "$(date +'%d %B %Y - %k:%M') == Using MANIFEST: ${MANIFEST}"
-echo "$(date +'%d %B %Y - %k:%M') == Using JAHIA_URL= ${JAHIA_URL}"
+echo "$(date +'%d %B %Y - %T') == Using MANIFEST: ${MANIFEST}"
+echo "$(date +'%d %B %Y - %T') == Using JAHIA_URL= ${JAHIA_URL}"
 
-echo "$(date +'%d %B %Y - %k:%M') == Waiting for Jahia to startup"
+echo "$(date +'%d %B %Y - %T') == Waiting for Jahia to startup"
 ./node_modules/jahia-reporter/bin/run utils:alive --jahiaUrl=${JAHIA_URL}
 ELAPSED_TIME=$(($SECONDS - $START_TIME))
-echo "$(date +'%d %B %Y - %k:%M') == Jahia became alive in ${ELAPSED_TIME} seconds"
+echo "$(date +'%d %B %Y - %T') == Jahia became alive in ${ELAPSED_TIME} seconds"
 
 # Add the credentials to a temporary manifest for downloading files
 mkdir /tmp/run-artifacts
@@ -33,21 +33,30 @@ sed -i -e "s/NEXUS_PASSWORD/${NEXUS_PASSWORD}/g" /tmp/run-artifacts/${MANIFEST}
 
 # If we're building the module (and manifest name contains build), then start with submitting that module
 if [[ ${MANIFEST} == *"build"* ]]; then
-  echo "$(date +'%d %B %Y - %k:%M') == Submitting Sandbox module from: /tmp/artifacts/personal-api-tokens-SNAPSHOT.jar =="
+  echo "$(date +'%d %B %Y - %T') == Submitting Sandbox module from: /tmp/artifacts/personal-api-tokens-SNAPSHOT.jar =="
   ./node_modules/jahia-reporter/bin/run utils:module --jahiaUrl=${JAHIA_URL} --jahiaPassword=${SUPER_USER_PASSWORD} --moduleId=personal-api-tokens --moduleFile=/tmp/artifacts/personal-api-tokens-SNAPSHOT.jar
-  echo "$(date +'%d %B %Y - %k:%M') == Module submitted =="
+  echo "$(date +'%d %B %Y - %T') == Module submitted =="
 fi
 
-echo "$(date +'%d %B %Y - %k:%M') == Pausing during 20s =="
-sleep 20
+# TO be removed
+# echo "$(date +'%d %B %Y - %T') == First try Warming up the environement =="
+# curl -v -trace-ascii -u root:${SUPER_USER_PASSWORD} -X POST ${JAHIA_URL}/modules/api/provisioning --form script="@warmup-manifest-build.yaml;type=text/yaml" --form file="@assets/createToken.groovy"
+# echo "$(date +'%d %B %Y - %T') == End First try Warming up the environement =="
 
-echo "$(date +'%d %B %Y - %k:%M') == Warming up the environement =="
-curl -v -u root:${SUPER_USER_PASSWORD} -X POST ${JAHIA_URL}/modules/api/provisioning --form script="@warmup-manifest-build.yaml;type=text/yaml" --form file="@assets/createToken.groovy"
-echo "$(date +'%d %B %Y - %k:%M') == Environment warmup complete =="
+sleep 15
+
+echo "$(date +'%d %B %Y - %T') == Warming up the environement =="
+curl -v --fail -u root:${SUPER_USER_PASSWORD} -X POST ${JAHIA_URL}/modules/api/provisioning --form script="@warmup-manifest-build.yaml;type=text/yaml" --form file="@assets/createToken.groovy"
+if [[ $? -ne 0 ]]; then
+  echo "PROVISIONING FAILURE - EXITING SCRIPT, NOT RUNNING THE TESTS"
+  echo "failure" > /tmp/results/test_failure
+  exit 1
+fi
+echo "$(date +'%d %B %Y - %T') == Environment warmup complete =="
 
 mkdir /tmp/results/reports
 
-echo "$(date +'%d %B %Y - %k:%M') == Run tests =="
+echo "$(date +'%d %B %Y - %T') == Run tests =="
 CYPRESS_baseUrl=${JAHIA_URL} yarn e2e:ci
 if [[ $? -eq 0 ]]; then
   echo "success" > /tmp/results/test_success
