@@ -1,6 +1,3 @@
-# Adding the snapshot repository
-- addMavenRepository: 'https://devtools.jahia.com/nexus/content/repositories/jahia-snapshots@id=jahia-snapshots@snapshots'
-
 - installBundle: 
   - 'mvn:org.jahia.modules/personal-api-tokens'
   - 'mvn:org.jahia.modules/press/3.0.0'
