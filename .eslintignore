@@ -1,6 +1,7 @@
 node
 node_modules
 /tests
+/tests-old
 target
 src/main/resources/javascript/apps
 src/main/resources/javascript/locales
