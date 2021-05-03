@@ -2,67 +2,90 @@
 # This script can be used to warmup the environment and execute the tests
 # It is used by the docker image at startup
 
-if [[ ! -f .env ]]; then
- cp .env.example .env
-fi
+source ./set-env.sh
+
+source .env
 
 #!/usr/bin/env bash
 START_TIME=$SECONDS
 
-echo "$(date +'%d %B %Y - %T') == Using MANIFEST: ${MANIFEST}"
-echo "$(date +'%d %B %Y - %T') == Using JAHIA_URL= ${JAHIA_URL}"
+echo " == Using MANIFEST: ${MANIFEST}"
+echo " == Using JAHIA_URL= ${JAHIA_URL}"
 
-echo "$(date +'%d %B %Y - %T') == Waiting for Jahia to startup"
-./node_modules/jahia-reporter/bin/run utils:alive --jahiaUrl=${JAHIA_URL}
+echo " == Waiting for Jahia to startup"
+while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' ${JAHIA_URL}/cms/login)" != "200" ]];
+  do sleep 5;
+done
 ELAPSED_TIME=$(($SECONDS - $START_TIME))
-echo "$(date +'%d %B %Y - %T') == Jahia became alive in ${ELAPSED_TIME} seconds"
+echo " == Jahia became alive in ${ELAPSED_TIME} seconds"
+
+mkdir -p ./run-artifacts
+mkdir -p ./results
 
 # Add the credentials to a temporary manifest for downloading files
-mkdir /tmp/run-artifacts
 # Execute jobs listed in the manifest
 # If the file doesn't exist, we assume it is a URL and we download it locally
 if [[ -e ${MANIFEST} ]]; then
-  cp ${MANIFEST} /tmp/run-artifacts
+  cp ${MANIFEST} ./run-artifacts
 else
   echo "Downloading: ${MANIFEST}"
-  curl ${MANIFEST} --output /tmp/run-artifacts/curl-manifest
+  curl ${MANIFEST} --output ./run-artifacts/curl-manifest
   MANIFEST="curl-manifest"
 fi
-sed -i -e "s/NEXUS_USERNAME/${NEXUS_USERNAME}/g" /tmp/run-artifacts/${MANIFEST}
-sed -i -e "s/NEXUS_PASSWORD/${NEXUS_PASSWORD}/g" /tmp/run-artifacts/${MANIFEST}
+sed -i "" -e "s/NEXUS_USERNAME/${NEXUS_USERNAME}/g" ./run-artifacts/${MANIFEST}
+sed -i "" -e "s/NEXUS_PASSWORD/${NEXUS_PASSWORD}/g" ./run-artifacts/${MANIFEST}
+sed -i "" -e "s/JAHIA_VERSION/${JAHIA_VERSION}/g" ./run-artifacts/${MANIFEST}
 
-# If we're building the module (and manifest name contains build), then start with submitting that module
-if [[ ${MANIFEST} == *"build"* ]]; then
-  echo "$(date +'%d %B %Y - %T') == Submitting Sandbox module from: /tmp/artifacts/personal-api-tokens-SNAPSHOT.jar =="
-  ./node_modules/jahia-reporter/bin/run utils:module --jahiaUrl=${JAHIA_URL} --jahiaPassword=${SUPER_USER_PASSWORD} --moduleId=personal-api-tokens --moduleFile=/tmp/artifacts/personal-api-tokens-SNAPSHOT.jar
-  echo "$(date +'%d %B %Y - %T') == Module submitted =="
-fi
+echo "$(date +'%d %B %Y - %k:%M') == Warming up the environement =="
+curl -u root:${SUPER_USER_PASSWORD} -X POST ${JAHIA_URL}/modules/api/provisioning --form script="@./run-artifacts/${MANIFEST};type=text/yaml"
+echo "$(date +'%d %B %Y - %k:%M') == Environment warmup complete =="
 
-# TO be removed
-# echo "$(date +'%d %B %Y - %T') == First try Warming up the environement =="
-# curl -v -trace-ascii -u root:${SUPER_USER_PASSWORD} -X POST ${JAHIA_URL}/modules/api/provisioning --form script="@warmup-manifest-build.yaml;type=text/yaml" --form file="@assets/createToken.groovy"
-# echo "$(date +'%d %B %Y - %T') == End First try Warming up the environement =="
+# If we're building the module (and manifest name contains build), then we'll end up pushing that module individually
+cd ./artifacts
+for file in *-SNAPSHOT.jar
+do
+  echo "$(date +'%d %B %Y - %k:%M') == Submitting module from: $file =="
+  curl -u root:${SUPER_USER_PASSWORD} -X POST ${JAHIA_URL}/modules/api/provisioning --form script='[{"installAndStartBundle":"'"$file"'"}]' --form file=@$file
+  echo "$(date +'%d %B %Y - %k:%M') == Module submitted =="
+done
+cd ..
 
-sleep 15
+cd ./assets
+for file in *.groovy
+do
+echo "$(date +'%d %B %Y - %k:%M') == Creating token from groovy script: $file =="
+curl -u root:${SUPER_USER_PASSWORD} -X POST ${JAHIA_URL}/modules/api/provisioning --form script='[{"executeScript":"'"$file"'"}]' --form file=@$file
+echo "$(date +'%d %B %Y - %k:%M') == Groovy script submitted =="
+cd ..
 
-echo "$(date +'%d %B %Y - %T') == Warming up the environement =="
-curl -v --fail -u root:${SUPER_USER_PASSWORD} -X POST ${JAHIA_URL}/modules/api/provisioning --form script="@warmup-manifest-build.yaml;type=text/yaml" --form file="@assets/createToken.groovy"
-if [[ $? -ne 0 ]]; then
-  echo "PROVISIONING FAILURE - EXITING SCRIPT, NOT RUNNING THE TESTS"
-  echo "failure" > /tmp/results/test_failure
+echo "$(date +'%d %B %Y - %k:%M') == Fetching the list of installed modules =="
+./node_modules/jahia-reporter/bin/run utils:modules \
+  --moduleId="${MODULE_ID}" \
+  --jahiaUrl="${JAHIA_URL}" \
+  --jahiaPassword="${SUPER_USER_PASSWORD}" \
+  --filepath="results/installed-jahia-modules.json"
+echo "$(date +'%d %B %Y - %k:%M') == Modules fetched =="
+INSTALLED_MODULE_VERSION=$(cat results/installed-jahia-modules.json | jq '.module.version')
+if [[ $INSTALLED_MODULE_VERSION == "UNKNOWN" ]]; then
+  echo "$(date +'%d %B %Y - %k:%M') ERROR: Unable to detect module: ${MODULE_ID} on the remote system "
+  echo "$(date +'%d %B %Y - %k:%M') ERROR: The Script will exit"
+  echo "$(date +'%d %B %Y - %k:%M') ERROR: Tests will NOT run"
+  echo "failure" > ./results/test_failure
   exit 1
 fi
-echo "$(date +'%d %B %Y - %T') == Environment warmup complete =="
 
-mkdir /tmp/results/reports
+echo "$(date +'%d %B %Y - %k:%M')== Sleeping for an additional 120 seconds =="
+sleep 120
+echo "$(date +'%d %B %Y - %k:%M')== DONE - Sleeping for an additional 120 seconds =="
 
-echo "$(date +'%d %B %Y - %T') == Run tests =="
-CYPRESS_baseUrl=${JAHIA_URL} yarn e2e:ci
+echo "$(date +'%d %B %Y - %k:%M')== Run tests =="
+yarn e2e:ci
 if [[ $? -eq 0 ]]; then
-  echo "success" > /tmp/results/test_success
+  echo "success" > ./results/test_success
   exit 0
 else
-  echo "failure" > /tmp/results/test_failure
+  echo "failure" > ./results/test_failure
   exit 1
 fi
+
 # After the test ran, we're dropping a marker file to indicate if the test failed or succeeded based on the script test command exit code
