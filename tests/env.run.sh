@@ -56,6 +56,7 @@ do
 echo "$(date +'%d %B %Y - %k:%M') == Creating token from groovy script: $file =="
 curl -u root:${SUPER_USER_PASSWORD} -X POST ${JAHIA_URL}/modules/api/provisioning --form script='[{"executeScript":"'"$file"'"}]' --form file=@$file
 echo "$(date +'%d %B %Y - %k:%M') == Groovy script submitted =="
+done
 cd ..
 
 echo "$(date +'%d %B %Y - %k:%M') == Fetching the list of installed modules =="

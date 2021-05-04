@@ -1,0 +1,7 @@
+mutation($tokenKey: String!) {
+    admin {
+        personalApiTokens {
+            deleteToken(key: $tokenKey)
+        }
+    }
+}

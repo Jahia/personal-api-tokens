@@ -2,9 +2,10 @@ import { apolloClient } from '../../support/apollo'
 import gql from 'graphql-tag'
 
 describe('Test if every type in graphQL API has description', () => {
-    it('Check every input for the User Type', async function () {
+    it('Check every input', async function () {
         const noDesc = new Set()
-        await executeTest('adminQuery', noDesc)
+        await executeTest('PersonalApiTokensQuery', noDesc)
+        await executeTest('PersonalApiTokensMutation', noDesc)
         console.log(noDesc)
         expect(JSON.stringify(Array.from(noDesc))).to.equals('[]')
     })
@@ -12,8 +13,8 @@ describe('Test if every type in graphQL API has description', () => {
 // Test to go down the AST of GraphQL to check for descriptions
 const executeTest = async (typeName, noDesc) => {
     const query = constructQuery(typeName)
-    const client = apolloClient()
-    const response = await client.query({ query })
+    // const client = apolloClient()
+    const response = await apolloClient().query({ query })
     const responseDataType = response.data.__type
     if (responseDataType === null || responseDataType === undefined || responseDataType.kind === 'UNION') {
         return

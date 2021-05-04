@@ -1,0 +1,7 @@
+mutation($tokenName: String!, $siteKey: String, $expireAt: String, $tokenState: TokenState) {
+    admin {
+        personalApiTokens {
+            createToken(name: $tokenName, site: $siteKey, expireAt: $expireAt, state: $tokenState)
+        }
+    }
+}

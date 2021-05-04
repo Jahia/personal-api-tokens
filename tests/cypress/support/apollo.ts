@@ -24,7 +24,7 @@ export const apolloClient = (authMethod?: authMethod, baseUrl?: string): ApolloC
 
     const authHeaders: httpHeaders = {}
     if (authMethod === undefined) {
-        authHeaders.authorization = `Basic ${btoa(Cypress.env('JAHIA_USERNAME') + ':' + Cypress.env('JAHIA_PASSWORD'))}`
+        authHeaders.authorization = `Basic ${btoa('root:' + Cypress.env('SUPER_USER_PASSWORD'))}`
     } else if (authMethod.token !== undefined) {
         authHeaders.authorization = `APIToken ${authMethod.token}`
     } else if (authMethod.username !== undefined && authMethod.password !== undefined) {
