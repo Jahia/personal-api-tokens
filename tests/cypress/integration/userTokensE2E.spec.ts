@@ -19,9 +19,14 @@ describe('UI e2e test - Full lifecycle in the User API Tokens section in Adminis
         Cypress.Cookies.preserveOnce('JSESSIONID')
     })
 
-    after(() => {
-        cy.visit(Cypress.config().baseUrl + '/', { failOnStatusCode: false })
-        loginPage.logout()
+    after(async function () {
+        const client = apolloClient()
+        // Using null as userId returns tokens for the currently connected user
+        const existingTokens = await getTokens({ userId: null }, client)
+        // cy.log(JSON.stringify(existingTokens));
+        for (const token of existingTokens.nodes) {
+            await deleteToken(token.key, client)
+        }
     })
 
     it('Navigate to an empty token page', function () {
@@ -78,15 +83,5 @@ describe('UI e2e test - Full lifecycle in the User API Tokens section in Adminis
         const existingTokens = await getTokens({ userId: null }, apolloClient())
         cy.log(JSON.stringify(existingTokens))
         expect(existingTokens.nodes.filter((t: { name: string }) => t.name === this.TEST_TOKEN_NAME).length).to.equal(0)
-    })
-
-    after(async function () {
-        const client = apolloClient()
-        // Using null as userId returns tokens for the currently connected user
-        const existingTokens = await getTokens({ userId: null }, client)
-        // cy.log(JSON.stringify(existingTokens));
-        for (const token of existingTokens.nodes) {
-            await deleteToken(token.key, client)
-        }
     })
 })
