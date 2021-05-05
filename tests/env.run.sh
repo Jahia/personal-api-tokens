@@ -59,6 +59,10 @@ echo "$(date +'%d %B %Y - %k:%M') == Groovy script submitted =="
 done
 cd ..
 
+echo "$(date +'%d %B %Y - %k:%M')== Sleeping for an additional 120 seconds =="
+sleep 120
+echo "$(date +'%d %B %Y - %k:%M')== DONE - Sleeping for an additional 120 seconds =="
+
 echo "$(date +'%d %B %Y - %k:%M') == Fetching the list of installed modules =="
 ./node_modules/jahia-reporter/bin/run utils:modules \
   --moduleId="${MODULE_ID}" \
@@ -74,10 +78,6 @@ if [[ $INSTALLED_MODULE_VERSION == "UNKNOWN" ]]; then
   echo "failure" > ./results/test_failure
   exit 1
 fi
-
-echo "$(date +'%d %B %Y - %k:%M')== Sleeping for an additional 120 seconds =="
-sleep 120
-echo "$(date +'%d %B %Y - %k:%M')== DONE - Sleeping for an additional 120 seconds =="
 
 echo "$(date +'%d %B %Y - %k:%M')== Run tests =="
 yarn e2e:ci
