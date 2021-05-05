@@ -1,4 +1,5 @@
 import { tokensPage } from '../page-object/personalTokens.page'
+import { loginPage } from '../page-object/login.page'
 import { apolloClient } from '../support/apollo'
 import { deleteToken, getTokens, verifyToken } from '../support/gql'
 
@@ -7,15 +8,8 @@ const PARAGRAPH_ELEMENT = 'p'
 const TEST_TOKEN_NAME = 'test-token'
 let TEST_TOKEN = ''
 
-const login = () => {
-    cy.visit(Cypress.config().baseUrl + '/cms/login', {failOnStatusCode: false});
-    cy.get('input[name=username]').type('root');
-    cy.get('input[name=password]').type(Cypress.env('SUPER_USER_PASSWORD'));
-    cy.get('button[type=submit]').click();
-}
-
 describe('UI e2e test - Full lifecycle in the My API Tokens section', () => {
-    before(async function () {
+    before(async () => {
         const client = apolloClient()
         // Using null as userId returns tokens for the currently connected user
         const existingTokens = await getTokens({ userId: null }, client)
@@ -24,8 +18,19 @@ describe('UI e2e test - Full lifecycle in the My API Tokens section', () => {
         }
     })
 
+    //See: https://docs.cypress.io/api/cypress-api/cookies#Preserve-Once
+    beforeEach(() => {
+        Cypress.Cookies.preserveOnce('JSESSIONID')
+    })
+
+    after(() => {
+        cy.visit(Cypress.config().baseUrl + '/', { failOnStatusCode: false })
+        loginPage.logout()
+    })
+
     it('Navigate to an empty token page', function () {
-        login()
+        cy.visit(Cypress.config().baseUrl + '/jahia/dashboard', { failOnStatusCode: false })
+        loginPage.login('root', Cypress.env('SUPER_USER_PASSWORD'), true)
         tokensPage.goTo()
         tokensPage.assertElementVisibleBySelector(tokensPage.elements.noTokensMessage)
     })
@@ -74,7 +79,7 @@ describe('UI e2e test - Full lifecycle in the My API Tokens section', () => {
     it('Delete the token', function () {
         tokensPage.assertButtonVisibleAndClick(tokensPage.elements.deleteTokenBtn)
         tokensPage.assertButtonVisibleAndClick(tokensPage.elements.acceptDialogBtn)
-        tokensPage.getByText(PARAGRAPH_ELEMENT, TEST_TOKEN_NAME).should('not.be.visible')
+        tokensPage.assertElementVisibleBySelector(tokensPage.elements.noTokensMessage)
     })
 
     it('Verify deleted token', async function () {

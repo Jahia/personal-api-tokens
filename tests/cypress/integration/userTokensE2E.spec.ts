@@ -2,13 +2,7 @@ import { apolloClient } from '../support/apollo'
 import { createToken, deleteToken, getTokens } from '../support/gql'
 import { userTokensPage } from '../page-object/userTokens.page'
 import { tokensPage } from '../page-object/personalTokens.page'
-
-const login = () => {
-    cy.visit(Cypress.config().baseUrl + '/cms/login', {failOnStatusCode: false});
-    cy.get('input[name=username]').type('root');
-    cy.get('input[name=password]').type(Cypress.env('SUPER_USER_PASSWORD'));
-    cy.get('button[type=submit]').click();
-}
+import { loginPage } from '../page-object/login.page'
 
 describe('UI e2e test - Full lifecycle in the User API Tokens section in Administration', () => {
     before(async function () {
@@ -20,8 +14,19 @@ describe('UI e2e test - Full lifecycle in the User API Tokens section in Adminis
         }
     })
 
+    //See: https://docs.cypress.io/api/cypress-api/cookies#Preserve-Once
+    beforeEach(() => {
+        Cypress.Cookies.preserveOnce('JSESSIONID')
+    })
+
+    after(() => {
+        cy.visit(Cypress.config().baseUrl + '/', { failOnStatusCode: false })
+        loginPage.logout()
+    })
+
     it('Navigate to an empty token page', function () {
-        login()
+        cy.visit(Cypress.config().baseUrl + '/jahia/dashboard', { failOnStatusCode: false })
+        loginPage.login('root', Cypress.env('SUPER_USER_PASSWORD'), true)
         userTokensPage.goTo()
         userTokensPage.assertElementVisibleBySelector(userTokensPage.elements.noTokensMessage)
         userTokensPage.assertElementVisibleBySelector(userTokensPage.elements.searchUserBtn)
@@ -36,7 +41,6 @@ describe('UI e2e test - Full lifecycle in the User API Tokens section in Adminis
 
     it('Checks that tokens are present in table', () => {
         cy.reload()
-        login()
         userTokensPage.goTo()
         tokensPage.validateTokenIsVisibleInTheTable()
     })
