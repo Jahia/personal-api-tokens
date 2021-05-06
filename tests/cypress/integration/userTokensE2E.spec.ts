@@ -2,6 +2,7 @@ import { apolloClient } from '../support/apollo'
 import { createToken, deleteToken, getTokens } from '../support/gql'
 import { userTokensPage } from '../page-object/userTokens.page'
 import { tokensPage } from '../page-object/personalTokens.page'
+import { loginPage } from '../page-object/login.page'
 
 describe('UI e2e test - Full lifecycle in the User API Tokens section in Administration', () => {
     before(async function () {
@@ -13,7 +14,24 @@ describe('UI e2e test - Full lifecycle in the User API Tokens section in Adminis
         }
     })
 
+    //See: https://docs.cypress.io/api/cypress-api/cookies#Preserve-Once
+    beforeEach(() => {
+        Cypress.Cookies.preserveOnce('JSESSIONID')
+    })
+
+    after(async function () {
+        const client = apolloClient()
+        // Using null as userId returns tokens for the currently connected user
+        const existingTokens = await getTokens({ userId: null }, client)
+        // cy.log(JSON.stringify(existingTokens));
+        for (const token of existingTokens.nodes) {
+            await deleteToken(token.key, client)
+        }
+    })
+
     it('Navigate to an empty token page', function () {
+        cy.visit(Cypress.config().baseUrl + '/jahia/dashboard', { failOnStatusCode: false })
+        loginPage.login('root', Cypress.env('SUPER_USER_PASSWORD'), true)
         userTokensPage.goTo()
         userTokensPage.assertElementVisibleBySelector(userTokensPage.elements.noTokensMessage)
         userTokensPage.assertElementVisibleBySelector(userTokensPage.elements.searchUserBtn)
@@ -65,15 +83,5 @@ describe('UI e2e test - Full lifecycle in the User API Tokens section in Adminis
         const existingTokens = await getTokens({ userId: null }, apolloClient())
         cy.log(JSON.stringify(existingTokens))
         expect(existingTokens.nodes.filter((t: { name: string }) => t.name === this.TEST_TOKEN_NAME).length).to.equal(0)
-    })
-
-    after(async function () {
-        const client = apolloClient()
-        // Using null as userId returns tokens for the currently connected user
-        const existingTokens = await getTokens({ userId: null }, client)
-        // cy.log(JSON.stringify(existingTokens));
-        for (const token of existingTokens.nodes) {
-            await deleteToken(token.key, client)
-        }
     })
 })

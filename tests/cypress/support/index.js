@@ -17,6 +17,5 @@
 
 import "./commands";
 import "@cypress/code-coverage/support";
-
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-require('cypress-terminal-report/src/installLogsCollector')();
+require('cypress-terminal-report/src/installLogsCollector')()

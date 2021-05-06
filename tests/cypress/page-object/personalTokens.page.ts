@@ -23,7 +23,7 @@ class PersonalTokensPage extends BasePage {
     }
 
     goTo() {
-        cy.goTo('/jahia/dashboard')
+        cy.visit('/jahia/dashboard', { failOnStatusCode: false })
         cy.get(this.elements.personalTokens).click()
         return this
     }

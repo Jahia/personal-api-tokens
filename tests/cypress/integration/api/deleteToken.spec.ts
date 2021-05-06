@@ -26,8 +26,8 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
         await createToken(name, null, null, client)
         const tokenDetails = await getToken('root', name, client)
 
-        const response = await apolloClient().query({
-            query: GQL_DELETE,
+        const response = await apolloClient().mutate({
+            mutation: GQL_DELETE,
             variables: {
                 tokenKey: tokenDetails.key,
             },
@@ -48,8 +48,8 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
         await createToken('test-D-C', null, null, client)
 
         try {
-            await apolloClient().query({
-                query: GQL_DELETE,
+            await apolloClient().mutate({
+                mutation: GQL_DELETE,
                 variables: {
                     tokenKey: null,
                 },
@@ -71,8 +71,8 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
         await createToken('test-E-B', null, null, client)
         await createToken('test-E-C', null, null, client)
 
-        const response = await apolloClient().query({
-            query: GQL_DELETE,
+        const response = await apolloClient().mutate({
+            mutation: GQL_DELETE,
             variables: {
                 tokenKey: '',
             },
@@ -92,8 +92,8 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
         await createToken(name, null, null, client)
         const tokenDetails = await getToken('root', name, client)
 
-        const response = await apolloClient({}).query({
-            query: GQL_DELETE,
+        const response = await apolloClient({}).mutate({
+            mutation: GQL_DELETE,
             variables: {
                 tokenKey: tokenDetails.key,
             },
@@ -114,8 +114,8 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
         const tokenDetails = await getToken('mathias', name, mathiasApolloClient)
 
         try {
-            await apolloClient({ username: 'jay', password: 'password' }).query({
-                query: GQL_DELETE,
+            await apolloClient({ username: 'jay', password: 'password' }).mutate({
+                mutation: GQL_DELETE,
                 variables: {
                     tokenKey: tokenDetails.key,
                 },
@@ -136,8 +136,8 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
         await createToken(name, null, null, rootApolloClient)
         const tokenDetails = await getToken('root', name, rootApolloClient)
 
-        const response = await apolloClient({ username: 'root', password: 'password' }).query({
-            query: GQL_DELETE,
+        const response = await apolloClient({ username: 'root', password: 'password' }).mutate({
+            mutation: GQL_DELETE,
             variables: {
                 tokenKey: tokenDetails.key,
             },
@@ -157,8 +157,8 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
         await createToken(name, null, null, mathiasApolloClient)
         const tokenDetails = await getToken('jay', name, mathiasApolloClient)
 
-        const response = await apolloClient({ username: 'mathias', password: 'password' }).query({
-            query: GQL_DELETE,
+        const response = await apolloClient({ username: 'mathias', password: 'password' }).mutate({
+            mutation: GQL_DELETE,
             variables: {
                 tokenKey: tokenDetails.key,
             },
@@ -179,8 +179,8 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
         const tokenDetails = await getToken('root', name, rootApolloClient)
 
         try {
-            await apolloClient({ username: 'mathias', password: 'password' }).query({
-                query: GQL_DELETE,
+            await apolloClient({ username: 'mathias', password: 'password' }).mutate({
+                mutation: GQL_DELETE,
                 variables: {
                     tokenKey: tokenDetails.key,
                 },
@@ -201,8 +201,8 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
         await createToken(name, null, null, mathiasApolloClient)
         const tokenDetails = await getToken('mathias', name, mathiasApolloClient)
 
-        const response = await apolloClient().query({
-            query: GQL_DELETE,
+        const response = await apolloClient().mutate({
+            mutation: GQL_DELETE,
             variables: {
                 tokenKey: tokenDetails.key,
             },
@@ -221,8 +221,8 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
         await createToken(name, null, null, mathiasApolloClient)
         const tokenDetails = await getToken('jay', name, mathiasApolloClient)
 
-        const response = await apolloClient().query({
-            query: GQL_DELETE,
+        const response = await apolloClient().mutate({
+            mutation: GQL_DELETE,
             variables: {
                 tokenKey: tokenDetails.key,
             },

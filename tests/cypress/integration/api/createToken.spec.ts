@@ -23,8 +23,8 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
         const client = apolloClient()
         const name = 'test-' + new Date().getTime()
 
-        const response = await apolloClient().query({
-            query: GQL_CREATE,
+        const response = await apolloClient().mutate({
+            mutation: GQL_CREATE,
             variables: {
                 tokenName: name,
                 siteKey: null,
@@ -49,8 +49,8 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
         const client = apolloClient()
         const name = 'test-' + new Date().getTime()
 
-        const response = await apolloClient().query({
-            query: GQL_CREATE,
+        const response = await apolloClient().mutate({
+            mutation: GQL_CREATE,
             variables: {
                 tokenName: name,
                 siteKey: null,
@@ -77,8 +77,8 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
         const name = 'test-' + new Date().getTime()
 
         try {
-            await apolloClient().query({
-                query: GQL_CREATE,
+            await apolloClient().mutate({
+                mutation: GQL_CREATE,
                 variables: {
                     tokenName: name,
                     siteKey: null,
@@ -100,8 +100,8 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
         const name = 'test-' + new Date().getTime()
         const expireAt = '2040-01-01'
 
-        const response = await apolloClient().query({
-            query: GQL_CREATE,
+        const response = await apolloClient().mutate({
+            mutation: GQL_CREATE,
             variables: {
                 tokenName: name,
                 siteKey: null,
@@ -128,8 +128,8 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
         const name = 'test-' + new Date().getTime()
         const expireAt = '2010-01-01'
 
-        const response = await apolloClient().query({
-            query: GQL_CREATE,
+        const response = await apolloClient().mutate({
+            mutation: GQL_CREATE,
             variables: {
                 tokenName: name,
                 siteKey: null,
@@ -156,8 +156,8 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
         const expireAt = '2010-ABCDEF-01'
 
         try {
-            await apolloClient().query({
-                query: GQL_CREATE,
+            await apolloClient().mutate({
+                mutation: GQL_CREATE,
                 variables: {
                     tokenName: name,
                     siteKey: null,
@@ -182,8 +182,8 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
         const expireAt = ''
 
         try {
-            await apolloClient().query({
-                query: GQL_CREATE,
+            await apolloClient().mutate({
+                mutation: GQL_CREATE,
                 variables: {
                     tokenName: name,
                     siteKey: null,
@@ -205,8 +205,8 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
         const name = 'test-' + new Date().getTime()
         const expireAt = '2040-01-01'
 
-        const response = await apolloClient().query({
-            query: GQL_CREATE,
+        const response = await apolloClient().mutate({
+            mutation: GQL_CREATE,
             variables: {
                 tokenName: name,
                 siteKey: null,
@@ -226,8 +226,8 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
         expect(tokenDetails.name).to.equals(name)
 
         try {
-            await apolloClient().query({
-                query: GQL_CREATE,
+            await apolloClient().mutate({
+                mutation: GQL_CREATE,
                 variables: {
                     tokenName: name,
                     siteKey: null,
@@ -252,8 +252,8 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
         const name = null
 
         try {
-            await apolloClient().query({
-                query: GQL_CREATE,
+            await apolloClient().mutate({
+                mutation: GQL_CREATE,
                 variables: {
                     tokenName: name,
                     siteKey: null,
@@ -272,8 +272,8 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
         const name = ''
 
         try {
-            await apolloClient().query({
-                query: GQL_CREATE,
+            await apolloClient().mutate({
+                mutation: GQL_CREATE,
                 variables: {
                     tokenName: name,
                     siteKey: null,
@@ -294,8 +294,8 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
         const name = 'test-' + new Date().getTime()
 
         try {
-            await apolloClient({}).query({
-                query: GQL_CREATE,
+            await apolloClient({}).mutate({
+                mutation: GQL_CREATE,
                 variables: {
                     tokenName: name,
                     siteKey: null,
@@ -319,8 +319,8 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
         const credentials = { username: userId, password: 'password' }
         const client = apolloClient(credentials)
 
-        const response = await apolloClient(credentials).query({
-            query: GQL_CREATE,
+        const response = await apolloClient(credentials).mutate({
+            mutation: GQL_CREATE,
             variables: {
                 tokenName: name,
                 siteKey: null,
@@ -347,8 +347,8 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
         const credentials = { username: userId, password: 'password' }
         const client = apolloClient(credentials)
 
-        const response = await apolloClient(credentials).query({
-            query: GQL_CREATE,
+        const response = await apolloClient(credentials).mutate({
+            mutation: GQL_CREATE,
             variables: {
                 tokenName: name,
                 siteKey: null,

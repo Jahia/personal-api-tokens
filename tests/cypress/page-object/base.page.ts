@@ -7,7 +7,7 @@ export class BasePage {
      * @param type of content to find
      * @param text to find
      */
-    getByText(type: string, text: string | RegExp): Cypress.Chainable {
+    getByText(type: string, text: string): Cypress.Chainable {
         return cy.contains(type, text)
     }
 
@@ -17,5 +17,5 @@ export class BasePage {
 
     assertButtonVisibleAndClick(selector: string): Cypress.Chainable {
         return cy.get(selector).last().should(this.BE_VISIBLE).click()
-    }
+    }    
 }

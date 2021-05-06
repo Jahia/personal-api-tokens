@@ -42,7 +42,7 @@ describe('List tokens via API - query.admin.personalApiTokens.tokens', () => {
             expect(token.state).to.equal('ACTIVE')
             expect(token.createdAt).to.include('202')
             expect(token.expireAt).to.be.null
-            expect(token.user.name).to.equal(Cypress.env('JAHIA_USERNAME'))
+            expect(token.user.name).to.equal('root')
         })
     })
 

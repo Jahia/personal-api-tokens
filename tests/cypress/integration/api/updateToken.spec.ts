@@ -27,8 +27,8 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
         await createToken(nameA, null, null, client)
         const tokenDetails = await getToken('root', nameA, client)
 
-        const response = await apolloClient().query({
-            query: GQL_UPDATE,
+        const response = await apolloClient().mutate({
+            mutation: GQL_UPDATE,
             variables: {
                 tokenKey: tokenDetails.key,
                 tokenName: nameB,
@@ -55,8 +55,8 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
         await createToken(nameA, null, null, client)
         const tokenDetails = await getToken('root', nameA, client)
 
-        const response = await apolloClient().query({
-            query: GQL_UPDATE,
+        const response = await apolloClient().mutate({
+            mutation: GQL_UPDATE,
             variables: {
                 tokenKey: tokenDetails.key,
                 tokenName: null,
@@ -80,8 +80,8 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
         const tokenDetails = await getToken('root', nameA, client)
 
         try {
-            await apolloClient().query({
-                query: GQL_UPDATE,
+            await apolloClient().mutate({
+                mutation: GQL_UPDATE,
                 variables: {
                     tokenKey: tokenDetails.key,
                     tokenName: '',
@@ -112,8 +112,8 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
         const tokenBDetails = await getToken('root', nameB, client)
 
         try {
-            await apolloClient().query({
-                query: GQL_UPDATE,
+            await apolloClient().mutate({
+                mutation: GQL_UPDATE,
                 variables: {
                     tokenKey: tokenADetails.key,
                     tokenName: nameB,
@@ -143,8 +143,8 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
         await createToken(name, null, null, client)
         const tokenDetails = await getToken('root', name, client)
 
-        const response = await apolloClient().query({
-            query: GQL_UPDATE,
+        const response = await apolloClient().mutate({
+            mutation: GQL_UPDATE,
             variables: {
                 tokenKey: tokenDetails.key,
                 tokenName: null,
@@ -169,8 +169,8 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
         const tokenDetails = await getToken('root', name, client)
 
         try {
-            await apolloClient().query({
-                query: GQL_UPDATE,
+            await apolloClient().mutate({
+                mutation: GQL_UPDATE,
                 variables: {
                     tokenKey: tokenDetails.key,
                     tokenName: null,
@@ -196,8 +196,8 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
         await createToken(name, null, null, client)
         const tokenDetails = await getToken('root', name, client)
 
-        const response = await apolloClient().query({
-            query: GQL_UPDATE,
+        const response = await apolloClient().mutate({
+            mutation: GQL_UPDATE,
             variables: {
                 tokenKey: tokenDetails.key,
                 tokenName: null,
@@ -221,8 +221,8 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
         await createToken(name, null, null, client)
         const tokenDetails = await getToken('root', name, client)
 
-        const response = await apolloClient().query({
-            query: GQL_UPDATE,
+        const response = await apolloClient().mutate({
+            mutation: GQL_UPDATE,
             variables: {
                 tokenKey: tokenDetails.key,
                 tokenName: null,
@@ -247,8 +247,8 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
         const tokenDetails = await getToken('root', name, client)
 
         try {
-            await apolloClient().query({
-                query: GQL_UPDATE,
+            await apolloClient().mutate({
+                mutation: GQL_UPDATE,
                 variables: {
                     tokenKey: tokenDetails.key,
                     tokenName: null,

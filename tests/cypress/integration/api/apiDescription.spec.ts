@@ -13,8 +13,8 @@ describe('Test if every type in graphQL API has description', () => {
 // Test to go down the AST of GraphQL to check for descriptions
 const executeTest = async (typeName, noDesc) => {
     const query = constructQuery(typeName)
-    const client = apolloClient()
-    const response = await client.query({ query })
+    // const client = apolloClient()
+    const response = await apolloClient().query({ query })
     const responseDataType = response.data.__type
     if (responseDataType === null || responseDataType === undefined || responseDataType.kind === 'UNION') {
         return

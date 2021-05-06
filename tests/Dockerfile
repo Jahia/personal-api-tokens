@@ -1,9 +1,21 @@
 FROM cypress/base:13.8.0
 
-ADD . /tmp
-WORKDIR /tmp
-#CI=true reduces the verbosity of the installation logs
-RUN cd /tmp && CI=true yarn install
-RUN CI=true /tmp/node_modules/.bin/cypress install
+RUN apt-get update && apt-get install -y jq
 
-CMD ["/bin/bash", "-c", "/tmp/env.run.sh"]
+RUN adduser --disabled-password jahians
+
+USER jahians
+WORKDIR /home/jahians
+
+COPY --chown=jahians:jahians package.json yarn.lock /home/jahians/
+
+RUN mkdir -p /home/jahians/run-artifacts /home/jahians/results /home/jahians/cypress/plugins
+
+#CI=true reduces the verbosity of the installation logs
+RUN CI=true yarn install
+
+COPY --chown=jahians:jahians . /home/jahians
+
+RUN CI=true /home/jahians/node_modules/.bin/cypress install
+
+CMD ["/bin/bash", "-c", "/home/jahians/env.run.sh"]

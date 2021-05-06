@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import gql from 'graphql-tag'
-import { ApolloClient, NormalizedCacheObject } from 'apollo-client-preset'
+import { ApolloClient, NormalizedCacheObject, OperationVariables } from '@apollo/client/core'
 import { apolloClient } from './apollo'
-import { OperationVariables } from 'apollo-client'
 
 export async function createToken(
     name: string,
@@ -68,6 +67,7 @@ export async function getToken(
                 }
             }
         `,
+        fetchPolicy: 'no-cache',
         variables: {
             userId,
             tokenName,
@@ -105,6 +105,7 @@ export async function getTokens(
                 }
             }
         `,
+        fetchPolicy: 'no-cache',
         variables,
     })
     return {

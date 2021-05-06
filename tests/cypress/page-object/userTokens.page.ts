@@ -21,7 +21,7 @@ class UserTokensPage extends BasePage {
     }
 
     goTo() {
-        cy.goTo('/jahia/administration/manageUsers')
+        cy.visit('/jahia/administration/manageUsers', { failOnStatusCode: false })
         cy.get(this.elements.userTokens).click()
         return this
     }
