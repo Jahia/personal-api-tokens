@@ -105,13 +105,22 @@ public class TokenAuthValve extends BaseAuthValve {
 
         if (Arrays.stream(urlPatterns).anyMatch(urlPattern -> CompositeFilter.matchFiltersURL(urlPattern, uri))) {
             try {
-                JCRUserNode user = authenticate(request);
-                if (user != null) {
-                    authValveContext.setShouldStoreAuthInSession(false);
-                    authValveContext.getSessionFactory().setCurrentUser(user.getJahiaUser());
-                    return;
-                }
+                String authorization = request.getHeader("Authorization");
+                if (authorization != null && authorization.contains(API_TOKEN)) {
+                    String token = StringUtils.substringAfter(authorization, API_TOKEN).trim();
 
+                    JCRTemplate.getInstance().doExecuteWithSystemSession(session -> {
+                        TokenDetails details = tokenService.verifyToken(token, session);
+                        logger.debug("Received token {}", details);
+                        if (details != null && details.isValid()) {
+                            JCRUserNode user = userManagerService.lookupUserByPath(details.getUserPath());
+                            authValveContext.setShouldStoreAuthInSession(false);
+                            authValveContext.getSessionFactory().setCurrentUser(user.getJahiaUser());
+                            permissionService.addScopes(details.getScopes(), request);
+                        }
+                        return null;
+                    });
+                }
             } catch (RepositoryException e) {
                 throw new PipelineException(e);
             }
@@ -120,23 +129,4 @@ public class TokenAuthValve extends BaseAuthValve {
         valveContext.invokeNext(o);
     }
 
-    private JCRUserNode authenticate(HttpServletRequest request) throws RepositoryException {
-        String authorization = request.getHeader("Authorization");
-        if (authorization != null && authorization.contains(API_TOKEN)) {
-            String token = StringUtils.substringAfter(authorization, API_TOKEN).trim();
-
-            return JCRTemplate.getInstance().doExecuteWithSystemSession(session -> {
-                TokenDetails details = tokenService.verifyToken(token, session);
-                logger.debug("Received token {}", details);
-                if (details != null && details.isValid()) {
-                    permissionService.addScopes(details.getScopes(), request);
-                    return userManagerService.lookupUserByPath(details.getUserPath());
-                }
-
-                return null;
-            });
-        }
-
-        return null;
-    }
 }
