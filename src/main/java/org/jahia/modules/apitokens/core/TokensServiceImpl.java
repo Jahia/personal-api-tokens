@@ -34,8 +34,10 @@ import pl.touk.throwing.exception.WrappedException;
 
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
+import javax.jcr.Value;
 import javax.jcr.query.Query;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -51,6 +53,7 @@ public class TokensServiceImpl implements TokenService {
     public static final String DIGEST = "digest";
     public static final String ACTIVE = "active";
     public static final String EXPIRATION_DATE = "expirationDate";
+    public static final String SCOPES = "scopes";
     private static final Logger logger = LoggerFactory.getLogger(TokensServiceImpl.class);
     private JahiaUserManagerService userManagerService;
 
@@ -88,6 +91,9 @@ public class TokensServiceImpl implements TokenService {
         tokenNode.setProperty(DIGEST, digestedSecret);
         tokenNode.setProperty(ACTIVE, tokenDetails.isActive());
         tokenNode.setProperty(EXPIRATION_DATE, tokenDetails.getExpirationDate());
+        if (tokenDetails.getScopes() != null) {
+            tokenNode.setProperty(SCOPES, tokenDetails.getScopes().stream().map(s -> session.getValueFactory().createValue(s)).toArray(Value[]::new));
+        }
 
         logger.info("New token generated {}", getTokenDetails(tokenNode));
 
@@ -156,6 +162,9 @@ public class TokensServiceImpl implements TokenService {
             if (getTimeValue(previousDetails.getExpirationDate()) != getTimeValue(tokenDetails.getExpirationDate())) {
                 tokenNode.setProperty(EXPIRATION_DATE, tokenDetails.getExpirationDate());
             }
+            if (tokenDetails.getScopes() != null) {
+                tokenNode.setProperty(SCOPES, tokenDetails.getScopes().stream().map(s -> session.getValueFactory().createValue(s)).toArray(Value[]::new));
+            }
             return true;
         }
         return false;
@@ -204,6 +213,11 @@ public class TokensServiceImpl implements TokenService {
 
         tokenDetails.setCreationDate(node.getProperty(Constants.JCR_CREATED).getDate());
         tokenDetails.setModificationDate(node.getProperty(Constants.JCR_LASTMODIFIED).getDate());
+        if (node.hasProperty(SCOPES)) {
+            tokenDetails.setScopes(Arrays.stream(node.getProperty(SCOPES).getValues()).map(ThrowingFunction.unchecked(Value::getString)).collect(Collectors.toList()));
+        } else {
+            tokenDetails.setScopes(Collections.emptyList());
+        }
 
         return tokenDetails;
     }

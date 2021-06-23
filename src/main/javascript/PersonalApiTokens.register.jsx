@@ -1,10 +1,10 @@
-import React from 'react';
 import {registry} from '@jahia/ui-extender';
-import MyApiTokens from './MyApiTokens/MyApiTokens';
-import Key from './KeyIcon/KeyIcon';
-import UserApiTokens from './UserApiTokens/UserApiTokens';
+import Key from './PersonalApiTokens/KeyIcon/KeyIcon';
+import MyApiTokens from './PersonalApiTokens/MyApiTokens/MyApiTokens';
+import UserApiTokens from './PersonalApiTokens/UserApiTokens/UserApiTokens';
+import React from 'react';
 
-export const registerPersonalApiTokens = () => {
+export default function () {
     registry.add('adminRoute', 'personal-api-tokens', {
         targets: ['dashboard:99.1'],
         // Icon is Lock as of now, will be changed to proper one after moonstone release
@@ -20,4 +20,4 @@ export const registerPersonalApiTokens = () => {
         isSelectable: true,
         render: () => <UserApiTokens/>
     });
-};
+}

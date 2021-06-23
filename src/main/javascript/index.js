@@ -1,9 +1,6 @@
-import './PersonalApiTokens';
-import {registry} from '@jahia/ui-extender';
-
-registry.add('callback', 'personal-api-tokens', {
-    targets: ['jahiaApp-init:99'],
-    callback: () => Promise.all([
-        window.jahia.i18n.loadNamespaces('personal-api-tokens')
-    ])
+// Used only if jahia-ui-root is the host, experimental
+import('@jahia/app-shell/bootstrap').then(res => {
+    console.log(res);
+    window.jahia = res;
+    res.startAppShell(window.appShell.remotes, window.appShell.targetId);
 });

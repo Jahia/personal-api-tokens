@@ -5,6 +5,7 @@ import {TextField} from '@material-ui/core';
 import {useTranslation} from 'react-i18next';
 import PropTypes from 'prop-types';
 import {DatePickerField} from './DatePickerField';
+import ScopesSelector from '../ScopesSelector/ScopesSelector';
 
 const CreateTokenDialogBody = ({tokenInformation, setTokenInformation, error}) => {
     const {t} = useTranslation('personal-api-tokens');
@@ -14,14 +15,12 @@ const CreateTokenDialogBody = ({tokenInformation, setTokenInformation, error}) =
     );
     return (
         <div className={`${styles.bodyContainer} flexCol`}>
-            <Typography className={styles.nameLabel}
-                        variant="subheading"
-            >{t('personal-api-tokens:createToken.name')}
+            <Typography className={styles.nameLabel} variant="subheading">
+                {t('personal-api-tokens:createToken.name')}
                 <span className={styles.asterisk}>*</span>
             </Typography>
-            <Typography weight="light"
-                        variant="caption"
-            >{t('personal-api-tokens:createToken.defineName')}
+            <Typography weight="light" variant="caption">
+                {t('personal-api-tokens:createToken.defineName')}
             </Typography>
             <TextField
                 error={error}
@@ -36,14 +35,21 @@ const CreateTokenDialogBody = ({tokenInformation, setTokenInformation, error}) =
             <div className={styles.errorDiv}>
                 {error ? errorMessage : null}
             </div>
-            <Typography className={styles.nameLabel}
-                        variant="subheading"
-            >{t('personal-api-tokens:createToken.expirationDate')}
+            <Typography className={styles.nameLabel} variant="subheading">
+                {t('personal-api-tokens:createToken.expirationDate')}
             </Typography>
             <Typography weight="light" variant="caption">{t('personal-api-tokens:createToken.setDate')}</Typography>
             <DatePickerField
                 selectedDateTime={tokenInformation.expireAt}
                 onSelectDateTime={value => setTokenInformation({...tokenInformation, expireAt: value})}
+            />
+            <div className={styles.errorDiv}/>
+            <Typography className={styles.nameLabel} variant="subheading">
+                {t('personal-api-tokens:createToken.scopes')}
+            </Typography>
+            <ScopesSelector
+                value={tokenInformation.scopes}
+                onChange={scopes => setTokenInformation({...tokenInformation, scopes})}
             />
         </div>
     );

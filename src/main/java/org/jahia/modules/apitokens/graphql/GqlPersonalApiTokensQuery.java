@@ -32,10 +32,13 @@ import org.jahia.modules.graphql.provider.dxm.predicate.SorterHelper;
 import org.jahia.modules.graphql.provider.dxm.relay.DXPaginatedData;
 import org.jahia.modules.graphql.provider.dxm.relay.DXPaginatedDataConnectionFetcher;
 import org.jahia.modules.graphql.provider.dxm.relay.PaginationHelper;
+import org.jahia.modules.securityfilter.PermissionService;
 import org.jahia.services.content.JCRTemplate;
 import org.jahia.services.content.decorator.JCRUserNode;
 
 import javax.inject.Inject;
+import java.util.Collection;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -56,6 +59,10 @@ public class GqlPersonalApiTokensQuery {
     @Inject
     @GraphQLOsgiService
     private JahiaUserManagerService userManagerService;
+
+    @Inject
+    @GraphQLOsgiService
+    private PermissionService permissionService;
 
     /**
      * Check token validity
@@ -169,4 +176,15 @@ public class GqlPersonalApiTokensQuery {
             throw new DataFetchingException(e);
         }
     }
+
+    /**
+     * Get available scopes
+     *
+     * @return token details
+     */
+    @GraphQLField
+    public Collection<GqlScope> getAvailableScopes() {
+        return permissionService.getAvailableScopes().stream().map(GqlScope::new).collect(Collectors.toList());
+    }
+
 }

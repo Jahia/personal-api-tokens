@@ -18,6 +18,7 @@ package org.jahia.modules.apitokens.core;
 import org.jahia.modules.apitokens.TokenDetails;
 
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Implementation for Token details
@@ -37,6 +38,8 @@ public class TokenDetailsImpl implements TokenDetails {
 
     private boolean isActive = true;
 
+    private List<String> scopes;
+
     /**
      * New token details from userId and token name
      *
@@ -48,6 +51,7 @@ public class TokenDetailsImpl implements TokenDetails {
         this.name = name;
     }
 
+    @Override
     public String getKey() {
         return key;
     }
@@ -56,6 +60,7 @@ public class TokenDetailsImpl implements TokenDetails {
         this.key = key;
     }
 
+    @Override
     public String getUserPath() {
         return userPath;
     }
@@ -64,6 +69,7 @@ public class TokenDetailsImpl implements TokenDetails {
         this.userPath = userPath;
     }
 
+    @Override
     public String getDigest() {
         return digest;
     }
@@ -72,44 +78,64 @@ public class TokenDetailsImpl implements TokenDetails {
         this.digest = digest;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }
 
+    @Override
     public Calendar getExpirationDate() {
         return expirationDate;
     }
 
+    @Override
     public void setExpirationDate(Calendar expirationDate) {
         this.expirationDate = expirationDate;
     }
 
+    @Override
     public Calendar getCreationDate() {
         return creationDate;
     }
 
+    @Override
     public void setCreationDate(Calendar creationDate) {
         this.creationDate = creationDate;
     }
 
+    @Override
     public Calendar getModificationDate() {
         return modificationDate;
     }
 
+    @Override
     public void setModificationDate(Calendar modificationDate) {
         this.modificationDate = modificationDate;
     }
 
+    @Override
     public boolean isActive() {
         return isActive;
     }
 
+    @Override
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    @Override
+    public List<String> getScopes() {
+        return scopes;
+    }
+
+    @Override
+    public void setScopes(List<String> scopes) {
+        this.scopes = scopes;
     }
 
     public boolean isValid() {

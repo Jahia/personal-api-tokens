@@ -17,6 +17,7 @@ package org.jahia.modules.apitokens;
 
 import javax.jcr.RepositoryException;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Token builder
@@ -42,6 +43,13 @@ public interface TokenBuilder {
      * @return builder
      */
     public TokenBuilder setActive(boolean active);
+
+    /**
+     * add scopes
+     * @param scopes
+     * @return builder
+     */
+    public TokenBuilder setScopes(List<String> scopes);
 
     /**
      * Create the token in the JCR. Session has to be saved to persist the token.
