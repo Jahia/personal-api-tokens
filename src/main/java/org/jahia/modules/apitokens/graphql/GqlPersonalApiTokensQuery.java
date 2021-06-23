@@ -21,13 +21,14 @@ import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import graphql.servlet.GraphQLContext;
 import org.jahia.api.usermanager.JahiaUserManagerService;
 import org.jahia.modules.apitokens.TokenDetails;
 import org.jahia.modules.apitokens.TokenService;
 import org.jahia.modules.graphql.provider.dxm.DataFetchingException;
-import org.jahia.modules.graphql.provider.dxm.predicate.FieldSorterInput;
 import org.jahia.modules.graphql.provider.dxm.osgi.annotations.GraphQLOsgiService;
 import org.jahia.modules.graphql.provider.dxm.predicate.FieldEvaluator;
+import org.jahia.modules.graphql.provider.dxm.predicate.FieldSorterInput;
 import org.jahia.modules.graphql.provider.dxm.predicate.SorterHelper;
 import org.jahia.modules.graphql.provider.dxm.relay.DXPaginatedData;
 import org.jahia.modules.graphql.provider.dxm.relay.DXPaginatedDataConnectionFetcher;
@@ -183,8 +184,12 @@ public class GqlPersonalApiTokensQuery {
      * @return token details
      */
     @GraphQLField
-    public Collection<GqlScope> getAvailableScopes() {
-        return permissionService.getAvailableScopes().stream().map(GqlScope::new).collect(Collectors.toList());
+    public Collection<GqlScope> getAvailableScopes(DataFetchingEnvironment environment) {
+        GraphQLContext context = environment.getContext();
+        return permissionService.getAvailableScopes().stream()
+                .filter(s -> "true".equals(s.getMetadata().get("visible")))
+                .filter(s -> s.isValid(context.getRequest().orElse(null)))
+                .map(GqlScope::new).collect(Collectors.toList());
     }
 
 }
