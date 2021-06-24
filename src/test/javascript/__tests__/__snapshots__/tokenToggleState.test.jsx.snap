@@ -31,6 +31,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
               class="undefined moonstone-icon moonstone-icon_default"
               fill="currentColor"
               viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
             >
               <path
                 d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
@@ -296,6 +297,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                           class="undefined moonstone-icon moonstone-icon_default"
                           fill="currentColor"
                           viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
                             d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"
@@ -306,11 +308,11 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     </div>
                     <menu
                       class="moonstone-menu"
-                      style="top: 0px; left: 0px;"
+                      style="position: fixed; top: 0px; left: 0px;"
                     >
                       <li
                         aria-disabled="false"
-                        class="moonstone-menuItem moonstone-title moonstone-listItem flexRow alignCenter"
+                        class="moonstone-listItem flexRow alignCenter moonstone-menuItem moonstone-title"
                       >
                         <span
                           class="moonstone-typography moonstone-variant_caption moonstone-weight_default flexFluid moonstone-nowrap"
@@ -320,7 +322,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                       </li>
                       <li
                         aria-disabled="false"
-                        class="moonstone-menuItem moonstone-listItem flexRow alignCenter"
+                        class="moonstone-listItem flexRow alignCenter moonstone-menuItem"
                         data-testid="activate-deactivate-toggle-btn"
                         tabindex="0"
                       >
@@ -416,6 +418,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                           class="undefined moonstone-icon moonstone-icon_default"
                           fill="currentColor"
                           viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
                             d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"
@@ -426,11 +429,11 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     </div>
                     <menu
                       class="moonstone-menu moonstone-hidden"
-                      style="top: -1000px; left: -1000px;"
+                      style="position: fixed; top: -1000px; left: -1000px;"
                     >
                       <li
                         aria-disabled="false"
-                        class="moonstone-menuItem moonstone-title moonstone-listItem flexRow alignCenter"
+                        class="moonstone-listItem flexRow alignCenter moonstone-menuItem moonstone-title"
                       >
                         <span
                           class="moonstone-typography moonstone-variant_caption moonstone-weight_default flexFluid moonstone-nowrap"
@@ -440,7 +443,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                       </li>
                       <li
                         aria-disabled="false"
-                        class="moonstone-menuItem moonstone-listItem flexRow alignCenter"
+                        class="moonstone-listItem flexRow alignCenter moonstone-menuItem"
                         data-testid="activate-deactivate-toggle-btn"
                         tabindex="0"
                       >
@@ -532,6 +535,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                           class="undefined moonstone-icon moonstone-icon_default"
                           fill="currentColor"
                           viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
                             d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"
@@ -542,11 +546,11 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     </div>
                     <menu
                       class="moonstone-menu moonstone-hidden"
-                      style="top: -1000px; left: -1000px;"
+                      style="position: fixed; top: -1000px; left: -1000px;"
                     >
                       <li
                         aria-disabled="false"
-                        class="moonstone-menuItem moonstone-title moonstone-listItem flexRow alignCenter"
+                        class="moonstone-listItem flexRow alignCenter moonstone-menuItem moonstone-title"
                       >
                         <span
                           class="moonstone-typography moonstone-variant_caption moonstone-weight_default flexFluid moonstone-nowrap"
@@ -556,7 +560,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                       </li>
                       <li
                         aria-disabled="false"
-                        class="moonstone-menuItem moonstone-listItem flexRow alignCenter"
+                        class="moonstone-listItem flexRow alignCenter moonstone-menuItem"
                         data-testid="activate-deactivate-toggle-btn"
                         tabindex="0"
                       >
@@ -648,6 +652,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                           class="undefined moonstone-icon moonstone-icon_default"
                           fill="currentColor"
                           viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
                             d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"
@@ -658,11 +663,11 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     </div>
                     <menu
                       class="moonstone-menu moonstone-hidden"
-                      style="top: -1000px; left: -1000px;"
+                      style="position: fixed; top: -1000px; left: -1000px;"
                     >
                       <li
                         aria-disabled="false"
-                        class="moonstone-menuItem moonstone-title moonstone-listItem flexRow alignCenter"
+                        class="moonstone-listItem flexRow alignCenter moonstone-menuItem moonstone-title"
                       >
                         <span
                           class="moonstone-typography moonstone-variant_caption moonstone-weight_default flexFluid moonstone-nowrap"
@@ -672,7 +677,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                       </li>
                       <li
                         aria-disabled="false"
-                        class="moonstone-menuItem moonstone-listItem flexRow alignCenter"
+                        class="moonstone-listItem flexRow alignCenter moonstone-menuItem"
                         data-testid="activate-deactivate-toggle-btn"
                         tabindex="0"
                       >
@@ -764,6 +769,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                           class="undefined moonstone-icon moonstone-icon_default"
                           fill="currentColor"
                           viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
                             d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"
@@ -774,11 +780,11 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                     </div>
                     <menu
                       class="moonstone-menu moonstone-hidden"
-                      style="top: -1000px; left: -1000px;"
+                      style="position: fixed; top: -1000px; left: -1000px;"
                     >
                       <li
                         aria-disabled="false"
-                        class="moonstone-menuItem moonstone-title moonstone-listItem flexRow alignCenter"
+                        class="moonstone-listItem flexRow alignCenter moonstone-menuItem moonstone-title"
                       >
                         <span
                           class="moonstone-typography moonstone-variant_caption moonstone-weight_default flexFluid moonstone-nowrap"
@@ -788,7 +794,7 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
                       </li>
                       <li
                         aria-disabled="false"
-                        class="moonstone-menuItem moonstone-listItem flexRow alignCenter"
+                        class="moonstone-listItem flexRow alignCenter moonstone-menuItem"
                         data-testid="activate-deactivate-toggle-btn"
                         tabindex="0"
                       >
