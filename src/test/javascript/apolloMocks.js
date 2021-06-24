@@ -130,7 +130,8 @@ export const createTokenMocks = [
             query: CreateTokenMutation,
             variables: {
                 name: 'testToken',
-                expireAt: expTime
+                expireAt: expTime,
+                scopes: []
             }
         },
         result: () => ({
@@ -209,7 +210,8 @@ export const createTokenMocks = [
         request: {
             query: CreateTokenMutation,
             variables: {
-                name: 'testToken'
+                name: 'testToken',
+                scopes: []
             }
         },
         result: () => ({
@@ -350,7 +352,8 @@ export const snapshotMocks = [
             query: CreateTokenMutation,
             variables: {
                 name: 'testToken',
-                expireAt: '2020-11-11T02:24:00.000Z'
+                expireAt: '2020-11-11T02:24:00.000Z',
+                scopes: []
             }
         },
         result: () => ({
@@ -401,7 +404,8 @@ export const snapshotMocks = [
             query: CreateTokenMutation,
             variables: {
                 name: 'testToken',
-                expireAt: '2020-11-11T07:24:00.000Z'
+                expireAt: '2020-11-11T07:24:00.000Z',
+                scopes: []
             }
         },
         result: () => ({
@@ -419,7 +423,8 @@ export const snapshotMocks = [
             query: CreateTokenMutation,
             variables: {
                 name: 'testToken',
-                expireAt: null
+                expireAt: null,
+                scopes: []
             }
         },
         result: () => ({
