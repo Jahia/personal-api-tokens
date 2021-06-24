@@ -83,8 +83,8 @@ describe('Test token creation', () => {
         expect(screen.getByText(/translated_personal-api-tokens:create$/i)).toBeDefined();
         const tokenNameInput = screen.getAllByRole('textbox')[0];
         const tokenExpiryDateInput = screen.getAllByRole('textbox')[1];
-        const gqlScope = screen.getByText('graphql').closest("tr");
-        const tokenScopeCheckbox = getByRole(gqlScope, "checkbox")
+        const gqlScope = screen.getByText('graphql').closest('tr');
+        const tokenScopeCheckbox = getByRole(gqlScope, 'checkbox');
         await act(async () => {
             fireEvent.change(tokenNameInput, {target: {value: 'testToken'}});
             await wait(100);
