@@ -4,6 +4,7 @@ import {CreateTokenMutation} from '../../main/javascript/PersonalApiTokens/MyApi
 import {getUserInformation} from '../../main/javascript/PersonalApiTokens/UserApiTokens/UserApiTokens.gql';
 
 import {DeleteTokenMutation, getTokens, StateTokenMutation} from '../../main/javascript/PersonalApiTokens/TokensList/TokensList.gql';
+import {GetScopesQuery} from "../../main/javascript/PersonalApiTokens/ScopesSelector/ScopesSelector.gql";
 dayjs.extend(utc);
 
 const expTime = dayjs('2020/11/11 02:24', 'yyyy/MM/DD HH:mm').utc().format();
@@ -127,6 +128,25 @@ export const tokenResultBill = {
 export const createTokenMocks = [
     {
         request: {
+            query: GetScopesQuery,
+        },
+        result: () => ({
+            data: {
+                admin: {
+                    personalApiTokens: {
+                        availableScopes: [
+                            {
+                                name: 'graphql',
+                                description: 'descr'
+                            }
+                        ]
+                    }
+                }
+            }
+        })
+    },
+    {
+        request: {
             query: CreateTokenMutation,
             variables: {
                 name: 'testToken',
@@ -219,6 +239,24 @@ export const createTokenMocks = [
                 admin: {
                     personalApiTokens: {
                         createToken: 'tokenNoExpiryDate'
+                    }
+                }
+            }
+        })
+    },
+    {
+        request: {
+            query: CreateTokenMutation,
+            variables: {
+                name: 'testToken',
+                scopes: ["graphql"]
+            }
+        },
+        result: () => ({
+            data: {
+                admin: {
+                    personalApiTokens: {
+                        createToken: 'tokenWithScope'
                     }
                 }
             }
