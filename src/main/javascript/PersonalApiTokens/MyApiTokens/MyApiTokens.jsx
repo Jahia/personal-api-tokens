@@ -20,7 +20,7 @@ const MyApiTokens = () => {
     const [isCreateTokenDialogOpen, setCreateTokenDialogOpen] = useState(false);
     const [isCopyTokenDialogOpen, setCopyTokenDialogOpen] = useState(false);
     const [createTokenError, setCreateTokenError] = useState(false);
-    const [userTokenInformation, setUserTokenInformation] = useState({name: ''});
+    const [userTokenInformation, setUserTokenInformation] = useState({name: '', scopes: []});
     const [tokenValue, setTokenValue] = useState('');
 
     const refreshState = () => {

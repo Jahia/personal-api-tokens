@@ -32,6 +32,7 @@ import org.joda.time.DateTime;
 import javax.inject.Inject;
 import javax.jcr.RepositoryException;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -67,6 +68,7 @@ public class GqlPersonalApiTokensMutation {
     public String createToken(@GraphQLName("name") @GraphQLDescription("Name to give to the token") @GraphQLNonNull String name,
                               @GraphQLName("site") @GraphQLDescription("The site the user belongs to, null if global user") String site,
                               @GraphQLName("expireAt") @GraphQLDescription("Expiration date of the token") String expireAt,
+                              @GraphQLName("scopes") @GraphQLDescription("Scopes attached to this token") List<String> scopes,
                               @GraphQLName("state") @GraphQLDescription("State to give the newly created token") TokenState state) {
         String path = jcrTemplate.getSessionFactory().getCurrentUser().getLocalPath();
 
@@ -76,6 +78,7 @@ public class GqlPersonalApiTokensMutation {
                 String token = tokensService.tokenBuilder(path, JCRContentUtils.escapeLocalNodeName(name), session)
                         .setExpirationDate(expiration)
                         .setActive(state != TokenState.DISABLED)
+                        .setScopes(scopes)
                         .create();
                 session.save();
                 return token;
@@ -99,6 +102,7 @@ public class GqlPersonalApiTokensMutation {
     public boolean updateToken(@GraphQLName("key") @GraphQLDescription("The token key")  @GraphQLNonNull String key,
                                @GraphQLName("name") @GraphQLDescription("Name to give to the token") String name,
                                @GraphQLName("expireAt") @GraphQLDescription("Expiration date of the token, use empty string to unset expiration date") String expireAt,
+                               @GraphQLName("scopes") @GraphQLDescription("Scopes attached to this token") List<String> scopes,
                                @GraphQLName("state") @GraphQLDescription("State to give the token") TokenState state) {
         try {
             return jcrTemplate.doExecute(jcrTemplate.getSessionFactory().getCurrentUser(), null, null, session -> {
@@ -118,6 +122,9 @@ public class GqlPersonalApiTokensMutation {
                 }
                 if (state != null) {
                     details.setActive(state != TokenState.DISABLED);
+                }
+                if (scopes != null) {
+                    details.setScopes(scopes);
                 }
                 boolean updateToken = tokensService.updateToken(details, session);
                 session.save();

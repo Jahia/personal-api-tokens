@@ -10,6 +10,7 @@
     "defineName": "Define the name of your token",
     "name": "Name",
     "expirationDate": "Expiration date",
+    "scopes": "Select scopes",
     "setDate": "Set the date when this token will be expired",
     "tokenAlreadyExists": "Token name already taken, try another."
   },

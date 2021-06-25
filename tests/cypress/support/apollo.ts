@@ -1,9 +1,15 @@
-import { ApolloClient, InMemoryCache, ApolloLink, from, NormalizedCacheObject } from '@apollo/client/core'
+import fetch from 'cross-fetch'
+import { ApolloClient, HttpLink, InMemoryCache, from, ApolloLink, NormalizedCacheObject } from '@apollo/client/core'
 import { setContext } from '@apollo/client/link/context'
-import { onError } from '@apollo/client/link/error'
-import { BatchHttpLink } from '@apollo/client/link/batch-http'
 
-interface authMethod {
+/*
+    Note: This code to be compatible with both browser and nodeJS, this means:
+        - not using btoa() but Buffer.from().toString('base64') instead
+        - using "fetch" with apollo
+    Please also note that node does NOT have access to `Cypress.`, thus those cannot be used here
+*/
+
+interface AuthMethod {
     token?: string
     username?: string
     password?: string
@@ -15,21 +21,23 @@ interface httpHeaders {
     Cookie?: string
 }
 
-export const apolloClient = (authMethod?: authMethod, baseUrl?: string): ApolloClient<NormalizedCacheObject> => {
-    const testBaseUrl = baseUrl === undefined ? Cypress.config().baseUrl : baseUrl
-
-    const httpLink = new BatchHttpLink({
-        uri: `${testBaseUrl}/modules/graphql`,
+export const apollo = (baseUrl: string, authMethod?: AuthMethod): ApolloClient<NormalizedCacheObject> => {
+    const httpLink = new HttpLink({
+        uri: `${baseUrl}/modules/graphql`,
+        fetch,
     })
 
     const authHeaders: httpHeaders = {}
     if (authMethod === undefined) {
-        authHeaders.authorization = `Basic ${btoa('root:' + Cypress.env('SUPER_USER_PASSWORD'))}`
+        console.log('Performing GraphQL query as guest')
     } else if (authMethod.token !== undefined) {
         authHeaders.authorization = `APIToken ${authMethod.token}`
     } else if (authMethod.username !== undefined && authMethod.password !== undefined) {
-        authHeaders.authorization = `Basic ${btoa(authMethod.username + ':' + authMethod.password)}`
+        authHeaders.authorization = `Basic ${Buffer.from(authMethod.username + ':' + authMethod.password).toString(
+            'base64',
+        )}`
     } else if (authMethod.jsessionid !== undefined) {
+        console.log(`Performing GraphQL query using JSESSIONID`)
         authHeaders.Cookie = 'JSESSIONID=' + authMethod.jsessionid
     }
 
@@ -42,22 +50,16 @@ export const apolloClient = (authMethod?: authMethod, baseUrl?: string): ApolloC
         }
     })
 
-    const errorLink = onError(({ graphQLErrors, networkError }) => {
-        if (graphQLErrors)
-            graphQLErrors.map(({ message, locations, path }) =>
-                console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`),
-            )
-        if (networkError) console.log(`[Network error]: ${networkError}`)
-    })
-
-    // Otherwise, no headers are sent and user is considered guest (i.e. apolloClient({}))
-    // cy.log(`HTTP Headers ${JSON.stringify(authHeaders)}`)
     return new ApolloClient({
+        link: from([(authLink as unknown) as ApolloLink, httpLink]),
         cache: new InMemoryCache(),
-        link: from([(authLink as unknown) as ApolloLink, errorLink, httpLink]),
         defaultOptions: {
             query: {
-                errorPolicy: 'ignore',
+                fetchPolicy: 'no-cache',
+                errorPolicy: 'all',
+            },
+            mutate: {
+                errorPolicy: 'all',
             },
         },
     })

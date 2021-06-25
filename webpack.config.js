@@ -4,15 +4,8 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
-
-// Get manifest
-const normalizedPath = require('path').join(__dirname, './target/dependency');
-let manifest = '';
-
-require('fs').readdirSync(normalizedPath).forEach(function (file) {
-    manifest = `./target/dependency/${file}`;
-    console.log(`Personal API tokens module uses manifest: ${manifest}`);
-});
+const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
+const shared = require("./webpack.shared")
 
 module.exports = (env, argv) => {
     const config = {
@@ -21,21 +14,19 @@ module.exports = (env, argv) => {
         },
         output: {
             path: path.resolve(__dirname, 'src/main/resources/javascript/apps/'),
-            filename: 'jahia.bundle.js',
-            chunkFilename: '[name].jahia.[chunkhash:6].js',
-            jsonpFunction: 'patJsonp'
+            filename: 'pat.bundle.js',
+            chunkFilename: '[name].pat.[chunkhash:6].js'
         },
         resolve: {
             mainFields: ['module', 'main'],
-            extensions: ['.mjs', '.js', '.jsx', 'json']
-        },
-        optimization: {
-            splitChunks: {
-                maxSize: 4000000
-            }
+            extensions: ['.mjs', '.js', '.jsx', 'json', 'scss']
         },
         module: {
             rules: [
+                {
+                    test: /\.m?js$/,
+                    type: 'javascript/auto'
+                },
                 {
                     test: /\.(js|jsx)$/,
                     include: [path.join(__dirname, 'src')],
@@ -43,6 +34,13 @@ module.exports = (env, argv) => {
                     use: {
                         loader: 'babel-loader',
                         options: {
+                            presets: [
+                                ['@babel/preset-env', {
+                                    modules: false,
+                                    targets: {chrome: '60', edge: '44', firefox: '54', safari: '12'}
+                                }],
+                                '@babel/preset-react'
+                            ],
                             plugins:[
                                 ['transform-imports', {
                                     '@material-ui/icons': {
@@ -56,7 +54,7 @@ module.exports = (env, argv) => {
                 },
                 {
                     test: /\.css$/i,
-                    include: [path.join(__dirname, 'node_modules/@jahia/moonstone-alpha')],
+                    include: [path.join(__dirname, 'node_modules/@jahia/moonstone-alpha'), path.join(__dirname, 'node_modules/@jahia/moonstone')],
                     sideEffects: true,
                     use: [
                         'style-loader',
@@ -78,20 +76,34 @@ module.exports = (env, argv) => {
                         },
                         'sass-loader'
                     ]
+                },
+                {
+                    test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+                    use: [{
+                        loader: 'file-loader',
+                        options: {
+                            name: '[name].[ext]',
+                            outputPath: 'fonts/'
+                        }
+                    }]
                 }
             ]
         },
         plugins: [
-            new webpack.DllReferencePlugin({
-                manifest: require(manifest)
+            new ModuleFederationPlugin({
+                name: "jcontent",
+                library: { type: "assign", name: "appShell.remotes.jcontent" },
+                filename: "remoteEntry.js",
+                exposes: {
+                    './init': './src/main/javascript/init',
+                },
+                remotes: {
+                    '@jahia/app-shell': 'appShellRemote',
+                    '@jahia/jahia-ui-root': 'appShell.remotes.jahiaUi'
+                },
+                shared
             }),
             new CleanWebpackPlugin({verbose: false}),
-            new webpack.HashedModuleIdsPlugin({
-                hashFunction: 'sha256',
-                hashDigest: 'hex',
-                hashDigestLength: 20
-            }),
-            new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /en|fr|de/),
             new CopyWebpackPlugin([{from: './package.json', to: ''}]),
             new CaseSensitivePathsPlugin()
         ],

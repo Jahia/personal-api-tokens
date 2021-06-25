@@ -1,20 +1,64 @@
-import { apolloClient } from '../../support/apollo'
+import { apollo } from '../../support/apollo'
 import gql from 'graphql-tag'
 
 describe('Test if every type in graphQL API has description', () => {
-    it('Check every input', async function () {
+    it('Check every input for the User Type', async function () {
+        const types = new Set()
         const noDesc = new Set()
-        await executeTest('PersonalApiTokensQuery', noDesc)
-        await executeTest('PersonalApiTokensMutation', noDesc)
-        console.log(noDesc)
+        const invalidNames = new Set()
+        await executeTest('PersonalApiTokensQuery', types, noDesc, invalidNames)
+        await executeTest('PersonalApiTokensMutation', types, noDesc, invalidNames)
+
+        const noDescBlacklist = [
+            'type=JCRSite/field=findAvailableNodeName/arg=nodeType',
+            'type=JCRSite/field=findAvailableNodeName/arg=language',
+            'type=VanityUrl/field=findAvailableNodeName/arg=nodeType',
+            'type=VanityUrl/field=findAvailableNodeName/arg=language',
+            'type=GqlDashboard',
+            'type=GqlModule',
+            'type=GqlEditorForms',
+            'type=EditorForm',
+            'type=EditorFormSection',
+            'type=EditorFormFieldSet',
+            'type=EditorFormField',
+            'type=EditorFormFieldValue',
+            'type=EditorFormProperty',
+            'type=EditorFormFieldValueConstraint',
+            'type=InputContextEntryInput',
+            'inputType=InputContextEntryInput/field=key',
+            'inputType=InputContextEntryInput/field=value',
+            'type=Query/field=categoryById/arg=id',
+            'type=Metadata/field=uuid',
+            'type=Metadata/field=path',
+            'type=Category/field=uuid',
+            'type=Category/field=path',
+            'type=Query/field=categoryByPath/arg=path',
+        ]
+        noDescBlacklist.forEach((n) => noDesc.delete(n))
+
+        const invalidNameBlacklist = ['wipInfo']
+        invalidNameBlacklist.forEach((n) => invalidNames.delete(n))
+
         expect(JSON.stringify(Array.from(noDesc))).to.equals('[]')
+        expect(JSON.stringify(Array.from(invalidNames))).to.equals('[]')
     })
 })
+
 // Test to go down the AST of GraphQL to check for descriptions
-const executeTest = async (typeName, noDesc) => {
+const executeTest = async (typeName, types, noDesc, invalidNames) => {
+    if (types.has(typeName)) {
+        return
+    }
+
+    if (typeName[0] !== typeName[0].toUpperCase()) {
+        invalidNames.add(typeName)
+    }
+
+    types.add(typeName)
+
     const query = constructQuery(typeName)
-    // const client = apolloClient()
-    const response = await apolloClient().query({ query })
+    const client = apollo(Cypress.config().baseUrl, { username: 'root', password: Cypress.env('SUPER_USER_PASSWORD') })
+    const response = await client.query({ query })
     const responseDataType = response.data.__type
     if (responseDataType === null || responseDataType === undefined || responseDataType.kind === 'UNION') {
         return
@@ -31,12 +75,20 @@ const executeTest = async (typeName, noDesc) => {
                     await fieldCheck(
                         'type=' + responseDataType.name + '/field=' + field.name + '/arg=' + arg.name,
                         arg,
+                        types,
                         noDesc,
+                        invalidNames,
                     )
                 })
             }
 
-            await fieldCheck('type=' + responseDataType.name + '/field=' + field.name, field, noDesc)
+            await fieldCheck(
+                'type=' + responseDataType.name + '/field=' + field.name,
+                field,
+                types,
+                noDesc,
+                invalidNames,
+            )
         })
     }
 
@@ -44,30 +96,40 @@ const executeTest = async (typeName, noDesc) => {
         await asyncForEach(responseDataType.inputFields, async (field) => {
             if (field.args) {
                 await asyncForEach(field.args, async (arg) => {
-                    await fieldCheck('inputType=' + responseDataType.name + '/arg=' + arg.name, arg, noDesc)
+                    await fieldCheck(
+                        'inputType=' + responseDataType.name + '/arg=' + arg.name,
+                        arg,
+                        types,
+                        noDesc,
+                        invalidNames,
+                    )
                 })
             }
 
-            await fieldCheck('inputType=' + responseDataType.name + '/field=' + field.name, field, noDesc)
+            await fieldCheck(
+                'inputType=' + responseDataType.name + '/field=' + field.name,
+                field,
+                types,
+                noDesc,
+                invalidNames,
+            )
         })
     }
 }
 
-const fieldCheck = async (message, field, noDesc) => {
+const fieldCheck = async (message, field, types, noDesc, invalidNames) => {
     if (field.description === null) {
         noDesc.add(message)
     }
 
-    if (field.type.kind === 'OBJECT' || field.type.kind === 'INPUT_OBJECT') {
-        await executeTest(field.type.name, noDesc)
+    let type = field.type
+
+    while (type.ofType) {
+        type = type.ofType
     }
 
-    if (field.type.kind === 'NON_NULL' && field.type.ofType.kind === 'LIST') {
-        await executeTest(field.type.ofType.ofType.name, noDesc)
-    }
-
-    if (field.type.kind === 'LIST') {
-        await executeTest(field.type.ofType.name, noDesc)
+    if (type.kind === 'OBJECT' || type.kind === 'INPUT_OBJECT') {
+        await executeTest(type.name, types, noDesc, invalidNames)
     }
 }
 

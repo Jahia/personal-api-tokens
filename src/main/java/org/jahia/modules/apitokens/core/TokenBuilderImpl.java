@@ -21,6 +21,7 @@ import pl.touk.throwing.ThrowingFunction;
 
 import javax.jcr.RepositoryException;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Implementation for Token builder
@@ -47,6 +48,12 @@ public class TokenBuilderImpl implements TokenBuilder {
 
     public TokenBuilder setActive(boolean active) {
         details.setActive(active);
+        return this;
+    }
+
+    @Override
+    public TokenBuilder setScopes(List<String> scopes) {
+        details.setScopes(scopes);
         return this;
     }
 

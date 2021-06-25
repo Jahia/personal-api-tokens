@@ -20,6 +20,7 @@ import org.jahia.api.usermanager.JahiaUserManagerService;
 import org.jahia.bin.filters.CompositeFilter;
 import org.jahia.modules.apitokens.TokenDetails;
 import org.jahia.modules.apitokens.TokenService;
+import org.jahia.modules.securityfilter.PermissionService;
 import org.jahia.params.valves.AuthValveContext;
 import org.jahia.params.valves.BaseAuthValve;
 import org.jahia.pipelines.Pipeline;
@@ -48,6 +49,8 @@ public class TokenAuthValve extends BaseAuthValve {
     private TokenService tokenService;
     private JahiaUserManagerService userManagerService;
 
+    private PermissionService permissionService;
+
     private String[] urlPatterns = null;
 
     @Reference(service = Pipeline.class, target = "(type=authentication)")
@@ -63,6 +66,11 @@ public class TokenAuthValve extends BaseAuthValve {
     @Reference
     public void setUserManagerService(JahiaUserManagerService userManagerService) {
         this.userManagerService = userManagerService;
+    }
+
+    @Reference(cardinality = ReferenceCardinality.OPTIONAL)
+    public void setPermissionService(PermissionService permissionService) {
+        this.permissionService = permissionService;
     }
 
     /**
@@ -96,16 +104,23 @@ public class TokenAuthValve extends BaseAuthValve {
         String uri = request.getRequestURI().substring(request.getContextPath().length());
 
         if (Arrays.stream(urlPatterns).anyMatch(urlPattern -> CompositeFilter.matchFiltersURL(urlPattern, uri))) {
-            String authorization = request.getHeader("Authorization");
-
             try {
-                JCRUserNode user = authenticate(authorization);
-                if (user != null) {
-                    authValveContext.setShouldStoreAuthInSession(false);
-                    authValveContext.getSessionFactory().setCurrentUser(user.getJahiaUser());
-                    return;
-                }
+                String authorization = request.getHeader("Authorization");
+                if (authorization != null && authorization.contains(API_TOKEN)) {
+                    String token = StringUtils.substringAfter(authorization, API_TOKEN).trim();
 
+                    JCRTemplate.getInstance().doExecuteWithSystemSession(session -> {
+                        TokenDetails details = tokenService.verifyToken(token, session);
+                        logger.debug("Received token {}", details);
+                        if (details != null && details.isValid()) {
+                            JCRUserNode user = userManagerService.lookupUserByPath(details.getUserPath());
+                            authValveContext.setShouldStoreAuthInSession(false);
+                            authValveContext.getSessionFactory().setCurrentUser(user.getJahiaUser());
+                            permissionService.addScopes(details.getScopes(), request);
+                        }
+                        return null;
+                    });
+                }
             } catch (RepositoryException e) {
                 throw new PipelineException(e);
             }
@@ -114,21 +129,4 @@ public class TokenAuthValve extends BaseAuthValve {
         valveContext.invokeNext(o);
     }
 
-    private JCRUserNode authenticate(String authorization) throws RepositoryException {
-        if (authorization != null && authorization.contains(API_TOKEN)) {
-            String token = StringUtils.substringAfter(authorization, API_TOKEN).trim();
-
-            return JCRTemplate.getInstance().doExecuteWithSystemSession(session -> {
-                TokenDetails details = tokenService.verifyToken(token, session);
-                logger.debug("Received token {}", details);
-                if (details != null && details.isValid()) {
-                    return userManagerService.lookupUserByPath(details.getUserPath());
-                }
-
-                return null;
-            });
-        }
-
-        return null;
-    }
 }

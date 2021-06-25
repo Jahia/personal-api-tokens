@@ -1,6 +1,6 @@
 import { tokensPage } from '../page-object/personalTokens.page'
 import { loginPage } from '../page-object/login.page'
-import { apolloClient } from '../support/apollo'
+import { apollo } from '../support/apollo'
 import { deleteToken, getTokens, verifyToken } from '../support/gql'
 
 const PARAGRAPH_ELEMENT = 'p'
@@ -10,7 +10,10 @@ let TEST_TOKEN = ''
 
 describe('UI e2e test - Full lifecycle in the My API Tokens section', () => {
     before(async () => {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         // Using null as userId returns tokens for the currently connected user
         const existingTokens = await getTokens({ userId: null }, client)
         for (const token of existingTokens.nodes) {
@@ -24,7 +27,10 @@ describe('UI e2e test - Full lifecycle in the My API Tokens section', () => {
     })
 
     after(async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         // Using null as userId returns tokens for the currently connected user
         const existingTokens = await getTokens({ userId: null }, client)
         // cy.log(JSON.stringify(existingTokens));
@@ -57,7 +63,12 @@ describe('UI e2e test - Full lifecycle in the My API Tokens section', () => {
     })
 
     it('Verify created token', async function () {
-        expect(await verifyToken(TEST_TOKEN, apolloClient())).to.be.true
+        expect(
+            await verifyToken(
+                TEST_TOKEN,
+                apollo(Cypress.config().baseUrl, { username: 'root', password: Cypress.env('SUPER_USER_PASSWORD') }),
+            ),
+        ).to.be.true
     })
 
     it('Disable the token', function () {
@@ -68,7 +79,12 @@ describe('UI e2e test - Full lifecycle in the My API Tokens section', () => {
     })
 
     it('Verify disabled token', async function () {
-        expect(await verifyToken(TEST_TOKEN, apolloClient())).to.be.false
+        expect(
+            await verifyToken(
+                TEST_TOKEN,
+                apollo(Cypress.config().baseUrl, { username: 'root', password: Cypress.env('SUPER_USER_PASSWORD') }),
+            ),
+        ).to.be.false
     })
 
     it('Activate the token', function () {
@@ -78,7 +94,12 @@ describe('UI e2e test - Full lifecycle in the My API Tokens section', () => {
     })
 
     it('Verify activated token', async function () {
-        expect(await verifyToken(TEST_TOKEN, apolloClient())).to.be.true
+        expect(
+            await verifyToken(
+                TEST_TOKEN,
+                apollo(Cypress.config().baseUrl, { username: 'root', password: Cypress.env('SUPER_USER_PASSWORD') }),
+            ),
+        ).to.be.true
     })
 
     it('Delete the token', function () {
@@ -88,7 +109,10 @@ describe('UI e2e test - Full lifecycle in the My API Tokens section', () => {
     })
 
     it('Verify deleted token', async function () {
-        const existingTokens = await getTokens({ userId: null }, apolloClient())
+        const existingTokens = await getTokens(
+            { userId: null },
+            apollo(Cypress.config().baseUrl, { username: 'root', password: Cypress.env('SUPER_USER_PASSWORD') }),
+        )
         cy.log(JSON.stringify(existingTokens))
         expect(existingTokens.nodes.filter((t: { name: string }) => t.name === TEST_TOKEN_NAME).length).to.equal(0)
     })

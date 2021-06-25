@@ -16,6 +16,7 @@
 package org.jahia.modules.apitokens;
 
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Token details bean
@@ -78,6 +79,14 @@ public interface TokenDetails {
     boolean isActive();
 
     void setActive(boolean active);
+
+    /**
+     * Get the associated scopes
+     * @return scopes
+     */
+    List<String> getScopes();
+
+    void setScopes(List<String> scopes);
 
     /**
      * Check current validity of the token - it will check the active flag and the expiration date

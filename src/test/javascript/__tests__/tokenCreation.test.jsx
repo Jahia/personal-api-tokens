@@ -1,5 +1,5 @@
 import React from 'react';
-import {act, cleanup, fireEvent, render, screen} from '@testing-library/react';
+import {act, cleanup, fireEvent, getByRole, render, screen} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import MyApiTokens from '../../../main/javascript/PersonalApiTokens/MyApiTokens/MyApiTokens';
 import {createTokenMocks} from '../apolloMocks';
@@ -77,5 +77,25 @@ describe('Test token creation', () => {
         });
         // Check that token is displayed
         expect(screen.getByText(/tokenNoExpiryDate/i)).toBeDefined();
+    });
+    test('Verify token creation with scope', async () => {
+        const createButton = screen.getByText(/translated_personal-api-tokens:create$/i);
+        expect(screen.getByText(/translated_personal-api-tokens:create$/i)).toBeDefined();
+        const tokenNameInput = screen.getAllByRole('textbox')[0];
+        const tokenExpiryDateInput = screen.getAllByRole('textbox')[1];
+        const gqlScope = screen.getByText('graphql').closest('tr');
+        const tokenScopeCheckbox = getByRole(gqlScope, 'checkbox');
+        await act(async () => {
+            fireEvent.change(tokenNameInput, {target: {value: 'testToken'}});
+            await wait(100);
+            fireEvent.change(tokenExpiryDateInput, {target: {value: ''}});
+            await wait(100);
+            fireEvent.click(tokenScopeCheckbox);
+            await wait(100);
+            fireEvent.click(createButton);
+            await wait(300);
+        });
+        // Check that token is displayed
+        expect(screen.getByText(/tokenWithScope/i)).toBeDefined();
     });
 });

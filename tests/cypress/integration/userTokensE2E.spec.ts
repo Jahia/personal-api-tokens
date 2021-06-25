@@ -1,4 +1,4 @@
-import { apolloClient } from '../support/apollo'
+import { apollo } from '../support/apollo'
 import { createToken, deleteToken, getTokens } from '../support/gql'
 import { userTokensPage } from '../page-object/userTokens.page'
 import { tokensPage } from '../page-object/personalTokens.page'
@@ -6,7 +6,10 @@ import { loginPage } from '../page-object/login.page'
 
 describe('UI e2e test - Full lifecycle in the User API Tokens section in Administration', () => {
     before(async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         // Using null as userId returns tokens for the currently connected user
         const existingTokens = await getTokens({ userId: null }, client)
         for (const token of existingTokens.nodes) {
@@ -20,7 +23,10 @@ describe('UI e2e test - Full lifecycle in the User API Tokens section in Adminis
     })
 
     after(async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         // Using null as userId returns tokens for the currently connected user
         const existingTokens = await getTokens({ userId: null }, client)
         // cy.log(JSON.stringify(existingTokens));
@@ -39,7 +45,12 @@ describe('UI e2e test - Full lifecycle in the User API Tokens section in Adminis
     })
 
     it('Creates sample tokens via the API', async () => {
-        const token = await createToken(`test-token`, 'ACTIVE', null, apolloClient())
+        const token = await createToken(
+            `test-token`,
+            'ACTIVE',
+            null,
+            apollo(Cypress.config().baseUrl, { username: 'root', password: Cypress.env('SUPER_USER_PASSWORD') }),
+        )
         cy.log(JSON.stringify(token))
         expect(token).to.have.length.of.at.least(10, 'not a token')
     })
@@ -80,7 +91,10 @@ describe('UI e2e test - Full lifecycle in the User API Tokens section in Adminis
     })
 
     it('Verify deleted token', async function () {
-        const existingTokens = await getTokens({ userId: null }, apolloClient())
+        const existingTokens = await getTokens(
+            { userId: null },
+            apollo(Cypress.config().baseUrl, { username: 'root', password: Cypress.env('SUPER_USER_PASSWORD') }),
+        )
         cy.log(JSON.stringify(existingTokens))
         expect(existingTokens.nodes.filter((t: { name: string }) => t.name === this.TEST_TOKEN_NAME).length).to.equal(0)
     })
