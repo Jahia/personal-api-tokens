@@ -123,8 +123,8 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
             },
         })
         cy.log(JSON.stringify(response))
-        expect(response.errors).to.not.be.empty;
-        expect(response.data).to.be.null;
+        expect(response.errors).to.not.be.empty
+        expect(response.data).to.be.null
 
         const deletedToken = await getToken('root', name, client)
         expect(deletedToken).not.to.be.null
@@ -174,7 +174,6 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
             cy.log(JSON.stringify(err))
             expect(err.graphQLErrors[0].message).to.contain('java.lang.IllegalArgumentException: invalid user')
         }
-
 
         const deletedToken = await getToken('root', name, rootApolloClient)
         expect(deletedToken).not.to.be.null

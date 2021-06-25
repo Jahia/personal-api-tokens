@@ -238,7 +238,12 @@ describe('Get single token via API - query.admin.personalApiTokens.tokenByKey', 
     it('Security - Editor (mathias) NOT able to get a token created by Authenticated user (irina)', async function () {
         const name = 'test-' + new Date().getTime()
 
-        await createToken(name, null, null, apollo(Cypress.config().baseUrl, { username: 'irina', password: 'password' }))
+        await createToken(
+            name,
+            null,
+            null,
+            apollo(Cypress.config().baseUrl, { username: 'irina', password: 'password' }),
+        )
         const token = await getToken(
             'irina',
             name,
