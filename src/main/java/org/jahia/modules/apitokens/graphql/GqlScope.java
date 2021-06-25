@@ -4,6 +4,7 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import org.jahia.modules.securityfilter.ScopeDefinition;
 
+@GraphQLDescription("API Scope")
 public class GqlScope {
 
     private ScopeDefinition scope;
