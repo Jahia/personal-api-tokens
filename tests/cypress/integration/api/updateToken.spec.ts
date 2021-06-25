@@ -10,16 +10,23 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
         GQL_UPDATE = require(`graphql-tag/loader!../../fixtures/updateToken.graphql`)
     })
 
-    afterEach(async function () {
+    afterEach(function () {
         const client = apollo(Cypress.config().baseUrl, {
             username: 'root',
             password: Cypress.env('SUPER_USER_PASSWORD'),
         })
-        return Promise.all(
-            (await getTokens({ userId: 'root' }, client)).nodes
+        return Promise.all([
+            getTokens({ userId: 'root' }, client).then(t => t.nodes
                 .filter((token) => token.name.startsWith('test-'))
-                .map((token) => deleteToken(token.key, client)),
-        )
+                .map((token) => deleteToken(token.key, client))),
+            getTokens({ userId: 'irina' }, client).then(t => t.nodes
+                .filter((token) => token.name.startsWith('test-'))
+                .map((token) => deleteToken(token.key, client))),
+            getTokens({ userId: 'mathias' }, client).then(t => t.nodes
+                .filter((token) => token.name.startsWith('test-'))
+                .map((token) => deleteToken(token.key, client)))
+        ]);
+
     })
 
     it('Update Token by providing tokenKey, NEW tokenName, null expireAt, null state', async function () {

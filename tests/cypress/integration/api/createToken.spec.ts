@@ -10,16 +10,22 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
         GQL_CREATE = require(`graphql-tag/loader!../../fixtures/createToken.graphql`)
     })
 
-    afterEach(async function () {
+    afterEach(function () {
         const client = apollo(Cypress.config().baseUrl, {
             username: 'root',
             password: Cypress.env('SUPER_USER_PASSWORD'),
         })
-        return Promise.all(
-            (await getTokens({ userId: 'root' }, client)).nodes
+        return Promise.all([
+            getTokens({ userId: 'root' }, client).then(t => t.nodes
                 .filter((token) => token.name.startsWith('test-'))
-                .map((token) => deleteToken(token.key, client)),
-        )
+                .map((token) => deleteToken(token.key, client))),
+            getTokens({ userId: 'irina' }, client).then(t => t.nodes
+                .filter((token) => token.name.startsWith('test-'))
+                .map((token) => deleteToken(token.key, client))),
+            getTokens({ userId: 'mathias' }, client).then(t => t.nodes
+                .filter((token) => token.name.startsWith('test-'))
+                .map((token) => deleteToken(token.key, client)))
+        ]);
     })
 
     it('Create token by providing userId, name, null date, null state, null siteKey', async function () {

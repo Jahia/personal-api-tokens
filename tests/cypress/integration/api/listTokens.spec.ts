@@ -10,16 +10,23 @@ describe('List tokens via API - query.admin.personalApiTokens.tokens', () => {
         GQL_TOKENS = require(`graphql-tag/loader!../../fixtures/listTokens.graphql`)
     })
 
-    afterEach(async function () {
+    afterEach(function () {
         const client = apollo(Cypress.config().baseUrl, {
             username: 'root',
             password: Cypress.env('SUPER_USER_PASSWORD'),
         })
-        return Promise.all(
-            (await getTokens({ userId: 'root' }, client)).nodes
+        return Promise.all([
+            getTokens({ userId: 'root' }, client).then(t => t.nodes
                 .filter((token) => token.name.startsWith('test-'))
-                .map((token) => deleteToken(token.key, client)),
-        )
+                .map((token) => deleteToken(token.key, client))),
+            getTokens({ userId: 'irina' }, client).then(t => t.nodes
+                .filter((token) => token.name.startsWith('test-'))
+                .map((token) => deleteToken(token.key, client))),
+            getTokens({ userId: 'mathias' }, client).then(t => t.nodes
+                .filter((token) => token.name.startsWith('test-'))
+                .map((token) => deleteToken(token.key, client)))
+        ]);
+
     })
 
     it('Create 5 tokens and list them', async function () {

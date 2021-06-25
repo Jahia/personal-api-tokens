@@ -10,16 +10,22 @@ describe('Validate ability to use token', () => {
         GQL_APIUSER = require(`graphql-tag/loader!../../fixtures/getApiUser.graphql`)
     })
 
-    afterEach(async function () {
+    afterEach(function () {
         const client = apollo(Cypress.config().baseUrl, {
             username: 'root',
             password: Cypress.env('SUPER_USER_PASSWORD'),
         })
-        return Promise.all(
-            (await getTokens({ userId: 'root' }, client)).nodes
+        return Promise.all([
+            getTokens({ userId: 'root' }, client).then(t => t.nodes
                 .filter((token) => token.name.startsWith('test-'))
-                .map((token) => deleteToken(token.key, client)),
-        )
+                .map((token) => deleteToken(token.key, client))),
+            getTokens({ userId: 'irina' }, client).then(t => t.nodes
+                .filter((token) => token.name.startsWith('test-'))
+                .map((token) => deleteToken(token.key, client))),
+            getTokens({ userId: 'mathias' }, client).then(t => t.nodes
+                .filter((token) => token.name.startsWith('test-'))
+                .map((token) => deleteToken(token.key, client)))
+        ]);
     })
 
     it('Authenticated user (irina) creates token, use it', async function () {

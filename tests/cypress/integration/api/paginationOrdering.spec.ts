@@ -5,8 +5,8 @@ import { createToken, deleteToken, getTokens, updateToken } from '../../support/
 describe('Pagination and ordering - query.admin.personalApiTokens.tokens', () => {
     before('load graphql file', async function () {
         const client = apollo(Cypress.config().baseUrl, {
-            username: 'root',
-            password: Cypress.env('SUPER_USER_PASSWORD'),
+            username: 'bill',
+            password: 'password',
         })
         await createToken('test-X-A', null, null, client)
         await createToken('test-X-B', null, null, client)
@@ -20,26 +20,32 @@ describe('Pagination and ordering - query.admin.personalApiTokens.tokens', () =>
         await createToken('test-X-J', null, null, client)
 
         // Distable the first 3 tokens
-        const tokens = await getTokens({ userId: 'root', limit: 3, sort: { fieldName: 'name', sortType: 'ASC' } })
+        const tokens = await getTokens({ userId: 'bill', limit: 3, sort: { fieldName: 'name', sortType: 'ASC' } })
         for (const token of tokens.nodes) {
             await updateToken(token.key, null, 'DISABLED', null, client)
         }
     })
 
-    after(async function () {
+    after(function () {
         const client = apollo(Cypress.config().baseUrl, {
-            username: 'root',
-            password: Cypress.env('SUPER_USER_PASSWORD'),
+            username: 'bill',
+            password: 'password',
         })
-        return Promise.all(
-            (await getTokens({ userId: 'root' }, client)).nodes
+        return Promise.all([
+            getTokens({ userId: 'root' }, client).then(t => t.nodes
                 .filter((token) => token.name.startsWith('test-'))
-                .map((token) => deleteToken(token.key, client)),
-        )
+                .map((token) => deleteToken(token.key, client))),
+            getTokens({ userId: 'irina' }, client).then(t => t.nodes
+                .filter((token) => token.name.startsWith('test-'))
+                .map((token) => deleteToken(token.key, client))),
+            getTokens({ userId: 'mathias' }, client).then(t => t.nodes
+                .filter((token) => token.name.startsWith('test-'))
+                .map((token) => deleteToken(token.key, client)))
+        ]);
     })
 
     it('Shows only 2 tokens', async function () {
-        const tokens = await getTokens({ userId: 'root', limit: 2 })
+        const tokens = await getTokens({ userId: 'bill', limit: 2 })
         expect(tokens.errors).to.be.undefined
         expect(tokens.pageInfo.totalCount).to.equal(10)
         expect(tokens.pageInfo.hasPreviousPage).to.be.false
@@ -48,7 +54,7 @@ describe('Pagination and ordering - query.admin.personalApiTokens.tokens', () =>
     })
 
     it('Shows only 2 tokens, ordered', async function () {
-        const tokens = await getTokens({ userId: 'root', limit: 2, sort: { fieldName: 'name', sortType: 'ASC' } })
+        const tokens = await getTokens({ userId: 'bill', limit: 2, sort: { fieldName: 'name', sortType: 'ASC' } })
         expect(tokens.errors).to.be.undefined
         expect(tokens.nodes.length).to.equal(2)
         expect(tokens.pageInfo.hasPreviousPage).to.be.false
@@ -58,7 +64,7 @@ describe('Pagination and ordering - query.admin.personalApiTokens.tokens', () =>
     })
 
     it('Shows only 2 tokens, ordered descending', async function () {
-        const tokens = await getTokens({ userId: 'root', limit: 2, sort: { fieldName: 'name', sortType: 'DESC' } })
+        const tokens = await getTokens({ userId: 'bill', limit: 2, sort: { fieldName: 'name', sortType: 'DESC' } })
         expect(tokens.errors).to.be.undefined
         expect(tokens.nodes.length).to.equal(2)
         expect(tokens.pageInfo.hasPreviousPage).to.be.false
@@ -68,7 +74,7 @@ describe('Pagination and ordering - query.admin.personalApiTokens.tokens', () =>
     })
 
     it('Order tokens by state ASC', async function () {
-        const tokens = await getTokens({ userId: 'root', limit: 20, sort: { fieldName: 'state', sortType: 'ASC' } })
+        const tokens = await getTokens({ userId: 'bill', limit: 20, sort: { fieldName: 'state', sortType: 'ASC' } })
         expect(tokens.errors).to.be.undefined
         // The first 3 items of the array should be ACTIVE
         expect(tokens.nodes.slice(0, 3).filter((t) => t.state === 'ACTIVE').length).to.equal(3)
@@ -77,7 +83,7 @@ describe('Pagination and ordering - query.admin.personalApiTokens.tokens', () =>
     })
 
     it('Order tokens by state DESC', async function () {
-        const tokens = await getTokens({ userId: 'root', limit: 20, sort: { fieldName: 'state', sortType: 'DESC' } })
+        const tokens = await getTokens({ userId: 'bill', limit: 20, sort: { fieldName: 'state', sortType: 'DESC' } })
         expect(tokens.errors).to.be.undefined
         // The first 3 items of the array should be DISABLED
         expect(tokens.nodes.slice(0, 3).filter((t) => t.state === 'DISABLED').length).to.equal(3)
@@ -87,7 +93,7 @@ describe('Pagination and ordering - query.admin.personalApiTokens.tokens', () =>
 
     it('Shows only 2 tokens with offset', async function () {
         const tokens = await getTokens({
-            userId: 'root',
+            userId: 'bill',
             limit: 2,
             offset: 2,
             sort: { fieldName: 'name', sortType: 'ASC' },
@@ -102,7 +108,7 @@ describe('Pagination and ordering - query.admin.personalApiTokens.tokens', () =>
 
     it('Shows only 2 tokens with offset, ordered descending', async function () {
         const tokens = await getTokens({
-            userId: 'root',
+            userId: 'bill',
             limit: 2,
             offset: 2,
             sort: { fieldName: 'name', sortType: 'DESC' },
@@ -117,7 +123,7 @@ describe('Pagination and ordering - query.admin.personalApiTokens.tokens', () =>
 
     it('Shows only the last token', async function () {
         const tokens = await getTokens({
-            userId: 'root',
+            userId: 'bill',
             limit: 2,
             offset: 9,
             sort: { fieldName: 'name', sortType: 'ASC' },
@@ -131,7 +137,7 @@ describe('Pagination and ordering - query.admin.personalApiTokens.tokens', () =>
 
     it('Shows no token if offset is beyond limit', async function () {
         const tokens = await getTokens({
-            userId: 'root',
+            userId: 'bill',
             limit: 2,
             offset: 10,
             sort: { fieldName: 'name', sortType: 'ASC' },
@@ -144,7 +150,7 @@ describe('Pagination and ordering - query.admin.personalApiTokens.tokens', () =>
     })
 
     it('Shows all tokens with high limit', async function () {
-        const tokens = await getTokens({ userId: 'root', limit: 100, sort: { fieldName: 'name', sortType: 'ASC' } })
+        const tokens = await getTokens({ userId: 'bill', limit: 100, sort: { fieldName: 'name', sortType: 'ASC' } })
         expect(tokens.errors).to.be.undefined
         expect(tokens.pageInfo.totalCount).to.equal(10)
         expect(tokens.pageInfo.hasPreviousPage).to.be.false
@@ -153,7 +159,7 @@ describe('Pagination and ordering - query.admin.personalApiTokens.tokens', () =>
     })
 
     it('Shows no tokens with zero limit', async function () {
-        const tokens = await getTokens({ userId: 'root', limit: 0, sort: { fieldName: 'name', sortType: 'ASC' } })
+        const tokens = await getTokens({ userId: 'bill', limit: 0, sort: { fieldName: 'name', sortType: 'ASC' } })
         expect(tokens.errors).to.be.undefined
         expect(tokens.pageInfo.totalCount).to.equal(10)
         expect(tokens.pageInfo.hasPreviousPage).to.be.false
