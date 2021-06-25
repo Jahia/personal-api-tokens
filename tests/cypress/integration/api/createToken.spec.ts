@@ -1,7 +1,7 @@
-import { apolloClient } from '../../support/apollo'
+import { apollo } from '../../support/apollo'
 import { DocumentNode } from 'graphql'
 
-import { getToken, getTokens, deleteToken, verifyToken } from '../../support/gql'
+import { deleteToken, getToken, getTokens, verifyToken } from '../../support/gql'
 
 describe('Token creation via API - mutation.admin.personalApiTokens.createToken', () => {
     let GQL_CREATE: DocumentNode
@@ -11,7 +11,10 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
     })
 
     afterEach(async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         return Promise.all(
             (await getTokens({ userId: 'root' }, client)).nodes
                 .filter((token) => token.name.startsWith('test-'))
@@ -20,10 +23,16 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
     })
 
     it('Create token by providing userId, name, null date, null state, null siteKey', async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         const name = 'test-' + new Date().getTime()
 
-        const response = await apolloClient().mutate({
+        const response = await apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        }).mutate({
             mutation: GQL_CREATE,
             variables: {
                 tokenName: name,
@@ -46,10 +55,16 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
     })
 
     it('Create token by providing name, userId, null date, null siteKey, DISABLED state', async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         const name = 'test-' + new Date().getTime()
 
-        const response = await apolloClient().mutate({
+        const response = await apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        }).mutate({
             mutation: GQL_CREATE,
             variables: {
                 tokenName: name,
@@ -73,11 +88,17 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
     })
 
     it('Create token by providing name, userId, null date, null siteKey, INCORRECT state (INACTIVE)', async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         const name = 'test-' + new Date().getTime()
 
         try {
-            await apolloClient().mutate({
+            await apollo(Cypress.config().baseUrl, {
+                username: 'root',
+                password: Cypress.env('SUPER_USER_PASSWORD'),
+            }).mutate({
                 mutation: GQL_CREATE,
                 variables: {
                     tokenName: name,
@@ -96,11 +117,17 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
     })
 
     it('Create token by providing userId, name, expiry date, null state, null siteKey', async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         const name = 'test-' + new Date().getTime()
         const expireAt = '2040-01-01'
 
-        const response = await apolloClient().mutate({
+        const response = await apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        }).mutate({
             mutation: GQL_CREATE,
             variables: {
                 tokenName: name,
@@ -124,11 +151,17 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
     })
 
     it('Create token by providing userId, name, expiry date in the past, null state, null siteKey', async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         const name = 'test-' + new Date().getTime()
         const expireAt = '2010-01-01'
 
-        const response = await apolloClient().mutate({
+        const response = await apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        }).mutate({
             mutation: GQL_CREATE,
             variables: {
                 tokenName: name,
@@ -151,12 +184,18 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
     })
 
     it('Create token by providing userId, name, INCORRECT expiry date, null state, null siteKey', async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         const name = 'test-' + new Date().getTime()
         const expireAt = '2010-ABCDEF-01'
 
         try {
-            await apolloClient().mutate({
+            await apollo(Cypress.config().baseUrl, {
+                username: 'root',
+                password: Cypress.env('SUPER_USER_PASSWORD'),
+            }).mutate({
                 mutation: GQL_CREATE,
                 variables: {
                     tokenName: name,
@@ -177,12 +216,18 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
     })
 
     it('Create token by providing userId, name, EMPTY expiry date, null state, null siteKey', async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         const name = 'test-' + new Date().getTime()
         const expireAt = ''
 
         try {
-            await apolloClient().mutate({
+            await apollo(Cypress.config().baseUrl, {
+                username: 'root',
+                password: Cypress.env('SUPER_USER_PASSWORD'),
+            }).mutate({
                 mutation: GQL_CREATE,
                 variables: {
                     tokenName: name,
@@ -201,11 +246,17 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
     })
 
     it('Create same name token by providing userId, name, expiry date, null state, null siteKey', async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         const name = 'test-' + new Date().getTime()
         const expireAt = '2040-01-01'
 
-        const response = await apolloClient().mutate({
+        const response = await apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        }).mutate({
             mutation: GQL_CREATE,
             variables: {
                 tokenName: name,
@@ -226,7 +277,10 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
         expect(tokenDetails.name).to.equals(name)
 
         try {
-            await apolloClient().mutate({
+            await apollo(Cypress.config().baseUrl, {
+                username: 'root',
+                password: Cypress.env('SUPER_USER_PASSWORD'),
+            }).mutate({
                 mutation: GQL_CREATE,
                 variables: {
                     tokenName: name,
@@ -252,7 +306,10 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
         const name = null
 
         try {
-            await apolloClient().mutate({
+            await apollo(Cypress.config().baseUrl, {
+                username: 'root',
+                password: Cypress.env('SUPER_USER_PASSWORD'),
+            }).mutate({
                 mutation: GQL_CREATE,
                 variables: {
                     tokenName: name,
@@ -268,11 +325,17 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
     })
 
     it('Create token by providing userId, EMPTY name, null date, null state, null siteKey', async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         const name = ''
 
         try {
-            await apolloClient().mutate({
+            await apollo(Cypress.config().baseUrl, {
+                username: 'root',
+                password: Cypress.env('SUPER_USER_PASSWORD'),
+            }).mutate({
                 mutation: GQL_CREATE,
                 variables: {
                     tokenName: name,
@@ -294,7 +357,7 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
         const name = 'test-' + new Date().getTime()
 
         try {
-            await apolloClient({}).mutate({
+            await apollo(Cypress.config().baseUrl).mutate({
                 mutation: GQL_CREATE,
                 variables: {
                     tokenName: name,
@@ -308,18 +371,49 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
             expect(err.graphQLErrors[0].message).to.contain('java.lang.IllegalArgumentException: invalid user')
         }
 
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         const tokenDetails = await getToken('guest', name, client)
         expect(tokenDetails).to.be.null
     })
 
-    it('Security - Authenticated visitor (jay) is able to create own token', async function () {
+    it('Security - Authenticated visitor (jay) is NOT able to create own token', async function () {
         const name = 'test-' + new Date().getTime()
         const userId = 'jay'
         const credentials = { username: userId, password: 'password' }
-        const client = apolloClient(credentials)
 
-        const response = await apolloClient(credentials).mutate({
+        try {
+            await apollo(Cypress.config().baseUrl, credentials).mutate({
+                mutation: GQL_CREATE,
+                variables: {
+                    tokenName: name,
+                    siteKey: null,
+                    expireAt: null,
+                    tokenState: null,
+                },
+            })
+        } catch (err) {
+            cy.log(JSON.stringify(err))
+            expect(err.graphQLErrors[0].message).to.contain('java.lang.IllegalArgumentException: invalid user')
+        }
+
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
+        const tokenDetails = await getToken('guest', name, client)
+        expect(tokenDetails).to.be.null
+    })
+
+    it('Security - Authenticated user (irina) is NOT able to create own token', async function () {
+        const name = 'test-' + new Date().getTime()
+        const userId = 'irina'
+        const credentials = { username: userId, password: 'password' }
+        const client = apollo(Cypress.config().baseUrl, credentials)
+
+        const response = await apollo(Cypress.config().baseUrl, credentials).mutate({
             mutation: GQL_CREATE,
             variables: {
                 tokenName: name,
@@ -345,9 +439,9 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
         const name = 'test-' + new Date().getTime()
         const userId = 'mathias'
         const credentials = { username: userId, password: 'password' }
-        const client = apolloClient(credentials)
+        const client = apollo(Cypress.config().baseUrl, credentials)
 
-        const response = await apolloClient(credentials).mutate({
+        const response = await apollo(Cypress.config().baseUrl, credentials).mutate({
             mutation: GQL_CREATE,
             variables: {
                 tokenName: name,

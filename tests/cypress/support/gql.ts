@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import gql from 'graphql-tag'
 import { ApolloClient, NormalizedCacheObject, OperationVariables } from '@apollo/client/core'
-import { apolloClient } from './apollo'
+import { apollo } from './apollo'
 
 export async function createToken(
     name: string,
@@ -81,7 +81,7 @@ export async function getTokens(
     client?: ApolloClient<NormalizedCacheObject>,
 ): Promise<any> {
     if (!client) {
-        client = apolloClient()
+        client = apollo(Cypress.config().baseUrl, { username: 'root', password: Cypress.env('SUPER_USER_PASSWORD') })
     }
     const response = await client.query({
         query: gql`

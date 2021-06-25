@@ -17,5 +17,5 @@ export class BasePage {
 
     assertButtonVisibleAndClick(selector: string): Cypress.Chainable {
         return cy.get(selector).last().should(this.BE_VISIBLE).click()
-    }    
+    }
 }

@@ -1,10 +1,13 @@
-import { apolloClient } from '../../support/apollo'
+import { apollo } from '../../support/apollo'
 
 import { createToken, deleteToken, getTokens, updateToken } from '../../support/gql'
 
 describe('Pagination and ordering - query.admin.personalApiTokens.tokens', () => {
     before('load graphql file', async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         await createToken('test-X-A', null, null, client)
         await createToken('test-X-B', null, null, client)
         await createToken('test-X-C', null, null, client)
@@ -24,7 +27,10 @@ describe('Pagination and ordering - query.admin.personalApiTokens.tokens', () =>
     })
 
     after(async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         return Promise.all(
             (await getTokens({ userId: 'root' }, client)).nodes
                 .filter((token) => token.name.startsWith('test-'))

@@ -1,4 +1,4 @@
-import { apolloClient } from '../../support/apollo'
+import { apollo } from '../../support/apollo'
 import { DocumentNode } from 'graphql'
 
 import { createToken, deleteToken, getToken, getTokens } from '../../support/gql'
@@ -11,7 +11,10 @@ describe('Validate ability to use token', () => {
     })
 
     afterEach(async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         return Promise.all(
             (await getTokens({ userId: 'root' }, client)).nodes
                 .filter((token) => token.name.startsWith('test-'))
@@ -19,23 +22,27 @@ describe('Validate ability to use token', () => {
         )
     })
 
-    it('Authenticated user (jay) creates token, use it', async function () {
+    it('Authenticated user (irina) creates token, use it', async function () {
         const name = 'test-' + new Date().getTime()
         const createdToken = await createToken(
             name,
             null,
             null,
-            apolloClient({ username: 'jay', password: 'password' }),
+            apollo(Cypress.config().baseUrl, { username: 'irina', password: 'password' }),
         )
 
-        const tokenDetails = await getToken('jay', name, apolloClient({ username: 'jay', password: 'password' }))
+        const tokenDetails = await getToken(
+            'irina',
+            name,
+            apollo(Cypress.config().baseUrl, { username: 'irina', password: 'password' }),
+        )
         cy.log(JSON.stringify(tokenDetails))
 
-        const response = await apolloClient({ token: createdToken }).query({
+        const response = await apollo(Cypress.config().baseUrl, { token: createdToken }).query({
             query: GQL_APIUSER,
         })
         expect(response.errors).to.be.undefined
-        expect(response.data.currentUser.name).to.equal('jay')
+        expect(response.data.currentUser.name).to.equal('irina')
     })
 
     it('Editor (mathias) creates token and use it', async function () {
@@ -44,17 +51,17 @@ describe('Validate ability to use token', () => {
             name,
             null,
             null,
-            apolloClient({ username: 'mathias', password: 'password' }),
+            apollo(Cypress.config().baseUrl, { username: 'mathias', password: 'password' }),
         )
 
         const tokenDetails = await getToken(
             'mathias',
             name,
-            apolloClient({ username: 'mathias', password: 'password' }),
+            apollo(Cypress.config().baseUrl, { username: 'mathias', password: 'password' }),
         )
         cy.log(JSON.stringify(tokenDetails))
 
-        const response = await apolloClient({ token: createdToken }).query({
+        const response = await apollo(Cypress.config().baseUrl, { token: createdToken }).query({
             query: GQL_APIUSER,
         })
         expect(response.errors).to.be.undefined
@@ -63,12 +70,21 @@ describe('Validate ability to use token', () => {
 
     it('Root creates token and use it', async function () {
         const name = 'test-' + new Date().getTime()
-        const createdToken = await createToken(name, null, null, apolloClient())
+        const createdToken = await createToken(
+            name,
+            null,
+            null,
+            apollo(Cypress.config().baseUrl, { username: 'root', password: Cypress.env('SUPER_USER_PASSWORD') }),
+        )
 
-        const tokenDetails = await getToken('root', name, apolloClient())
+        const tokenDetails = await getToken(
+            'root',
+            name,
+            apollo(Cypress.config().baseUrl, { username: 'root', password: Cypress.env('SUPER_USER_PASSWORD') }),
+        )
         cy.log(JSON.stringify(tokenDetails))
 
-        const response = await apolloClient({ token: createdToken }).query({
+        const response = await apollo(Cypress.config().baseUrl, { token: createdToken }).query({
             query: GQL_APIUSER,
         })
         expect(response.errors).to.be.undefined

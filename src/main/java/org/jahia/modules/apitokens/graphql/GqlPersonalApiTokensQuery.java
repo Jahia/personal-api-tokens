@@ -184,6 +184,7 @@ public class GqlPersonalApiTokensQuery {
      * @return token details
      */
     @GraphQLField
+    @GraphQLDescription("Get available scopes")
     public Collection<GqlScope> getAvailableScopes(DataFetchingEnvironment environment) {
         GraphQLContext context = environment.getContext();
         return permissionService.getAvailableScopes().stream()

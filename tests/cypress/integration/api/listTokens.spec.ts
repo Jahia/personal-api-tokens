@@ -1,4 +1,4 @@
-import { apolloClient } from '../../support/apollo'
+import { apollo } from '../../support/apollo'
 import { DocumentNode } from 'graphql'
 
 import { createToken, deleteToken, getToken, getTokens } from '../../support/gql'
@@ -11,7 +11,10 @@ describe('List tokens via API - query.admin.personalApiTokens.tokens', () => {
     })
 
     afterEach(async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         return Promise.all(
             (await getTokens({ userId: 'root' }, client)).nodes
                 .filter((token) => token.name.startsWith('test-'))
@@ -20,14 +23,20 @@ describe('List tokens via API - query.admin.personalApiTokens.tokens', () => {
     })
 
     it('Create 5 tokens and list them', async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         await createToken('test-X-A', null, null, client)
         await createToken('test-X-B', null, null, client)
         await createToken('test-X-C', null, null, client)
         await createToken('test-X-D', null, null, client)
         await createToken('test-X-E', null, null, client)
 
-        const response = await apolloClient().query({
+        const response = await apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        }).query({
             query: GQL_TOKENS,
         })
         expect(response.errors).to.be.undefined
@@ -47,24 +56,22 @@ describe('List tokens via API - query.admin.personalApiTokens.tokens', () => {
     })
 
     it('Security - Guest NOT able to list any tokens', async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         await createToken('test-X-A', null, null, client)
         await createToken('test-X-B', null, null, client)
         await createToken('test-X-C', null, null, client)
         await createToken('test-X-D', null, null, client)
         await createToken('test-X-E', null, null, client)
 
-        const response = await apolloClient({}).query({
+        const response = await apollo(Cypress.config().baseUrl).query({
             query: GQL_TOKENS,
             // errorPolicy: 'ignore',
         })
-        expect(response.errors).to.be.undefined
+        expect(response.errors).to.not.be.empty
         cy.log(JSON.stringify(response))
-        if (response.data.admin.personalApiTokens.tokens === null) {
-            expect(response.data.admin.personalApiTokens.tokens).to.be.null
-        } else {
-            expect(response.data.admin.personalApiTokens.tokens.nodes.length).to.equal(0)
-        }
     })
 })
 
@@ -76,7 +83,10 @@ describe('Get single token via API - query.admin.personalApiTokens.tokenByKey', 
     })
 
     afterEach(async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         return Promise.all(
             (await getTokens({ userId: 'root' }, client)).nodes
                 .filter((token) => token.name.startsWith('test-'))
@@ -85,13 +95,19 @@ describe('Get single token via API - query.admin.personalApiTokens.tokenByKey', 
     })
 
     it('Create a token and fetch it', async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         const name = 'test-' + new Date().getTime()
 
         await createToken(name, null, null, client)
         const token = await getToken('root', name, client)
 
-        const response = await apolloClient().query({
+        const response = await apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        }).query({
             query: GQL_TOKEN,
             variables: {
                 tokenKey: token.key,
@@ -103,14 +119,20 @@ describe('Get single token via API - query.admin.personalApiTokens.tokenByKey', 
     })
 
     it('Fetch a token using a key that does not exist anymore', async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         const name = 'test-' + new Date().getTime()
 
         await createToken(name, null, null, client)
         const token = await getToken('root', name, client)
         await deleteToken(token.key, client)
 
-        const response = await apolloClient().query({
+        const response = await apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        }).query({
             query: GQL_TOKEN,
             variables: {
                 tokenKey: token.key,
@@ -122,7 +144,10 @@ describe('Get single token via API - query.admin.personalApiTokens.tokenByKey', 
 
     it('Fetch a token passing a null key', async function () {
         try {
-            await apolloClient().query({
+            await apollo(Cypress.config().baseUrl, {
+                username: 'root',
+                password: Cypress.env('SUPER_USER_PASSWORD'),
+            }).query({
                 query: GQL_TOKEN,
                 variables: {
                     tokenKey: null,
@@ -135,7 +160,10 @@ describe('Get single token via API - query.admin.personalApiTokens.tokenByKey', 
     })
 
     it('Fetch a token passing an EMPTY key', async function () {
-        const response = await apolloClient().query({
+        const response = await apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        }).query({
             query: GQL_TOKEN,
             variables: {
                 tokenKey: '',
@@ -146,31 +174,36 @@ describe('Get single token via API - query.admin.personalApiTokens.tokenByKey', 
     })
 
     it('Security - Guest NOT able to get a token created by root', async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         const name = 'test-' + new Date().getTime()
 
         await createToken(name, null, null, client)
         const token = await getToken('root', name, client)
 
-        const response = await apolloClient({}).query({
+        const response = await apollo(Cypress.config().baseUrl).query({
             query: GQL_TOKEN,
             variables: {
                 tokenKey: token.key,
             },
         })
         cy.log(JSON.stringify(response))
-        expect(response.errors).to.be.undefined
-        expect(response.data.admin.personalApiTokens.tokenByKey).to.be.null
+        expect(response.errors).to.not.be.empty
     })
 
-    it('Security - Authenticated visitor (jay) NOT able to get a token created by root', async function () {
-        const client = apolloClient()
+    it('Security - Authenticated visitor (irina) NOT able to get a token created by root', async function () {
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         const name = 'test-' + new Date().getTime()
 
         await createToken(name, null, null, client)
         const token = await getToken('root', name, client)
 
-        const response = await apolloClient({ username: 'jay', password: 'password' }).query({
+        const response = await apollo(Cypress.config().baseUrl, { username: 'irina', password: 'password' }).query({
             query: GQL_TOKEN,
             variables: {
                 tokenKey: token.key,
@@ -182,13 +215,16 @@ describe('Get single token via API - query.admin.personalApiTokens.tokenByKey', 
     })
 
     it('Security - Editor (mathias) NOT able to get a token created by root', async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         const name = 'test-' + new Date().getTime()
 
         await createToken(name, null, null, client)
         const token = await getToken('root', name, client)
 
-        const response = await apolloClient({ username: 'mathias', password: 'password' }).query({
+        const response = await apollo(Cypress.config().baseUrl, { username: 'mathias', password: 'password' }).query({
             query: GQL_TOKEN,
             variables: {
                 tokenKey: token.key,
@@ -199,13 +235,17 @@ describe('Get single token via API - query.admin.personalApiTokens.tokenByKey', 
         expect(response.data.admin.personalApiTokens.tokenByKey).to.be.null
     })
 
-    it('Security - Editor (mathias) NOT able to get a token created by Authenticated user (jay)', async function () {
+    it('Security - Editor (mathias) NOT able to get a token created by Authenticated user (irina)', async function () {
         const name = 'test-' + new Date().getTime()
 
-        await createToken(name, null, null, apolloClient({ username: 'jay', password: 'password' }))
-        const token = await getToken('jay', name, apolloClient({ username: 'jay', password: 'password' }))
+        await createToken(name, null, null, apollo(Cypress.config().baseUrl, { username: 'irina', password: 'password' }))
+        const token = await getToken(
+            'irina',
+            name,
+            apollo(Cypress.config().baseUrl, { username: 'irina', password: 'password' }),
+        )
 
-        const response = await apolloClient({ username: 'mathias', password: 'password' }).query({
+        const response = await apollo(Cypress.config().baseUrl, { username: 'mathias', password: 'password' }).query({
             query: GQL_TOKEN,
             variables: {
                 tokenKey: token.key,

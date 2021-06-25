@@ -1,5 +1,5 @@
 // not an actual test. just demonstrates a test using .graphql/.gql files
-import { apolloClient } from '../../support/apollo'
+import { apollo } from '../../support/apollo'
 import { DocumentNode } from 'graphql'
 
 describe('workspace api', () => {
@@ -10,7 +10,10 @@ describe('workspace api', () => {
     })
 
     it('queries workspace correctly', async function () {
-        const response = await apolloClient().query({
+        const response = await apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        }).query({
             query: workspace,
             variables: {
                 workspace: 'EDIT',

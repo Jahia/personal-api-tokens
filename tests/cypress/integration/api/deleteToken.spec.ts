@@ -1,7 +1,7 @@
-import { apolloClient } from '../../support/apollo'
+import { apollo } from '../../support/apollo'
 import { DocumentNode } from 'graphql'
 
-import { createToken, getToken, getTokens, deleteToken } from '../../support/gql'
+import { createToken, deleteToken, getToken, getTokens } from '../../support/gql'
 
 describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken', () => {
     let GQL_DELETE: DocumentNode
@@ -11,7 +11,10 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
     })
 
     afterEach(async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         return Promise.all(
             (await getTokens({ userId: 'root' }, client)).nodes
                 .filter((token) => token.name.startsWith('test-'))
@@ -20,13 +23,19 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
     })
 
     it('Delete Token by providing tokenKey', async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         const name = 'test-' + new Date().getTime()
 
         await createToken(name, null, null, client)
         const tokenDetails = await getToken('root', name, client)
 
-        const response = await apolloClient().mutate({
+        const response = await apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        }).mutate({
             mutation: GQL_DELETE,
             variables: {
                 tokenKey: tokenDetails.key,
@@ -41,14 +50,20 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
     })
 
     it('Delete Token by providing null tokenKey', async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
 
         await createToken('test-D-A', null, null, client)
         await createToken('test-D-B', null, null, client)
         await createToken('test-D-C', null, null, client)
 
         try {
-            await apolloClient().mutate({
+            await apollo(Cypress.config().baseUrl, {
+                username: 'root',
+                password: Cypress.env('SUPER_USER_PASSWORD'),
+            }).mutate({
                 mutation: GQL_DELETE,
                 variables: {
                     tokenKey: null,
@@ -65,13 +80,19 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
     })
 
     it('Delete Token by providing EMPTY tokenKey', async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
 
         await createToken('test-E-A', null, null, client)
         await createToken('test-E-B', null, null, client)
         await createToken('test-E-C', null, null, client)
 
-        const response = await apolloClient().mutate({
+        const response = await apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        }).mutate({
             mutation: GQL_DELETE,
             variables: {
                 tokenKey: '',
@@ -86,35 +107,38 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
     })
 
     it('Security - Guest is NOT able to delete a token created by Root', async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         const name = 'test-' + new Date().getTime()
 
         await createToken(name, null, null, client)
         const tokenDetails = await getToken('root', name, client)
 
-        const response = await apolloClient({}).mutate({
+        const response = await apollo(Cypress.config().baseUrl).mutate({
             mutation: GQL_DELETE,
             variables: {
                 tokenKey: tokenDetails.key,
             },
         })
         cy.log(JSON.stringify(response))
-        expect(response.errors).to.be.undefined
-        expect(response.data.admin.personalApiTokens.deleteToken).to.be.false
+        expect(response.errors).to.not.be.empty;
+        expect(response.data).to.be.null;
 
         const deletedToken = await getToken('root', name, client)
         expect(deletedToken).not.to.be.null
     })
 
-    it('Security - Authenticated visitor (jay) is NOT able to delete a token created by Editor (mathias)', async function () {
+    it('Security - Authenticated user (irina) is NOT able to delete a token created by Editor (mathias)', async function () {
         const name = 'test-' + new Date().getTime()
 
-        const mathiasApolloClient = apolloClient({ username: 'mathias', password: 'password' })
+        const mathiasApolloClient = apollo(Cypress.config().baseUrl, { username: 'mathias', password: 'password' })
         await createToken(name, null, null, mathiasApolloClient)
         const tokenDetails = await getToken('mathias', name, mathiasApolloClient)
 
         try {
-            await apolloClient({ username: 'jay', password: 'password' }).mutate({
+            await apollo(Cypress.config().baseUrl, { username: 'irina', password: 'password' }).mutate({
                 mutation: GQL_DELETE,
                 variables: {
                     tokenKey: tokenDetails.key,
@@ -129,35 +153,41 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
         expect(deletedToken).not.to.be.null
     })
 
-    it('Security - Authenticated visitor (jay) is NOT able to delete a token created by Root', async function () {
+    it('Security - Authenticated user (irina) is NOT able to delete a token created by Root', async function () {
         const name = 'test-' + new Date().getTime()
 
-        const rootApolloClient = apolloClient()
+        const rootApolloClient = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         await createToken(name, null, null, rootApolloClient)
         const tokenDetails = await getToken('root', name, rootApolloClient)
 
-        const response = await apolloClient({ username: 'root', password: 'password' }).mutate({
-            mutation: GQL_DELETE,
-            variables: {
-                tokenKey: tokenDetails.key,
-            },
-        })
-        cy.log(JSON.stringify(response))
-        expect(response.errors).to.be.undefined
-        expect(response.data.admin.personalApiTokens.deleteToken).to.be.false
+        try {
+            await apollo(Cypress.config().baseUrl, { username: 'irina', password: 'password' }).mutate({
+                mutation: GQL_DELETE,
+                variables: {
+                    tokenKey: tokenDetails.key,
+                },
+            })
+        } catch (err) {
+            cy.log(JSON.stringify(err))
+            expect(err.graphQLErrors[0].message).to.contain('java.lang.IllegalArgumentException: invalid user')
+        }
+
 
         const deletedToken = await getToken('root', name, rootApolloClient)
         expect(deletedToken).not.to.be.null
     })
 
-    it('Security - Editor (mathias) is NOT able to delete a token created by Authenticated user (jay)', async function () {
+    it('Security - Editor (mathias) is NOT able to delete a token created by Authenticated user (irina)', async function () {
         const name = 'test-' + new Date().getTime()
 
-        const mathiasApolloClient = apolloClient({ username: 'jay', password: 'password' })
+        const mathiasApolloClient = apollo(Cypress.config().baseUrl, { username: 'irina', password: 'password' })
         await createToken(name, null, null, mathiasApolloClient)
-        const tokenDetails = await getToken('jay', name, mathiasApolloClient)
+        const tokenDetails = await getToken('irina', name, mathiasApolloClient)
 
-        const response = await apolloClient({ username: 'mathias', password: 'password' }).mutate({
+        const response = await apollo(Cypress.config().baseUrl, { username: 'mathias', password: 'password' }).mutate({
             mutation: GQL_DELETE,
             variables: {
                 tokenKey: tokenDetails.key,
@@ -167,19 +197,22 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
         expect(response.errors).to.be.undefined
         expect(response.data.admin.personalApiTokens.deleteToken).to.be.false
 
-        const deletedToken = await getToken('jay', name, mathiasApolloClient)
+        const deletedToken = await getToken('irina', name, mathiasApolloClient)
         expect(deletedToken).not.to.be.null
     })
 
     it('Security - Editor (mathias) is NOT able to delete a token created by Root', async function () {
         const name = 'test-' + new Date().getTime()
 
-        const rootApolloClient = apolloClient()
+        const rootApolloClient = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         await createToken(name, null, null, rootApolloClient)
         const tokenDetails = await getToken('root', name, rootApolloClient)
 
         try {
-            await apolloClient({ username: 'mathias', password: 'password' }).mutate({
+            await apollo(Cypress.config().baseUrl, { username: 'mathias', password: 'password' }).mutate({
                 mutation: GQL_DELETE,
                 variables: {
                     tokenKey: tokenDetails.key,
@@ -197,11 +230,14 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
     it('Security - Root IS able to delete a token created by Editor (mathias)', async function () {
         const name = 'test-' + new Date().getTime()
 
-        const mathiasApolloClient = apolloClient({ username: 'mathias', password: 'password' })
+        const mathiasApolloClient = apollo(Cypress.config().baseUrl, { username: 'mathias', password: 'password' })
         await createToken(name, null, null, mathiasApolloClient)
         const tokenDetails = await getToken('mathias', name, mathiasApolloClient)
 
-        const response = await apolloClient().mutate({
+        const response = await apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        }).mutate({
             mutation: GQL_DELETE,
             variables: {
                 tokenKey: tokenDetails.key,
@@ -215,13 +251,16 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
         expect(deletedToken).to.be.null
     })
 
-    it('Security - Root IS able to delete a token created by Authenticated user (jay)', async function () {
+    it('Security - Root IS able to delete a token created by Authenticated user (irina)', async function () {
         const name = 'test-' + new Date().getTime()
-        const mathiasApolloClient = apolloClient({ username: 'jay', password: 'password' })
+        const mathiasApolloClient = apollo(Cypress.config().baseUrl, { username: 'irina', password: 'password' })
         await createToken(name, null, null, mathiasApolloClient)
-        const tokenDetails = await getToken('jay', name, mathiasApolloClient)
+        const tokenDetails = await getToken('irina', name, mathiasApolloClient)
 
-        const response = await apolloClient().mutate({
+        const response = await apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        }).mutate({
             mutation: GQL_DELETE,
             variables: {
                 tokenKey: tokenDetails.key,
@@ -231,7 +270,7 @@ describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken'
         expect(response.errors).to.be.undefined
         expect(response.data.admin.personalApiTokens.deleteToken).to.be.true
 
-        const deletedToken = await getToken('jay', name, mathiasApolloClient)
+        const deletedToken = await getToken('irina', name, mathiasApolloClient)
         expect(deletedToken).to.be.null
     })
 })

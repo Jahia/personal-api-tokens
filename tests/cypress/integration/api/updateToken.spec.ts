@@ -1,4 +1,4 @@
-import { apolloClient } from '../../support/apollo'
+import { apollo } from '../../support/apollo'
 import { DocumentNode } from 'graphql'
 
 import { createToken, deleteToken, getToken, getTokens } from '../../support/gql'
@@ -11,7 +11,10 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
     })
 
     afterEach(async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         return Promise.all(
             (await getTokens({ userId: 'root' }, client)).nodes
                 .filter((token) => token.name.startsWith('test-'))
@@ -20,14 +23,20 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
     })
 
     it('Update Token by providing tokenKey, NEW tokenName, null expireAt, null state', async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         const nameA = 'test-A' + new Date().getTime()
         const nameB = 'test-B' + new Date().getTime()
 
         await createToken(nameA, null, null, client)
         const tokenDetails = await getToken('root', nameA, client)
 
-        const response = await apolloClient().mutate({
+        const response = await apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        }).mutate({
             mutation: GQL_UPDATE,
             variables: {
                 tokenKey: tokenDetails.key,
@@ -49,13 +58,19 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
     })
 
     it('Update Token by providing tokenKey, null tokenName, null expireAt, null state', async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         const nameA = 'test-A' + new Date().getTime()
 
         await createToken(nameA, null, null, client)
         const tokenDetails = await getToken('root', nameA, client)
 
-        const response = await apolloClient().mutate({
+        const response = await apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        }).mutate({
             mutation: GQL_UPDATE,
             variables: {
                 tokenKey: tokenDetails.key,
@@ -73,14 +88,20 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
     })
 
     it('Update Token by providing tokenKey, EMPTY tokenName, null expireAt, null state', async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         const nameA = 'test-A' + new Date().getTime()
 
         await createToken(nameA, null, null, client)
         const tokenDetails = await getToken('root', nameA, client)
 
         try {
-            await apolloClient().mutate({
+            await apollo(Cypress.config().baseUrl, {
+                username: 'root',
+                password: Cypress.env('SUPER_USER_PASSWORD'),
+            }).mutate({
                 mutation: GQL_UPDATE,
                 variables: {
                     tokenKey: tokenDetails.key,
@@ -101,7 +122,10 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
     })
 
     it('Update Token by providing tokenKey, EXISTING (other) tokenName, null expireAt, null state', async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         const nameA = 'test-A' + new Date().getTime()
         const nameB = 'test-B' + new Date().getTime()
 
@@ -112,7 +136,10 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
         const tokenBDetails = await getToken('root', nameB, client)
 
         try {
-            await apolloClient().mutate({
+            await apollo(Cypress.config().baseUrl, {
+                username: 'root',
+                password: Cypress.env('SUPER_USER_PASSWORD'),
+            }).mutate({
                 mutation: GQL_UPDATE,
                 variables: {
                     tokenKey: tokenADetails.key,
@@ -137,13 +164,19 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
     })
 
     it('Update Token by providing tokenKey, null tokenName, null expireAt, DISABLED state', async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         const name = 'test-' + new Date().getTime()
 
         await createToken(name, null, null, client)
         const tokenDetails = await getToken('root', name, client)
 
-        const response = await apolloClient().mutate({
+        const response = await apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        }).mutate({
             mutation: GQL_UPDATE,
             variables: {
                 tokenKey: tokenDetails.key,
@@ -162,14 +195,20 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
     })
 
     it('Update Token by providing tokenKey, null tokenName, null expireAt, INCORRECT state (INACTIVE)', async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         const name = 'test-' + new Date().getTime()
 
         await createToken(name, null, null, client)
         const tokenDetails = await getToken('root', name, client)
 
         try {
-            await apolloClient().mutate({
+            await apollo(Cypress.config().baseUrl, {
+                username: 'root',
+                password: Cypress.env('SUPER_USER_PASSWORD'),
+            }).mutate({
                 mutation: GQL_UPDATE,
                 variables: {
                     tokenKey: tokenDetails.key,
@@ -189,14 +228,20 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
     })
 
     it('Update Token by providing tokenKey, null tokenName, expireAt, null state', async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         const name = 'test-' + new Date().getTime()
         const expireAt = '2010-01-01'
 
         await createToken(name, null, null, client)
         const tokenDetails = await getToken('root', name, client)
 
-        const response = await apolloClient().mutate({
+        const response = await apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        }).mutate({
             mutation: GQL_UPDATE,
             variables: {
                 tokenKey: tokenDetails.key,
@@ -214,14 +259,20 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
     })
 
     it('Update Token by providing tokenKey, null tokenName, EMPTY expireAt, null state', async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         const name = 'test-' + new Date().getTime()
         const expireAt = ''
 
         await createToken(name, null, null, client)
         const tokenDetails = await getToken('root', name, client)
 
-        const response = await apolloClient().mutate({
+        const response = await apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        }).mutate({
             mutation: GQL_UPDATE,
             variables: {
                 tokenKey: tokenDetails.key,
@@ -239,7 +290,10 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
     })
 
     it('Update Token by providing tokenKey, null tokenName, INCORRECT expireAt, null state', async function () {
-        const client = apolloClient()
+        const client = apollo(Cypress.config().baseUrl, {
+            username: 'root',
+            password: Cypress.env('SUPER_USER_PASSWORD'),
+        })
         const name = 'test-' + new Date().getTime()
         const expireAt = '2020-ABCD-12-1'
 
@@ -247,7 +301,10 @@ describe('Token update via API - mutation.admin.personalApiTokens.updateToken', 
         const tokenDetails = await getToken('root', name, client)
 
         try {
-            await apolloClient().mutate({
+            await apollo(Cypress.config().baseUrl, {
+                username: 'root',
+                password: Cypress.env('SUPER_USER_PASSWORD'),
+            }).mutate({
                 mutation: GQL_UPDATE,
                 variables: {
                     tokenKey: tokenDetails.key,
