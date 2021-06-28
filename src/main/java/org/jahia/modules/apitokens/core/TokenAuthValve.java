@@ -28,14 +28,18 @@ import org.jahia.pipelines.valves.Valve;
 import org.jahia.pipelines.valves.ValveContext;
 import org.jahia.services.content.JCRTemplate;
 import org.jahia.services.content.decorator.JCRUserNode;
+import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.jcr.RepositoryException;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Authentication valve for APIToken Authorization header
@@ -48,7 +52,7 @@ public class TokenAuthValve extends BaseAuthValve {
     private TokenService tokenService;
     private JahiaUserManagerService userManagerService;
 
-    private String[] urlPatterns = null;
+    private Set<String> urlPatterns = new HashSet<>();
 
     @Reference(service = Pipeline.class, target = "(type=authentication)")
     public void setAuthPipeline(Pipeline authPipeline) {
@@ -65,6 +69,15 @@ public class TokenAuthValve extends BaseAuthValve {
         this.userManagerService = userManagerService;
     }
 
+    @Reference(service = HttpServlet.class, target = "(allow-api-token=true)", cardinality = ReferenceCardinality.MULTIPLE, policy = ReferencePolicy.DYNAMIC, policyOption = ReferencePolicyOption.GREEDY)
+    public void addServlet(ServiceReference<HttpServlet> servlet) {
+        urlPatterns.add("/modules" + servlet.getProperty("alias"));
+    }
+
+    public void removeServlet(ServiceReference<HttpServlet> servlet) {
+        urlPatterns.remove("/modules" + servlet.getProperty("alias"));
+    }
+
     /**
      * Activate
      *
@@ -74,7 +87,7 @@ public class TokenAuthValve extends BaseAuthValve {
     public void activate(Map<String, ?> props) {
         setId("patValve");
         if (props.get("urlPatterns") != null) {
-            urlPatterns = StringUtils.split((String) props.get("urlPatterns"), ",");
+            urlPatterns.addAll(Arrays.asList(StringUtils.split((String) props.get("urlPatterns"), ",")));
         }
         removeValve(authPipeline);
         addValve(authPipeline, 0, null, null);
@@ -95,7 +108,7 @@ public class TokenAuthValve extends BaseAuthValve {
 
         String uri = request.getRequestURI().substring(request.getContextPath().length());
 
-        if (Arrays.stream(urlPatterns).anyMatch(urlPattern -> CompositeFilter.matchFiltersURL(urlPattern, uri))) {
+        if (urlPatterns.stream().anyMatch(urlPattern -> CompositeFilter.matchFiltersURL(urlPattern, uri))) {
             String authorization = request.getHeader("Authorization");
 
             try {
