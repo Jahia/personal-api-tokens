@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {Add, Button, Typography} from '@jahia/moonstone';
+import {Add, Button, Header} from '@jahia/moonstone';
 import TokensList from '../TokensList/TokensList';
 import ConfirmationDialog from '../ConfirmationDialog/ConfirmationDialog';
 import CreateTokenDialogBody from '../CreateTokenDialogBody/CreateTokenDialogBody';
@@ -9,7 +9,7 @@ import utc from 'dayjs/plugin/utc';
 import CopyTokenDialogBody from '../CopyTokenDialogBody/CopyTokenDialogBody';
 import {CreateTokenMutation} from './MyApiTokens.gql';
 import {useMutation} from '@apollo/react-hooks';
-import {ContentHeader, ContentLayout} from '@jahia/moonstone-alpha';
+import {ContentLayout} from '@jahia/moonstone-alpha';
 import {REFETCHER_MAP, TOKENS_REFETCH_KEY} from '../constants';
 
 dayjs.extend(utc);
@@ -50,14 +50,12 @@ const MyApiTokens = () => {
         <ContentLayout
             paper
             header={(
-                <ContentHeader
-                    upperSection={(
-                        <div className="flexRow">
-                            <Typography variant="title">
-                                {t('personal-api-tokens:title')}
-                            </Typography>
-                            <div className="flexFluid"/>
-                            <Button size="big"
+                <div style={{backgroundColor: 'white'}}>
+                    <Header
+                        title={t('personal-api-tokens:title')}
+                        mainActions={[
+                            <Button key="create"
+                                    size="big"
                                     color="accent"
                                     data-testid="create-token-btn"
                                     label={t('personal-api-tokens:createToken.buttonTitle')}
@@ -66,9 +64,9 @@ const MyApiTokens = () => {
                                         refreshState();
                                         setCreateTokenDialogOpen(true);
                                     }}/>
-                        </div>
-                    )}
-                />
+                        ]}
+                    />
+                </div>
             )}
             content={(
                 <>
