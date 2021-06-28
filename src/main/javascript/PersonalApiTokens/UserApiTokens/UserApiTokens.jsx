@@ -1,8 +1,8 @@
 import React, {useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {Button, Search, Typography} from '@jahia/moonstone';
+import {Button, Header, Search} from '@jahia/moonstone';
 import TokensList from '../TokensList/TokensList';
-import {ContentHeader, ContentLayout} from '@jahia/moonstone-alpha';
+import {ContentLayout} from '@jahia/moonstone-alpha';
 import {TextField} from '@material-ui/core/index';
 import style from './UserApiTokens.scss';
 
@@ -15,15 +15,7 @@ const UserApiTokens = () => {
     return (
         <ContentLayout
             paper
-            header={(
-                <ContentHeader
-                    upperSection={(
-                        <Typography variant="title">
-                            {t('personal-api-tokens:adminTitle')}
-                        </Typography>
-                    )}
-                />
-            )}
+            header={(<div style={{backgroundColor: 'white'}}><Header title={t('personal-api-tokens:adminTitle')}/></div>)}
             content={(
                 <div className="flexCol flexFluid">
                     <div className={`flexRow alignCenter ${style.search}`}>

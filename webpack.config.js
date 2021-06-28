@@ -91,8 +91,8 @@ module.exports = (env, argv) => {
         },
         plugins: [
             new ModuleFederationPlugin({
-                name: "jcontent",
-                library: { type: "assign", name: "appShell.remotes.jcontent" },
+                name: "pat",
+                library: { type: "assign", name: "appShell.remotes.pat" },
                 filename: "remoteEntry.js",
                 exposes: {
                     './init': './src/main/javascript/init',

@@ -5,47 +5,48 @@ exports[`Test token toggling state Verify token can be disabled 1`] = `
   <main
     class="moonstone-contentLayout flexCol"
   >
-    <header
-      class="moonstone-contentHeader"
+    <div
+      style="background-color: white;"
     >
-      <div
-        class="moonstone-contentHeader_upper"
+      <header
+        class="moonstone-header"
       >
         <div
-          class="flexRow"
+          class="moonstone-header_main flexRow alignCenter flexFluid"
         >
-          <p
-            class="moonstone-typography moonstone-variant_title moonstone-weight_default"
+          <h1
+            class="moonstone-typography moonstone-variant_title moonstone-weight_default flexFluid moonstone-header_title moonstone-nowrap"
           >
             translated_personal-api-tokens:title
-          </p>
+          </h1>
           <div
-            class="flexFluid"
-          />
-          <button
-            class="moonstone-button moonstone-size_big moonstone-variant_default moonstone-color_accent moonstone-icon"
-            data-testid="create-token-btn"
-            type="button"
+            class="moonstone-header_mainActions moonstone-header_actions"
           >
-            <svg
-              class="undefined moonstone-icon moonstone-icon_default"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
+            <button
+              class="moonstone-button moonstone-size_big moonstone-variant_default moonstone-color_accent moonstone-icon"
+              data-testid="create-token-btn"
+              type="button"
             >
-              <path
-                d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
-              />
-            </svg>
-            <span
-              class="moonstone-typography moonstone-variant_button moonstone-weight_semiBold flexFluid moonstone-nowrap moonstone-upperCase"
-            >
-              translated_personal-api-tokens:createToken.buttonTitle
-            </span>
-          </button>
+              <svg
+                class="undefined moonstone-icon moonstone-icon_default"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
+                />
+              </svg>
+              <span
+                class="moonstone-typography moonstone-variant_button moonstone-weight_semiBold flexFluid moonstone-nowrap moonstone-upperCase"
+              >
+                translated_personal-api-tokens:createToken.buttonTitle
+              </span>
+            </button>
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
+    </div>
     <div
       class="moonstone-contentLayout_paperContainer flexCol"
     >
