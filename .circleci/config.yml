@@ -113,7 +113,7 @@ workflows:
           context: QA_ENVIRONMENT
           requires:
             - jahia-modules-orb/build
-          jahia_image: jahia/jahia-discovery-dev:8-SNAPSHOT
+          jahia_image: jahia/jahia-ee-dev:8-SNAPSHOT
           tests_manifest: provisioning-manifest-build.yml
           module_id: << pipeline.parameters.MODULE_ID >> 
           testrail_project: << pipeline.parameters.TESTRAIL_PROJECTNAME >> 
@@ -240,12 +240,12 @@ workflows:
             - jahia-modules-orb/initialize
           matrix:
             parameters:            
-              jahia_image: ["jahia/jahia-discovery:8", "jahia/jahia-discovery-dev:8-SNAPSHOT"]
-              tests_manifest: ["provisioning-manifest-snapshot.yml"]
-              module_id: ["<< pipeline.parameters.MODULE_ID >>"]
-              testrail_project: ["<< pipeline.parameters.TESTRAIL_PROJECTNAME >>"]
-              testrail_milestone: ["<< matrix.jahia_image >>"]
-              should_skip_artifacts: [true]
-              should_skip_testrail: [false]
-              should_skip_notifications: [false]
-              should_skip_zencrepes: [false]
+              jahia_image: ["jahia/jahia-ee:8", "jahia/jahia-ee-dev:8-SNAPSHOT"]
+          tests_manifest: "provisioning-manifest-snapshot.yml"
+          module_id: "<< pipeline.parameters.MODULE_ID >>"
+          testrail_project: "<< pipeline.parameters.TESTRAIL_PROJECTNAME >>"
+          testrail_milestone: "<< matrix.jahia_image >>"
+          should_skip_artifacts: true
+          should_skip_testrail: false
+          should_skip_notifications: false
+          should_skip_zencrepes: false
