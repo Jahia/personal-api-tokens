@@ -16,16 +16,22 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
             password: Cypress.env('SUPER_USER_PASSWORD'),
         })
         return Promise.all([
-            getTokens({ userId: 'root' }, client).then(t => t.nodes
-                .filter((token) => token.name.startsWith('test-'))
-                .map((token) => deleteToken(token.key, client))),
-            getTokens({ userId: 'irina' }, client).then(t => t.nodes
-                .filter((token) => token.name.startsWith('test-'))
-                .map((token) => deleteToken(token.key, client))),
-            getTokens({ userId: 'mathias' }, client).then(t => t.nodes
-                .filter((token) => token.name.startsWith('test-'))
-                .map((token) => deleteToken(token.key, client)))
-        ]);
+            getTokens({ userId: 'root' }, client).then((t) =>
+                t.nodes
+                    .filter((token) => token.name.startsWith('test-'))
+                    .map((token) => deleteToken(token.key, client)),
+            ),
+            getTokens({ userId: 'irina' }, client).then((t) =>
+                t.nodes
+                    .filter((token) => token.name.startsWith('test-'))
+                    .map((token) => deleteToken(token.key, client)),
+            ),
+            getTokens({ userId: 'mathias' }, client).then((t) =>
+                t.nodes
+                    .filter((token) => token.name.startsWith('test-'))
+                    .map((token) => deleteToken(token.key, client)),
+            ),
+        ])
     })
 
     it('Create token by providing userId, name, null date, null state, null siteKey', async function () {

@@ -16,17 +16,22 @@ describe('List tokens via API - query.admin.personalApiTokens.tokens', () => {
             password: Cypress.env('SUPER_USER_PASSWORD'),
         })
         return Promise.all([
-            getTokens({ userId: 'root' }, client).then(t => t.nodes
-                .filter((token) => token.name.startsWith('test-'))
-                .map((token) => deleteToken(token.key, client))),
-            getTokens({ userId: 'irina' }, client).then(t => t.nodes
-                .filter((token) => token.name.startsWith('test-'))
-                .map((token) => deleteToken(token.key, client))),
-            getTokens({ userId: 'mathias' }, client).then(t => t.nodes
-                .filter((token) => token.name.startsWith('test-'))
-                .map((token) => deleteToken(token.key, client)))
-        ]);
-
+            getTokens({ userId: 'root' }, client).then((t) =>
+                t.nodes
+                    .filter((token) => token.name.startsWith('test-'))
+                    .map((token) => deleteToken(token.key, client)),
+            ),
+            getTokens({ userId: 'irina' }, client).then((t) =>
+                t.nodes
+                    .filter((token) => token.name.startsWith('test-'))
+                    .map((token) => deleteToken(token.key, client)),
+            ),
+            getTokens({ userId: 'mathias' }, client).then((t) =>
+                t.nodes
+                    .filter((token) => token.name.startsWith('test-'))
+                    .map((token) => deleteToken(token.key, client)),
+            ),
+        ])
     })
 
     it('Create 5 tokens and list them', async function () {
