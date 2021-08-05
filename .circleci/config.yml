@@ -92,7 +92,6 @@ workflows:
           context: QA_ENVIRONMENT
           requires:
             - jahia-modules-orb/initialize
-            - jahia-modules-orb/static-analysis
             - jahia-modules-orb/update-signature
       - jahia-modules-orb/sonar-analysis:
           context: QA_ENVIRONMENT
