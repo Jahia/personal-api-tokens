@@ -20,8 +20,8 @@ import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.annotations.connection.GraphQLConnection;
+import graphql.kickstart.servlet.context.GraphQLServletContext;
 import graphql.schema.DataFetchingEnvironment;
-import graphql.servlet.GraphQLContext;
 import org.jahia.api.usermanager.JahiaUserManagerService;
 import org.jahia.modules.apitokens.TokenDetails;
 import org.jahia.modules.apitokens.TokenService;
@@ -38,6 +38,7 @@ import org.jahia.services.content.JCRTemplate;
 import org.jahia.services.content.decorator.JCRUserNode;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -186,10 +187,10 @@ public class GqlPersonalApiTokensQuery {
     @GraphQLField
     @GraphQLDescription("Get available scopes")
     public Collection<GqlScope> getAvailableScopes(DataFetchingEnvironment environment) {
-        GraphQLContext context = environment.getContext();
+        HttpServletRequest httpRequest = ((GraphQLServletContext) environment.getContext()).getHttpServletRequest();
         return permissionService.getAvailableScopes().stream()
                 .filter(s -> "true".equals(s.getMetadata().get("visible")))
-                .filter(s -> s.isValid(context.getRequest().orElse(null)))
+                .filter(s -> s.isValid(httpRequest))
                 .map(GqlScope::new).collect(Collectors.toList());
     }
 
