@@ -32,16 +32,22 @@ describe('Pagination and ordering - query.admin.personalApiTokens.tokens', () =>
             password: 'password',
         })
         return Promise.all([
-            getTokens({ userId: 'root' }, client).then(t => t.nodes
-                .filter((token) => token.name.startsWith('test-'))
-                .map((token) => deleteToken(token.key, client))),
-            getTokens({ userId: 'irina' }, client).then(t => t.nodes
-                .filter((token) => token.name.startsWith('test-'))
-                .map((token) => deleteToken(token.key, client))),
-            getTokens({ userId: 'mathias' }, client).then(t => t.nodes
-                .filter((token) => token.name.startsWith('test-'))
-                .map((token) => deleteToken(token.key, client)))
-        ]);
+            getTokens({ userId: 'root' }, client).then((t) =>
+                t.nodes
+                    .filter((token) => token.name.startsWith('test-'))
+                    .map((token) => deleteToken(token.key, client)),
+            ),
+            getTokens({ userId: 'irina' }, client).then((t) =>
+                t.nodes
+                    .filter((token) => token.name.startsWith('test-'))
+                    .map((token) => deleteToken(token.key, client)),
+            ),
+            getTokens({ userId: 'mathias' }, client).then((t) =>
+                t.nodes
+                    .filter((token) => token.name.startsWith('test-'))
+                    .map((token) => deleteToken(token.key, client)),
+            ),
+        ])
     })
 
     it('Shows only 2 tokens', async function () {
