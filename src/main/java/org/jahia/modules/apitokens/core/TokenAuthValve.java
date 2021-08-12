@@ -129,7 +129,9 @@ public class TokenAuthValve extends BaseAuthValve {
                             JCRUserNode user = userManagerService.lookupUserByPath(details.getUserPath());
                             authValveContext.setShouldStoreAuthInSession(false);
                             authValveContext.getSessionFactory().setCurrentUser(user.getJahiaUser());
-                            permissionService.addScopes(details.getScopes(), request);
+                            if (permissionService != null) {
+                                permissionService.addScopes(details.getScopes(), request);
+                            }
                         }
                         return null;
                     });

@@ -47,6 +47,11 @@
     "type": "git",
     "url": "git+https://github.com/Jahia/personal-api-tokens.git"
   },
+  "resolutions": {
+    "**/meow/trim-newlines": "^3.0.1",
+    "**/css-what": "^5.0.1",
+    "node-sass/node-gyp/tar": "^4.4.2"
+  },
   "keywords": [],
   "author": "",
   "bugs": {
