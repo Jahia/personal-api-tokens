@@ -53,7 +53,7 @@
     </parent>
     <artifactId>personal-api-tokens</artifactId>
     <name>Personal API Tokens</name>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.1.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
     <description>This is the custom module (Personal API Tokens) for running on a Jahia server.</description>
 
@@ -68,18 +68,12 @@
         <jahia-depends>default,userDashboard,graphql-dxm-provider</jahia-depends>
         <jahia-module-type>system</jahia-module-type>
         <jahia-deploy-on-site>system</jahia-deploy-on-site>
-        <jahia-module-signature>MCwCFCZ0gWkXge/SzSYb19Ts7cl7T6JIAhRzkmdVnYeMQvR8cV/sx3g3uV2Ifg==</jahia-module-signature>
+        <jahia-module-signature>MC0CFH2NpykpeFGt1/9lvpF35+omifp1AhUAhUNWXw8kp/lQqh4bqcv5rTUWbV8=</jahia-module-signature>
         <export-package>org.jahia.modules.apitokens</export-package>
         <yarn.arguments>build:production</yarn.arguments>
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.jahia.modules</groupId>
-            <artifactId>security-filter</artifactId>
-            <version>2.1.0-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
         <dependency>
             <groupId>org.jahia.modules</groupId>
             <artifactId>app-shell</artifactId>

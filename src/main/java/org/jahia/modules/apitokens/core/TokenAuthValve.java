@@ -20,7 +20,7 @@ import org.jahia.api.usermanager.JahiaUserManagerService;
 import org.jahia.bin.filters.CompositeFilter;
 import org.jahia.modules.apitokens.TokenDetails;
 import org.jahia.modules.apitokens.TokenService;
-import org.jahia.modules.securityfilter.PermissionService;
+import org.jahia.services.securityfilter.PermissionService;
 import org.jahia.params.valves.AuthValveContext;
 import org.jahia.params.valves.BaseAuthValve;
 import org.jahia.pipelines.Pipeline;
