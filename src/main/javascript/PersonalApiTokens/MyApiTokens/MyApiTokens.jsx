@@ -14,13 +14,15 @@ import {REFETCHER_MAP, TOKENS_REFETCH_KEY} from '../constants';
 
 dayjs.extend(utc);
 
+const USER_TOKEN_INFO_EMPTY = {name: '', scopes: []};
+
 const MyApiTokens = () => {
     const {t} = useTranslation('personal-api-tokens');
 
     const [isCreateTokenDialogOpen, setCreateTokenDialogOpen] = useState(false);
     const [isCopyTokenDialogOpen, setCopyTokenDialogOpen] = useState(false);
     const [createTokenError, setCreateTokenError] = useState(false);
-    const [userTokenInformation, setUserTokenInformation] = useState({name: '', scopes: []});
+    const [userTokenInformation, setUserTokenInformation] = useState(USER_TOKEN_INFO_EMPTY);
     const [tokenValue, setTokenValue] = useState('');
 
     const refreshState = () => {
@@ -34,6 +36,7 @@ const MyApiTokens = () => {
         setCopyTokenDialogOpen(true);
         const tokenData = data.admin.personalApiTokens.createToken;
         setTokenValue(tokenData ? tokenData : '');
+        setUserTokenInformation(USER_TOKEN_INFO_EMPTY);
         return REFETCHER_MAP.get(TOKENS_REFETCH_KEY)?.call();
     };
 
