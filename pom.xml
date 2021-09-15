@@ -70,6 +70,46 @@
         <jahia-deploy-on-site>system</jahia-deploy-on-site>
         <jahia-module-signature>MC0CFH2NpykpeFGt1/9lvpF35+omifp1AhUAhUNWXw8kp/lQqh4bqcv5rTUWbV8=</jahia-module-signature>
         <export-package>org.jahia.modules.apitokens</export-package>
+        <import-package>
+            graphql.annotations.annotationTypes;version="[7.2,9)",
+            graphql.annotations.connection;version="[7.2,8)",
+            graphql.schema;version="[13.0,14)",
+            javax.inject,
+            javax.jcr;version="[2.0,3)",
+            javax.jcr.query;version="[2.0,3)",
+            javax.servlet.http,
+            org.apache.commons.codec.binary;version="[1.13,2)",
+            org.apache.commons.codec.digest;version="[1.13,2)",
+            org.apache.commons.id.uuid,
+            org.apache.commons.lang;version="[2.6,3)",
+            org.jahia.api.usermanager,
+            org.jahia.bin.filters,
+            org.jahia.modules.apitokens,
+            org.jahia.modules.graphql.provider.dxm;version="[2.7,3)",
+            org.jahia.modules.graphql.provider.dxm.admin;version="[2.7,3)",
+            org.jahia.modules.graphql.provider.dxm.osgi.annotations;version="[2.7,3)",
+            org.jahia.modules.graphql.provider.dxm.predicate;version="[2.7,3)",
+            org.jahia.modules.graphql.provider.dxm.relay;version="[2.7,3)",
+            org.jahia.modules.graphql.provider.dxm.user;version="[2.7,3)",
+            org.jahia.modules.graphql.provider.dxm.util;version="[2.7,3)",
+            org.jahia.params.valves,
+            org.jahia.pipelines,
+            org.jahia.pipelines.valves,
+            org.jahia.services.content,
+            org.jahia.services.content.decorator,
+            org.jahia.services.query,
+            org.jahia.services.securityfilter,
+            org.jahia.services.usermanager,
+            org.joda.time;version="[1.6,2)",
+            org.osgi.framework;version="[1.8,2)",
+            org.slf4j;version="[1.7,2)",
+            pl.touk.throwing,
+            pl.touk.throwing.exception,
+            org.apache.naming.java,
+            org.jahia.defaults.config.spring,
+            org.jahia.exceptions,
+            org.jahia.services
+        </import-package>
         <yarn.arguments>build:production</yarn.arguments>
     </properties>
 
