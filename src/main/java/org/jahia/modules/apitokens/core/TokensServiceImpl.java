@@ -16,7 +16,6 @@
 package org.jahia.modules.apitokens.core;
 
 import org.jahia.api.Constants;
-import org.jahia.api.usermanager.JahiaUserManagerService;
 import org.jahia.modules.apitokens.TokenBuilder;
 import org.jahia.modules.apitokens.TokenDetails;
 import org.jahia.modules.apitokens.TokenService;
@@ -25,6 +24,7 @@ import org.jahia.services.content.JCRNodeIteratorWrapper;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.JCRSessionWrapper;
 import org.jahia.services.content.decorator.JCRUserNode;
+import org.jahia.services.usermanager.JahiaUserManagerService;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;

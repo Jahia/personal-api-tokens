@@ -1,7 +1,0 @@
-mutation($tokenKey: String!, $tokenName: String, $expireAt: String, $tokenState: TokenState) {
-    admin {
-        personalApiTokens {
-            updateToken(key: $tokenKey, name: $tokenName, expireAt: $expireAt, state: $tokenState)
-        }
-    }
-}

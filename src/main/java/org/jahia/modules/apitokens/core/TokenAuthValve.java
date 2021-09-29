@@ -16,44 +16,42 @@
 package org.jahia.modules.apitokens.core;
 
 import org.apache.commons.lang.StringUtils;
-import org.jahia.api.usermanager.JahiaUserManagerService;
 import org.jahia.bin.filters.CompositeFilter;
 import org.jahia.modules.apitokens.TokenDetails;
 import org.jahia.modules.apitokens.TokenService;
 import org.jahia.params.valves.AuthValveContext;
 import org.jahia.params.valves.BaseAuthValve;
-import org.jahia.pipelines.Pipeline;
 import org.jahia.pipelines.PipelineException;
+import org.jahia.pipelines.impl.GenericPipeline;
 import org.jahia.pipelines.valves.Valve;
 import org.jahia.pipelines.valves.ValveContext;
+import org.jahia.services.SpringContextSingleton;
 import org.jahia.services.content.JCRTemplate;
 import org.jahia.services.content.decorator.JCRUserNode;
-import org.osgi.service.component.annotations.*;
+import org.jahia.services.usermanager.JahiaUserManagerService;
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.jcr.RepositoryException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
-import java.util.Map;
 
 /**
  * Authentication valve for APIToken Authorization header
  */
-@Component(service = Valve.class, immediate = true, scope = ServiceScope.SINGLETON)
+@Component(service = Valve.class, immediate = true)
 public class TokenAuthValve extends BaseAuthValve {
     public static final String API_TOKEN = "APIToken";
     private static final Logger logger = LoggerFactory.getLogger(TokenAuthValve.class);
-    private Pipeline authPipeline;
+    private GenericPipeline authPipeline;
     private TokenService tokenService;
     private JahiaUserManagerService userManagerService;
 
     private String[] urlPatterns = null;
-
-    @Reference(service = Pipeline.class, target = "(type=authentication)")
-    public void setAuthPipeline(Pipeline authPipeline) {
-        this.authPipeline = authPipeline;
-    }
 
     @Reference
     public void setTokenService(TokenService tokenService) {
@@ -67,17 +65,14 @@ public class TokenAuthValve extends BaseAuthValve {
 
     /**
      * Activate
-     *
-     * @param props Configuration properties
      */
     @Activate
-    public void activate(Map<String, ?> props) {
+    public void activate() {
+        authPipeline = (GenericPipeline) SpringContextSingleton.getBean("authPipeline");
         setId("patValve");
-        if (props.get("urlPatterns") != null) {
-            urlPatterns = StringUtils.split((String) props.get("urlPatterns"), ",");
-        }
+        urlPatterns = new String[]{"/modules/api/*", "/modules/graphql", "/modules/healthcheck"};
         removeValve(authPipeline);
-        addValve(authPipeline, 0, null, null);
+        addValve(authPipeline);
     }
 
     /**
@@ -101,7 +96,6 @@ public class TokenAuthValve extends BaseAuthValve {
             try {
                 JCRUserNode user = authenticate(authorization);
                 if (user != null) {
-                    authValveContext.setShouldStoreAuthInSession(false);
                     authValveContext.getSessionFactory().setCurrentUser(user.getJahiaUser());
                     return;
                 }
@@ -130,5 +124,24 @@ public class TokenAuthValve extends BaseAuthValve {
         }
 
         return null;
+    }
+
+    protected void addValve(GenericPipeline authPipeline) {
+        authPipeline.addValve(0, this);
+    }
+
+    /**
+     * Removes the valve by its ID.
+     * <p>
+     * the ID of the valve to be removed from the pipeline
+     */
+    protected void removeValve(GenericPipeline authPipeline) {
+        Valve[] registeredValves = authPipeline.getValves();
+        for (Valve v : registeredValves) {
+            if (v instanceof BaseAuthValve && StringUtils.equals(((BaseAuthValve) v).getId(), getId())) {
+                authPipeline.removeValve(v);
+                // do not stop: remove all for that ID
+            }
+        }
     }
 }
