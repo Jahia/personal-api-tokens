@@ -3,7 +3,7 @@
 exports[`Validate main screen snapshot match snapshot 1`] = `
 <div>
   <main
-    class="moonstone-contentLayout flexCol"
+    class="moonstoneAlpha-contentLayout flexCol"
   >
     <div
       style="background-color: white;"
@@ -48,10 +48,10 @@ exports[`Validate main screen snapshot match snapshot 1`] = `
       </header>
     </div>
     <div
-      class="moonstone-contentLayout_paperContainer flexCol"
+      class="moonstoneAlpha-contentLayout_paperContainer flexCol"
     >
       <div
-        class="moonstone-contentLayout_paper flexCol"
+        class="moonstoneAlpha-contentLayout_paper flexCol"
       >
         <div
           class="tokensList flexRow_center alignCenter flexFluid"
