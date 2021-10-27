@@ -28,7 +28,7 @@ parameters:
     default: 'jahia/personal-api-tokens'    
   PRIMARY_RELEASE_BRANCH:
     type: string
-    default: 'main' # main or master ? set the branch for the main release   
+    default: '0_x' # main or master ? set the branch for the main release   
 
 references:
   workdir: &workdir
