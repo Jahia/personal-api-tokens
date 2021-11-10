@@ -31,7 +31,7 @@ parameters:
     default: "main" # main or master ? set the branch for the main release
   JAHIA_IMAGE:
     type: string
-    default: "jahia/jahia-ee-dev:8-SNAPSHOT"
+    default: "jahia/jahia-discovery-dev:8-SNAPSHOT"
   RELEASE_ID:
     type: string
     default: ""
@@ -113,7 +113,7 @@ workflows:
           context: QA_ENVIRONMENT
           requires:
             - jahia-modules-orb/build
-          jahia_image: jahia/jahia-ee-dev:8-SNAPSHOT
+          jahia_image: jahia/jahia-discovery-dev:8-SNAPSHOT
           tests_manifest: provisioning-manifest-build.yml
           module_id: << pipeline.parameters.MODULE_ID >>
           testrail_project: << pipeline.parameters.TESTRAIL_PROJECTNAME >>
@@ -240,7 +240,7 @@ workflows:
             - jahia-modules-orb/initialize
           matrix:
             parameters:
-              jahia_image: ["jahia/jahia-ee:8", "jahia/jahia-ee-dev:8-SNAPSHOT"]
+              jahia_image: ["jahia/jahia-discovery:8", "jahia/jahia-discovery-dev:8-SNAPSHOT"]
           tests_manifest: "provisioning-manifest-snapshot.yml"
           module_id: "<< pipeline.parameters.MODULE_ID >>"
           testrail_project: "<< pipeline.parameters.TESTRAIL_PROJECTNAME >>"
