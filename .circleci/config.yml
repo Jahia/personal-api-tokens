@@ -88,7 +88,8 @@ workflows:
       - jahia-modules-orb/static-analysis:
           requires:
             - jahia-modules-orb/initialize
-          auditci_level: "critical"
+          auditci_level: critical
+          base_image: cimg/node:14.18
       - jahia-modules-orb/build:
           context: QA_ENVIRONMENT
           requires:
