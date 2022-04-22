@@ -136,10 +136,7 @@ jobs:
           command: |
             mkdir /tmp/artifacts/
             cp /home/circleci/source/target/*.jar /tmp/artifacts/
-            cp /home/circleci/source/target/*SNAPSHOT.jar /home/circleci/source/target/<< pipeline.parameters.MODULE_ID >>-SNAPSHOT.jar
-            if [[ -e /home/circleci/source/target/dependency ]]; then
-              cp /home/circleci/source/target/dependency/graphql-dxm-provider*.jar /home/circleci/source/target/graphql-dxm-provider.jar
-            fi            
+            cp /home/circleci/source/target/*SNAPSHOT.jar /home/circleci/source/target/<< pipeline.parameters.MODULE_ID >>-SNAPSHOT.jar     
       - store_artifacts:
           path: /tmp/artifacts/
       - *persist-workspace
