@@ -14,6 +14,12 @@ parameters:
   TESTS_MANIFEST: # Manifest to be executed by the test container when triggered from an API call
     type: string
     default: ""
+  TESTS_PATH:
+    type: string
+    default: 'tests/'
+  TESTS_IMAGE:
+    type: string
+    default: 'jahia/personal-api-tokens'
   MODULE_ID:
     type: string
     default: "personal-api-tokens"
