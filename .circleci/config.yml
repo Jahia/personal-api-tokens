@@ -100,7 +100,6 @@ workflows:
           context: QA_ENVIRONMENT
           requires:
             - jahia-modules-orb/initialize
-            - jahia-modules-orb/static-analysis
             - jahia-modules-orb/update-signature
       - jahia-modules-orb/sonar-analysis:
           context: QA_ENVIRONMENT
@@ -230,51 +229,51 @@ workflows:
   # The objective of nightly runs is to ensure the codebase still passes tests:
   # - With the latest releases version of Jahia
   # - With the current snapshot of Jahia
-  nightly:
-    triggers:
-      - schedule:
-          cron: '0 0 * * *'
-          filters:
-            branches:
-              only:
-                - << pipeline.parameters.PRIMARY_RELEASE_BRANCH >>
-    jobs:
-      - jahia-modules-orb/initialize
-      - jahia-modules-orb/integration-tests:
-          matrix:
-            parameters:
-              jahia_image: ["jahia/jahia-discovery:8", "jahia/jahia-discovery-dev:8-SNAPSHOT"]
-              tests_manifest: ["warmup-manifest-snapshot.yml"]
-              testrail_milestone: ["<< matrix.jahia_image >>"]
-              module_id: ["<< pipeline.parameters.MODULE_ID >>"]
-              testrail_project: ["<< pipeline.parameters.TESTRAIL_PROJECTNAME >>"]
-          name: Nightly-<< matrix.jahia_image >>
-          context: QA_ENVIRONMENT
-          requires:
-            - jahia-modules-orb/initialize
+#  nightly:
+#    triggers:
+#      - schedule:
+#          cron: '0 0 * * *'
+#          filters:
+#            branches:
+#              only:
+#                - << pipeline.parameters.PRIMARY_RELEASE_BRANCH >>
+#    jobs:
+#      - jahia-modules-orb/initialize
+#      - jahia-modules-orb/integration-tests:
+#          matrix:
+#            parameters:
+#              jahia_image: ["jahia/jahia-discovery:8", "jahia/jahia-discovery-dev:8-SNAPSHOT"]
+#              tests_manifest: ["warmup-manifest-snapshot.yml"]
+#              testrail_milestone: ["<< matrix.jahia_image >>"]
+#              module_id: ["<< pipeline.parameters.MODULE_ID >>"]
+#              testrail_project: ["<< pipeline.parameters.TESTRAIL_PROJECTNAME >>"]
+#          name: Nightly-<< matrix.jahia_image >>
+#          context: QA_ENVIRONMENT
+#          requires:
+#            - jahia-modules-orb/initialize
 
   # Monthly, we run the integration testing suite with older (but still supported) versions of Jahia and set versions of the module:
   # This provides a reference point (when was the latest time this was tested)
   # In this section we want to see set Jahia versions (not aliases)
-  monthly:
-    triggers:
-      - schedule:
-          cron: '0 0 1 * *'
-          filters:
-            branches:
-              only:
-                - << pipeline.parameters.PRIMARY_RELEASE_BRANCH >>
-    jobs:
-      - jahia-modules-orb/initialize
-      - jahia-modules-orb/integration-tests:
-          matrix:
-            parameters:
-              jahia_image: ["jahia/jahia-discovery-dev:8.0"]
-              tests_manifest: ["warmup-manifest-snapshot.yml"]
-              testrail_milestone: ["<< matrix.jahia_image >>"]
-              module_id: ["<< pipeline.parameters.MODULE_ID >>"]
-              testrail_project: ["<< pipeline.parameters.TESTRAIL_PROJECTNAME >>"]
-          name: Monthly-<< matrix.jahia_image >>
-          context: QA_ENVIRONMENT
-          requires:
-            - jahia-modules-orb/initialize
+#  monthly:
+#    triggers:
+#      - schedule:
+#          cron: '0 0 1 * *'
+#          filters:
+#            branches:
+#              only:
+#                - << pipeline.parameters.PRIMARY_RELEASE_BRANCH >>
+#    jobs:
+#      - jahia-modules-orb/initialize
+#      - jahia-modules-orb/integration-tests:
+#          matrix:
+#            parameters:
+#              jahia_image: ["jahia/jahia-discovery-dev:8.0"]
+#              tests_manifest: ["warmup-manifest-snapshot.yml"]
+#              testrail_milestone: ["<< matrix.jahia_image >>"]
+#              module_id: ["<< pipeline.parameters.MODULE_ID >>"]
+#              testrail_project: ["<< pipeline.parameters.TESTRAIL_PROJECTNAME >>"]
+#          name: Monthly-<< matrix.jahia_image >>
+#          context: QA_ENVIRONMENT
+#          requires:
+#            - jahia-modules-orb/initialize
