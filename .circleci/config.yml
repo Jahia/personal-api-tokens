@@ -239,20 +239,19 @@ workflows:
               only:
                 - << pipeline.parameters.PRIMARY_RELEASE_BRANCH >>
     jobs:
-      - initialize
-      - integration_tests:
+      - jahia-modules-orb/initialize
+      - jahia-modules-orb/integration-tests:
           matrix:
             parameters:
-              JAHIA_IMAGE: ["jahia/jahia-private:snapshot", "jahia/jahia-dev:8.0"]
-              RUN_TESTSIMAGE: ["<< pipeline.parameters.TESTS_IMAGE >>:latest"]
-              MANIFEST: ["warmup-manifest-snapshot.yml"]
-              TESTRAIL_MILESTONE: ["<< matrix.JAHIA_IMAGE >>"]
-              TOOLS_USER: ["root"]
-              TOOLS_PWD: ["root"]
-          name: Nightly-<< matrix.JAHIA_IMAGE >>
+              jahia_image: ["jahia/jahia-dev:8.1"]
+              tests_manifest: ["warmup-manifest-snapshot.yml"]
+              testrail_milestone: ["<< matrix.jahia_image >>"]
+              module_id: << pipeline.parameters.MODULE_ID >>
+              testrail_project: << pipeline.parameters.TESTRAIL_PROJECTNAME >>
+          name: Nightly-<< matrix.jahia_image >>
           context: QA_ENVIRONMENT
           requires:
-            - initialize
+            - jahia-modules-orb/initialize
 
   # Monthly, we run the integration testing suite with older (but still supported) versions of Jahia and set versions of the module:
   # This provides a reference point (when was the latest time this was tested)
@@ -266,17 +265,16 @@ workflows:
               only:
                 - << pipeline.parameters.PRIMARY_RELEASE_BRANCH >>
     jobs:
-      - initialize
-      # - integration_tests:
-      #     matrix:
-      #       parameters:
-      #         JAHIA_IMAGE: ["jahia/jahia-dev:8.0.1.0"]
-      #         RUN_TESTSIMAGE: ["<< pipeline.parameters.TESTS_IMAGE >>:latest"]
-      #         MANIFEST: ["warmup-manifest-snapshot.yml"]
-      #         TESTRAIL_MILESTONE: ["<< matrix.JAHIA_IMAGE >>"]
-      #         TOOLS_USER: ["root"]
-      #         TOOLS_PWD: ["root"]
-      #     name: Monthly-<< matrix.JAHIA_IMAGE >>-with-ES-<< matrix.ELASTICSEARCH_VERSION >>
-      #     context: QA_ENVIRONMENT
-      #     requires:
-      #       - initialize
+      - jahia-modules-orb/initialize
+      - jahia-modules-orb/integration-tests:
+          matrix:
+            parameters:
+              jahia_image: ["jahia/jahia-dev:8.1"]
+              tests_manifest: ["warmup-manifest-snapshot.yml"]
+              testrail_milestone: ["<< matrix.jahia_image >>"]
+              module_id: << pipeline.parameters.MODULE_ID >>
+              testrail_project: << pipeline.parameters.TESTRAIL_PROJECTNAME >>
+          name: Monthly-<< matrix.jahia_image >>
+          context: QA_ENVIRONMENT
+          requires:
+            - jahia-modules-orb/initialize
