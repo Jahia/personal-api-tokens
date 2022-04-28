@@ -243,11 +243,11 @@ workflows:
       - jahia-modules-orb/integration-tests:
           matrix:
             parameters:
-              jahia_image: ["jahia/jahia-dev:8.1"]
+              jahia_image: ["jahia/jahia-discovery:8", "jahia/jahia-discovery-dev:8-SNAPSHOT"]
               tests_manifest: ["warmup-manifest-snapshot.yml"]
               testrail_milestone: ["<< matrix.jahia_image >>"]
-              module_id: << pipeline.parameters.MODULE_ID >>
-              testrail_project: << pipeline.parameters.TESTRAIL_PROJECTNAME >>
+              module_id: ["<< pipeline.parameters.MODULE_ID >>"]
+              testrail_project: ["<< pipeline.parameters.TESTRAIL_PROJECTNAME >>"]
           name: Nightly-<< matrix.jahia_image >>
           context: QA_ENVIRONMENT
           requires:
@@ -269,11 +269,11 @@ workflows:
       - jahia-modules-orb/integration-tests:
           matrix:
             parameters:
-              jahia_image: ["jahia/jahia-dev:8.1"]
+              jahia_image: ["jahia/jahia-discovery-dev:8.0"]
               tests_manifest: ["warmup-manifest-snapshot.yml"]
               testrail_milestone: ["<< matrix.jahia_image >>"]
-              module_id: << pipeline.parameters.MODULE_ID >>
-              testrail_project: << pipeline.parameters.TESTRAIL_PROJECTNAME >>
+              module_id: ["<< pipeline.parameters.MODULE_ID >>"]
+              testrail_project: ["<< pipeline.parameters.TESTRAIL_PROJECTNAME >>"]
           name: Monthly-<< matrix.jahia_image >>
           context: QA_ENVIRONMENT
           requires:
