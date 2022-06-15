@@ -12,12 +12,17 @@
             </properties>
         </profile>
     </profiles>
+
+    <activeProfiles>
+        <activeProfile>sonar</activeProfile>
+    </activeProfiles>
+
     <servers>
         <server>
             <id>jahia-public</id>
             <username>${env.NEXUS_USERNAME}</username>
             <password>${env.NEXUS_PASSWORD}</password>
-        </server>   
+        </server>
         <server>
             <id>jahia-snapshots</id>
             <username>${env.NEXUS_USERNAME}</username>
