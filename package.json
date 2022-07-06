@@ -50,7 +50,8 @@
   "resolutions": {
     "**/meow/trim-newlines": "^3.0.1",
     "**/css-what": "^5.0.1",
-    "node-sass/node-gyp/tar": "^6.1.11"
+    "node-sass/node-gyp/tar": "^6.1.11",
+    "*/**/minimist": "1.2.6"
   },
   "keywords": [],
   "author": "",
