@@ -104,7 +104,7 @@ module.exports = (env, argv) => {
                 shared
             }),
             new CleanWebpackPlugin({verbose: false}),
-            new CopyWebpackPlugin([{from: './package.json', to: ''}]),
+            new CopyWebpackPlugin({patterns: [{from: './package.json', to: ''}]}),
             new CaseSensitivePathsPlugin()
         ],
         mode: 'development'
