@@ -1,8 +1,11 @@
 import { apollo } from '../../support/apollo'
 
 import { createToken, deleteToken, getTokens, updateToken } from '../../support/gql'
+import { setupRoles } from '../setupRoles'
 
 describe('Pagination and ordering - query.admin.personalApiTokens.tokens', () => {
+    setupRoles()
+
     before('load graphql file', async function () {
         const client = apollo(Cypress.config().baseUrl, {
             username: 'bill',

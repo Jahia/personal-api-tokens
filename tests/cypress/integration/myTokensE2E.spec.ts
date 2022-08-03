@@ -2,6 +2,7 @@ import { tokensPage } from '../page-object/personalTokens.page'
 import { loginPage } from '../page-object/login.page'
 import { apollo } from '../support/apollo'
 import { deleteToken, getTokens, verifyToken } from '../support/gql'
+import { setupRoles } from './setupRoles'
 
 const PARAGRAPH_ELEMENT = 'p'
 
@@ -9,6 +10,8 @@ const TEST_TOKEN_NAME = 'test-token'
 let TEST_TOKEN = ''
 
 describe('UI e2e test - Full lifecycle in the My API Tokens section', () => {
+    setupRoles()
+
     before(async () => {
         const client = apollo(Cypress.config().baseUrl, {
             username: 'root',

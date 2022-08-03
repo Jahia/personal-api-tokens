@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<permissions xmlns:jcr="http://www.jcp.org/jcr/1.0">
+    <developerTools jcr:primaryType="jnt:permission">
+        <personal-api-tokens jcr:primaryType="jnt:permission"/>
+    </developerTools>
+</permissions>
