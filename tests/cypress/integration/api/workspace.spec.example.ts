@@ -1,9 +1,12 @@
 // not an actual test. just demonstrates a test using .graphql/.gql files
 import { apollo } from '../../support/apollo'
 import { DocumentNode } from 'graphql'
+import { setupRoles } from '../setupRoles'
 
 describe('workspace api', () => {
     let workspace: DocumentNode
+
+    setupRoles()
 
     before('load graphql file', function () {
         workspace = require(`graphql-tag/loader!../../fixtures/workspace.graphql`)

@@ -2,9 +2,12 @@ import { apollo } from '../../support/apollo'
 import { DocumentNode } from 'graphql'
 
 import { createToken, deleteToken, getToken, getTokens } from '../../support/gql'
+import { setupRoles } from '../setupRoles'
 
 describe('Validate ability to use token', () => {
     let GQL_APIUSER: DocumentNode
+
+    setupRoles()
 
     before('load graphql file', function () {
         GQL_APIUSER = require(`graphql-tag/loader!../../fixtures/getApiUser.graphql`)

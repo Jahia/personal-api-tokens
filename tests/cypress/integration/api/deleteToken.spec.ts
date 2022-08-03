@@ -2,9 +2,12 @@ import { apollo } from '../../support/apollo'
 import { DocumentNode } from 'graphql'
 
 import { createToken, deleteToken, getToken, getTokens } from '../../support/gql'
+import { setupRoles } from '../setupRoles'
 
 describe('Token deletion via API - mutation.admin.personalApiTokens.deleteToken', () => {
     let GQL_DELETE: DocumentNode
+
+    setupRoles()
 
     before('load graphql file', function () {
         GQL_DELETE = require(`graphql-tag/loader!../../fixtures/deleteToken.graphql`)

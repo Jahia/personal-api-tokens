@@ -1,0 +1,10 @@
+mutation {
+    jcr {
+        deleteNode(pathOrId: "/roles/token")
+        m2: mutateNode(pathOrId: "/j:acl/GRANT_g_users") {
+            mutateProperty(name: "j:roles") {
+                removeValue(value: "token")
+            }
+        }
+    }
+}
