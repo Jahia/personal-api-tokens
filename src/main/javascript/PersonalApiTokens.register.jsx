@@ -11,6 +11,7 @@ export default function () {
         icon: <Key/>,
         label: 'personal-api-tokens:title',
         isSelectable: true,
+        requiredPermission: 'personal-api-tokens',
         render: () => <MyApiTokens/>
     });
 

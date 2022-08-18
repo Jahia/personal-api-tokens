@@ -25,6 +25,7 @@ import org.jahia.modules.apitokens.TokenDetails;
 import org.jahia.modules.apitokens.TokenService;
 import org.jahia.modules.graphql.provider.dxm.DataFetchingException;
 import org.jahia.modules.graphql.provider.dxm.osgi.annotations.GraphQLOsgiService;
+import org.jahia.modules.graphql.provider.dxm.security.GraphQLRequiresPermission;
 import org.jahia.services.content.JCRContentUtils;
 import org.jahia.services.content.JCRTemplate;
 import org.joda.time.DateTime;
@@ -65,6 +66,7 @@ public class GqlPersonalApiTokensMutation {
      */
     @GraphQLField
     @GraphQLDescription("Create a new token")
+    @GraphQLRequiresPermission("personal-api-tokens")
     public String createToken(@GraphQLName("name") @GraphQLDescription("Name to give to the token") @GraphQLNonNull String name,
                               @GraphQLName("site") @GraphQLDescription("The site the user belongs to, null if global user") String site,
                               @GraphQLName("expireAt") @GraphQLDescription("Expiration date of the token") String expireAt,

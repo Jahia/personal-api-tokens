@@ -1,0 +1,31 @@
+mutation {
+    jcr {
+        mutateNode(pathOrId: "/roles") {
+            addChild(name: "token", primaryNodeType: "jnt:role", properties: [
+                {
+                    name: "j:nodeTypes"
+                    values: "rep:root"
+                },
+                {
+                    name: "j:permissionNames"
+                    values: "personal-api-tokens"
+                },
+                {
+                    name: "j:privilegedAccess"
+                    value: "true"
+                },
+                {
+                    name: "j:roleGroup"
+                    value: "server-role"
+                }
+            ]) {
+                uuid
+            }
+        }
+        m2: mutateNode(pathOrId: "/j:acl/GRANT_g_users") {
+            mutateProperty(name: "j:roles") {
+                addValue(value: "token")
+            }
+        }
+    }
+}

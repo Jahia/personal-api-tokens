@@ -28,7 +28,7 @@ exports[`Validate main screen snapshot match snapshot 1`] = `
               type="button"
             >
               <svg
-                class="undefined moonstone-icon moonstone-icon_default"
+                class=" moonstone-icon moonstone-icon_default"
                 fill="currentColor"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"

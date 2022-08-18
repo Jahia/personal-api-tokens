@@ -2,9 +2,12 @@ import { apollo } from '../../support/apollo'
 import { DocumentNode } from 'graphql'
 
 import { deleteToken, getToken, getTokens, verifyToken } from '../../support/gql'
+import { setupRoles } from '../setupRoles'
 
 describe('Token creation via API - mutation.admin.personalApiTokens.createToken', () => {
     let GQL_CREATE: DocumentNode
+
+    setupRoles()
 
     before('load graphql file', function () {
         GQL_CREATE = require(`graphql-tag/loader!../../fixtures/createToken.graphql`)
