@@ -45,7 +45,7 @@ describe('UI e2e test - Full lifecycle in the My API Tokens section', () => {
     it('Navigate to an empty token page', function () {
         cy.visit(Cypress.config().baseUrl + '/jahia/dashboard', { failOnStatusCode: false })
         loginPage.login('root', Cypress.env('SUPER_USER_PASSWORD'), true)
-        tokensPage.goTo()
+        tokensPage.visit()
         tokensPage.assertElementVisibleBySelector(tokensPage.elements.noTokensMessage)
     })
 

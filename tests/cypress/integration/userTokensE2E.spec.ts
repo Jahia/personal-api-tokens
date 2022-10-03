@@ -41,7 +41,7 @@ describe('UI e2e test - Full lifecycle in the User API Tokens section in Adminis
     it('Navigate to an empty token page', function () {
         cy.visit(Cypress.config().baseUrl + '/jahia/dashboard', { failOnStatusCode: false })
         loginPage.login('root', Cypress.env('SUPER_USER_PASSWORD'), true)
-        userTokensPage.goTo()
+        userTokensPage.visit()
         userTokensPage.assertElementVisibleBySelector(userTokensPage.elements.noTokensMessage)
         userTokensPage.assertElementVisibleBySelector(userTokensPage.elements.searchUserBtn)
         userTokensPage.assertElementVisibleBySelector(userTokensPage.elements.searchUserInput)
@@ -60,7 +60,7 @@ describe('UI e2e test - Full lifecycle in the User API Tokens section in Adminis
 
     it('Checks that tokens are present in table', () => {
         cy.reload()
-        userTokensPage.goTo()
+        userTokensPage.visit()
         tokensPage.validateTokenIsVisibleInTheTable()
     })
 

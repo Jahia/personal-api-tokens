@@ -8,8 +8,8 @@ class LoginPage extends BasePage {
         loginFormRememberMe: 'input[name=useCookie]',
     }
 
-    goTo() {
-        cy.goTo('/')
+    visit() {
+        cy.visit('/')
         return this
     }
 

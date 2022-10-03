@@ -20,7 +20,7 @@ class UserTokensPage extends BasePage {
         activateDeactivateToggle: "[data-testid*='activate-deactivate-toggle-btn']",
     }
 
-    goTo() {
+    visit() {
         cy.visit('/jahia/administration/manageUsers', { failOnStatusCode: false })
         cy.get(this.elements.userTokens).click()
         return this
