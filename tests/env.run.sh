@@ -60,11 +60,11 @@ done
 cd ..
 
 echo "$(date +'%d %B %Y - %k:%M')== Sleeping for an additional 120 seconds =="
-sleep 120
+sleep 30
 echo "$(date +'%d %B %Y - %k:%M')== DONE - Sleeping for an additional 120 seconds =="
 
 echo "$(date +'%d %B %Y - %k:%M') == Fetching the list of installed modules =="
-./node_modules/jahia-reporter/bin/run utils:modules \
+~/node_modules/@jahia/jahia-reporter/bin/run utils:modules \
   --moduleId="${MODULE_ID}" \
   --jahiaUrl="${JAHIA_URL}" \
   --jahiaPassword="${SUPER_USER_PASSWORD}" \
