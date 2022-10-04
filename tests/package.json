@@ -42,7 +42,8 @@
     "yarn": "^1.22.4"
   },
   "resolutions": {
-    "*/**/elliptic": "6.5.4"
+    "*/**/elliptic": "6.5.4",
+    "glob-parent": "^5.1.2"
   },
   "scripts": {
     "instrument": "nyc instrument --compact=false cypress instrumented",
