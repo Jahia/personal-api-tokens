@@ -1,0 +1,55 @@
+{
+  "title": "Mes jetons d'API",
+  "adminTitle": "Jetons d'API des utilisateurs",
+  "delete": "Supprimer",
+  "search": "Rechercher",
+  "searchPlaceholder": "Rechercher par utilisateur",
+  "createToken": {
+    "buttonTitle": "Créer un jeton",
+    "modalTitle": "Créer un jeton d'API personnel",
+    "defineName": "Entrez le nom de votre jeton",
+    "name": "Nom",
+    "expirationDate": "Date d'expiration",
+    "scopes": "Sélectionnez les périmètres",
+    "setDate": "Sélectionnez la date d'expiration du jeton",
+    "tokenAlreadyExists": "Ce nom de token existe déjà, choisissez-en un nouveau."
+  },
+  "tokensList": {
+    "moreActions": "Plus d'actions",
+    "deactivate": "Désactiver",
+    "activate": "Activer",
+    "username": "Nom d'utilisateur",
+    "name": "Nom du jeton",
+    "key": "Clé",
+    "addedOn": "Créé le",
+    "expiration": "Expiration",
+    "status": "Etat",
+    "actions": "Actions",
+    "pagination":{
+      "rowsPerPage": "Lignes par page",
+      "of": "sur"
+    }
+
+  },
+  "deleteToken": {
+    "deleteForever": "Supprimer définitivement",
+    "confirmation": "Confirmation",
+    "deleteWarning": "Confirmez la suppression de votre jeton d'API personnel"
+  },
+  "copyToken": {
+    "title": "Jeton d'API créé",
+    "warningNotToShareToken": "Ne partagez votre jeton d'API avec personne d'autre.",
+    "copyToClipboard": "Copiez le jeton dans le presse-papier :",
+    "copy": "Copier",
+    "warningToCopyToken": "C'est la seule fois où vous pouvez voir le jeton. Vous ne pourrez pas le récupérer plus tard."
+  },
+  "create": "Créer",
+  "cancel": "Annuler",
+  "close": "Fermer",
+  "noTokens": "Vous n'avez aucun jeton d'API personnel",
+  "noTokensAtAll": "Aucun jeton n'a été créé",
+  "noTokensForUser": "Aucun jeton n'a été trouvé pour {{name}}",
+  "unknownUser": "Utilisateur introuvable",
+  "error": "Une erreur s'est produite, essayez de nouveau plus tard",
+  "personalTokens": "Jetons d'API Personnels"
+}
