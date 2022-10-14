@@ -10,7 +10,7 @@
     "defineName": "Entrez le nom de votre jeton",
     "name": "Nom",
     "expirationDate": "Date d'expiration",
-    "scopes": "Selectionnez les périmètres",
+    "scopes": "Sélectionnez les périmètres",
     "setDate": "Sélectionnez la date d'expiration du jeton",
     "tokenAlreadyExists": "Ce nom de token existe déjà, choisissez-en un nouveau."
   },
