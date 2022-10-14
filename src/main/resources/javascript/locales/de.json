@@ -1,0 +1,55 @@
+{
+  "title": "Meine API-Tokens",
+  "adminTitle": "Benutzer API-Tokens",
+  "delete": "Löschen",
+  "search": "Suchen",
+  "searchPlaceholder": "Suche nach Benutzernamen",
+  "createToken": {
+    "buttonTitle": "Token erstellen",
+    "modalTitle": "Persönlichen API-Token erstellen",
+    "defineName": "Definieren Sie den Namen Ihres Tokens",
+    "name": "Name",
+    "expirationDate": "Ablaufdatum",
+    "scopes": "Wählen Sie den Geltungsbereich",
+    "setDate": "Wählen Sie das Datum, an dem der Token ablaufen wird",
+    "tokenAlreadyExists": "Token Name existiert bereits, bitte wählen Sie einen anderen."
+  },
+  "tokensList": {
+    "moreActions": "Weitere Aktionen",
+    "deactivate": "Deaktivieren",
+    "activate": "Aktivieren",
+    "username": "Benutzername",
+    "name": "Token-Name",
+    "key": "Key",
+    "addedOn": "Hinzugefügt am",
+    "expiration": "Erlöschen",
+    "status": "Status",
+    "actions": "Aktionen",
+    "pagination":{
+      "rowsPerPage": "Zeilen pro Seite",
+      "of": "von"
+    }
+
+  },
+  "deleteToken": {
+    "deleteForever": "Für immer löschen",
+    "confirmation": "Bestätigung",
+    "deleteWarning": "Wollen Sie wirklich Ihren privaten Zugangs-Token löschen"
+  },
+  "copyToken": {
+    "title": "API-Token erstellt",
+    "warningNotToShareToken": "Teilen Sie Ihre API-Tokens mit niemandem",
+    "copyToClipboard": "Token in die Zwischenablage kopieren",
+    "copy": "Kopieren",
+    "warningToCopyToken": "Dies ist der einzige Zeitpunkt, an dem Sie den Token sehen können. Sie können diese Ansicht später nicht wiederherstellen."
+  },
+  "create": "Erstellen",
+  "cancel": "Abbrechen",
+  "close": "Schließen",
+  "noTokens": "Sie haben noch keine persönlichen Zugangs-Tokens",
+  "noTokensAtAll": "Es wurde noch kein Token konfiguriert",
+  "noTokensForUser": "Für {{name}} wurden keine Tokens gefunden",
+  "unknownUser": "Dieser Benutzer kann nicht gefunden werden",
+  "error": "Ein Fehler ist aufgetreten, bitte versuchen Sie es später noch einmal",
+  "personalTokens": "Persönliche API-Tokens"
+}
