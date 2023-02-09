@@ -82,5 +82,8 @@
   "homepage": "https://github.com/Jahia/personal-api-tokens#readme",
   "dependencies": {
     "@jahia/cypress": "^1.1.3"
+  },
+  "resolutions": {
+    "loader-utils": "^2.0.3"
   }
 }
