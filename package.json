@@ -82,7 +82,7 @@
     "css-loader": "^6.7.3",
     "env-cmd": "^10.1.0",
     "eslint": "^6.7.2",
-    "eslint-loader": "^4.0.0",
+    "eslint-loader": "^4.0.2",
     "eslint-plugin-jest": "^23.8.0",
     "eslint-plugin-json": "^2.1.0",
     "eslint-plugin-react": "^7.18.3",
@@ -119,5 +119,8 @@
     "react-router-dom": "^5.2.0",
     "react-table": "^7.7.0",
     "sass": "^1.54.0"
+  },
+  "resolutions": {
+    "loader-utils": "^2.0.3"
   }
 }
