@@ -34,7 +34,8 @@
     "clean": "rimraf *.log src/main/resources/javascript/apps",
     "clean:all": "yarn clean && rimraf node_modules node",
     "lint": "eslint --ext js,jsx,json . && stylelint \"./src/**/*.scss\"",
-    "lint:fix": "eslint --ext js,jsx,json --fix . && stylelint --fix \"./src/**/*.scss\""
+    "lint:fix": "eslint --ext js,jsx,json --fix . && stylelint --fix \"./src/**/*.scss\"",
+    "sync-pom": "sync-pom-version --use-yarn"
   },
   "main": "index.js",
   "license": "Apache-2.0",
