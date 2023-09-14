@@ -71,7 +71,7 @@
         <jahia-module-signature>MCwCFAmbHhYWLvU2QLiip3YdaVlENPEOAhRFWugTeoZqba9GJhPhOfaSaqIJmw==</jahia-module-signature>
         <export-package>org.jahia.modules.apitokens</export-package>
         <import-package>
-            graphql.annotations.annotationTypes;version="[7.2,9)",
+            graphql.annotations.annotationTypes;version="[7.2,99)",
             graphql.annotations.connection;version="[7.2,8)",
             graphql.schema;version="[13.0,14)",
             javax.inject,
