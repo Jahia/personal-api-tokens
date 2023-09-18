@@ -74,7 +74,7 @@
         <import-package>
             graphql.annotations.annotationTypes;version="[7.2,99)",
             graphql.annotations.connection;version="[7.2,99)",
-            graphql.schema;version="[13.0,14)",
+            graphql.schema;version="[13.0,22)",
             javax.inject,
             javax.jcr;version="[2.0,3)",
             javax.jcr.query;version="[2.0,3)",
