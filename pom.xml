@@ -69,11 +69,12 @@
         <jahia-module-type>system</jahia-module-type>
         <jahia-deploy-on-site>system</jahia-deploy-on-site>
         <jahia-module-signature>MCwCFAmbHhYWLvU2QLiip3YdaVlENPEOAhRFWugTeoZqba9GJhPhOfaSaqIJmw==</jahia-module-signature>
+        <jahia.plugin.version>6.9</jahia.plugin.version>
         <export-package>org.jahia.modules.apitokens</export-package>
         <import-package>
-            graphql.annotations.annotationTypes;version="[7.2,9)",
-            graphql.annotations.connection;version="[7.2,8)",
-            graphql.schema;version="[13.0,14)",
+            graphql.annotations.annotationTypes;version="[7.2,99)",
+            graphql.annotations.connection;version="[7.2,99)",
+            graphql.schema;version="[13.0,22)",
             javax.inject,
             javax.jcr;version="[2.0,3)",
             javax.jcr.query;version="[2.0,3)",
