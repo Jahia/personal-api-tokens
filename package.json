@@ -1,6 +1,6 @@
 {
   "name": "@jahia/personal-api-tokens",
-  "version": "1.5.0-SNAPSHOT",
+  "version": "1.4.1",
   "description": "This is the custom module (Personal API Tokens) for running on a Jahia server.",
   "husky": {
     "hooks": {
