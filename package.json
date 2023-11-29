@@ -48,6 +48,7 @@
     "url": "git+https://github.com/Jahia/personal-api-tokens.git"
   },
   "resolutions": {
+    "loader-utils": "^2.0.3",
     "**/meow/trim-newlines": "^3.0.1",
     "**/css-what": "^5.0.1",
     "node-sass/node-gyp/tar": "^6.1.11",
@@ -119,8 +120,5 @@
     "react-router-dom": "^5.2.0",
     "react-table": "^7.7.0",
     "sass": "^1.54.0"
-  },
-  "resolutions": {
-    "loader-utils": "^2.0.3"
   }
 }
