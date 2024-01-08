@@ -5,8 +5,9 @@ const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
-const shared = require("./webpack.shared")
 const {CycloneDxWebpackPlugin} = require('@cyclonedx/webpack-plugin');
+const getModuleFederationConfig = require('@jahia/webpack-config/getModuleFederationConfig');
+const packageJson = require('./package.json');
 
 /** @type {import('@cyclonedx/webpack-plugin').CycloneDxWebpackPluginOptions} */
 const cycloneDxWebpackPluginOptions = {
@@ -98,7 +99,7 @@ module.exports = (env, argv) => {
             ]
         },
         plugins: [
-            new ModuleFederationPlugin({
+            new ModuleFederationPlugin(getModuleFederationConfig(packageJson, {
                 name: "pat",
                 library: { type: "assign", name: "appShell.remotes.pat" },
                 filename: "remoteEntry.js",
@@ -108,9 +109,8 @@ module.exports = (env, argv) => {
                 remotes: {
                     '@jahia/app-shell': 'appShellRemote',
                     '@jahia/jahia-ui-root': 'appShell.remotes.jahiaUi'
-                },
-                shared
-            }),
+                }
+            }, ['@jahia/moonstone-alpha'])),
             new CleanWebpackPlugin({verbose: false}),
             new CopyWebpackPlugin({patterns: [{from: './package.json', to: ''}]}),
             new CaseSensitivePathsPlugin(),
