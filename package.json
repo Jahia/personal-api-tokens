@@ -69,6 +69,7 @@
     "@jahia/eslint-config": "^1.1.0",
     "@jahia/stylelint-config": "^0.0.3",
     "@jahia/test-framework": "^1.1.5",
+    "@jahia/webpack-config": "^1.1.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.0.4",
     "apollo-cache-inmemory": "^1.6.6",
