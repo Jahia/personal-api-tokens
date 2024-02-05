@@ -91,6 +91,7 @@
             org.jahia.modules.graphql.provider.dxm.osgi.annotations;version="[2.7,4)",
             org.jahia.modules.graphql.provider.dxm.predicate;version="[2.7,4)",
             org.jahia.modules.graphql.provider.dxm.relay;version="[2.7,4)",
+            org.jahia.modules.graphql.provider.dxm.security;version="[2.7,4)",
             org.jahia.modules.graphql.provider.dxm.user;version="[2.7,4)",
             org.jahia.modules.graphql.provider.dxm.util;version="[2.7,4)",
             org.jahia.params.valves,
