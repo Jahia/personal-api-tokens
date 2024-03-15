@@ -1,7 +1,7 @@
 name: Nightly Test run
 
 on:
-  workflow_dispatch:  
+  workflow_dispatch:
   schedule:
     - cron:  '0 0 * * *'
 
@@ -24,8 +24,8 @@ jobs:
       - uses: jahia/jahia-modules-action/integration-tests@v2
         with:
           module_id: personal-api-tokens
-          jahia_image: jahia/jahia-discovery-dev:8-SNAPSHOT
-          incident_service: personal-api-tokens-JahiaSN              
+          jahia_image: jahia/jahia-ee-dev:8-SNAPSHOT
+          incident_service: personal-api-tokens-JahiaSN
           testrail_project: Personal API Tokens
           tests_manifest: provisioning-manifest-snapshot.yml
           should_use_build_artifacts: false
@@ -78,7 +78,7 @@ jobs:
       - uses: jahia/jahia-modules-action/integration-tests@v2
         with:
           module_id: personal-api-tokens
-          jahia_image: jahia/jahia-discovery:8
+          jahia_image: jahia/jahia-ee:8
           incident_service: personal-api-tokens-JahiaRL
           testrail_project: Personal API Tokens
           tests_manifest: provisioning-manifest-snapshot.yml
