@@ -27,7 +27,7 @@ jobs:
           jahia_image: jahia/jahia-ee-dev:8-SNAPSHOT
           incident_service: personal-api-tokens-JahiaSN
           testrail_project: Personal API Tokens
-          tests_manifest: provisioning-manifest-snapshot.yml
+          tests_manifest: provisioning-manifest-snapshot-8.2.x.yml
           should_use_build_artifacts: false
           should_skip_artifacts: true
           should_skip_notifications: false
@@ -78,10 +78,10 @@ jobs:
       - uses: jahia/jahia-modules-action/integration-tests@v2
         with:
           module_id: personal-api-tokens
-          jahia_image: jahia/jahia-ee:8
+          jahia_image: jahia/jahia-ee:8.1
           incident_service: personal-api-tokens-JahiaRL
           testrail_project: Personal API Tokens
-          tests_manifest: provisioning-manifest-snapshot.yml
+          tests_manifest: provisioning-manifest-release-8.1.x.yml
           should_use_build_artifacts: false
           should_skip_artifacts: true
           should_skip_notifications: false
