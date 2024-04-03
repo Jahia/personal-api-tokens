@@ -78,7 +78,7 @@ jobs:
         with:
           module_id: personal-api-tokens
           testrail_project: Personal API Tokens
-          tests_manifest: provisioning-manifest-build.yml
+          tests_manifest: provisioning-manifest-build-8.2.x.yml
           jahia_image: jahia/jahia-ee-dev:8-SNAPSHOT
           should_use_build_artifacts: true
           should_skip_testrail: true
