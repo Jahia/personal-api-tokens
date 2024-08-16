@@ -52,6 +52,13 @@ public interface TokenBuilder {
     public TokenBuilder setScopes(List<String> scopes);
 
     /**
+     * Should other scopes be auto applied if applicable
+     * @param autoApplyScopes
+     * @return builder
+     */
+    public TokenBuilder setAutoAppliedScopes(boolean autoApplyScopes);
+
+    /**
      * Create the token in the JCR. Session has to be saved to persist the token.
      * @return the token value
      * @throws RepositoryException if repository operation fails

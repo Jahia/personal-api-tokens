@@ -62,6 +62,7 @@ public class GqlPersonalApiTokensMutation {
      * @param site     The site the user belongs to, null if global user
      * @param expireAt Expiration date of the token
      * @param state    State to give the newly created token
+     * @param autoApplyScopes Should other scopes be auto applied if applicable
      * @return new token
      */
     @GraphQLField
@@ -71,7 +72,8 @@ public class GqlPersonalApiTokensMutation {
                               @GraphQLName("site") @GraphQLDescription("The site the user belongs to, null if global user") String site,
                               @GraphQLName("expireAt") @GraphQLDescription("Expiration date of the token") String expireAt,
                               @GraphQLName("scopes") @GraphQLDescription("Scopes attached to this token") List<String> scopes,
-                              @GraphQLName("state") @GraphQLDescription("State to give the newly created token") TokenState state) {
+                              @GraphQLName("state") @GraphQLDescription("State to give the newly created token") TokenState state,
+                              @GraphQLName("autoApplyScopes") @GraphQLDescription("Does token accept auto applied scopes") Boolean autoApplyScopes) {
         String path = jcrTemplate.getSessionFactory().getCurrentUser().getLocalPath();
 
         try {
@@ -81,6 +83,7 @@ public class GqlPersonalApiTokensMutation {
                         .setExpirationDate(expiration)
                         .setActive(state != TokenState.DISABLED)
                         .setScopes(scopes)
+                        .setAutoAppliedScopes(autoApplyScopes)
                         .create();
                 session.save();
                 return token;
@@ -97,6 +100,7 @@ public class GqlPersonalApiTokensMutation {
      * @param name     Name to give to the token
      * @param expireAt Expiration date of the token
      * @param state    State to give the token
+     * @param autoApplyScopes Should other scopes be auto applied if applicable
      * @return true if operation succeeds, false if token does not exist
      */
     @GraphQLField
@@ -105,7 +109,8 @@ public class GqlPersonalApiTokensMutation {
                                @GraphQLName("name") @GraphQLDescription("Name to give to the token") String name,
                                @GraphQLName("expireAt") @GraphQLDescription("Expiration date of the token, use empty string to unset expiration date") String expireAt,
                                @GraphQLName("scopes") @GraphQLDescription("Scopes attached to this token") List<String> scopes,
-                               @GraphQLName("state") @GraphQLDescription("State to give the token") TokenState state) {
+                               @GraphQLName("state") @GraphQLDescription("State to give the token") TokenState state,
+                               @GraphQLName("autoApplyScopes") @GraphQLDescription("Does token accept auto applied scopes") Boolean autoApplyScopes) {
         try {
             return jcrTemplate.doExecute(jcrTemplate.getSessionFactory().getCurrentUser(), null, null, session -> {
                 TokenDetails details = tokensService.getTokenDetails(key, session);
@@ -128,6 +133,10 @@ public class GqlPersonalApiTokensMutation {
                 if (scopes != null) {
                     details.setScopes(scopes);
                 }
+                if (autoApplyScopes != null) {
+                    details.setAutoApplyScopes(autoApplyScopes);
+                }
+
                 boolean updateToken = tokensService.updateToken(details, session);
                 session.save();
                 return updateToken;

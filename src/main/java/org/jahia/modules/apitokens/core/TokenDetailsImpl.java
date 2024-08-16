@@ -40,6 +40,8 @@ public class TokenDetailsImpl implements TokenDetails {
 
     private List<String> scopes;
 
+    private boolean autoApplyScopes = false;
+
     /**
      * New token details from userId and token name
      *
@@ -140,6 +142,16 @@ public class TokenDetailsImpl implements TokenDetails {
 
     public boolean isValid() {
         return isActive && (expirationDate == null || Calendar.getInstance().before(expirationDate));
+    }
+
+    @Override
+    public boolean autoApplyScopes() {
+        return autoApplyScopes;
+    }
+
+    @Override
+    public void setAutoApplyScopes(boolean autoApplyScopes) {
+        this.autoApplyScopes = autoApplyScopes;
     }
 
     @Override

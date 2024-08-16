@@ -94,4 +94,13 @@ public interface TokenDetails {
      */
     boolean isValid();
 
+    /**
+     * Does this token allow auto applied scopes.
+     * If true then the token may not be limited by defined scopes.
+     * @return boolean
+     */
+    boolean autoApplyScopes();
+
+    void setAutoApplyScopes(boolean autoApplyScopes);
+
 }

@@ -11,3 +11,4 @@
  - active (boolean) = true
  - expirationDate (date)
  - scopes (string) multiple
+ - autoApplyScopes (boolean)

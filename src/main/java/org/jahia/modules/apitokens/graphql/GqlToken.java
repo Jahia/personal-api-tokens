@@ -89,4 +89,10 @@ public class GqlToken {
     public TokenState getState() {
         return tokenDetails.isActive() ? TokenState.ACTIVE : TokenState.DISABLED;
     }
+
+    @GraphQLField
+    @GraphQLDescription("Auto apply scopes")
+    public Boolean getSAutoApplyScopes() {
+        return tokenDetails.autoApplyScopes();
+    }
 }

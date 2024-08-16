@@ -57,6 +57,12 @@ public class TokenBuilderImpl implements TokenBuilder {
         return this;
     }
 
+    @Override
+    public TokenBuilder setAutoAppliedScopes(boolean autoApplyScopes) {
+        details.setAutoApplyScopes(autoApplyScopes);
+        return this;
+    }
+
     public String create() throws RepositoryException {
         return create.apply(token);
     }

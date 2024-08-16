@@ -54,6 +54,7 @@ public class TokensServiceImpl implements TokenService {
     public static final String ACTIVE = "active";
     public static final String EXPIRATION_DATE = "expirationDate";
     public static final String SCOPES = "scopes";
+    public static final String AUTO_APPLY_SCOPES = "autoApplyScopes";
     private static final Logger logger = LoggerFactory.getLogger(TokensServiceImpl.class);
     private JahiaUserManagerService userManagerService;
 
@@ -91,6 +92,7 @@ public class TokensServiceImpl implements TokenService {
         tokenNode.setProperty(DIGEST, digestedSecret);
         tokenNode.setProperty(ACTIVE, tokenDetails.isActive());
         tokenNode.setProperty(EXPIRATION_DATE, tokenDetails.getExpirationDate());
+        tokenNode.setProperty(AUTO_APPLY_SCOPES, tokenDetails.autoApplyScopes());
         if (tokenDetails.getScopes() != null) {
             tokenNode.setProperty(SCOPES, tokenDetails.getScopes().stream().map(s -> session.getValueFactory().createValue(s)).toArray(Value[]::new));
         }
@@ -207,6 +209,7 @@ public class TokensServiceImpl implements TokenService {
         tokenDetails.setKey(node.getProperty(KEY).getString());
         tokenDetails.setDigest(node.getProperty(DIGEST).getString());
         tokenDetails.setActive(node.getProperty(ACTIVE).getBoolean());
+        tokenDetails.setAutoApplyScopes(node.getProperty(AUTO_APPLY_SCOPES).getBoolean());
         if (node.hasProperty(EXPIRATION_DATE)) {
             tokenDetails.setExpirationDate(node.getProperty(EXPIRATION_DATE).getDate());
         }
