@@ -130,6 +130,7 @@ public class TokenAuthValve extends BaseAuthValve {
                             authValveContext.setShouldStoreAuthInSession(false);
                             authValveContext.getSessionFactory().setCurrentUser(user.getJahiaUser());
                             if (permissionService != null) {
+                                // TODO differentiate between token scopes and all scopes depending on details.autoApplyScopes
                                 permissionService.addScopes(details.getScopes(), request);
                             }
                         }
