@@ -3,11 +3,8 @@ import { createToken, deleteToken, getTokens } from '../support/gql'
 import { userTokensPage } from '../page-object/userTokens.page'
 import { tokensPage } from '../page-object/personalTokens.page'
 import { loginPage } from '../page-object/login.page'
-import { setupRoles } from './setupRoles'
 
 describe('UI e2e test - Full lifecycle in the User API Tokens section in Administration', () => {
-    setupRoles()
-
     before(async function () {
         const client = apollo(Cypress.config().baseUrl, {
             username: 'root',
