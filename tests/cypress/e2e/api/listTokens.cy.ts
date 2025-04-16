@@ -2,12 +2,9 @@ import { apollo } from '../../support/apollo'
 import { DocumentNode } from 'graphql'
 
 import { createToken, deleteToken, getToken, getTokens } from '../../support/gql'
-import { setupRoles } from '../setupRoles'
 
 describe('List tokens via API - query.admin.personalApiTokens.tokens', () => {
     let GQL_TOKENS: DocumentNode
-
-    setupRoles()
 
     before('load graphql file', function () {
         GQL_TOKENS = require(`graphql-tag/loader!../../fixtures/listTokens.graphql`)
@@ -92,8 +89,6 @@ describe('List tokens via API - query.admin.personalApiTokens.tokens', () => {
 
 describe('Get single token via API - query.admin.personalApiTokens.tokenByKey', () => {
     let GQL_TOKEN: DocumentNode
-
-    setupRoles()
 
     before('load graphql file', function () {
         GQL_TOKEN = require(`graphql-tag/loader!../../fixtures/tokenByKey.graphql`)
