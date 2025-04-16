@@ -19,10 +19,10 @@ describe('UI e2e test - Full lifecycle in the My API Tokens section', () => {
         }
     })
 
-    //See: https://docs.cypress.io/api/cypress-api/cookies#Preserve-Once
-    beforeEach(() => {
-        Cypress.Cookies.preserveOnce('JSESSIONID')
-    })
+    // See: https://docs.cypress.io/api/cypress-api/cookies#Preserve-Once
+    // beforeEach(() => {
+    //     Cypress.Cookies.preserveOnce('JSESSIONID')
+    // })
 
     after(async function () {
         const client = apollo(Cypress.config().baseUrl, {

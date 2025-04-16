@@ -18,9 +18,9 @@ describe('UI e2e test - Full lifecycle in the User API Tokens section in Adminis
     })
 
     //See: https://docs.cypress.io/api/cypress-api/cookies#Preserve-Once
-    beforeEach(() => {
-        Cypress.Cookies.preserveOnce('JSESSIONID')
-    })
+    // beforeEach(() => {
+    //     Cypress.Cookies.preserveOnce('JSESSIONID')
+    // })
 
     after(async function () {
         const client = apollo(Cypress.config().baseUrl, {

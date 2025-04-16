@@ -16,7 +16,7 @@
 // Import commands.js using ES2015 syntax:
 
 import { registerSupport } from '@jahia/cypress/dist/support/registerSupport';
-
+import { apollo } from './apollo';
 before('create role', async function () {
     await apollo(Cypress.config().baseUrl, {
         username: 'root',
