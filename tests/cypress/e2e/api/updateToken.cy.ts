@@ -2,12 +2,9 @@ import { apollo } from '../../support/apollo'
 import { DocumentNode } from 'graphql'
 
 import { createToken, deleteToken, getToken, getTokens } from '../../support/gql'
-import { setupRoles } from '../setupRoles'
 
 describe('Token update via API - mutation.admin.personalApiTokens.updateToken', () => {
     let GQL_UPDATE: DocumentNode
-
-    setupRoles()
 
     before('load graphql file', function () {
         GQL_UPDATE = require(`graphql-tag/loader!../../fixtures/updateToken.graphql`)
