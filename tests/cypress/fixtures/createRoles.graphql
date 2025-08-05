@@ -21,11 +21,56 @@ mutation {
             ]) {
                 uuid
             }
-        }
-        m2: mutateNode(pathOrId: "/j:acl/GRANT_g_users") {
+        },
+        m2: mutateNode(pathOrId: "/roles") {
+            addChild(name: "admin-token", primaryNodeType: "jnt:role", properties: [
+                {
+                    name: "j:nodeTypes"
+                    values: "rep:root"
+                },
+                {
+                    name: "j:permissionNames"
+                    values: ["administrationAccess", "adminUsers", "admin-personal-api-tokens"]
+                },
+                {
+                    name: "j:privilegedAccess"
+                    value: "true"
+                },
+                {
+                    name: "j:roleGroup"
+                    value: "server-role"
+                }
+            ]) {
+                uuid
+            }
+        },
+        m3: mutateNode(pathOrId: "/roles") {
+            addChild(name: "admin-no-token", primaryNodeType: "jnt:role", properties: [
+                {
+                    name: "j:nodeTypes"
+                    values: "rep:root"
+                },
+                {
+                    name: "j:permissionNames"
+                    values: ["administrationAccess", "adminUsers"]
+                },
+                {
+                    name: "j:privilegedAccess"
+                    value: "true"
+                },
+                {
+                    name: "j:roleGroup"
+                    value: "server-role"
+                }
+            ]) {
+                uuid
+            }
+        },
+        m4: mutateNode(pathOrId: "/j:acl/GRANT_g_users") {
             mutateProperty(name: "j:roles") {
                 addValue(value: "token")
             }
         }
+
     }
 }

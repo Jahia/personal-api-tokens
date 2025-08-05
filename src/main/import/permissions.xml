@@ -3,4 +3,7 @@
     <developerTools jcr:primaryType="jnt:permission">
         <personal-api-tokens jcr:primaryType="jnt:permission"/>
     </developerTools>
+    <admin jcr:primaryType="jnt:permission">
+        <admin-personal-api-tokens jcr:primaryType="jnt:permission"/>
+    </admin>
 </permissions>

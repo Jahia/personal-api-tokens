@@ -4,8 +4,6 @@ import { apollo } from '../support/apollo'
 import { deleteToken, getTokens, verifyToken } from '../support/gql'
 import { setupRoles } from './setupRoles'
 
-const PARAGRAPH_ELEMENT = 'p'
-
 const TEST_TOKEN_NAME = 'test-token'
 let TEST_TOKEN = ''
 

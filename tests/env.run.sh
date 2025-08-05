@@ -59,9 +59,9 @@ echo "$(date +'%d %B %Y - %k:%M') == Groovy script submitted =="
 done
 cd ..
 
-echo "$(date +'%d %B %Y - %k:%M')== Sleeping for an additional 120 seconds =="
+echo "$(date +'%d %B %Y - %k:%M')== Sleeping for an additional 30 seconds =="
 sleep 30
-echo "$(date +'%d %B %Y - %k:%M')== DONE - Sleeping for an additional 120 seconds =="
+echo "$(date +'%d %B %Y - %k:%M')== DONE - Sleeping for an additional 30 seconds =="
 
 echo "$(date +'%d %B %Y - %k:%M') == Fetching the list of installed modules =="
 ~/node_modules/@jahia/jahia-reporter/bin/run utils:modules \

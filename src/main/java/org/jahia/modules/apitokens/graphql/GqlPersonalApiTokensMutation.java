@@ -20,7 +20,6 @@ import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import org.apache.commons.lang.StringUtils;
-import org.jahia.api.usermanager.JahiaUserManagerService;
 import org.jahia.modules.apitokens.TokenDetails;
 import org.jahia.modules.apitokens.TokenService;
 import org.jahia.modules.graphql.provider.dxm.DataFetchingException;
@@ -51,24 +50,19 @@ public class GqlPersonalApiTokensMutation {
     @GraphQLOsgiService
     private JCRTemplate jcrTemplate;
 
-    @Inject
-    @GraphQLOsgiService
-    private JahiaUserManagerService userManagerService;
-
     /**
      * Create a new token
      *
      * @param name     Name to give to the token
-     * @param site     The site the user belongs to, null if global user
+     * @param scopes   Scopes attached to this token
      * @param expireAt Expiration date of the token
      * @param state    State to give the newly created token
      * @return new token
      */
     @GraphQLField
-    @GraphQLDescription("Create a new token")
+    @GraphQLDescription("Create a new token for connected user")
     @GraphQLRequiresPermission("personal-api-tokens")
     public String createToken(@GraphQLName("name") @GraphQLDescription("Name to give to the token") @GraphQLNonNull String name,
-                              @GraphQLName("site") @GraphQLDescription("The site the user belongs to, null if global user") String site,
                               @GraphQLName("expireAt") @GraphQLDescription("Expiration date of the token") String expireAt,
                               @GraphQLName("scopes") @GraphQLDescription("Scopes attached to this token") List<String> scopes,
                               @GraphQLName("state") @GraphQLDescription("State to give the newly created token") TokenState state) {
