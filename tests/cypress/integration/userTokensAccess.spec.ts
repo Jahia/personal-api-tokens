@@ -1,4 +1,3 @@
-import { loginPage } from '../page-object/login.page'
 import { createUser, deleteUser, grantRoles } from '@jahia/cypress'
 import { setupRoles } from './setupRoles'
 
