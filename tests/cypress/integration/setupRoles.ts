@@ -1,6 +1,6 @@
 import { apollo } from '../support/apollo'
 
-export function setupRoles() {
+export function setupRoles(): void {
     before('create role', async function () {
         await apollo(Cypress.config().baseUrl, {
             username: 'root',
