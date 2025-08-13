@@ -32,6 +32,11 @@ class PersonalTokensPage extends BasePage {
         cy.get(this.elements.tokenNameInput).type(this.TEST_TOKEN_NAME)
     }
 
+    validatePageIsNotAccessible() {
+        cy.visit('/jahia/dashboard', { failOnStatusCode: false })
+        cy.get(this.elements.personalTokens).should('not.exist')
+    }
+
     validateTokenIsVisibleInTheTable() {
         tokensPage.getByText('p', this.TEST_TOKEN_NAME).should(this.BE_VISIBLE)
     }

@@ -39,9 +39,11 @@
     "typescript": "^4.0.5",
     "util": "^0.12.3",
     "webpack": "4.46.0",
-    "yarn": "^1.22.4"
+    "yarn": "^1.22.22"
   },
   "resolutions": {
+    "*/**/elliptic": "6.5.4",
+    "glob-parent": "^5.1.2",
     "loader-utils": "^2.0.3"
   },
   "scripts": {
@@ -49,6 +51,7 @@
     "e2e:coverage": "yarn instrument && yarn cypress run --config integrationFolder=./instrumented/integration && yarn nyc report --reporter=html --report-dir=./results/coverage && yarn nyc report",
     "e2e:ci": "cypress run",
     "e2e:debug": "cypress open",
+    "build": "tsc -p ./lib-tsconfig.json",
     "lint": "eslint . -c .eslintrc.json --ext .ts"
   },
   "nyc": {

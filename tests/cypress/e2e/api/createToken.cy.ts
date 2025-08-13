@@ -48,7 +48,6 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
             mutation: GQL_CREATE,
             variables: {
                 tokenName: name,
-                siteKey: null,
                 expireAt: null,
                 tokenState: null,
             },
@@ -80,7 +79,6 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
             mutation: GQL_CREATE,
             variables: {
                 tokenName: name,
-                siteKey: null,
                 expireAt: null,
                 tokenState: 'DISABLED',
             },
@@ -114,7 +112,6 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
                 mutation: GQL_CREATE,
                 variables: {
                     tokenName: name,
-                    siteKey: null,
                     expireAt: null,
                     tokenState: 'INACTIVE', // This state does not exist
                 },
@@ -143,7 +140,6 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
             mutation: GQL_CREATE,
             variables: {
                 tokenName: name,
-                siteKey: null,
                 expireAt: expireAt,
                 tokenState: null,
             },
@@ -177,7 +173,6 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
             mutation: GQL_CREATE,
             variables: {
                 tokenName: name,
-                siteKey: null,
                 expireAt: expireAt,
                 tokenState: null,
             },
@@ -211,7 +206,6 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
                 mutation: GQL_CREATE,
                 variables: {
                     tokenName: name,
-                    siteKey: null,
                     expireAt: expireAt,
                     tokenState: null,
                 },
@@ -243,7 +237,6 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
                 mutation: GQL_CREATE,
                 variables: {
                     tokenName: name,
-                    siteKey: null,
                     expireAt: expireAt,
                     tokenState: null,
                 },
@@ -272,7 +265,6 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
             mutation: GQL_CREATE,
             variables: {
                 tokenName: name,
-                siteKey: null,
                 expireAt: expireAt,
                 tokenState: null,
             },
@@ -296,7 +288,6 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
                 mutation: GQL_CREATE,
                 variables: {
                     tokenName: name,
-                    siteKey: null,
                     expireAt: expireAt,
                     tokenState: null,
                 },
@@ -325,7 +316,6 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
                 mutation: GQL_CREATE,
                 variables: {
                     tokenName: name,
-                    siteKey: null,
                     expireAt: null,
                     tokenState: null,
                 },
@@ -351,7 +341,6 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
                 mutation: GQL_CREATE,
                 variables: {
                     tokenName: name,
-                    siteKey: null,
                     expireAt: null,
                     tokenState: null,
                 },
@@ -373,7 +362,6 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
                 mutation: GQL_CREATE,
                 variables: {
                     tokenName: name,
-                    siteKey: null,
                     expireAt: null,
                     tokenState: null,
                 },
@@ -401,7 +389,6 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
                 mutation: GQL_CREATE,
                 variables: {
                     tokenName: name,
-                    siteKey: null,
                     expireAt: null,
                     tokenState: null,
                 },
@@ -429,7 +416,6 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
             mutation: GQL_CREATE,
             variables: {
                 tokenName: name,
-                siteKey: null,
                 expireAt: null,
                 tokenState: null,
             },
@@ -457,7 +443,6 @@ describe('Token creation via API - mutation.admin.personalApiTokens.createToken'
             mutation: GQL_CREATE,
             variables: {
                 tokenName: name,
-                siteKey: null,
                 expireAt: null,
                 tokenState: null,
             },

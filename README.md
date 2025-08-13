@@ -100,7 +100,7 @@ For example it's possible to create a token by calling :
 mutation {
   admin {
     personalApiTokens {
-      createToken(userId:"root", name:"my token", expireAt:"2020-12-12")
+      createToken(name:"my-token", expireAt:"2025-12-12", scopes:["graphql"], state: ACTIVE)
     }
   }
 }
@@ -111,13 +111,18 @@ And to get its data with :
 query {
   admin {
     personalApiTokens {
-     token(token:"aJC9l44cSKGv4Xvb0Qc8o/V1Say1s77k0Q046/VIwo8=") {
-       key
-       name
-       user {
-         name
-       }
-     }
+     tokens {
+        edges {
+          node {
+            createdAt
+            expireAt
+            key
+            name
+            state
+            updatedAt
+          }
+        }
+      }
     }
   }
 }

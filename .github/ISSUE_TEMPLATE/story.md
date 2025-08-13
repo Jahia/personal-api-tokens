@@ -6,22 +6,34 @@ type: Story
 
 ---
 
-**As a** 
-
-**I want to** 
-
-**In order to** 
+### Context / Problem to solve / Design
 
 
-### Acceptance criteria
+### Story
+As a 
+I want to 
 
-**Given** 
+## Testable scenarios
 
-**When** 
+**Setup**
+Given
 
-**Then** 
+**Case 1**
+When 
+Then 
+
+**Case N**
+When 
+Then 
+
+### Test Strategy
+Cypress tests?
+
+### Tech Notes
+
+### Labels 
+En: 
+Fr: 
+De: 
 
 
-### Notes
-
-Useful information (Technical, Design)
