@@ -1,0 +1,19 @@
+query($userId: String, $limit: Int, $offset: Int, $sort: InputFieldSorterInput) {
+    admin {
+        personalApiTokens {
+            tokens(userId: $userId, limit: $limit, offset: $offset, fieldSorter: $sort) {
+                pageInfo {
+                    totalCount
+                    hasNextPage
+                    hasPreviousPage
+                }
+                nodes {
+                    name
+                    key
+                    expireAt
+                    state
+                }
+            }
+        }
+    }
+}

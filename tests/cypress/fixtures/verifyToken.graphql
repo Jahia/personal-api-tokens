@@ -1,0 +1,7 @@
+query($token: String!) {
+    admin {
+        personalApiTokens {
+            verifyToken(token: $token)
+        }
+    }
+}    

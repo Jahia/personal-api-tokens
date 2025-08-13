@@ -47,6 +47,15 @@ class PersonalTokensPage extends BasePage {
         })
     }
 
+    storeTokenValueAsAlias(aliasName = 'tokenValue') {
+        cy.get(tokensPage.elements.tokenValueParagraph)
+            .should(($div) => {
+                expect($div.text()).not.to.be.empty
+            })
+            .invoke('text')
+            .as(aliasName)
+    }
+
     validateDisabledTokenStatus() {
         cy.get(this.elements.tokenStatusChip).should(($div) => {
             expect($div.text()).to.eql('Disabled')
