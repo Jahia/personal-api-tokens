@@ -2,8 +2,6 @@ import { createUser, deleteUser, grantRoles } from '@jahia/cypress'
 import { setupRoles } from './setupRoles'
 
 describe('UI permission test - Access to the User API Tokens section in Administration', () => {
-    setupRoles()
-
     before(function () {
         createUser('penny', 'penny1234')
         createUser('leonard', 'leonard1234')
