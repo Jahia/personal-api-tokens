@@ -11,8 +11,7 @@ const columns = [
         id: 'selection',
         Header: header => <Checkbox isUncontrolled {...header.getToggleAllRowsSelectedProps()}/>,
         Cell: cellInfo => <Checkbox isUncontrolled {...cellInfo.row.getToggleRowSelectedProps()}/>,
-        width: 52,
-        canResize: false
+        width: 52
     },
     {
         id: 'name',
