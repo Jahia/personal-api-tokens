@@ -44,10 +44,10 @@ To create a token:
       - **Expiration date**  
         The expiry date is the date after which any calls to the API are deemed invalid. Once the expiry date is reached, tokens are not deleted and are not usable unless you update the expiration date to a later date.  
      
-     ![Create Personal Api Token 1](./img/create-personal-api-token-01.webp)
+     ![Create Personal Api Token 1](./img/create-personal-api-token-01.png)
 4. Click **Create**. The token displays on the page. This is **the only time** the token is visible to you. This token string is a sensitive piece of information. Make sure to keep it safe.
 
-   ![Create Personal Api Token 2](./img/create-personal-api-token-02.webp)
+   ![Create Personal Api Token 2](./img/create-personal-api-token-02.png)
 5. To copy the token, click **Copy**. Then copy the token value to a safe location.
 6. Click **Close**.
 
@@ -92,7 +92,7 @@ Access to the "My API tokens" page is restricted to users with permission "Perso
 
 Tokens that you create display on the **My API tokens** page. The list shows information such as the name of the token, its access key, and expiration date. You can delete, activate and disable tokens from this page.
 
-![Managing Tokens](./img/managing-tokens-01.webp)
+![Managing Tokens](./img/managing-tokens-01.png)
 
 :::infos
 **Note:** Tokens are only visible to users once when they are created. None of the information provided here is sufficient to perform an API call.
@@ -121,7 +121,7 @@ Although you cannot create tokens for other users, you can delete, activate, and
 To manage another user’s token:
 
 1. Navigate to **Administration>Users and Roles>User API tokens**.
-   ![Create Personal Api Token 3](./img/create-personal-api-token-03.webp)
+   ![Create Personal Api Token 3](./img/create-personal-api-token-03.png)
 
 2. In the search box, enter a user name to filter the list of users.
 3. Delete, activate, and disable the tokens that you want to update.
