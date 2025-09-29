@@ -1,6 +1,6 @@
 ---
 page:
-  $path: /sites/academy/home/documentation/jahia/8_2/developer/working-with-our-apis/using-personal-api-tokens-wip
+  $path: /sites/academy/home/documentation/jahia/8_2/developer/cms-security/using-personal-api-tokens
   jcr:title: Using personal API tokens
   j:templateName: documentation
 content:
