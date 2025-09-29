@@ -135,7 +135,7 @@ In addition to features provided in the UI, the GraphQL API also provides featur
 - List existing tokens 
 
 ```graphql
-query myListTokensQuery {
+query {
   admin {
     personalApiTokens {
       tokens {
@@ -158,7 +158,7 @@ query myListTokensQuery {
 - Check if a token is valid for authentication (verifyToken)
 
 ```graphql
-query myVerifyQuery{
+query {
   admin {
     personalApiTokens {
       verifyToken(token: "TOKEN_VALUE")
@@ -170,7 +170,7 @@ query myVerifyQuery{
 - List available scopes
 
 ```graphql
-query myScopesQuery {
+query {
   admin {
     personalApiTokens {
       availableScopes {
@@ -185,7 +185,7 @@ query myScopesQuery {
 - Update a token’s name, expiry date, scopes and state (active/disabled)
 
 ```graphql
-mutation myMutation {
+mutation {
   admin {
     personalApiTokens {
       updateToken(
@@ -202,7 +202,7 @@ mutation myMutation {
 
 ## Managing tokens through Groovy scripts
 
-Tokens can also be generated using a dedicated CLI and then managed by using Groovy scripts placed on the `Jahia Processing Node` filesystem in the `digital-factory-data/patches/groovy/` folder. This makes use of an existing Jahia feature which executes Groovy scripts present in that place.
+Tokens can also be generated using a dedicated CLI and then managed using Groovy scripts placed on the `Jahia Processing Node` filesystem in the `digital-factory-data/patches/groovy/` folder. This makes use of an existing Jahia feature which executes Groovy scripts present in that place.
 
 *This could be useful for situations where tokens must be created automatically during Jahia’s first startup.*
 
