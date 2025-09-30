@@ -24,11 +24,11 @@ Existing tokens are stored in the JCR and persist across Jahia upgrades as well 
 
 ### Compatibility
 
-The Personal API tokens module is compatible with Jahia 8.0.1.0 with some limitations, and supports the entire feature set from Jahia 8.0.2.0. With Jahia 8.0.1.0, automatically deleting Groovy scripts when creating and managing tokens through the filesystem is not available. All other functionality, such as creating and using tokens through the UI or API, is supported.
+The Personal API tokens module is compatible with Jahia 8.0.1.0 with some limitations and supports the entire feature set from Jahia 8.0.2.0. With Jahia 8.0.1.0, automatically deleting Groovy scripts when creating and managing tokens through the filesystem is not available. All other functionality, such as creating and using tokens through the UI or API, is supported.
 
 ## Creating a token
 
-Tokens are active by default and can easily be disabled from the tokens list.
+Tokens are active by default and can easily be disabled from the token list.
 
 :::info
 Access to the "My API tokens" page is restricted to users with permission "Personal api tokens" as a "Server role". Adding "Personal api tokens" permission to "Live role" or "Edit role" is not sufficient for a user to create and manage tokens.
@@ -57,7 +57,7 @@ The token displays in the list of tokens on the **My API tokens** page.
 
 You can simply pass a token in the `authorization` header in any API call by prefixing it with `APIToken`.
 
-For example, the Apollo client would be instantiated like this in Typescript:
+For example, the Apollo client would be instantiated like this in TypeScript:
 
 ```typescript
 export const apolloClient = (token: string): ApolloClient => {
@@ -78,7 +78,7 @@ export const apolloClient = (token: string): ApolloClient => {
 }
 ```
 
-Or, to retrieve the result of the healthcheck, it would be like that:
+Or, to retrieve the result of the health check, it would be like that:
 
 ```bash
 curl -H "Authorization: APIToken XXXXXXXXXX" JAHIA_URL/modules/healthcheck
@@ -103,12 +103,12 @@ To delete a token:
 1. Click **Delete** under **Actions** beside the token that you want to delete.
 2. In the Confirmation dialog, click **Delete Forever**.
 
-Once deleted, a token is gone forever and subsequent API calls using that token are denied.
+Once deleted, a token is gone forever, and subsequent API calls using that token are denied.
 
 To activate or disable a token:
 
 Click the **More actions** button under **Actions** and select **Activate** or **Disable**.  
-The status changes to **Active** or **Disabled** for the token. Any API call using a disable token is denied.
+The status changes to **Active** or **Disabled** for the token. Any API call using a disabled token is denied.
 
 ## Managing tokens for other users
 
