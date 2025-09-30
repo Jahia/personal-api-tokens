@@ -94,7 +94,7 @@ Tokens that you create display on the **My API tokens** page. The list shows inf
 
 ![Managing Tokens](./img/managing-tokens-01.png)
 
-:::infos
+:::info
 **Note:** Tokens are only visible to users once when they are created. None of the information provided here is sufficient to perform an API call.
 :::
 
