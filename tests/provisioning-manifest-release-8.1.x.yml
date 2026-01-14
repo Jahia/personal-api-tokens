@@ -1,5 +1,8 @@
 - addMavenRepository: 'https://store.jahia.com/nexus/content/repositories/jahia-public-app-store@id=JahiaStore'
 - addMavenRepository: 'https://devtools.jahia.com/nexus/content/groups/public/@snapshots@noreleases@id=JahiaSnapshot'
+- addMavenRepository: "https://devtools.jahia.com/nexus/content/repositories/jahia_staging_releases-2860"
+  username: "NEXUS_USERNAME"
+  password: "NEXUS_PASSWORD"
 
 # This modules were added during the switch from using jahia-discovery to jahia-ee
 - installBundle: 
@@ -19,7 +22,7 @@
   - 'mvn:org.jahia.modules/dx-base-demo-templates/3.1.0'
   - 'mvn:org.jahia.modules/dx-base-demo-components/2.2.0'
   - 'mvn:org.jahia.modules/digitall/2.3.0'
-  - 'mvn:org.jahia.modules/personal-api-tokens'
+  - 'mvn:org.jahia.modules/personal-api-tokens/1.6.0'
   autoStart: true
   uninstallPreviousVersion: true
 
