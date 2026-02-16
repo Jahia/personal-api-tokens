@@ -18,6 +18,7 @@ package org.jahia.modules.apitokens.core;
 import org.apache.commons.lang.StringUtils;
 import org.jahia.api.usermanager.JahiaUserManagerService;
 import org.jahia.bin.filters.CompositeFilter;
+import org.jahia.modules.apitokens.TokenConfigService;
 import org.jahia.modules.apitokens.TokenDetails;
 import org.jahia.modules.apitokens.TokenService;
 import org.jahia.services.securityfilter.PermissionService;
@@ -29,18 +30,13 @@ import org.jahia.pipelines.valves.Valve;
 import org.jahia.pipelines.valves.ValveContext;
 import org.jahia.services.content.JCRTemplate;
 import org.jahia.services.content.decorator.JCRUserNode;
-import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.*;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.jcr.RepositoryException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Authentication valve for APIToken Authorization header
@@ -48,14 +44,14 @@ import java.util.Set;
 @Component(service = Valve.class, immediate = true, scope = ServiceScope.SINGLETON)
 public class TokenAuthValve extends BaseAuthValve {
     public static final String API_TOKEN = "APIToken";
-    private static final Logger logger = LoggerFactory.getLogger(TokenAuthValve.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TokenAuthValve.class);
     private Pipeline authPipeline;
     private TokenService tokenService;
     private JahiaUserManagerService userManagerService;
 
     private PermissionService permissionService;
 
-    private Set<String> urlPatterns = new HashSet<>();
+    private TokenConfigService tokenConfigService;
 
     @Reference(service = Pipeline.class, target = "(type=authentication)")
     public void setAuthPipeline(Pipeline authPipeline) {
@@ -72,31 +68,19 @@ public class TokenAuthValve extends BaseAuthValve {
         this.userManagerService = userManagerService;
     }
 
-    @Reference(service = HttpServlet.class, target = "(allow-api-token=true)", cardinality = ReferenceCardinality.MULTIPLE, policy = ReferencePolicy.DYNAMIC, policyOption = ReferencePolicyOption.GREEDY)
-    public void addServlet(ServiceReference<HttpServlet> servlet) {
-        urlPatterns.add("/modules" + servlet.getProperty("alias"));
-    }
-
-    public void removeServlet(ServiceReference<HttpServlet> servlet) {
-        urlPatterns.remove("/modules" + servlet.getProperty("alias"));
-    }
-
     @Reference(cardinality = ReferenceCardinality.OPTIONAL)
     public void setPermissionService(PermissionService permissionService) {
         this.permissionService = permissionService;
     }
 
-    /**
-     * Activate
-     *
-     * @param props Configuration properties
-     */
+    @Reference
+    public void setTokenConfigService(TokenConfigService tokenConfigService) {
+        this.tokenConfigService = tokenConfigService;
+    }
+
     @Activate
-    public void activate(Map<String, ?> props) {
-        setId("patValve");
-        if (props.get("urlPatterns") != null) {
-            urlPatterns.addAll(Arrays.asList(StringUtils.split((String) props.get("urlPatterns"), ",")));
-        }
+    public void activate() {
+        LOGGER.info("Token authentication activated for patterns: {}", tokenConfigService.getUrlPatterns());
         removeValve(authPipeline);
         addValve(authPipeline, 0, null, null);
     }
@@ -107,6 +91,7 @@ public class TokenAuthValve extends BaseAuthValve {
     @Deactivate
     public void deactivate() {
         removeValve(authPipeline);
+        LOGGER.info("Token authentication valve deactivated");
     }
 
     @Override
@@ -115,27 +100,9 @@ public class TokenAuthValve extends BaseAuthValve {
         HttpServletRequest request = authValveContext.getRequest();
 
         String uri = request.getRequestURI().substring(request.getContextPath().length());
-
-        if (urlPatterns.stream().anyMatch(urlPattern -> CompositeFilter.matchFiltersURL(urlPattern, uri))) {
+        if (shouldApplyTokenAuth(uri)) {
             try {
-                String authorization = request.getHeader("Authorization");
-                if (authorization != null && authorization.contains(API_TOKEN)) {
-                    String token = StringUtils.substringAfter(authorization, API_TOKEN).trim();
-
-                    JCRTemplate.getInstance().doExecuteWithSystemSession(session -> {
-                        TokenDetails details = tokenService.verifyToken(token, session);
-                        logger.debug("Received token {}", details);
-                        if (details != null && details.isValid()) {
-                            JCRUserNode user = userManagerService.lookupUserByPath(details.getUserPath());
-                            authValveContext.setShouldStoreAuthInSession(false);
-                            authValveContext.getSessionFactory().setCurrentUser(user.getJahiaUser());
-                            if (permissionService != null) {
-                                permissionService.addScopes(details.getScopes(), request);
-                            }
-                        }
-                        return null;
-                    });
-                }
+                applyTokenAuth(authValveContext, request);
             } catch (RepositoryException e) {
                 throw new PipelineException(e);
             }
@@ -144,4 +111,40 @@ public class TokenAuthValve extends BaseAuthValve {
         valveContext.invokeNext(o);
     }
 
+    /**
+     * Apply token authentication if the request contains a valid token in the Authorization header
+     *
+     * @param authValveContext the authentication valve context to update with the authenticated user if token is valid
+     * @param request the request to check for token authentication
+     * @throws RepositoryException if an error occurs while accessing the repository to verify the token or retrieve the user
+     */
+    private void applyTokenAuth(AuthValveContext authValveContext, HttpServletRequest request) throws RepositoryException {
+        String authorization = request.getHeader("Authorization");
+        if (authorization != null && authorization.contains(API_TOKEN)) {
+            String token = StringUtils.substringAfter(authorization, API_TOKEN).trim();
+
+            JCRTemplate.getInstance().doExecuteWithSystemSession(session -> {
+                TokenDetails details = tokenService.verifyToken(token, session);
+                LOGGER.debug("Received token {}", details);
+                if (details != null && details.isValid()) {
+                    JCRUserNode user = userManagerService.lookupUserByPath(details.getUserPath());
+                    authValveContext.setShouldStoreAuthInSession(false);
+                    authValveContext.getSessionFactory().setCurrentUser(user.getJahiaUser());
+                    if (permissionService != null) {
+                        permissionService.addScopes(details.getScopes(), request);
+                    }
+                }
+                return null;
+            });
+        }
+    }
+
+    /**
+     * Check if the token authentication should be applied for the given request URI based on the configured URL patterns
+     * @param requestUri the request URI to check against the configured URL patterns
+     * @return true if token authentication should be applied for the request URI, false otherwise
+     */
+    private boolean shouldApplyTokenAuth(String requestUri) {
+        return tokenConfigService.getUrlPatterns().stream().anyMatch(urlPattern -> CompositeFilter.matchFiltersURL(urlPattern, requestUri));
+    }
 }
