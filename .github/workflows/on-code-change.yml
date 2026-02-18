@@ -67,6 +67,7 @@ jobs:
     uses: Jahia/jahia-modules-action/.github/workflows/reusable-integration-tests.yml@v2
     with:
       module_id: personal-api-tokens
+      module_branch: main
       provisioning_manifest: provisioning-manifest-build-8.2.x.yml
       jahia_image: ghcr.io/jahia/jahia-ee-dev:8-SNAPSHOT
       should_use_build_artifacts: true
