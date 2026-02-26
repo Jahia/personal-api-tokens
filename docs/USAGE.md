@@ -8,7 +8,7 @@ content:
 publish: false
 ---
 
-With the [personal API tokens module](https://store.jahia.com/contents/modules-repository/org/jahia/modules/personal-api-tokens.html), you can use tokens instead of your credentials to make calls to Jahia APIs, such as GraphQL API and others.
+Available by default with Jahia, the [personal API tokens module](https://store.jahia.com/contents/modules-repository/org/jahia/modules/personal-api-tokens.html), you can use tokens instead of your credentials to make calls to Jahia APIs, such as GraphQL API and others.
 
 Personal API tokens provide many benefits, including isolation of security credentials between various usages and platforms. While a username and password are unique for a specific user, many security tokens can be attached to an individual user. If a token is considered compromised, that single token can easily be disabled or deleted to prevent its future use without impacting any platforms using other tokens generated for that user. Alternatively, dealing with compromised username and password credentials involves modifying those credentials on all multiple platforms.
 
@@ -16,15 +16,47 @@ As a best practice, Jahia recommends that you create a separate token for each e
 
 When created, a token is attached to its “creator” user and benefits from the same level of authorization as its creator. For this reason, treat tokens with the same level of precaution as traditional credentials.
 
-## Installing the module
+### Configuration
 
-The personal API tokens module (module ID: personal-api-tokens) is compatible with Jahia 8.0.1.0 and above and can be easily installed by adding the module in Jahia Administration>Modules and Extensions>Modules. For information on adding the module, see the [Installing a module tutorial](https://academy.jahia.com/training-kb/tutorials/administrators/installing-a-module).
+#### URL Patterns Configuration
 
-Existing tokens are stored in the JCR and persist across Jahia upgrades as well as module upgrades.
+By default, Personal API Tokens will reject any request towards an endpoints not whitelisted in the `urlPatterns` configuration of the module.
 
-### Compatibility
+A default configuration is present in the module ([see configuration](https://github.com/Jahia/personal-api-tokens/blob/main/src/main/resources/META-INF/configurations/org.jahia.modules.PersonalApiToken-default.cfg)) opening up to some Jahia endpoints.
+Multiple Personal API Tokens configuration files can be present in a Jahia environment, in such a case, the first matching one applies unrelated to which module is providing it.
+This means that it is not necessary to redeclare the same or similar pattern in each module, it also means that if both `/modules/myApi/*` and `/modules/MyApi/MySubApi/*` are present in different configuration files, `/modules/myApi/*`will match both, making `/modules/MyApi/MySubApi/*` unnecessary.
+This section of the documentation details how to expand that list to include endpoints implemented in your modules.
 
-The Personal API tokens module is compatible with Jahia 8.0.1.0 with some limitations and supports the entire feature set from Jahia 8.0.2.0. With Jahia 8.0.1.0, automatically deleting Groovy scripts when creating and managing tokens through the filesystem is not available. All other functionality, such as creating and using tokens through the UI or API, is supported.
+##### Creating a Configuration File
+
+Create a configuration file in your module at:
+```
+META-INF/configurations/org.jahia.modules.PersonalApiToken-<config-name>.cfg
+```
+
+Replace `<config-name>` with a unique identifier for your configuration (e.g., `default`, `custom-api`, etc.).
+Change to configuration are automatically applied when your module is deployed or when the configuration file is updated in a Jahia Environment.
+
+##### Configuration Format
+
+The configuration file should contain:
+
+```properties
+urlPatterns=/modules/myApi/*,/modules/anotherApi/*
+```
+
+**Properties:**
+- `urlPatterns`: Comma-separated list of URL patterns where token authentication will be verified
+    - Example: `/modules/api/*,/modules/myapi/*`
+    - Supports wildcards (`*`) for pattern matching
+
+##### Example Configuration
+
+**File:** `org.jahia.modules.PersonalApiToken-custom.cfg`
+```properties
+# Custom API configuration
+urlPatterns=/modules/myapi/*,/modules/endpoint/apiA,/modules/endpoint/apiB
+```
 
 ## Creating a token
 
@@ -274,46 +306,3 @@ org.jahia.services.content.JCRTemplate.getInstance().doExecuteWithSystemSession(
     session.save();
 })
 ```
-
-### Configuration
-
-#### URL Patterns Configuration
-
-You can configure which URL patterns are covered by token authentication by creating a configuration file. This allows you to protect specific API endpoints with token verification.
-
-##### Creating a Configuration File
-
-Create a configuration file in your module at:
-```
-META-INF/configurations/org.jahia.modules.PersonalApiToken-<config-name>.cfg
-```
-
-Replace `<config-name>` with a unique identifier for your configuration (e.g., `default`, `custom-api`, etc.).
-
-##### Configuration Format
-
-The configuration file should contain:
-
-```properties
-urlPatterns=/modules/myApi/*,/modules/anotherApi/*
-```
-
-**Properties:**
-- `urlPatterns`: Comma-separated list of URL patterns where token authentication will be verified
-    - Example: `/modules/api/*,/modules/myapi/*`
-    - Supports wildcards (`*`) for pattern matching
-
-##### Example Configuration
-
-**File:** `org.jahia.modules.PersonalApiToken-custom.cfg`
-```properties
-# Custom API configuration
-urlPatterns=/modules/myapi/*,/modules/endpoint/apiA,/modules/endpoint/apiB
-```
-
-##### Notes
-
-- Multiple configuration files can be created to define different URL pattern sets
-- Changes to configuration files are automatically detected and applied
-- The module provides a default configuration that protects `/modules/api/*` and `/modules/graphql`
-
