@@ -274,3 +274,46 @@ org.jahia.services.content.JCRTemplate.getInstance().doExecuteWithSystemSession(
     session.save();
 })
 ```
+
+### Configuration
+
+#### URL Patterns Configuration
+
+You can configure which URL patterns are covered by token authentication by creating a configuration file. This allows you to protect specific API endpoints with token verification.
+
+##### Creating a Configuration File
+
+Create a configuration file in your module at:
+```
+META-INF/configurations/org.jahia.modules.PersonalApiToken-<config-name>.cfg
+```
+
+Replace `<config-name>` with a unique identifier for your configuration (e.g., `default`, `custom-api`, etc.).
+
+##### Configuration Format
+
+The configuration file should contain:
+
+```properties
+urlPatterns=/modules/myApi/*,/modules/anotherApi/*
+```
+
+**Properties:**
+- `urlPatterns`: Comma-separated list of URL patterns where token authentication will be verified
+    - Example: `/modules/api/*,/modules/myapi/*`
+    - Supports wildcards (`*`) for pattern matching
+
+##### Example Configuration
+
+**File:** `org.jahia.modules.PersonalApiToken-custom.cfg`
+```properties
+# Custom API configuration
+urlPatterns=/modules/myapi/*,/modules/endpoint/apiA,/modules/endpoint/apiB
+```
+
+##### Notes
+
+- Multiple configuration files can be created to define different URL pattern sets
+- Changes to configuration files are automatically detected and applied
+- The module provides a default configuration that protects `/modules/api/*` and `/modules/graphql`
+
