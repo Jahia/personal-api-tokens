@@ -43,6 +43,10 @@ Personal API Tokens
 - [Build](#build)
 - [Installation](#installation)
 - [Usage](#usage)
+  - [Configuration](#configuration)
+  - [Token generation](#token-generation)
+  - [GraphQL API](#graphql-api)
+- [E2E tests](#e2e-tests)
 - [Links](#links)
 
 <!--
@@ -75,6 +79,10 @@ Use `mvn install` to build the module.
 Deploy the module in your Jahia instance.
 
 ## Usage
+
+### Configuration
+
+For detailed information on how to configure URL patterns for token authentication, see the [Usage Documentation](docs/USAGE.md#configuration).
 
 ### Token generation
 
