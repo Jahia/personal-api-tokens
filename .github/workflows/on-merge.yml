@@ -64,3 +64,4 @@ jobs:
       jahia_image: ghcr.io/jahia/jahia-ee-dev:8-SNAPSHOT
       should_use_build_artifacts: true
       artifact_prefix: pat-standalone-artifacts
+      testrail_project: Personal API Tokens

@@ -73,4 +73,5 @@ jobs:
       should_use_build_artifacts: true
       should_skip_testrail: true
       artifact_prefix: pat-standalone-artifacts
+      testrail_project: Personal API Tokens
       timeout_job: 45
