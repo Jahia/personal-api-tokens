@@ -13,6 +13,7 @@ jobs:
     with:
       module_id: personal-api-tokens
       module_branch: main
+      incident_service: personal-api-tokens-JahiaSN
       provisioning_manifest: provisioning-manifest-snapshot-8.2.x.yml
       jahia_image: ghcr.io/jahia/jahia-ee-dev:8-snapshot
       artifact_prefix: pat-jahia-sn
