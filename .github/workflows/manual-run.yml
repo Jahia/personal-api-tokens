@@ -22,7 +22,6 @@ jobs:
     with:
       module_id: personal-api-tokens
       module_branch: ${{ github.ref }}
-      incident_service: personal-api-tokens-JahiaSN
       provisioning_manifest: ${{ github.event.inputs.manifest }}
       jahia_image: ${{ github.event.inputs.jahia_image }}
       should_skip_testrail: true
