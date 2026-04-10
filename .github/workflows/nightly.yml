@@ -27,6 +27,6 @@ jobs:
       module_branch: ${{ github.ref }}
       incident_service: personal-api-tokens-JahiaRL
       provisioning_manifest: provisioning-manifest-release-8.1.x.yml
-      jahia_image: jahia/jaha-ee:8.1
+      jahia_image: jahia/jahia-ee:8.1
       artifact_prefix: pat-jahia-rl
       testrail_project: Personal API Tokens
