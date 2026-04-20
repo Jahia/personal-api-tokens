@@ -82,11 +82,17 @@ fi
 echo "$(date +'%d %B %Y - %k:%M')== Run tests =="
 yarn e2e:ci
 if [[ $? -eq 0 ]]; then
+  echo "$(date +'%d %B %Y - %k:%M') == Full execution successful =="
   echo "success" > ./results/test_success
-  exit 0
+  yarn report:merge; yarn report:html
 else
+  echo "$(date +'%d %B %Y - %k:%M') == One or more failed tests =="
   echo "failure" > ./results/test_failure
-  exit 1
+  yarn report:merge; yarn report:html
 fi
 
-# After the test ran, we're dropping a marker file to indicate if the test failed or succeeded based on the script test command exit code
+if [[ -e ./results/test_success ]]; then
+  exit 0
+else
+  exit 1
+fi
