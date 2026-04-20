@@ -52,6 +52,8 @@
     "e2e:coverage": "yarn instrument && yarn cypress run --config integrationFolder=./instrumented/integration && yarn nyc report --reporter=html --report-dir=./results/coverage && yarn nyc report",
     "e2e:ci": "cypress run",
     "e2e:debug": "cypress open",
+    "report:merge": "mochawesome-merge results/reports/cypress*.json > results/reports/report.json && rm results/reports/cypress*.json",
+    "report:html": "marge --inline results/reports/report.json --reportDir results/reports/",
     "build": "tsc -p ./lib-tsconfig.json",
     "lint": "eslint . -c .eslintrc.json --ext .ts"
   },
@@ -83,5 +85,10 @@
     "url": "https://github.com/Jahia/personal-api-tokens/issues"
   },
   "homepage": "https://github.com/Jahia/personal-api-tokens#readme",
-  "dependencies": {}
+  "dependencies": {
+    "mocha": "10.0.0",
+    "mochawesome": "6.3.1",
+    "mochawesome-merge": "4.2.0",
+    "mochawesome-report-generator": "5.2.0"
+  }
 }
