@@ -95,6 +95,7 @@ public class GqlPersonalApiTokensMutation {
      */
     @GraphQLField
     @GraphQLDescription("Update an existing token")
+    @GraphQLRequiresPermission("personal-api-tokens")
     public boolean updateToken(@GraphQLName("key") @GraphQLDescription("The token key")  @GraphQLNonNull String key,
                                @GraphQLName("name") @GraphQLDescription("Name to give to the token") String name,
                                @GraphQLName("expireAt") @GraphQLDescription("Expiration date of the token, use empty string to unset expiration date") String expireAt,
@@ -139,6 +140,7 @@ public class GqlPersonalApiTokensMutation {
      */
     @GraphQLField
     @GraphQLDescription("Delete an existing token")
+    @GraphQLRequiresPermission("personal-api-tokens")
     public boolean deleteToken(@GraphQLName("key") @GraphQLDescription("The token key")  @GraphQLNonNull String key) {
         try {
             return jcrTemplate.doExecute(jcrTemplate.getSessionFactory().getCurrentUser(), null, null, session -> {
