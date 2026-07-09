@@ -20,6 +20,7 @@ import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLTypeExtension;
 import org.jahia.modules.graphql.provider.dxm.admin.GqlAdminMutation;
+import org.jahia.modules.graphql.provider.dxm.security.GraphQLRequiresPermission;
 
 /**
  * Admin mutation extension
@@ -36,6 +37,7 @@ public class AdminMutationExtension {
     @GraphQLField
     @GraphQLName("personalApiTokens")
     @GraphQLDescription("Personal API tokens mutations")
+    @GraphQLRequiresPermission("personal-api-tokens")
     public static GqlPersonalApiTokensMutation personalApiTokens() {
         return new GqlPersonalApiTokensMutation();
     }
