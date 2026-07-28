@@ -31,8 +31,37 @@ class UserTokensPage extends BasePage {
         cy.get(this.elements.searchUserInput).type(name)
     }
 
-    validateTokenIsVisibleInTheTable() {
-        this.getByText('p', this.TEST_TOKEN_NAME).should(this.BE_VISIBLE)
+    clearUserNameFilter() {
+        cy.get(this.elements.searchUserInput).children().last().clear()
+        return this
+    }
+
+    // Clears any existing filter, then searches by username; pass '' (or omit) to remove the filter.
+    searchUser(name = '') {
+        this.clearUserNameFilter()
+        if (name) {
+            this.fillUserName(name)
+        }
+
+        this.assertButtonVisibleAndClick(this.elements.searchUserBtn)
+        return this
+    }
+
+    validateTokenIsVisibleInTheTable(tokenName: string = this.TEST_TOKEN_NAME) {
+        this.getByText('p', tokenName).should(this.BE_VISIBLE)
+    }
+
+    // The key column is the cell immediately following the token name column in the table row.
+    private getTokenKeyCell(tokenName: string): Cypress.Chainable {
+        return this.getByText('td', tokenName).next()
+    }
+
+    validateTokenKeyEquals(tokenName: string, expectedKey: string) {
+        this.getTokenKeyCell(tokenName).invoke('text').should('eq', expectedKey)
+    }
+
+    validateTokenRowCount(count: number) {
+        cy.get('table tbody tr').should('have.length', count)
     }
 
     validateActiveTokenStatus() {
