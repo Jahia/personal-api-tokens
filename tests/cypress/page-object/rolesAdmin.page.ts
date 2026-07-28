@@ -13,6 +13,15 @@ export const SERVER_ADMINISTRATOR_ROLE = {
     path: '/roles/server-administrator',
 }
 
+// A role created ad-hoc via the "Roles and permissions" screen's "add" field has no localized
+// label configured for it, so the admin UI falls back to displaying just "(id)" wherever the
+// role's label would normally show (role list links, role details heading).
+export const PERSONAL_API_TOKEN_USER_ROLE = {
+    id: 'personal-api-token-user',
+    label: '(personal-api-token-user)',
+    path: '/roles/personal-api-token-user',
+}
+
 // These are the legacy JSP/webflow-based "Server roles" and "Roles and permissions" admin
 // screens. They are normally embedded in an iframe under /jahia/administration/..., but they
 // are fully functional visited directly, which avoids having to reach into an iframe from Cypress.
@@ -103,13 +112,14 @@ class RolesAdminPage extends BasePage {
     }
 
     /**
-     * Assigns server-admin role to the user
+     * Assigns/unassigns a member for any server role (server-administrator, or a custom one)
+     * @param roleId
      * @param username
      * @param member
      */
-    setServerAdminRoleMember(username: string, member: boolean) {
+    setServerRoleMember(roleId: string, username: string, member: boolean) {
         cy.visit(Cypress.config().baseUrl + this.MANAGE_SERVER_ROLES_PATH, { failOnStatusCode: false })
-        cy.get(`#${SERVER_ADMINISTRATOR_ROLE.id}`).click()
+        cy.get(`#${roleId}`).click()
 
         // The checkbox is visually hidden behind a styled sibling, so a real click doesn't
         // reliably reach it, and dispatching a synthetic "change" event isn't picked up
@@ -131,6 +141,20 @@ class RolesAdminPage extends BasePage {
                 cy.get(this.elements.saveMembersBtn).should('not.be.disabled').click()
             }
         })
+        return this
+    }
+
+    /**
+     * Creates a new role from the "Roles and permissions" screen's role-type category
+     * (e.g. "Server roles"), landing on its role-details page.
+     * @param roleType one of the roleTypeCombo options, e.g. "Server roles"
+     * @param roleName
+     */
+    createRole(roleType: string, roleName: string) {
+        this.visitRolesAndPermissions()
+        cy.get('#roleTypeCombo').select(roleType)
+        cy.get('#addRoleField').clear().type(roleName)
+        cy.get('#addRoleButtonLabel').click()
         return this
     }
 

@@ -67,7 +67,7 @@ describe('UI permission test - Progressive access to Personal API Tokens via the
     it(`Reflects server-administrator role permission changes on Personal API Tokens access (${TEST_USER_ID})`, function () {
         cy.log(`1. root adds ${TEST_USER_ID} as server administrator (Administration > Users and Roles > Server roles)`)
         cy.login()
-        rolesAdminPage.setServerAdminRoleMember(TEST_USER_ID, true)
+        rolesAdminPage.setServerRoleMember(SERVER_ADMINISTRATOR_ROLE.id, TEST_USER_ID, true)
         cy.logout()
 
         cy.log(

@@ -18,3 +18,17 @@ const REMOVE_ROLE_PERMISSION_NAME = gql`
 export function revokeRolePermission(rolePath: string, permissionName: string): Cypress.Chainable {
     return cy.apollo({ mutation: REMOVE_ROLE_PERMISSION_NAME, variables: { path: rolePath, permissionName } })
 }
+
+const DELETE_ROLE = gql`
+    mutation($path: String!) {
+        jcr {
+            deleteNode(pathOrId: $path)
+        }
+    }
+`
+
+// Deletes a whole role node, e.g. a custom role created via the "Roles and permissions" admin
+// screen's "add" field for a test. Used only for test cleanup.
+export function deleteRole(rolePath: string): Cypress.Chainable {
+    return cy.apollo({ mutation: DELETE_ROLE, variables: { path: rolePath } })
+}

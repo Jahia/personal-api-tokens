@@ -114,6 +114,18 @@ export async function getTokens(
     }
 }
 
+// Deletes every token owned by userId. Used for test cleanup (before/after hooks), so a spec
+// starts and ends with a clean slate regardless of what a previous/failed run left behind.
+export async function deleteAllTokens(
+    userId: string,
+    apolloClient: ApolloClient<NormalizedCacheObject>,
+): Promise<void> {
+    const existingTokens = await getTokens({ userId }, apolloClient)
+    for (const token of existingTokens.nodes) {
+        await deleteToken(token.key, apolloClient)
+    }
+}
+
 export async function deleteToken(key: string, apolloClient: ApolloClient<NormalizedCacheObject>): Promise<any> {
     const response = await apolloClient.mutate({
         mutation: gql`
