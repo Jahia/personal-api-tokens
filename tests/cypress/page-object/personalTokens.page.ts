@@ -56,6 +56,24 @@ class PersonalTokensPage extends BasePage {
             .as(aliasName)
     }
 
+    // The key column is the cell immediately following the token name column in the table row
+    private getTokenKeyCell(): Cypress.Chainable {
+        return this.getByText('td', this.TEST_TOKEN_NAME).next()
+    }
+
+    storeTokenKeyAsAlias(aliasName = 'tokenKey') {
+        this.getTokenKeyCell()
+            .should(($div) => {
+                expect($div.text()).not.to.be.empty
+            })
+            .invoke('text')
+            .as(aliasName)
+    }
+
+    validateTokenKeyEquals(expectedKey: string) {
+        this.getTokenKeyCell().invoke('text').should('eq', expectedKey)
+    }
+
     validateDisabledTokenStatus() {
         cy.get(this.elements.tokenStatusChip).should(($div) => {
             expect($div.text()).to.eql('Disabled')
