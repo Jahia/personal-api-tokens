@@ -59,9 +59,11 @@ class RolesAdminPage extends BasePage {
         }
 
         // This legacy webflow screen intermittently fails to render the role list (a transient
-        // backend node-loading hiccup) or bounces back to the login page instead of opening the
-        // role. Both are unrelated quirks of this admin screen, so detect and retry rather than
-        // fail the test outright.
+        // backend node-loading hiccup), bounces back to the login page instead of opening the
+        // role, or lands on a blank page (the URL updates to the correct view-state, but the
+        // response body comes back empty - a race in the underlying webflow's POST/redirect
+        // handling under fast automated clicks). All are unrelated quirks of this admin screen,
+        // so detect and retry rather than fail the test outright.
         cy.get('body').then(($body) => {
             const roleLink = $body.find('a').filter((_, el) => (el.textContent || '').trim().startsWith(roleLabel))
             if (roleLink.length === 0) {
@@ -71,7 +73,12 @@ class RolesAdminPage extends BasePage {
 
             cy.wrap(roleLink.first()).click()
             cy.get('body').then(($afterClickBody) => {
-                if ($afterClickBody.find('input[type="password"]').length > 0) {
+                const isLoginPage = $afterClickBody.find('input[type="password"]').length > 0
+                const isMissingRoleDetailsContent =
+                    $afterClickBody.find(
+                        `${this.elements.serverAdministrationGroupBtn}, ${this.elements.otherPermissionsGroupBtn}`,
+                    ).length === 0
+                if (isLoginPage || isMissingRoleDetailsContent) {
                     retry()
                 }
             })
