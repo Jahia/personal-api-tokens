@@ -5,6 +5,7 @@ class UserTokensPage extends BasePage {
 
     elements = {
         userTokens: "[data-sel-role*='pat']",
+        manageUsers: "[data-sel-role*='manageUsers']",
 
         searchUserBtn: "[data-testid*='search-user-btn']",
         noTokensMessage: "[data-testid*='no-tokens-message']",
