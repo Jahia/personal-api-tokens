@@ -113,7 +113,6 @@
             org.jahia.services
         </import-package>
         <yarn.arguments>build:production</yarn.arguments>
-        <sonar.sources>src/main/javascript</sonar.sources>
     </properties>
 
     <dependencies>
