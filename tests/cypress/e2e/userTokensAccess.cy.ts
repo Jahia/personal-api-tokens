@@ -10,8 +10,8 @@ describe('UI permission test - Access to the User API Tokens section in Administ
     })
 
     after(function () {
-        deleteUser('penny')
-        deleteUser('leonard')
+        // deleteUser('penny')
+        // deleteUser('leonard')
     })
 
     it('Check access to admin users token page is possible (penny)', function () {
