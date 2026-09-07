@@ -5,8 +5,10 @@ import UserApiTokens from './PersonalApiTokens/UserApiTokens/UserApiTokens';
 import React from 'react';
 
 export default function () {
+    // Under the profile icon rather than the dashboard: these are the reader's own tokens, and
+    // the dashboard is no longer a place with a navigation to put them in.
     registry.add('adminRoute', 'personal-api-tokens', {
-        targets: ['dashboard:99.1'],
+        targets: ['profile:40'],
         // Icon is Lock as of now, will be changed to proper one after moonstone release
         icon: <Key/>,
         label: 'personal-api-tokens:title',
