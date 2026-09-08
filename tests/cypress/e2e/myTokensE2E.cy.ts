@@ -1,4 +1,5 @@
 import { tokensPage } from '../page-object/personalTokens.page'
+import { userTokensPage } from '../page-object/userTokens.page'
 import { apollo } from '../support/apollo'
 import { deleteToken, getTokens } from '../support/gql'
 
@@ -46,6 +47,7 @@ describe('UI e2e test - Full lifecycle in the My API Tokens section', () => {
         tokensPage.storeTokenValueAsAlias('tokenValue')
         tokensPage.assertButtonVisibleAndClick(tokensPage.elements.acceptDialogBtn)
         tokensPage.validateTokenIsVisibleInTheTable()
+        tokensPage.storeTokenKeyAsAlias('tokenId')
 
         cy.log('Verify created token')
         cy.get('@tokenValue').then(($tokenValue) => {
@@ -57,8 +59,20 @@ describe('UI e2e test - Full lifecycle in the My API Tokens section', () => {
             })
         })
 
+        cy.log('Verify created token exists with correct status in Administration > Users and Roles > User API Tokens')
+
+        userTokensPage.visit()
+        userTokensPage.fillUserName('root')
+        userTokensPage.assertButtonVisibleAndClick(userTokensPage.elements.searchUserBtn)
+        tokensPage.validateTokenIsVisibleInTheTable()
+        userTokensPage.validateActiveTokenStatus()
+        cy.get('@tokenId').then(($tokenId) => {
+            tokensPage.validateTokenKeyEquals($tokenId)
+        })
+
         cy.log('disable the token')
 
+        tokensPage.visit()
         tokensPage.validateActiveTokenStatus()
         tokensPage.assertButtonVisibleAndClick(tokensPage.elements.displayMenuBtn)
         tokensPage.assertButtonVisibleAndClick(tokensPage.elements.activateDeactivateToggle)
@@ -74,7 +88,20 @@ describe('UI e2e test - Full lifecycle in the My API Tokens section', () => {
             })
         })
 
+        cy.log('Verify disabled token status in Administration > Users and Roles > User API Tokens')
+
+        userTokensPage.visit()
+        userTokensPage.fillUserName('root')
+        userTokensPage.assertButtonVisibleAndClick(userTokensPage.elements.searchUserBtn)
+        tokensPage.validateTokenIsVisibleInTheTable()
+        userTokensPage.validateDisabledTokenStatus()
+        cy.get('@tokenId').then(($tokenId) => {
+            tokensPage.validateTokenKeyEquals($tokenId)
+        })
+
         cy.log('Activate the token')
+
+        tokensPage.visit()
 
         tokensPage.assertButtonVisibleAndClick(tokensPage.elements.displayMenuBtn)
         tokensPage.assertButtonVisibleAndClick(tokensPage.elements.activateDeactivateToggle)

@@ -32,6 +32,17 @@ class PersonalTokensPage extends BasePage {
         cy.get(this.elements.tokenNameInput).type(this.TEST_TOKEN_NAME)
     }
 
+    // Scope rows (in the "Select scopes" table of the create-token dialog) carry no data-testid,
+    // only the "role" attribute react-table/Moonstone assign to every row.
+    private scopeRowCheckbox(scopeName: string): Cypress.Chainable {
+        return this.getByText('[role="row"]', scopeName).find('input[type="checkbox"]')
+    }
+
+    selectScope(scopeName: string) {
+        this.scopeRowCheckbox(scopeName).click()
+        return this
+    }
+
     validatePageIsNotAccessible() {
         cy.visit('/jahia/dashboard', { failOnStatusCode: false })
         cy.get(this.elements.personalTokens).should('not.exist')
@@ -54,6 +65,24 @@ class PersonalTokensPage extends BasePage {
             })
             .invoke('text')
             .as(aliasName)
+    }
+
+    // The key column is the cell immediately following the token name column in the table row
+    private getTokenKeyCell(): Cypress.Chainable {
+        return this.getByText('td', this.TEST_TOKEN_NAME).next()
+    }
+
+    storeTokenKeyAsAlias(aliasName = 'tokenKey') {
+        this.getTokenKeyCell()
+            .should(($div) => {
+                expect($div.text()).not.to.be.empty
+            })
+            .invoke('text')
+            .as(aliasName)
+    }
+
+    validateTokenKeyEquals(expectedKey: string) {
+        this.getTokenKeyCell().invoke('text').should('eq', expectedKey)
     }
 
     validateDisabledTokenStatus() {

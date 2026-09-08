@@ -94,7 +94,7 @@ describe('UI e2e test - Full lifecycle in the User API Tokens section in Adminis
         }).then((response) => {
             const existingTokens = response.data.admin.personalApiTokens.tokens.nodes
             cy.log(JSON.stringify(existingTokens))
-            expect(existingTokens.filter((t: { name: string }) => t.name === TEST_TOKEN_NAME).length).to.equal(0)
+            expect(existingTokens.filter((t: { name: string }) => t.name === this.TEST_TOKEN_NAME).length).to.equal(0)
         })
     })
 })
