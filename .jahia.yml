@@ -1,0 +1,6 @@
+repository:
+  tests:
+    testrail-project: Personal API Tokens
+branch:
+  lint:
+    max-warnings: 2
