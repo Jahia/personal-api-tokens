@@ -1,0 +1,4 @@
+[tools]
+java = "temurin-8"
+node = "18"
+yarn = "1.22.22"
