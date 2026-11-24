@@ -1,4 +1,4 @@
-import { revokeRoles } from '@jahia/cypress'
+import { deleteNode, revokeRoles } from '@jahia/cypress'
 import { tokensPage } from '../page-object/personalTokens.page'
 import {
     rolesAdminPage,
@@ -6,7 +6,6 @@ import {
     PERMISSION_PATHS,
     PERSONAL_API_TOKEN_USER_ROLE,
 } from '../page-object/rolesAdmin.page'
-import { deleteRole } from '../support/roles'
 import { updateToken, deleteAllTokens } from '../support/gql'
 import { apollo } from '../support/apollo'
 
@@ -59,11 +58,11 @@ describe('UI e2e test - custom server role grants Personal API Tokens access, th
     after(function () {
         cy.log(`Cleanup: remove ${TEST_USER} from the role, delete the custom role`)
         revokeRoles('/', [PERSONAL_API_TOKEN_USER_ROLE.id], TEST_USER, 'USER')
-        deleteRole(PERSONAL_API_TOKEN_USER_ROLE.path)
+        deleteNode(PERSONAL_API_TOKEN_USER_ROLE.path)
     })
 
     // Kept as its own hook (rather than folded into the one above): that hook enqueues Cypress
-    // commands (revokeRoles/deleteRole) without awaiting them, relying on Cypress's own command
+    // commands (revokeRoles/deleteNode) without awaiting them, relying on Cypress's own command
     // queue; mixing that with awaited native promises (deleteAllTokens) in the same hook body is
     // a known Cypress footgun where the two can settle out of order.
     after(async function () {
