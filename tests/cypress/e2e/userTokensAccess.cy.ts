@@ -7,7 +7,7 @@ import {
     PERMISSION_GROUPS,
     PERMISSION_PATHS,
 } from '../page-object/rolesAdmin.page'
-import { revokeRolePermission } from '../support/roles'
+import { grantRolePermission, revokeRolePermission } from '../support/roles'
 
 const TEST_USER_ID = 'irina'
 const TEST_USER_PASSWORD = 'password'
@@ -45,6 +45,7 @@ describe('UI permission test - Progressive access to Personal API Tokens via the
             `Cleanup: restore server-administrator permissions and remove ${TEST_USER_ID} from the role (via backend API)`,
         )
         revokeRolePermission(SERVER_ADMINISTRATOR_ROLE.path, 'personal-api-tokens')
+        grantRolePermission(SERVER_ADMINISTRATOR_ROLE.path, 'admin-personal-api-tokens')
         revokeRoles('/', ['server-administrator'], TEST_USER_ID, 'USER')
 
         cy.log('Cleanup: delete other test users')

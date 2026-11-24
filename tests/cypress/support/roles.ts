@@ -19,6 +19,27 @@ export function revokeRolePermission(rolePath: string, permissionName: string): 
     return cy.apollo({ mutation: REMOVE_ROLE_PERMISSION_NAME, variables: { path: rolePath, permissionName } })
 }
 
+const ADD_ROLE_PERMISSION_NAME = gql`
+    mutation($path: String!, $permissionName: String!) {
+        jcr {
+            mutateNode(pathOrId: $path) {
+                removed: mutateProperty(name: "j:permissionNames") {
+                    removeValue(value: $permissionName)
+                }
+                added: mutateProperty(name: "j:permissionNames") {
+                    addValue(value: $permissionName)
+                }
+            }
+        }
+    }
+`
+
+// Adds a single permission name to a role's j:permissionNames property, once, e.g. restoring a
+// permission unchecked via the "Roles and permissions" admin screen. Used only for test cleanup.
+export function grantRolePermission(rolePath: string, permissionName: string): Cypress.Chainable {
+    return cy.apollo({ mutation: ADD_ROLE_PERMISSION_NAME, variables: { path: rolePath, permissionName } })
+}
+
 const DELETE_ROLE = gql`
     mutation($path: String!) {
         jcr {

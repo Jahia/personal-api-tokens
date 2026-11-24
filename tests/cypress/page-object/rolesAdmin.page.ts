@@ -96,20 +96,20 @@ class RolesAdminPage extends BasePage {
     }
 
     /**
-     * Waits for the role details script to bind the permission checkboxes. It runs in a jQuery ready
-     * callback that can fire after the page "load" event Cypress waits for. Until then a checkbox is
-     * a bare <a href=""> that reloads the page on click, and Save posts no permission at all.
-     * @param permissionPath
+     * Waits until the jQuery ready callbacks of the current page have run. These screens bind their
+     * controls in such a callback, which can run after the page "load" event Cypress waits for.
+     * Before it, a permission checkbox is a bare <a href=""> that reloads the page on click, and a
+     * submit of the role form posts no permission at all, which strips the role on Save. Ready
+     * callbacks run in the order they were added, so the one added here runs after the page's own.
      * @private
      */
-    private waitForPermissionCheckbox(permissionPath: string) {
-        cy.window().should((win) => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const $ = (win as any).jQuery
-            const checkbox = $ && $(`a.checkbox[path='${permissionPath}']`)[0]
-            const events = checkbox && $._data(checkbox, 'events')
-            expect(events && events.click, `click handler of the ${permissionPath} checkbox`).to.exist
-        })
+    private waitForPageScripts() {
+        cy.window().then(
+            (win) =>
+                new Cypress.Promise<void>((resolve) => {
+                    ;(win as Window & { jQuery: (callback: () => void) => void }).jQuery(() => resolve())
+                }),
+        )
         return this
     }
 
@@ -120,15 +120,15 @@ class RolesAdminPage extends BasePage {
      * @private
      */
     private setPermissionEnabled(permissionPath: string, enabled: boolean) {
-        const checkbox = `a.checkbox[path='${permissionPath}']`
+        const checkboxSelector = `a.checkbox[path='${permissionPath}']`
         const checkedState = enabled ? 'have.class' : 'not.have.class'
-        this.waitForPermissionCheckbox(permissionPath)
-        cy.get(checkbox).then(($permission) => {
+        this.waitForPageScripts()
+        cy.get(checkboxSelector).then(($permission) => {
             if ($permission.hasClass('checked') !== enabled) {
                 cy.wrap($permission).click({ force: true })
-                cy.get(checkbox).should(checkedState, 'checked')
+                cy.get(checkboxSelector).should(checkedState, 'checked')
                 cy.get(this.elements.savePermissionsBtn).click()
-                cy.get(checkbox).should(checkedState, 'checked')
+                cy.get(checkboxSelector).should(checkedState, 'checked')
             }
         })
         return this
@@ -142,7 +142,9 @@ class RolesAdminPage extends BasePage {
      */
     setServerRoleMember(roleId: string, username: string, member: boolean) {
         cy.visit(Cypress.config().baseUrl + this.MANAGE_SERVER_ROLES_PATH, { failOnStatusCode: false })
+        this.waitForPageScripts()
         cy.get(`#${roleId}`).click()
+        this.waitForPageScripts()
 
         // The checkbox is visually hidden behind a styled sibling, so a real click doesn't
         // reliably reach it, and dispatching a synthetic "change" event isn't picked up
@@ -191,6 +193,7 @@ class RolesAdminPage extends BasePage {
     updateRolePermission(role: string, group: string, permission: string, enabled: boolean) {
         this.visitRolesAndPermissions()
         this.editRole(role)
+        this.waitForPageScripts()
         cy.get(this.elements.permissionGroups[group]).click()
         this.setPermissionEnabled(permission, enabled)
         return this
