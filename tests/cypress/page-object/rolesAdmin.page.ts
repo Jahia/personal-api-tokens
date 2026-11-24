@@ -96,16 +96,39 @@ class RolesAdminPage extends BasePage {
     }
 
     /**
+     * Waits for the role details script to bind the permission checkboxes. It runs in a jQuery ready
+     * callback that can fire after the page "load" event Cypress waits for. Until then a checkbox is
+     * a bare <a href=""> that reloads the page on click, and Save posts no permission at all.
+     * @param permissionPath
+     * @private
+     */
+    private waitForPermissionCheckbox(permissionPath: string) {
+        cy.window().should((win) => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const $ = (win as any).jQuery
+            const checkbox = $ && $(`a.checkbox[path='${permissionPath}']`)[0]
+            const events = checkbox && $._data(checkbox, 'events')
+            expect(events && events.click, `click handler of the ${permissionPath} checkbox`).to.exist
+        })
+        return this
+    }
+
+    /**
      * Turns permission ON/OFF
      * @param permissionPath
      * @param enabled
      * @private
      */
     private setPermissionEnabled(permissionPath: string, enabled: boolean) {
-        cy.get(`a.checkbox[path='${permissionPath}']`).then(($permission) => {
+        const checkbox = `a.checkbox[path='${permissionPath}']`
+        const checkedState = enabled ? 'have.class' : 'not.have.class'
+        this.waitForPermissionCheckbox(permissionPath)
+        cy.get(checkbox).then(($permission) => {
             if ($permission.hasClass('checked') !== enabled) {
                 cy.wrap($permission).click({ force: true })
+                cy.get(checkbox).should(checkedState, 'checked')
                 cy.get(this.elements.savePermissionsBtn).click()
+                cy.get(checkbox).should(checkedState, 'checked')
             }
         })
         return this
