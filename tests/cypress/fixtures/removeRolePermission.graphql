@@ -1,0 +1,9 @@
+mutation($path: String!, $permissionName: String!) {
+    jcr {
+        mutateNode(pathOrId: $path) {
+            mutateProperty(name: "j:permissionNames") {
+                removeValue(value: $permissionName)
+            }
+        }
+    }
+}
